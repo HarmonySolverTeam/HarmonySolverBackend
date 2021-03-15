@@ -21,7 +21,8 @@ lazy val rootProject = project
   .aggregate(
     model,
     harmonics_parser,
-    algorithms
+    algorithms,
+    bass_translator
   )
 
 lazy val model = project
@@ -45,3 +46,11 @@ lazy val algorithms = project
     settings,
     libraryDependencies ++= testDependencies
   )
+
+lazy val bass_translator = project
+  .settings(
+    name := "bass_translator",
+    settings,
+    libraryDependencies ++= testDependencies
+  )
+  .dependsOn(model, harmonics_parser)
