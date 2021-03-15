@@ -1,7 +1,8 @@
 package pl.agh.harmonytools.harmonics.parser.builders
 
-import pl.agh.harmonytools.exercise.harmonics.Measure
 import pl.agh.harmonytools.exercise.harmonics.helpers.DelayHandler
+import pl.agh.harmonytools.model.harmonicfunction.HarmonicFunction
+import pl.agh.harmonytools.model.measure.Measure
 
 class MeasureParserBuilder(private var harmonicFunctions: Option[List[HarmonicFunctionParserBuilder]] = None) {
   def withHarmonicFunctions(hf: List[HarmonicFunctionParserBuilder]): Unit = harmonicFunctions = Some(hf)
@@ -9,7 +10,7 @@ class MeasureParserBuilder(private var harmonicFunctions: Option[List[HarmonicFu
   def getHarmonicFunctions: List[HarmonicFunctionParserBuilder] =
     harmonicFunctions.getOrElse(throw sys.error("HarmonicFunctions not defined yet"))
 
-  def getMeasure: Measure = {
+  def getMeasure: Measure[HarmonicFunction] = {
     val hfs = harmonicFunctions
       .getOrElse(sys.error("HarmonicFunction list should be defined to initialize Measure"))
       .map(_.getHarmonicFunction)

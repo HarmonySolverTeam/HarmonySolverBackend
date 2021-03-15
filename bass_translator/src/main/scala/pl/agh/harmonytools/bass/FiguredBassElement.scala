@@ -1,8 +1,9 @@
 package pl.agh.harmonytools.bass
 
+import pl.agh.harmonytools.model.measure.MeasureContent
 import pl.agh.harmonytools.model.note.{BaseNote, Note}
 
-case class FiguredBassElement(bassNote: NoteBuilder, var symbols: List[BassSymbol], delays: List[BassDelay]) {
+case class FiguredBassElement(bassNote: NoteBuilder, var symbols: List[BassSymbol] = List.empty, delays: List[BassDelay] = List.empty) extends MeasureContent {
   def complete(): Unit = {
     var bassNumbers = List.empty[Int]
     for (s <- symbols)
@@ -26,8 +27,7 @@ case class FiguredBassElement(bassNote: NoteBuilder, var symbols: List[BassSymbo
     )
 }
 
-case class NoteBuilder(pitch: Int, baseNote: BaseNote.BaseNoteType, duration: Float) {
-  private var chordComponentString: Option[String] = None
+case class NoteBuilder(pitch: Int, baseNote: BaseNote.BaseNoteType, duration: Float, private var chordComponentString: Option[String] = None) {
   def withChordComponentString(cc: String): Unit = chordComponentString = Some(cc)
   def getResult: Note = Note(pitch, baseNote, chordComponentString.getOrElse(sys.error("CC not defined")), duration)
 }

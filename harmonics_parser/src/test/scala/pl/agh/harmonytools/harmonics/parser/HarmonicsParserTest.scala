@@ -112,36 +112,36 @@ class HarmonicsParserTest extends FunSuite with Matchers with BeforeAndAfterEach
 
   test("Chained classic deflection") {
     val exercise = getParserOutput(getFileContent("/major/chained_deflection_basic.txt"))
-    exercise.get.measures.head.harmonicFunctions(1).key shouldBe Some(Key("D"))
-    exercise.get.measures.head.harmonicFunctions(2).key shouldBe Some(Key("G"))
+    exercise.get.measures.head.content(1).key shouldBe Some(Key("D"))
+    exercise.get.measures.head.content(2).key shouldBe Some(Key("G"))
   }
 
   test("Deflection between measures") {
     val exercise = getParserOutput(getFileContent("/minor/basic_deflection_between_measures.txt"))
-    exercise.get.measures.head.harmonicFunctions(1).key shouldBe Some(Key("a"))
-    exercise.get.measures(1).harmonicFunctions.head.key shouldBe Some(Key("a"))
+    exercise.get.measures.head.content(1).key shouldBe Some(Key("a"))
+    exercise.get.measures(1).content.head.key shouldBe Some(Key("a"))
   }
 
   test("Chained deflection backwards") {
     val exercise = getParserOutput(getFileContent("/major/deflection_backwards.txt"))
-    exercise.get.measures.head.harmonicFunctions(2).key shouldBe Some(Key("F"))
-    exercise.get.measures(1).harmonicFunctions.head.key shouldBe Some(Key("Bb"))
+    exercise.get.measures.head.content(2).key shouldBe Some(Key("F"))
+    exercise.get.measures(1).content.head.key shouldBe Some(Key("Bb"))
   }
 
   test("Deflection backwards between measures") {
     val exercise = getParserOutput(getFileContent("/major/deflection_backwards_between_measures.txt"))
-    exercise.get.measures.head.harmonicFunctions(2).key shouldBe Some(Key("Bb"))
-    exercise.get.measures(1).harmonicFunctions.head.key shouldBe Some(Key("Bb"))
+    exercise.get.measures.head.content(2).key shouldBe Some(Key("Bb"))
+    exercise.get.measures(1).content.head.key shouldBe Some(Key("Bb"))
   }
 
   test("Basic ellipse") {
     val exercise = getParserOutput(getFileContent("/major/elipse_correct.txt"))
-    exercise.get.measures.head.harmonicFunctions(1).key shouldBe Some(Key("a"))
-    exercise.get.measures.head.harmonicFunctions(2).key shouldBe Some(Key("a"))
-    exercise.get.measures(2).harmonicFunctions(1).key shouldBe Some(Key("G"))
-    exercise.get.measures(2).harmonicFunctions(2).key shouldBe Some(Key("G"))
-    exercise.get.measures.head.harmonicFunctions(2).baseFunction shouldBe TONIC
-    exercise.get.measures.head.harmonicFunctions(2).degree shouldBe VI
+    exercise.get.measures.head.content(1).key shouldBe Some(Key("a"))
+    exercise.get.measures.head.content(2).key shouldBe Some(Key("a"))
+    exercise.get.measures(2).content(1).key shouldBe Some(Key("G"))
+    exercise.get.measures(2).content(2).key shouldBe Some(Key("G"))
+    exercise.get.measures.head.content(2).baseFunction shouldBe TONIC
+    exercise.get.measures.head.content(2).degree shouldBe VI
   }
 
   test("Ellipse inside deflection") {
@@ -173,18 +173,18 @@ class HarmonicsParserTest extends FunSuite with Matchers with BeforeAndAfterEach
       |""".stripMargin).get
 
   test("Dividing function into two - delays") {
-    simpleDelayExercise.measures.head.harmonicFunctions.size shouldBe 2
+    simpleDelayExercise.measures.head.content.size shouldBe 2
   }
 
   test("Transformation of first child function correctness - delays") {
-    val first = simpleDelayExercise.measures.head.harmonicFunctions.head
+    val first = simpleDelayExercise.measures.head.content.head
     first.omit shouldBe List(ChordComponentManager.chordComponentFromString("3"))
     first.extra shouldBe List(ChordComponentManager.chordComponentFromString("4"))
     first.delay shouldBe List(Delay("4", "3"))
   }
 
   test("Transformation of second child function correctness - delays") {
-    val second = simpleDelayExercise.measures.head.harmonicFunctions(1)
+    val second = simpleDelayExercise.measures.head.content(1)
     second.omit shouldBe List()
     second.extra shouldBe List()
     second.delay shouldBe List()
@@ -196,10 +196,10 @@ class HarmonicsParserTest extends FunSuite with Matchers with BeforeAndAfterEach
         |T{delay:4-3/position:3}
         |""".stripMargin).get
 
-    exercise.measures.head.harmonicFunctions.head.position shouldBe Some(
+    exercise.measures.head.content.head.position shouldBe Some(
       ChordComponentManager.chordComponentFromString("4")
     )
-    exercise.measures.head.harmonicFunctions(1).position shouldBe Some(
+    exercise.measures.head.content(1).position shouldBe Some(
       ChordComponentManager.chordComponentFromString("3")
     )
   }
@@ -210,10 +210,10 @@ class HarmonicsParserTest extends FunSuite with Matchers with BeforeAndAfterEach
         |T{delay:4-3/revolution:3}
         |""".stripMargin).get
 
-    exercise.measures.head.harmonicFunctions.head.revolution shouldBe ChordComponentManager.chordComponentFromString(
+    exercise.measures.head.content.head.revolution shouldBe ChordComponentManager.chordComponentFromString(
       "4"
     )
-    exercise.measures.head.harmonicFunctions(1).revolution shouldBe ChordComponentManager.chordComponentFromString("3")
+    exercise.measures.head.content(1).revolution shouldBe ChordComponentManager.chordComponentFromString("3")
   }
 
   test("More measures with delayed functions") {
@@ -223,7 +223,7 @@ class HarmonicsParserTest extends FunSuite with Matchers with BeforeAndAfterEach
         |T{delay:4-3}
         |T{delay:4-3} T{delay:4-3}
         |""".stripMargin).get
-    exercise.measures.map(_.harmonicFunctions.length).sum shouldBe 10
+    exercise.measures.map(_.content.length).sum shouldBe 10
   }
 
   test("Double delayed function transformation") {
@@ -231,7 +231,7 @@ class HarmonicsParserTest extends FunSuite with Matchers with BeforeAndAfterEach
         |3/4
         |T{delay:6-5,4-3}
         |""".stripMargin).get
-    val first    = exercise.measures.head.harmonicFunctions.head
+    val first    = exercise.measures.head.content.head
     first.extra shouldBe List(
       ChordComponentManager.chordComponentFromString("6"),
       ChordComponentManager.chordComponentFromString("4")
@@ -247,7 +247,7 @@ class HarmonicsParserTest extends FunSuite with Matchers with BeforeAndAfterEach
         |3/4
         |T{delay:6-5,4-3,2-1}
         |""".stripMargin).get
-    val first    = exercise.measures.head.harmonicFunctions.head
+    val first    = exercise.measures.head.content.head
     first.extra shouldBe List(
       ChordComponentManager.chordComponentFromString("6"),
       ChordComponentManager.chordComponentFromString("4"),

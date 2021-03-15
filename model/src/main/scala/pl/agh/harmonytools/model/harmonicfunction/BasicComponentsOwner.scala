@@ -39,7 +39,7 @@ trait BasicComponentsOwner {
     if (getIsDown) ChordComponentManager.chordComponentFromString("3", isDown = true)
     else {
       val pitches = if (getMode == MAJOR) MajorScale.pitches else MinorScale.pitches
-      val thirdPitch = (pitches((getDegree.root + 1) % 7) - pitches(getDegree.root)) %% 12
+      val thirdPitch = (pitches((getDegree.root + 1) %% 7) - pitches((getDegree.root - 1) %% 7)) %% 12
       ChordComponentManager.basicChordComponentFromPitch(thirdPitch, isDown = false)
     }
   }
@@ -47,7 +47,7 @@ trait BasicComponentsOwner {
     if (getIsDown) ChordComponentManager.chordComponentFromString("5", isDown = true)
     else {
       val pitches = if (getMode == MAJOR) MajorScale.pitches else MinorScale.pitches
-      val fifthPitch = (pitches((getDegree.root + 3) % 7) - pitches(getDegree.root)) %% 12
+      val fifthPitch = (pitches((getDegree.root + 3) %% 7) - pitches((getDegree.root - 1) %% 7)) %% 12
       ChordComponentManager.basicChordComponentFromPitch(fifthPitch, isDown = false)
     }
   }

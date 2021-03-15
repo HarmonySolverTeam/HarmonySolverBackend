@@ -2,6 +2,7 @@ package pl.agh.harmonytools.model.harmonicfunction
 
 import pl.agh.harmonytools.model.chord.{ChordComponent, ChordSystem}
 import pl.agh.harmonytools.model.key.{Key, Mode}
+import pl.agh.harmonytools.model.measure.MeasureContent
 import pl.agh.harmonytools.model.scale.ScaleDegree
 import pl.agh.harmonytools.model.util.ChordComponentManager
 
@@ -18,7 +19,7 @@ case class HarmonicFunction(
   mode: Mode.BaseMode,
   key: Option[Key],
   isRelatedBackwards: Boolean
-) extends BasicComponentsOwner {
+) extends BasicComponentsOwner with MeasureContent {
 
   override protected def getDegree: ScaleDegree.Degree  = degree
   override protected def getIsDown: Boolean             = isDown

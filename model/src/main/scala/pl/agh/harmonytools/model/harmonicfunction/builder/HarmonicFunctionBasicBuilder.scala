@@ -6,7 +6,7 @@ import pl.agh.harmonytools.model.util.ChordComponentManager
 
 class HarmonicFunctionBasicBuilder extends HarmonicFunctionBuilder(false) {
 
-  private def getCC(cc: String): ChordComponent = ChordComponentManager.chordComponentFromString(cc, isDown)
+  protected def getCC(cc: String): ChordComponent = ChordComponentManager.chordComponentFromString(cc, isDown)
 
   override protected def preprocessHarmonicFunction(): HarmonicFunction = {
     if (

@@ -1,8 +1,8 @@
 package pl.agh.harmonytools.bass
 
-case class BassDelay(first: BassSymbol, second: BassSymbol) {
-  def mapToChordComponentDelay(): ChordComponentDelay =
-    ChordComponentDelay(first.mapToChordComponentSymbol(), second.mapToChordComponentSymbol())
-}
+import pl.agh.harmonytools.model.harmonicfunction.Delay
 
-case class ChordComponentDelay(first: ChordComponentSymbol, second: ChordComponentSymbol)
+case class BassDelay(first: BassSymbol, second: BassSymbol) {
+  def mapToChordComponentDelay(): Delay =
+    Delay(first.mapToChordComponentSymbol(), second.mapToChordComponentSymbol())
+}

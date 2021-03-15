@@ -1,4 +1,4 @@
-package pl.agh.harmonytools.exercise.harmonics
+package pl.agh.harmonytools.model.measure
 
 case class Meter(nominator: Int, denominator: Int) {
   def isPowerOf2(x: Int): Boolean = {

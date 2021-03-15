@@ -73,4 +73,20 @@ abstract class HarmonicFunctionBuilder(withValidation: Boolean = true) extends B
     if (withValidation) new HarmonicFunctionValidator(hf).validate()
     hf
   }
+
+  override def toString: String =
+    "HarmonicFunction" + Seq(
+      baseFunction.getOrElse("undefined"),
+      degree,
+      position,
+      revolution,
+      delay,
+      extra,
+      omit,
+      isDown,
+      system,
+      mode,
+      key,
+      isRelatedBackwards
+    ).mkString("(", ",", ")")
 }

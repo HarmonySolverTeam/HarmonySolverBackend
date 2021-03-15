@@ -106,9 +106,9 @@ object DeflectionsHandler {
     }
 
     val degree   = deflectionTargetHarmonicFunction.getDegree
-    var keyPitch = keyToUse.tonicPitch + pitchesToUse(degree.root)
+    var keyPitch = keyToUse.tonicPitch + pitchesToUse(degree.root - 1)
     if (keyPitch >= 72) keyPitch = keyPitch - 12
-    val keyBaseNote = keyToUse.baseNote + (degree.root)
+    val keyBaseNote = keyToUse.baseNote + (degree.root - 1)
     val modeToUse =
       if (deflectionTargetHarmonicFunction.getIsDown) MINOR else IntervalUtils.getThirdMode(keyToUse, degree)
 

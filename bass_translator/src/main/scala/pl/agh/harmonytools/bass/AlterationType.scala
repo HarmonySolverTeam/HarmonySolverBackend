@@ -1,14 +1,6 @@
 package pl.agh.harmonytools.bass
 
 object AlterationType {
-  def ccFromSymbol(last: Char): Option[ChordComponentType] = {
-    if (last.isDigit) None
-    else last match {
-      case '>' => Some(LOWERED)
-      case '<' => Some(ELEVATED)
-      case _ => None
-    }
-  }
 
   sealed abstract class FiguredBassType(val value: String)
 
