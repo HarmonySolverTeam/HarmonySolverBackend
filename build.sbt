@@ -20,7 +20,8 @@ lazy val rootProject = project
   )
   .aggregate(
     model,
-    harmonics_parser
+    harmonics_parser,
+    algorithms
   )
 
 lazy val model = project
@@ -37,3 +38,10 @@ lazy val harmonics_parser = project
     libraryDependencies ++= testDependencies ++ Seq("org.scala-lang.modules" %% "scala-parser-combinators" % "1.1.2")
   )
   .dependsOn(model)
+
+lazy val algorithms = project
+  .settings(
+    name := "algorithms",
+    settings,
+    libraryDependencies ++= testDependencies
+  )
