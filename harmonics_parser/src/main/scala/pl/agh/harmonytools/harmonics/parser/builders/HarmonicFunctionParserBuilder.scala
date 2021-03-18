@@ -14,7 +14,7 @@ class HarmonicFunctionParserBuilder extends HarmonicFunctionBuilder {
   override def withBaseFunction(bf: BaseFunction): Unit  = baseFunction = Some(bf)
   override def withDegree(d: ScaleDegree.Degree): Unit   = degree = Some(d)
   override def withPosition(p: ChordComponent): Unit     = position = Some(p)
-  override def withRevolution(r: ChordComponent): Unit   = revolution = r
+  override def withRevolution(r: ChordComponent): Unit   = revolution = Some(r)
   override def withDelay(d: List[Delay]): Unit           = delay = d
   override def withExtra(e: List[ChordComponent]): Unit  = extra = e
   override def withOmit(o: List[ChordComponent]): Unit   = omit = o
@@ -29,7 +29,6 @@ class HarmonicFunctionParserBuilder extends HarmonicFunctionBuilder {
   def getKey: Option[Key]                 = key
   def getType: HarmonicsElementType       = hfType
   def getPosition: Option[ChordComponent] = position
-  def getRevolution: ChordComponent       = revolution
 
   override def preprocessHarmonicFunction(): HarmonicFunction = {
     HarmonicFunction(
@@ -58,7 +57,7 @@ class HarmonicFunctionParserBuilder extends HarmonicFunctionBuilder {
       case Some(p) => builder.withPosition(p)
       case _       =>
     }
-    builder.withRevolution(revolution)
+    builder.withRevolution(getRevolution)
     builder.withDelay(delay)
     builder.withExtra(extra)
     builder.withOmit(omit)

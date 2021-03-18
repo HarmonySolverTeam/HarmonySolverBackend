@@ -40,6 +40,7 @@ object ChordComponent {
     var semitonesNumber = baseComponentPitch.getOrElse(baseComponent, throw new IllegalArgumentException("Illegal baseComponent: " + baseComponent))
     semitonesNumber += chordComponentString.count(_ == '<')
     semitonesNumber -= chordComponentString.count(_ == '>')
+    if (isDown) semitonesNumber -= 1
     new ChordComponent(
       chordComponentString,
       baseComponent,

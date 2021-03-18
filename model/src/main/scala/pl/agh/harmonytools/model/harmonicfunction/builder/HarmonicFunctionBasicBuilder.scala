@@ -18,11 +18,11 @@ class HarmonicFunctionBasicBuilder extends HarmonicFunctionBuilder(false) {
       case Some(p) if !extra.contains(p) && !getBasicChordComponents.contains(p) => withExtra(extra.appended(p))
       case _                                                                     =>
     }
-    if (!extra.contains(revolution) && !getBasicChordComponents.contains(revolution))
-      withExtra(extra.appended(revolution))
+    if (!extra.contains(getRevolution) && !getBasicChordComponents.contains(getRevolution))
+      withExtra(extra.appended(getRevolution))
     if ((extra.contains(getCC("5<")) || extra.contains(getCC("5>"))) && omit.contains(getCC("5")))
       withOmit(omit.appended(getCC("5")))
-    if (omit.contains(getCC("1")) && revolution == getCC("1")) withRevolution(getThird)
+    if (omit.contains(getCC("1")) && getRevolution == getCC("1")) withRevolution(getThird)
     if (omit.contains(getCC("5"))) {
       val fifth = getCC("5")
       if (fifth != getFifth) {
@@ -37,24 +37,24 @@ class HarmonicFunctionBasicBuilder extends HarmonicFunctionBuilder(false) {
         withOmit(omit.appended(getThird))
       }
     }
-    if (revolution == getCC("5")) withRevolution(getFifth)
+    if (getRevolution == getCC("5")) withRevolution(getFifth)
     if (position.contains(getCC("5"))) withPosition(getFifth)
 
     if (extra.exists(_.baseComponent == 9) || delay.exists(_.first.baseComponent == 9)) {
       if (countChordComponents > 4) {
         val prime = getPrime
         val fifth = getFifth
-        if (position.isDefined && position.get == revolution)
+        if (position.isDefined && position.get == getRevolution)
           throw HarmonicFunctionValidationError("Ninth chord could not have same position as revolution")
-        if (position.isDefined && List(prime, fifth).contains(position.get) && List(prime, fifth).contains(revolution))
+        if (position.isDefined && List(prime, fifth).contains(position.get) && List(prime, fifth).contains(getRevolution))
           throw HarmonicFunctionValidationError(
             "Ninth chord could not have both prime or fifth in position or revolution"
           )
-        if (!omit.contains(fifth) && !position.contains(fifth) && revolution != fifth)
+        if (!omit.contains(fifth) && !position.contains(fifth) && getRevolution != fifth)
           withOmit(omit.appended(fifth))
         else if (!omit.contains(prime)) {
           withOmit(omit.appended(prime))
-          if (revolution == prime)
+          if (getRevolution == prime)
             withRevolution(getThird)
         }
       }

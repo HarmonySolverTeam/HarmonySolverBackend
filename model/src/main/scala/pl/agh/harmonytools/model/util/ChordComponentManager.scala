@@ -8,7 +8,7 @@ object ChordComponentManager {
 
   private var availableChordComponents: HashMap[(String, Boolean), ChordComponent] = HashMap.empty
 
-  def getRoot: ChordComponent = chordComponentFromString("1")
+  def getRoot(isDown: Boolean): ChordComponent = chordComponentFromString("1", isDown)
 
   def chordComponentFromString(chordComponentString: String, isDown: Boolean = false): ChordComponent = {
     availableChordComponents.find(_._1 == (chordComponentString, isDown)) match {

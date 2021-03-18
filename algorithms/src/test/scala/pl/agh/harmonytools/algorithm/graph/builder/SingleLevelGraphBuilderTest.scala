@@ -37,7 +37,6 @@ class SingleLevelGraphBuilderTest extends FunSuite with Matchers {
     graphBuilder.withEvaluator(MockEvaluator)
     graphBuilder.withGeneratorInput(List(1, 2, 3).map(GenInput))
     val graph = graphBuilder.build()
-    graph.printEdges()
     graph.getLayers.size shouldBe 3
     graph.getLayers.foreach(layer => layer.getNodeList.count(_.getContent.value == 2) shouldBe 0)
     graph.getLayers.take(2).foreach(layer => layer.getNodeList.count(_.getContent.value == 0) shouldBe 0)
