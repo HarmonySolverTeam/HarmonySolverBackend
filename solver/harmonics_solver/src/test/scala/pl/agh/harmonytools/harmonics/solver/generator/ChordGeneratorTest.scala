@@ -1,4 +1,4 @@
-package pl.agh.harmonytools.harmonics.solver
+package pl.agh.harmonytools.harmonics.solver.generator
 
 import org.scalatest.{FunSuite, Matchers}
 import pl.agh.harmonytools.model.chord.ChordSystem.UNDEFINED
@@ -9,18 +9,16 @@ import pl.agh.harmonytools.model.key.Key
 import pl.agh.harmonytools.model.key.Mode.{MAJOR, MINOR}
 import pl.agh.harmonytools.model.note.BaseNote
 import pl.agh.harmonytools.model.scale.MajorScale
-import pl.agh.harmonytools.model.scale.ScaleDegree.{I, II, V, VI, VII}
-import pl.agh.harmonytools.model.util.ChordComponentManager
+import pl.agh.harmonytools.model.scale.ScaleDegree._
 import pl.agh.harmonytools.utils.Extensions.ExtendedInt
-import pl.agh.harmonytools.utils.IntervalUtils
+import pl.agh.harmonytools.utils.{IntervalUtils, TestUtils}
 
-class ChordGeneratorTest extends FunSuite with Matchers {
+class ChordGeneratorTest extends FunSuite with Matchers with TestUtils {
+
+  import HarmonicFunctions._
 
   private val MAJOR_GEN = Some("major")
   private val MINOR_GEN = Some("minor")
-
-  private def getCC(cc: String, isDown: Boolean = false): ChordComponent =
-    ChordComponentManager.chordComponentFromString(cc, isDown)
 
   private def chordUseChordComponentInSoprano(chord: Chord, cc: ChordComponent): Boolean =
     chord.sopranoNote.chordComponent == cc
@@ -89,20 +87,6 @@ class ChordGeneratorTest extends FunSuite with Matchers {
     }
   }
 
-  private val neapolitan = new HarmonicFunction(
-    SUBDOMINANT,
-    II,
-    None,
-    getCC("3", isDown = true),
-    List.empty,
-    List.empty,
-    List.empty,
-    true,
-    UNDEFINED,
-    MINOR,
-    None,
-    false
-  )
   test("Neapolitan chord contains prime which is chordComponent \'1\' with pitch -1") {
     generatorTest(
       None,

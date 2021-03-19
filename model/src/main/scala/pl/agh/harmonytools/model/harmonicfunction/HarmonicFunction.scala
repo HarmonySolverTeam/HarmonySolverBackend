@@ -3,7 +3,7 @@ package pl.agh.harmonytools.model.harmonicfunction
 import pl.agh.harmonytools.algorithm.graph.node.NodeContent
 import pl.agh.harmonytools.model.chord.{ChordComponent, ChordSystem}
 import pl.agh.harmonytools.model.harmonicfunction.FunctionNames.{DOMINANT, SUBDOMINANT, TONIC}
-import pl.agh.harmonytools.model.key.Mode.MINOR
+import pl.agh.harmonytools.model.key.Mode.{MAJOR, MINOR}
 import pl.agh.harmonytools.model.key.{Key, Mode}
 import pl.agh.harmonytools.model.scale.ScaleDegree
 import pl.agh.harmonytools.model.scale.ScaleDegree.{II, III, VI}
@@ -23,13 +23,13 @@ case class HarmonicFunction(
   key: Option[Key],
   isRelatedBackwards: Boolean
 ) extends BasicComponentsOwner {
-
   override protected def getDegree: ScaleDegree.Degree  = degree
   override protected def getIsDown: Boolean             = isDown
   override protected def getMode: Mode.BaseMode         = mode
   override protected def getExtra: List[ChordComponent] = extra
   override protected def getOmit: List[ChordComponent]  = omit
   override protected def getDelay: List[Delay]          = delay
+  override protected def getRevolution: ChordComponent  = revolution
 
   def isChopin: Boolean =
     baseFunction == DOMINANT && omit.exists(_.chordComponentString == "5") && extra.exists(
@@ -45,7 +45,25 @@ case class HarmonicFunction(
   def isNeapolitan: Boolean =
     degree == II && isDown && baseFunction == SUBDOMINANT && mode == MINOR && revolution.baseComponent == 3 && extra.isEmpty
 
-  override protected def getRevolution: ChordComponent = revolution
+  def isInDominantRelation(next: HarmonicFunction): Boolean = {
+    if (isDown != next.isDown && key == next.key && !(baseFunction == TONIC
+        && degree == VI
+        && mode == MINOR && next.isDown))
+      false
+    else if (key != next.key && key.isDefined)
+      List(4, -3).contains(degree.root - 1)
+    else if (this.key == next.key)
+      List(4, -3).contains(degree.root - next.degree.root)
+    else false;
+  }
+
+  def isInSecondRelation(next: HarmonicFunction): Boolean = {
+    next.degree.root - degree.root == 1
+  }
+
+  def hasMajorMode: Boolean = mode == MAJOR
+
+  def hasMinorMode: Boolean = mode == MINOR
 }
 
 object HarmonicFunction {
@@ -65,7 +83,7 @@ object HarmonicFunction {
   ): HarmonicFunction = {
     val rev = revolution match {
       case Some(value) => value
-      case None => ChordComponentManager.getRoot(isDown)
+      case None        => ChordComponentManager.getRoot(isDown)
     }
     degree match {
       case Some(value) =>

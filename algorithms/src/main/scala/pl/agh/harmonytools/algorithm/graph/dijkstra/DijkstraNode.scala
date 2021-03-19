@@ -1,6 +1,6 @@
 package pl.agh.harmonytools.algorithm.graph.dijkstra
 
 trait DijkstraNode {
-  def getDistanceFromBeginning: Int
+  def getDistanceFromBeginning: Double
   def getPrevsInShortestPath: List[DijkstraNode]
 }

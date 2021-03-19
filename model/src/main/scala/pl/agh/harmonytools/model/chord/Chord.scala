@@ -11,6 +11,11 @@ case class Chord(
   bassNote: Note,
   harmonicFunction: HarmonicFunction
 ) extends NodeContent {
+  require(sopranoNote.isUpperThanOrEqual(altoNote) && altoNote.isUpperThanOrEqual(tenorNote) && tenorNote.isUpperThanOrEqual(bassNote))
+
+  /**
+   * List of notes of chord ordered from top to down: (soprano, alto, tenor, bass).
+   */
   lazy val notes: List[Note] = List(sopranoNote, altoNote, tenorNote, bassNote)
 
   override def toString: String = {
@@ -43,5 +48,29 @@ case class Chord(
 
   def countBaseComponents(baseComponent: Int): Int = {
     notes.count(_.baseChordComponentEquals(baseComponent))
+  }
+
+  def hasCorrespondingNotesUpperThan(other: Chord): Boolean = {
+    notes.zip(other.notes).forall(p => p._1.isUpperThan(p._2))
+  }
+
+  def hasCorrespondingNotesLowerThan(other: Chord): Boolean = {
+    notes.zip(other.notes).forall(p => p._1.isLowerThan(p._2))
+  }
+
+  def getVoiceWithBaseComponent(baseComponent: Int): Int = {
+    for (i <- 0 until 4) {
+      if (notes(i).baseChordComponentEquals(baseComponent))
+        return i
+    }
+    -1
+  }
+
+  def getVoiceWithComponent(chordComponent: ChordComponent): Int = {
+    for (i <- 0 until 4) {
+      if (notes(i).chordComponentEquals(chordComponent))
+        return i
+    }
+    -1
   }
 }

@@ -16,9 +16,13 @@ case class Note(
 
   def isUpperThan(other: Note): Boolean = pitch > other.pitch
 
+  def isUpperThanOrEqual(other: Note): Boolean = isUpperThan(other) || pitch == other.pitch
+
   def isLowerThan(other: Note): Boolean = pitch < other.pitch
 
   def chordComponentEquals(chordComponentString: String): Boolean = chordComponent.chordComponentString == chordComponentString
+
+  def chordComponentEquals(cc: ChordComponent): Boolean = cc == chordComponent
 
   def baseChordComponentEquals(baseComponent: Int): Boolean = chordComponent.baseComponent == baseComponent
 

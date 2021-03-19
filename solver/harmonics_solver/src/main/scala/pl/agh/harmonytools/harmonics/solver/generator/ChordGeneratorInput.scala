@@ -1,4 +1,4 @@
-package pl.agh.harmonytools.harmonics.solver
+package pl.agh.harmonytools.harmonics.solver.generator
 
 import pl.agh.harmonytools.algorithm.generator.GeneratorInput
 import pl.agh.harmonytools.model.harmonicfunction.HarmonicFunction

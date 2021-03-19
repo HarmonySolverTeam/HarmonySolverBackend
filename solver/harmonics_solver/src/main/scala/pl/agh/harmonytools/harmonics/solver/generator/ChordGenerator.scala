@@ -1,4 +1,4 @@
-package pl.agh.harmonytools.harmonics.solver
+package pl.agh.harmonytools.harmonics.solver.generator
 
 import pl.agh.harmonytools.algorithm.generator.LayerGenerator
 import pl.agh.harmonytools.model.chord.ChordSystem.{OPEN, UNDEFINED}
@@ -10,31 +10,6 @@ import pl.agh.harmonytools.model.note.Note
 import pl.agh.harmonytools.model.scale.{MajorScale, MinorScale}
 import pl.agh.harmonytools.utils.Extensions.ExtendedBoolean
 import pl.agh.harmonytools.utils.{Consts, IntervalUtils}
-
-case class FourPartChordComponents(
-  var soprano: Option[ChordComponent],
-  var alto: Option[ChordComponent],
-  var tenor: Option[ChordComponent],
-  var bass: Option[ChordComponent]
-) {
-  def setSoprano(chordComponent: ChordComponent): Unit = soprano = Some(chordComponent)
-  def setAlto(chordComponent: ChordComponent): Unit    = alto = Some(chordComponent)
-  def setTenor(chordComponent: ChordComponent): Unit   = tenor = Some(chordComponent)
-  def setBass(chordComponent: ChordComponent): Unit    = bass = Some(chordComponent)
-
-  def getChordComponentList: List[ChordComponent] = {
-    var res: List[ChordComponent] = List.empty
-    for (v <- List(soprano, alto, tenor, bass)) {
-      v match {
-        case Some(value) => res = res :+ value
-        case None        =>
-      }
-    }
-    res
-  }
-}
-
-case class ChordTemplate(fourPartChordComponents: FourPartChordComponents, needToAdd: List[ChordComponent])
 
 case class ChordGenerator(key: Key) extends LayerGenerator[Chord, ChordGeneratorInput] {
   private def getPossiblePitchValuesFromInterval(note: Int, minPitch: Int, maxPitch: Int): List[Int] = {
