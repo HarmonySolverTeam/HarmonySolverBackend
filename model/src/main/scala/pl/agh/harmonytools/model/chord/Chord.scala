@@ -66,7 +66,7 @@ case class Chord(
     -1
   }
 
-  def getVoiceWithComponent(chordComponent: ChordComponent): Int = {
+  def getVoiceWithComponentString(chordComponent: String): Int = {
     for (i <- 0 until 4) {
       if (notes(i).chordComponentEquals(chordComponent))
         return i

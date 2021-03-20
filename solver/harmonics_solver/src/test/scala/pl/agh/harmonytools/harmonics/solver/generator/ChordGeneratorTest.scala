@@ -7,7 +7,8 @@ import pl.agh.harmonytools.model.harmonicfunction.FunctionNames.{DOMINANT, SUBDO
 import pl.agh.harmonytools.model.harmonicfunction.HarmonicFunction
 import pl.agh.harmonytools.model.key.Key
 import pl.agh.harmonytools.model.key.Mode.{MAJOR, MINOR}
-import pl.agh.harmonytools.model.note.BaseNote
+import pl.agh.harmonytools.model.note.{BaseNote, Note}
+import pl.agh.harmonytools.model.note.BaseNote.{A, B, C, D, E, F, G}
 import pl.agh.harmonytools.model.scale.MajorScale
 import pl.agh.harmonytools.model.scale.ScaleDegree._
 import pl.agh.harmonytools.utils.Extensions.ExtendedInt
@@ -16,6 +17,8 @@ import pl.agh.harmonytools.utils.{IntervalUtils, TestUtils}
 class ChordGeneratorTest extends FunSuite with Matchers with TestUtils {
 
   import HarmonicFunctions._
+  import Keys._
+  import ChordComponents._
 
   private val MAJOR_GEN = Some("major")
   private val MINOR_GEN = Some("minor")
@@ -677,6 +680,31 @@ class ChordGeneratorTest extends FunSuite with Matchers with TestUtils {
     hf.isTVIMinorDown shouldBe true
     IntervalUtils.convertPitchToOneOctave(res.head.bassNote.pitch) shouldBe 68
     res.head.bassNote.baseNote shouldBe BaseNote.A
+  }
+
+  test("Generating Chopin chord") {
+    val d1 = HarmonicFunction(DOMINANT, extra = List(sixth, seventh), omit = List(fifth), key = Some(keyC))
+    val d2 = HarmonicFunction(DOMINANT, extra = List(sixthDim, seventh), omit = List(fifth), key = Some(keyc))
+
+
+    val ch1 = Chord(Note(76, E, sixth), Note(71, B, third), Note(65, F, seventh), Note(55, G, prime), d1)
+    val ch2 = Chord(Note(75, F, seventh), Note(71, B, third), Note(64, D, sixth), Note(55, G, prime), d1)
+    val ch3 = Chord(Note(75, E, sixthDim), Note(71, B, third), Note(65, F, seventh), Note(55, G, prime), d2)
+
+    def checkIfGenerable(chord: Chord, key: Key) = {
+      val res = ChordGenerator(key).generate(ChordGeneratorInput(chord.harmonicFunction))
+      res.length should not be 0
+      res.contains(chord) shouldBe true
+    }
+
+    def checkIfNotGenerable(chord: Chord, key: Key) = {
+      val res = ChordGenerator(key).generate(ChordGeneratorInput(chord.harmonicFunction))
+      res.contains(chord) shouldBe false
+    }
+
+    checkIfGenerable(ch1, keyC)
+    checkIfNotGenerable(ch2, keyC)
+    checkIfGenerable(ch3, keyc)
   }
 
 }

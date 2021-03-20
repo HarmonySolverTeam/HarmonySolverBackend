@@ -329,7 +329,7 @@ case class ChordGenerator(key: Key) extends LayerGenerator[Chord, ChordGenerator
         if (chord.notes(voice).baseChordComponentEquals(6)) voiceWith6 = voice
         if (chord.notes(voice).baseChordComponentEquals(7)) voiceWith7 = voice
       }
-      if (voiceWith6 != -1 && voiceWith7 != -1 && voiceWith6 < voiceWith7) return false
+      if (voiceWith6 != -1 && voiceWith7 != -1 && voiceWith6 > voiceWith7) return false
     }
     true
   }

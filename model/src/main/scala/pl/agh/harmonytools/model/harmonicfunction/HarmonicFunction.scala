@@ -64,6 +64,14 @@ case class HarmonicFunction(
   def hasMajorMode: Boolean = mode == MAJOR
 
   def hasMinorMode: Boolean = mode == MINOR
+
+  def containsDelayedChordComponentString(cc: String): Boolean = {
+    delay.exists(_.second.chordComponentString == cc)
+  }
+
+  def containsDelayedBaseChordComponent(cc: Int): Boolean = {
+    delay.exists(_.second.baseComponent == cc)
+  }
 }
 
 object HarmonicFunction {

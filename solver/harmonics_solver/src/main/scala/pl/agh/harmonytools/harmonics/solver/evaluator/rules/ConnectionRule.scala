@@ -18,7 +18,9 @@ trait ConnectionRule extends IRule[Chord] {
     }
   }
 
-  private def translateConnectionIncludingDeflections(connection: Connection[Chord]): Option[Connection[Chord]] = {
+  protected final def translateConnectionIncludingDeflections(
+    connection: Connection[Chord]
+  ): Option[Connection[Chord]] = {
     val currentChord              = connection.current
     val prevChord                 = connection.prev
     var currentFunctionTranslated = currentChord.harmonicFunction
