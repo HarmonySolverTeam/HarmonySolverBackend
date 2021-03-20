@@ -72,6 +72,22 @@ case class HarmonicFunction(
   def containsDelayedBaseChordComponent(cc: Int): Boolean = {
     delay.exists(_.second.baseComponent == cc)
   }
+
+  override def toString: String = {
+    List(
+      "Function: " + baseFunction.name,
+      "Degree: " + degree.root,
+      "Revolution: " + revolution.chordComponentString,
+      "Delay: " + delay.map(d => d.first.chordComponentString + "-" + d.second.chordComponentString).mkString(","),
+      "Extra: " + extra.map(_.chordComponentString).mkString(","),
+      "Omit: " + omit.map(_.chordComponentString).mkString(","),
+      "Down: " + isDown,
+      "System: " + system,
+      "Mode: " + mode,
+      "IsRelatedBackwards: " + isRelatedBackwards
+    )
+      .mkString("\n")
+  }
 }
 
 object HarmonicFunction {
