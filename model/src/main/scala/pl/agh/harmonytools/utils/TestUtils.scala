@@ -41,25 +41,31 @@ trait TestUtils {
   }
 
   protected object ChordComponents {
-    val prime: ChordComponent    = getCC("1")
-    val third: ChordComponent    = getCC("3")
-    val fifth: ChordComponent    = getCC("5")
-    val primeD: ChordComponent   = getCC("1", isDown = true)
-    val thirdD: ChordComponent   = getCC("3", isDown = true)
-    val fifthD: ChordComponent   = getCC("5", isDown = true)
-    val sixth: ChordComponent    = getCC("6")
-    val fourth: ChordComponent   = getCC("4")
-    val seventh: ChordComponent  = getCC("7")
-    val sixthDim: ChordComponent = getCC("6>")
-    val thirdDim: ChordComponent = getCC("3>")
+    val prime: ChordComponent      = getCC("1")
+    val third: ChordComponent      = getCC("3")
+    val fifth: ChordComponent      = getCC("5")
+    val primeD: ChordComponent     = getCC("1", isDown = true)
+    val thirdD: ChordComponent     = getCC("3", isDown = true)
+    val fifthD: ChordComponent     = getCC("5", isDown = true)
+    val sixth: ChordComponent      = getCC("6")
+    val fourth: ChordComponent     = getCC("4")
+    val seventh: ChordComponent    = getCC("7")
+    val sixthDim: ChordComponent   = getCC("6>")
+    val thirdDim: ChordComponent   = getCC("3>")
+    val fifthAltUp: ChordComponent = getCC("5<")
   }
 
   protected object Keys {
     val keyF: Key = Key("F")
     val keyC: Key = Key("C")
     val keyG: Key = Key("G")
+    val keyD: Key = Key("D")
+    val keyA: Key = Key("A")
+    val keyE: Key = Key("E")
+    val keyB: Key = Key("B")
 
     val keyc: Key = Key("c")
+    val keya: Key = Key("a")
   }
 
   val anyNote: Note = Note(0, C, ChordComponents.prime)
