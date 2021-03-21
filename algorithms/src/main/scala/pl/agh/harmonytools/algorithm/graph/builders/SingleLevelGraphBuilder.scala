@@ -92,20 +92,20 @@ class SingleLevelGraphBuilder[T <: NodeContent, S <: GeneratorInput](first: Node
       layer.removeUselessNodes()
 
   private def makeAllNodesHaveSinglePrevContent(): Unit = {
-    for (layerId <- getLayers.reverse.indices) {
-      for (currentNode <- getLayers(layerId).getNodeList) {
+    for (layer <- getLayers.reverse) {
+      for (currentNode <- layer.getNodeList) {
         if (currentNode.getPrevNeighbours.length > 1) {
           var duplicates: List[Node[T]] = List.empty
-          for (prevNeighbour <- currentNode.getPrevNeighbours)
+          for (prevNeighbour <- currentNode.getPrevNeighbours.dropRight(1))
             duplicates = duplicates :+ currentNode.duplicate()
-          currentNode.removeLeftConnections()
 
           val prevNeighbours = currentNode.getPrevNeighbours
+          currentNode.removeLeftConnections()
 
           prevNeighbours.head.node.addNextNeighbour(new NeighbourNode[T](currentNode))
           for (i <- 1 to duplicates.length) {
             prevNeighbours(i).node.addNextNeighbour(new NeighbourNode[T](duplicates(i - 1)))
-            getLayers(layerId).addNode(duplicates(i - 1))
+              layer.addNode(duplicates(i - 1))
           }
         }
       }

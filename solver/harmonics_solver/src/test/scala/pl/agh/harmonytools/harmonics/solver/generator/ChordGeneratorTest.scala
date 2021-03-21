@@ -23,6 +23,17 @@ class ChordGeneratorTest extends FunSuite with Matchers with TestUtils {
   private val MAJOR_GEN = Some("major")
   private val MINOR_GEN = Some("minor")
 
+  private def checkIfGenerable(chord: Chord, key: Key) = {
+    val res = ChordGenerator(key).generate(ChordGeneratorInput(chord.harmonicFunction))
+    res.length should not be 0
+    res.contains(chord) shouldBe true
+  }
+
+  private def checkIfNotGenerable(chord: Chord, key: Key) = {
+    val res = ChordGenerator(key).generate(ChordGeneratorInput(chord.harmonicFunction))
+    res.contains(chord) shouldBe false
+  }
+
   private def chordUseChordComponentInSoprano(chord: Chord, cc: ChordComponent): Boolean =
     chord.sopranoNote.chordComponent == cc
 
@@ -690,17 +701,6 @@ class ChordGeneratorTest extends FunSuite with Matchers with TestUtils {
     val ch1 = Chord(Note(76, E, sixth), Note(71, B, third), Note(65, F, seventh), Note(55, G, prime), d1)
     val ch2 = Chord(Note(75, F, seventh), Note(71, B, third), Note(64, D, sixth), Note(55, G, prime), d1)
     val ch3 = Chord(Note(75, E, sixthDim), Note(71, B, third), Note(65, F, seventh), Note(55, G, prime), d2)
-
-    def checkIfGenerable(chord: Chord, key: Key) = {
-      val res = ChordGenerator(key).generate(ChordGeneratorInput(chord.harmonicFunction))
-      res.length should not be 0
-      res.contains(chord) shouldBe true
-    }
-
-    def checkIfNotGenerable(chord: Chord, key: Key) = {
-      val res = ChordGenerator(key).generate(ChordGeneratorInput(chord.harmonicFunction))
-      res.contains(chord) shouldBe false
-    }
 
     checkIfGenerable(ch1, keyC)
     checkIfNotGenerable(ch2, keyC)

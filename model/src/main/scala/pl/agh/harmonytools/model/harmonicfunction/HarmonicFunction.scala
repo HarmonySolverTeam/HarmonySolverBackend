@@ -88,6 +88,10 @@ case class HarmonicFunction(
     )
       .mkString("\n")
   }
+
+  def hasSameFunctionInKey(other: HarmonicFunction): Boolean = {
+    baseFunction == other.baseFunction && degree == other.degree && isDown == other.isDown && key == other.key
+  }
 }
 
 object HarmonicFunction {
