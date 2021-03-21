@@ -84,9 +84,8 @@ case class ChordGenerator(key: Key) extends LayerGenerator[Chord, ChordGenerator
     var N = res.length
     val i = 0
     while (i < N - 1) {
-      if (equalsListsOfChordComponents(res(i), res(i + 1))) {
+      if (equalsListsOfChordComponents(res(i), res(i + 1)))
         res = res.take(i) ++ res.drop(i + 1)
-      }
       N -= 1
     }
     res
@@ -182,20 +181,20 @@ case class ChordGenerator(key: Key) extends LayerGenerator[Chord, ChordGenerator
   }
 
   private def generatePossibleSopranoNotesFor(harmonicFunction: HarmonicFunction): List[Note] = {
-    val temp          = getChordTemplate(harmonicFunction)
-    val schemas       = getSchemas(harmonicFunction, temp)
-    val schemasMapped = mapSchemas(harmonicFunction, schemas)
-    val inferedKey = harmonicFunction.key.getOrElse(key)
-    val scale      = if (harmonicFunction.mode == MAJOR) MajorScale(inferedKey) else MinorScale(inferedKey)
+    val temp                    = getChordTemplate(harmonicFunction)
+    val schemas                 = getSchemas(harmonicFunction, temp)
+    val schemasMapped           = mapSchemas(harmonicFunction, schemas)
+    val inferedKey              = harmonicFunction.key.getOrElse(key)
+    val scale                   = if (harmonicFunction.mode == MAJOR) MajorScale(inferedKey) else MinorScale(inferedKey)
     var resultNotes: List[Note] = List.empty
 
     for (i <- schemasMapped.indices) {
-      val schemaMapped = schemasMapped(i)
-      val vb = Consts.VoicesBoundary
-      val bass = getPossiblePitchValuesFromInterval(schemaMapped(3), vb.bassMin, vb.bassMax)
-      val tenor = getPossiblePitchValuesFromInterval(schemaMapped(2), vb.tenorMin, vb.tenorMax)
-      val alto = getPossiblePitchValuesFromInterval(schemaMapped(1), vb.altoMin, vb.altoMax)
-      val soprano = getPossiblePitchValuesFromInterval(schemaMapped(0), vb.sopranoMin, vb.sopranoMax)
+      val schemaMapped             = schemasMapped(i)
+      val vb                       = Consts.VoicesBoundary
+      val bass                     = getPossiblePitchValuesFromInterval(schemaMapped(3), vb.bassMin, vb.bassMax)
+      val tenor                    = getPossiblePitchValuesFromInterval(schemaMapped(2), vb.tenorMin, vb.tenorMax)
+      val alto                     = getPossiblePitchValuesFromInterval(schemaMapped(1), vb.altoMin, vb.altoMax)
+      val soprano                  = getPossiblePitchValuesFromInterval(schemaMapped(0), vb.sopranoMin, vb.sopranoMax)
       var foundForCurrentIteration = false
       for (n <- bass.indices if !foundForCurrentIteration) {
         for (j <- tenor.indices if !foundForCurrentIteration) {
@@ -204,12 +203,33 @@ case class ChordGenerator(key: Key) extends LayerGenerator[Chord, ChordGenerator
               if (alto(k) >= tenor(j) && alto(k) - tenor(j) <= 12) {
                 for (m <- soprano.indices if !foundForCurrentIteration) {
                   if (soprano(m) >= alto(k) && soprano(m) - alto(k) <= 12) {
-                    val bassNote = new Note(bass(n), IntervalUtils.toBaseNote(scale.key.baseNote, harmonicFunction, schemas(i)(3)), schemas(i)(3))
-                    val tenorNote = new Note(tenor(j), IntervalUtils.toBaseNote(scale.key.baseNote, harmonicFunction, schemas(i)(2)), schemas(i)(2))
-                    val altoNote = new Note(alto(k), IntervalUtils.toBaseNote(scale.key.baseNote, harmonicFunction, schemas(i)(1)), schemas(i)(1))
-                    val sopranoNote = new Note(soprano(m), IntervalUtils.toBaseNote(scale.key.baseNote, harmonicFunction, schemas(i)(0)), schemas(i)(0))
+                    val bassNote = new Note(
+                      bass(n),
+                      IntervalUtils.toBaseNote(scale.key.baseNote, harmonicFunction, schemas(i)(3)),
+                      schemas(i)(3)
+                    )
+                    val tenorNote = new Note(
+                      tenor(j),
+                      IntervalUtils.toBaseNote(scale.key.baseNote, harmonicFunction, schemas(i)(2)),
+                      schemas(i)(2)
+                    )
+                    val altoNote = new Note(
+                      alto(k),
+                      IntervalUtils.toBaseNote(scale.key.baseNote, harmonicFunction, schemas(i)(1)),
+                      schemas(i)(1)
+                    )
+                    val sopranoNote = new Note(
+                      soprano(m),
+                      IntervalUtils.toBaseNote(scale.key.baseNote, harmonicFunction, schemas(i)(0)),
+                      schemas(i)(0)
+                    )
                     if (checkChordCorrectness(Chord(sopranoNote, altoNote, tenorNote, bassNote, harmonicFunction))) {
-                      if (resultNotes.exists(n => IntervalUtils.convertPitchToOneOctave(n.pitch) == IntervalUtils.convertPitchToOneOctave(sopranoNote.pitch))) {
+                      if (
+                        resultNotes.exists(n =>
+                          IntervalUtils.convertPitchToOneOctave(n.pitch) == IntervalUtils
+                            .convertPitchToOneOctave(sopranoNote.pitch)
+                        )
+                      ) {
                         resultNotes = resultNotes :+ sopranoNote
                         foundForCurrentIteration = true
                       }
@@ -227,24 +247,23 @@ case class ChordGenerator(key: Key) extends LayerGenerator[Chord, ChordGenerator
 
   override def generate(input: ChordGeneratorInput): List[Chord] = {
     var harmonicFunction = input.harmonicFunction
-    if (harmonicFunction.isTVIMinorDown || harmonicFunction.isTIIIMinorDown) {
+    if (harmonicFunction.isTVIMinorDown || harmonicFunction.isTIIIMinorDown)
       harmonicFunction = harmonicFunction.copy(mode = MAJOR)
-    }
     var chords: List[Chord] = List.empty
 
-    val temp = getChordTemplate(harmonicFunction)
-    val schemas = getSchemas(harmonicFunction, temp)
+    val temp          = getChordTemplate(harmonicFunction)
+    val schemas       = getSchemas(harmonicFunction, temp)
     val schemasMapped = mapSchemas(harmonicFunction, schemas)
 
     val inferedKey = harmonicFunction.key.getOrElse(key)
-    val scale = if (harmonicFunction.mode == MAJOR) MajorScale(inferedKey) else MinorScale(inferedKey)
+    val scale      = if (harmonicFunction.mode == MAJOR) MajorScale(inferedKey) else MinorScale(inferedKey)
     for (i <- schemasMapped.indices) {
       val schemaMapped = schemasMapped(i)
-      val vb = Consts.VoicesBoundary
-      val bass = getPossiblePitchValuesFromInterval(schemaMapped(3), vb.bassMin, vb.bassMax)
-      val tenor = getPossiblePitchValuesFromInterval(schemaMapped(2), vb.tenorMin, vb.tenorMax)
-      val alto = getPossiblePitchValuesFromInterval(schemaMapped(1), vb.altoMin, vb.altoMax)
-      val soprano = getPossiblePitchValuesFromInterval(schemaMapped(0), vb.sopranoMin, vb.sopranoMax)
+      val vb           = Consts.VoicesBoundary
+      val bass         = getPossiblePitchValuesFromInterval(schemaMapped(3), vb.bassMin, vb.bassMax)
+      val tenor        = getPossiblePitchValuesFromInterval(schemaMapped(2), vb.tenorMin, vb.tenorMax)
+      val alto         = getPossiblePitchValuesFromInterval(schemaMapped(1), vb.altoMin, vb.altoMax)
+      val soprano      = getPossiblePitchValuesFromInterval(schemaMapped(0), vb.sopranoMin, vb.sopranoMax)
       for (n <- bass.indices) {
         for (j <- tenor.indices) {
           if (tenor(j) >= bass(n) && tenor(j) - bass(n) <= 24) {
@@ -252,10 +271,26 @@ case class ChordGenerator(key: Key) extends LayerGenerator[Chord, ChordGenerator
               if (alto(k) >= tenor(j) && alto(k) - tenor(j) <= 12) {
                 for (m <- soprano.indices) {
                   if (soprano(m) >= alto(k) && soprano(m) - alto(k) <= 12) {
-                    val bassNote = new Note(bass(n), IntervalUtils.toBaseNote(scale.key.baseNote, harmonicFunction, schemas(i)(3)), schemas(i)(3))
-                    val tenorNote = new Note(tenor(j), IntervalUtils.toBaseNote(scale.key.baseNote, harmonicFunction, schemas(i)(2)), schemas(i)(2))
-                    val altoNote = new Note(alto(k), IntervalUtils.toBaseNote(scale.key.baseNote, harmonicFunction, schemas(i)(1)), schemas(i)(1))
-                    val sopranoNote = new Note(soprano(m), IntervalUtils.toBaseNote(scale.key.baseNote, harmonicFunction, schemas(i)(0)), schemas(i)(0))
+                    val bassNote = new Note(
+                      bass(n),
+                      IntervalUtils.toBaseNote(scale.key.baseNote, harmonicFunction, schemas(i)(3)),
+                      schemas(i)(3)
+                    )
+                    val tenorNote = new Note(
+                      tenor(j),
+                      IntervalUtils.toBaseNote(scale.key.baseNote, harmonicFunction, schemas(i)(2)),
+                      schemas(i)(2)
+                    )
+                    val altoNote = new Note(
+                      alto(k),
+                      IntervalUtils.toBaseNote(scale.key.baseNote, harmonicFunction, schemas(i)(1)),
+                      schemas(i)(1)
+                    )
+                    val sopranoNote = new Note(
+                      soprano(m),
+                      IntervalUtils.toBaseNote(scale.key.baseNote, harmonicFunction, schemas(i)(0)),
+                      schemas(i)(0)
+                    )
                     chords = chords :+ Chord(sopranoNote, altoNote, tenorNote, bassNote, harmonicFunction)
                   }
                 }
@@ -281,38 +316,34 @@ case class ChordGenerator(key: Key) extends LayerGenerator[Chord, ChordGenerator
           val t = chord.bassNote.chordComponent == chord.tenorNote.chordComponent
           val u = chord.bassNote.chordComponent == chord.sopranoNote.chordComponent
           ((p xor q) || (t && p && q)) && ((r xor s) || (u && r && s))
-        } else {
+        } else
           !p && !q && !r && !s
-        }
       }
       chords = chords.filter(filterChords)
     }
 
     input.bassNote match {
       case Some(bassNote) =>
-        chords = chords.filter(chord => {
+        chords = chords.filter { chord =>
           val n1 = chord.bassNote
           val n2 = bassNote
           n1.pitch == n2.pitch
         }
-        )
       case None =>
     }
 
     input.sopranoNote match {
       case Some(sopranoNote) =>
-        chords = chords.filter(chord => {
+        chords = chords.filter { chord =>
           val n1 = chord.sopranoNote
           val n2 = sopranoNote
           n1.pitch == n2.pitch
         }
-        )
       case None =>
     }
 
-    if (!input.allowDoubleThird) {
+    if (!input.allowDoubleThird)
       chords = chords.filter(!_.hasIllegalDoubled3)
-    }
 
     chords.filter(checkChordCorrectness)
   }
@@ -334,15 +365,16 @@ case class ChordGenerator(key: Key) extends LayerGenerator[Chord, ChordGenerator
     true
   }
 
+  // todo this was not working (always true) in prev project, but it should be checked in Sikorski's book if it is correct
   private def correctNinthChord(chord: Chord): Boolean = {
-    if (!chord.harmonicFunction.extra.exists(_.baseComponent == 9)) return true
+    if (!chord.harmonicFunction.extra.exists(_.baseComponent == 9) || chord.harmonicFunction.omit.exists(_.baseComponent == 1))
+      return true
     if (List(3, 7).contains(chord.harmonicFunction.revolution.baseComponent))
       if (!chord.sopranoNote.baseChordComponentEquals(9) || !chord.tenorNote.baseChordComponentEquals(1))
         return false
     true
   }
 
-  private def checkChordCorrectness(chord: Chord): Boolean = {
-    correctDistanceBassTenor(chord) && correctChopinChord(chord) && correctNinthChord(chord)
-  }
+  private def checkChordCorrectness(chord: Chord): Boolean =
+    correctDistanceBassTenor(chord) && correctChopinChord(chord) //&& correctNinthChord(chord)
 }

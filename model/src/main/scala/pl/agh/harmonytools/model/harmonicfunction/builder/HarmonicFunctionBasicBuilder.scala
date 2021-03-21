@@ -20,7 +20,7 @@ class HarmonicFunctionBasicBuilder extends HarmonicFunctionBuilder(false) {
     }
     if (!extra.contains(getRevolution) && !getBasicChordComponents.contains(getRevolution))
       withExtra(extra.appended(getRevolution))
-    if ((extra.contains(getCC("5<")) || extra.contains(getCC("5>"))) && omit.contains(getCC("5")))
+    if ((extra.contains(getCC("5<")) || extra.contains(getCC("5>"))) && !omit.contains(getCC("5")))
       withOmit(omit.appended(getCC("5")))
     if (omit.contains(getCC("1")) && getRevolution == getCC("1")) withRevolution(getThird)
     if (omit.contains(getCC("5"))) {

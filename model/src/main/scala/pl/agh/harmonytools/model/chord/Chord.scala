@@ -1,8 +1,10 @@
 package pl.agh.harmonytools.model.chord
 
 import pl.agh.harmonytools.algorithm.graph.node.NodeContent
+import pl.agh.harmonytools.model.harmonicfunction.FunctionNames.TONIC
 import pl.agh.harmonytools.model.harmonicfunction.HarmonicFunction
-import pl.agh.harmonytools.model.note.Note
+import pl.agh.harmonytools.model.note.{BaseNote, Note}
+import pl.agh.harmonytools.model.util.ChordComponentManager
 
 case class Chord(
   sopranoNote: Note,
@@ -72,5 +74,12 @@ case class Chord(
         return i
     }
     -1
+  }
+}
+
+object Chord {
+  def empty: Chord = {
+    val emptyNote = Note(0, BaseNote.C, ChordComponentManager.getRoot())
+    Chord(emptyNote, emptyNote, emptyNote, emptyNote, HarmonicFunction(TONIC))
   }
 }

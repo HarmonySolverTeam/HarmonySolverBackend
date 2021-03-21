@@ -13,8 +13,6 @@ import scala.reflect.ClassTag
 
 class HarmonicsParserTest extends FunSuite with Matchers with BeforeAndAfterEach {
 
-  private val EXERCISES_PATH = "/examples/1_HarmonicFunctions"
-
   private def testForSuccess(input: String): Assertion   = HarmonicsParserTest.success(input) shouldBe true
   private def testForNoSuccess(input: String): Assertion = HarmonicsParserTest.noSuccess(input) shouldBe true
   private def testToThrowWhileInitializingExercise[T <: Exception : ClassTag](input: String): Assertion =
@@ -25,7 +23,7 @@ class HarmonicsParserTest extends FunSuite with Matchers with BeforeAndAfterEach
     HarmonicsParserTest.reset()
 
   private def getFileContent(filePath: String): String = {
-    val source = Source.fromURL(getClass.getResource(EXERCISES_PATH + filePath))
+    val source = Source.fromURL(getClass.getResource(filePath))
     try source.mkString
     finally source.close()
   }
@@ -63,34 +61,34 @@ class HarmonicsParserTest extends FunSuite with Matchers with BeforeAndAfterEach
   }
 
   test("Handling whitespaces") {
-    testForSuccess(getFileContent("/major/whitespaces.txt"))
+    testForSuccess(getFileContent("/whitespaces.txt"))
   }
 
   test("Deflection in last chord") {
     testToThrowWhileInitializingExercise[HarmonicsParserException](
-      getFileContent("/major/deflection_in_last_chord.txt")
+      getFileContent("/deflection_in_last_chord.txt")
     )
   }
 
   test("Deflection inside another deflection test") {
     testToThrowWhileInitializingExercise[HarmonicsParserException](
-      getFileContent("/major/deflection_inside_deflection.txt")
+      getFileContent("/deflection_inside_deflection.txt")
     )
   }
 
   test("Parentheses mismatch - unclosed deflection") {
-    testToThrowWhileInitializingExercise[HarmonicsParserException](getFileContent("/major/unclosed_deflection.txt"))
+    testToThrowWhileInitializingExercise[HarmonicsParserException](getFileContent("/unclosed_deflection.txt"))
   }
 
   test("Parentheses mismatch - unexpected end of deflection") {
     testToThrowWhileInitializingExercise[HarmonicsParserException](
-      getFileContent("/major/unexpected_end_of_deflection.txt")
+      getFileContent("/unexpected_end_of_deflection.txt")
     )
   }
 
   test("Classic deflection to backward deflection") {
     testToThrowWhileInitializingExercise[HarmonicsParserException](
-      getFileContent("/major/deflection_to_backward_deflection.txt")
+      getFileContent("/deflection_to_backward_deflection.txt")
     )
   }
 
@@ -102,40 +100,40 @@ class HarmonicsParserTest extends FunSuite with Matchers with BeforeAndAfterEach
 
   test("Backward deflection in first hf") {
     testToThrowWhileInitializingExercise[HarmonicsParserException](
-      getFileContent("/major/deflection_backward_first_chord.txt")
+      getFileContent("/deflection_backward_first_chord.txt")
     )
   }
 
   test("Correct example") {
-    testForSuccess(getFileContent("/major/new_notation/example_correct.txt"))
+    testForSuccess(getFileContent("/example_correct.txt"))
   }
 
   test("Chained classic deflection") {
-    val exercise = getParserOutput(getFileContent("/major/chained_deflection_basic.txt"))
+    val exercise = getParserOutput(getFileContent("/chained_deflection_basic.txt"))
     exercise.get.measures.head.harmonicFunctions(1).key shouldBe Some(Key("D"))
     exercise.get.measures.head.harmonicFunctions(2).key shouldBe Some(Key("G"))
   }
 
   test("Deflection between measures") {
-    val exercise = getParserOutput(getFileContent("/minor/basic_deflection_between_measures.txt"))
+    val exercise = getParserOutput(getFileContent("/basic_deflection_between_measures.txt"))
     exercise.get.measures.head.harmonicFunctions(1).key shouldBe Some(Key("a"))
     exercise.get.measures(1).harmonicFunctions.head.key shouldBe Some(Key("a"))
   }
 
   test("Chained deflection backwards") {
-    val exercise = getParserOutput(getFileContent("/major/deflection_backwards.txt"))
+    val exercise = getParserOutput(getFileContent("/deflection_backwards.txt"))
     exercise.get.measures.head.harmonicFunctions(2).key shouldBe Some(Key("F"))
     exercise.get.measures(1).harmonicFunctions.head.key shouldBe Some(Key("Bb"))
   }
 
   test("Deflection backwards between measures") {
-    val exercise = getParserOutput(getFileContent("/major/deflection_backwards_between_measures.txt"))
+    val exercise = getParserOutput(getFileContent("/deflection_backwards_between_measures.txt"))
     exercise.get.measures.head.harmonicFunctions(2).key shouldBe Some(Key("Bb"))
     exercise.get.measures(1).harmonicFunctions.head.key shouldBe Some(Key("Bb"))
   }
 
   test("Basic ellipse") {
-    val exercise = getParserOutput(getFileContent("/major/elipse_correct.txt"))
+    val exercise = getParserOutput(getFileContent("/elipse_correct.txt"))
     exercise.get.measures.head.harmonicFunctions(1).key shouldBe Some(Key("a"))
     exercise.get.measures.head.harmonicFunctions(2).key shouldBe Some(Key("a"))
     exercise.get.measures(2).harmonicFunctions(1).key shouldBe Some(Key("G"))

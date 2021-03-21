@@ -8,7 +8,7 @@ import pl.agh.harmonytools.model.key.{Key, Mode}
 import pl.agh.harmonytools.model.scale.ScaleDegree
 import pl.agh.harmonytools.model.util.ChordComponentManager
 
-class HarmonicFunctionParserBuilder extends HarmonicFunctionBuilder {
+class HarmonicFunctionParserBuilder extends HarmonicFunctionBasicBuilder {
   private var hfType: HarmonicsElementType = Normal
 
   override def withBaseFunction(bf: BaseFunction): Unit  = baseFunction = Some(bf)
@@ -29,23 +29,6 @@ class HarmonicFunctionParserBuilder extends HarmonicFunctionBuilder {
   def getKey: Option[Key]                 = key
   def getType: HarmonicsElementType       = hfType
   def getPosition: Option[ChordComponent] = position
-
-  override def preprocessHarmonicFunction(): HarmonicFunction = {
-    HarmonicFunction(
-      baseFunction.getOrElse(sys.error("Base Function has to be defined to initialize HarmonicFunction")),
-      degree,
-      position,
-      revolution,
-      delay,
-      extra,
-      omit,
-      isDown,
-      system,
-      mode,
-      key,
-      isRelatedBackwards
-    )
-  }
 
   def copy(): HarmonicFunctionParserBuilder = {
     val builder = new HarmonicFunctionParserBuilder

@@ -137,7 +137,7 @@ class HardRulesTest extends FunSuite with Matchers with TestUtils {
     val ch1  = Chord(Note(72, C, prime), Note(60, C, prime), Note(60, C, prime), Note(48, C, prime), dominant)
     val ch2  = Chord(Note(72, C, prime), Note(60, C, prime), Note(60, C, prime), Note(48, C, prime), subdominant)
     val rule = DominantSubdominantConnectionRule()
-    assertThrows[ChordRulesCheckerError](rule.evaluateIncludingDeflections(Connection(ch2, ch1)))
+    rule.isBroken(Connection(ch2, ch1)) shouldBe true
     rule.isNotBroken(Connection(ch1, ch2)) shouldBe true
   }
 

@@ -6,7 +6,9 @@ trait ConnectionEvaluator[T <: NodeContent] {
   protected val connectionSize: Int
   protected val softRules: List[SoftRule[T]]
   protected val hardRules: List[HardRule[T]]
-  private val brokenRulesCounter: BrokenRulesCounter[T] = BrokenRulesCounter(hardRules)
+  private lazy val brokenRulesCounter: BrokenRulesCounter[T] = BrokenRulesCounter(hardRules)
+
+  def initializeBrokenRulesCounter(): Unit = brokenRulesCounter.initialize()
 
   def getConnectionSize: Int = connectionSize
 

@@ -72,16 +72,16 @@ object IntervalUtils {
     var baseDistance = -1
 
     if (halfToneDist > 0)
-      baseDistance = getBaseDistance(secondBase, firstBase);
+      baseDistance = getBaseDistance(secondBase, firstBase)
     else {
-      baseDistance = getBaseDistance(firstBase, secondBase);
-      if (halfToneDist == 0 && baseDistance != 1) baseDistance = 1;
+      baseDistance = getBaseDistance(firstBase, secondBase)
+      if (halfToneDist == 0 && baseDistance != 1) baseDistance = 1
       halfToneDist = -halfToneDist
     }
     if (halfToneDist > 12)
       if (halfToneDist %% 12 == 0) halfToneDist = 12;
       else halfToneDist = halfToneDist %% 12
-    val alteredIntervals = Map(3 -> 1, 5 -> 2, 6 -> 3, 8 -> 4, 10 -> 5, 12 -> 6)
+    val alteredIntervals = Map(3 -> 1, 5 -> 2, 6 -> 3, 8 -> 4, 10 -> 5, 12 -> 6).withDefault(_ => -1)
     alteredIntervals(halfToneDist) == baseDistance
   }
 }
