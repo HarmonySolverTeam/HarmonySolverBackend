@@ -1,6 +1,7 @@
 package pl.agh.harmonytools.model.chord
 
 import pl.agh.harmonytools.algorithm.graph.node.NodeContent
+import pl.agh.harmonytools.harmonics.exercise.Meter
 import pl.agh.harmonytools.model.harmonicfunction.FunctionNames.TONIC
 import pl.agh.harmonytools.model.harmonicfunction.HarmonicFunction
 import pl.agh.harmonytools.model.note.{BaseNote, Note}
@@ -11,7 +12,8 @@ case class Chord(
   altoNote: Note,
   tenorNote: Note,
   bassNote: Note,
-  harmonicFunction: HarmonicFunction
+  harmonicFunction: HarmonicFunction,
+  var duration: Option[Meter] = None
 ) extends NodeContent {
   require(sopranoNote.isUpperThanOrEqual(altoNote) && altoNote.isUpperThanOrEqual(tenorNote) && tenorNote.isUpperThanOrEqual(bassNote))
 
@@ -36,7 +38,7 @@ case class Chord(
 
   override def isRelatedTo(other: NodeContent): Boolean = {
     other match {
-      case Chord(_, _, _, _, harmonicFunction) => this.harmonicFunction.baseFunction == harmonicFunction.baseFunction
+      case Chord(_, _, _, _, harmonicFunction, _) => this.harmonicFunction.baseFunction == harmonicFunction.baseFunction
       case _                                   => false
     }
   }
@@ -75,6 +77,8 @@ case class Chord(
     }
     -1
   }
+
+  def setDuration(d: Meter): Unit = duration = Some(d)
 }
 
 object Chord {

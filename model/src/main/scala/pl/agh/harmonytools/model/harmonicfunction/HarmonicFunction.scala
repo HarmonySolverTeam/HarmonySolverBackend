@@ -89,6 +89,7 @@ case class HarmonicFunction(
       .mkString("\n")
   }
 
+  //todo np. (d) == t, gdy mają tego samego roota => chyba wystarczy po prymie?
   def hasSameFunctionInKey(other: HarmonicFunction): Boolean = {
     baseFunction == other.baseFunction && degree == other.degree && isDown == other.isDown && key == other.key
   }

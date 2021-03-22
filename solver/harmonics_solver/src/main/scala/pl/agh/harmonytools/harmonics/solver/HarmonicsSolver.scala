@@ -94,6 +94,6 @@ case class HarmonicsSolver(
     if (solutionNodes.length != graph.getLayers.length)
       return ExerciseSolution(exercise, -1, List.empty, success = false)
     val solutionChords = solutionNodes.map(_.getContent)
-    ExerciseSolution(exercise, solutionNodes.last.getDistanceFromBeginning, solutionChords, solutionChords.nonEmpty)
+    ExerciseSolution(exercise, solutionNodes.last.getDistanceFromBeginning, solutionChords, solutionChords.nonEmpty).setDurations()
   }
 }
