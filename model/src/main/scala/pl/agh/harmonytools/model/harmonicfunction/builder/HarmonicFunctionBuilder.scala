@@ -27,12 +27,15 @@ abstract class HarmonicFunctionBuilder(withValidation: Boolean = true) extends B
       case Some(value) => value
       case None        => baseFunction.getOrElse(sys.error("Base Function undefined")).baseDegree
     }
-  override def getIsDown: Boolean                       = isDown
+  override def getIsDown: Boolean             = isDown
   override def getMode: Mode.BaseMode         = mode
   override def getExtra: List[ChordComponent] = extra
   override def getOmit: List[ChordComponent]  = omit
   override def getDelay: List[Delay]          = delay
-  override protected def getRevolution: ChordComponent = {
+  override def getBaseFunction: BaseFunction  = baseFunction.getOrElse(sys.error("Base function not defined"))
+  override def getKey: Option[Key]            = key
+  def getPosition: Option[ChordComponent]     = position
+  override def getRevolution: ChordComponent = {
     revolution match {
       case Some(value) => value
       case None => ChordComponentManager.getRoot(isDown)
@@ -57,9 +60,9 @@ abstract class HarmonicFunctionBuilder(withValidation: Boolean = true) extends B
   protected def initializeHarmonicFunction(): HarmonicFunction = {
     HarmonicFunction(
       baseFunction.getOrElse(sys.error("Base function has to be defined when initializing HarmonicFunction")),
-      degree,
+      getDegree,
       position,
-      revolution,
+      getRevolution,
       delay,
       extra,
       omit,
@@ -76,4 +79,20 @@ abstract class HarmonicFunctionBuilder(withValidation: Boolean = true) extends B
     if (withValidation) new HarmonicFunctionValidator(hf).validate()
     hf
   }
+
+  override def toString: String =
+    "HarmonicFunction" + Seq(
+      baseFunction.getOrElse("undefined"),
+      degree,
+      position,
+      revolution,
+      delay,
+      extra,
+      omit,
+      isDown,
+      system,
+      mode,
+      key,
+      isRelatedBackwards
+    ).mkString("(", ",", ")")
 }

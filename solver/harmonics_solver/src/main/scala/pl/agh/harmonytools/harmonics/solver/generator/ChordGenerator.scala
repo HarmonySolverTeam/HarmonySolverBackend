@@ -174,9 +174,9 @@ case class ChordGenerator(key: Key) extends LayerGenerator[Chord, ChordGenerator
     schemas: List[List[ChordComponent]]
   ): List[List[Int]] = {
     val inferedKey = harmonicFunction.key.getOrElse(key)
-    val scale      = if (harmonicFunction.mode == MAJOR) MajorScale(inferedKey) else MinorScale(inferedKey)
+    val scale      = if (harmonicFunction.mode == MAJOR) MajorScale else MinorScale
 
-    val chordFirstPitch = scale.key.tonicPitch + scale.pitches(harmonicFunction.degree.root - 1)
+    val chordFirstPitch = inferedKey.tonicPitch + scale.pitches(harmonicFunction.degree.root - 1)
     schemas.map(_.map(el => chordFirstPitch + el.semitonesNumber))
   }
 

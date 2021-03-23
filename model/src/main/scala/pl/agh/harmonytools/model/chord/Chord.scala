@@ -1,9 +1,9 @@
 package pl.agh.harmonytools.model.chord
 
 import pl.agh.harmonytools.algorithm.graph.node.NodeContent
-import pl.agh.harmonytools.harmonics.exercise.Meter
 import pl.agh.harmonytools.model.harmonicfunction.FunctionNames.TONIC
 import pl.agh.harmonytools.model.harmonicfunction.HarmonicFunction
+import pl.agh.harmonytools.model.measure.Meter
 import pl.agh.harmonytools.model.note.{BaseNote, Note}
 import pl.agh.harmonytools.model.util.ChordComponentManager
 

@@ -1,8 +1,8 @@
 package pl.agh.harmonytools.solver
 
-import pl.agh.harmonytools.harmonics.exercise.{Measure, Meter}
 import pl.agh.harmonytools.model.chord.Chord
 import pl.agh.harmonytools.model.exercise.Exercise
+import pl.agh.harmonytools.model.measure.{Measure, Meter}
 
 import scala.annotation.tailrec
 

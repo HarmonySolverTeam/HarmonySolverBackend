@@ -5,6 +5,7 @@ import pl.agh.harmonytools.model.chord.{ChordComponent, ChordSystem}
 import pl.agh.harmonytools.model.harmonicfunction.FunctionNames.{DOMINANT, SUBDOMINANT, TONIC}
 import pl.agh.harmonytools.model.key.Mode.{MAJOR, MINOR}
 import pl.agh.harmonytools.model.key.{Key, Mode}
+import pl.agh.harmonytools.model.measure.MeasureContent
 import pl.agh.harmonytools.model.scale.ScaleDegree
 import pl.agh.harmonytools.model.scale.ScaleDegree.{II, III, VI}
 import pl.agh.harmonytools.model.util.ChordComponentManager
@@ -22,13 +23,16 @@ case class HarmonicFunction(
   mode: Mode.BaseMode,
   key: Option[Key],
   isRelatedBackwards: Boolean
-) extends BasicComponentsOwner {
+) extends BasicComponentsOwner with MeasureContent {
+
   override protected def getDegree: ScaleDegree.Degree  = degree
   override protected def getIsDown: Boolean             = isDown
   override protected def getMode: Mode.BaseMode         = mode
   override protected def getExtra: List[ChordComponent] = extra
   override protected def getOmit: List[ChordComponent]  = omit
   override protected def getDelay: List[Delay]          = delay
+  override protected def getKey: Option[Key] = key
+  override protected def getBaseFunction: FunctionNames.BaseFunction = baseFunction
   override protected def getRevolution: ChordComponent  = revolution
 
   def isChopin: Boolean =

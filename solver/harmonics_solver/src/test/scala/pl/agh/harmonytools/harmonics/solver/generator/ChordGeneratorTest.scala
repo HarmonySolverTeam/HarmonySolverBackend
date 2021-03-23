@@ -596,7 +596,7 @@ class ChordGeneratorTest extends FunSuite with Matchers with TestUtils {
     val res = ChordGenerator(Key("C")).generate(ChordGeneratorInput(hf))
 
     val scale = MajorScale(Key("C"))
-    val basicNote = scale.key.tonicPitch + scale.pitches(hf.degree.root - 1)
+    val basicNote = scale.key.tonicPitch + MajorScale.pitches(hf.degree.root - 1)
 
     val containsOnlyOne7 = (chord: Chord) => {
       var counter = 0
@@ -614,7 +614,7 @@ class ChordGeneratorTest extends FunSuite with Matchers with TestUtils {
     val res = ChordGenerator(Key("C")).generate(ChordGeneratorInput(hf))
 
     val scale = MajorScale(Key("C"))
-    val basicNote = scale.key.tonicPitch + scale.pitches(hf.degree.root - 1)
+    val basicNote = scale.key.tonicPitch + MajorScale.pitches(hf.degree.root - 1)
 
     val containsOnlyOne7 = (chord: Chord) => {
       var counter = 0
@@ -632,7 +632,7 @@ class ChordGeneratorTest extends FunSuite with Matchers with TestUtils {
     val res = ChordGenerator(Key("C")).generate(ChordGeneratorInput(hf))
 
     val scale = MajorScale(Key("C"))
-    val basicNote = scale.key.tonicPitch + scale.pitches(hf.degree.root - 1)
+    val basicNote = scale.key.tonicPitch + MajorScale.pitches(hf.degree.root - 1)
 
     val containsOnlyOne7 = (chord: Chord) => {
       var counter = 0
@@ -650,7 +650,7 @@ class ChordGeneratorTest extends FunSuite with Matchers with TestUtils {
     val res = ChordGenerator(Key("C")).generate(ChordGeneratorInput(hf))
 
     val scale = MajorScale(Key("C"))
-    val basicNote = scale.key.tonicPitch + scale.pitches(hf.degree.root - 1)
+    val basicNote = scale.key.tonicPitch + MajorScale.pitches(hf.degree.root - 1)
 
     val containsOnlyOne7AndInSoprano = (chord: Chord) => {
       val is7inSoprano = (chord.sopranoNote.pitch - (basicNote %% 12) - 1) %% 12 == 9
@@ -669,7 +669,7 @@ class ChordGeneratorTest extends FunSuite with Matchers with TestUtils {
     val res = ChordGenerator(Key("C")).generate(ChordGeneratorInput(hf))
 
     val scale = MajorScale(Key("C"))
-    val basicNote = scale.key.tonicPitch + scale.pitches(hf.degree.root - 1)
+    val basicNote = scale.key.tonicPitch + MajorScale.pitches(hf.degree.root - 1)
 
     val containsOnlyOne7AndInBass = (chord: Chord) => {
       val is7inBass = (chord.bassNote.pitch - (basicNote %% 12) - 1) %% 12 == 9

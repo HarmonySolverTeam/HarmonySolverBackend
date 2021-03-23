@@ -22,6 +22,7 @@ lazy val rootProject = project
     model,
     harmonics_parser,
     algorithms,
+    bass_translator,
     solver
   )
 
@@ -49,6 +50,14 @@ lazy val algorithms = project
     settings,
     libraryDependencies ++= testDependencies
   )
+
+lazy val bass_translator = project
+  .settings(
+    name := "bass_translator",
+    settings,
+    libraryDependencies ++= testDependencies
+  )
+  .dependsOn(model, harmonics_parser)
 
 lazy val solver = project
   .settings(

@@ -1,7 +1,7 @@
 package pl.agh.harmonytools.harmonics.solver
 
 import org.scalatest.{Assertion, BeforeAndAfterEach, FunSuite, Matchers}
-import pl.agh.harmonytools.harmonics.exercise.HarmonicsExercise
+import pl.agh.harmonytools.exercise.harmonics.HarmonicsExercise
 import pl.agh.harmonytools.harmonics.parser.HarmonicsParser
 import pl.agh.harmonytools.utils.TestUtils
 

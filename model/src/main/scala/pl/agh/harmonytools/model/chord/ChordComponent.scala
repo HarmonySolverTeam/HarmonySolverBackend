@@ -1,5 +1,7 @@
 package pl.agh.harmonytools.model.chord
 
+import pl.agh.harmonytools.model.util.ChordComponentManager
+
 import scala.collection.immutable.HashMap
 
 case class ChordComponent(
@@ -12,6 +14,28 @@ case class ChordComponent(
 
   lazy val toXmlString: String =
     chordComponentString.replace("<", "&lt;").replace(">", "&gt;")
+
+  lazy val alteration: String = chordComponentString.reverse.takeWhile(!_.isDigit).reverse
+
+  def getDecreasedByHalfTone: ChordComponent = {
+    alteration match {
+      case "" => ChordComponentManager.chordComponentFromString(baseComponent.toString + ">")
+      case "<<" => ChordComponentManager.chordComponentFromString(baseComponent.toString + "<")
+      case "<" => ChordComponentManager.chordComponentFromString(baseComponent.toString)
+      case ">" => ChordComponentManager.chordComponentFromString(baseComponent.toString + ">>")
+      case s => sys.error(s"Unexpected alteration symbol ${s}")
+    }
+  }
+
+  def getIncreasedByHalfTone: ChordComponent = {
+    alteration match {
+      case "" => ChordComponentManager.chordComponentFromString(baseComponent.toString + "<")
+      case ">>" => ChordComponentManager.chordComponentFromString(baseComponent.toString + ">")
+      case ">" => ChordComponentManager.chordComponentFromString(baseComponent.toString)
+      case "<" => ChordComponentManager.chordComponentFromString(baseComponent.toString + "<<")
+      case s => sys.error(s"Unexpected alteration symbol ${s}")
+    }
+  }
 }
 
 object ChordComponent {

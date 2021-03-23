@@ -1,13 +1,8 @@
 package pl.agh.harmonytools.harmonics.parser
 
-import pl.agh.harmonytools.harmonics.parser.builders.{
-  BackwardDeflection,
-  ClassicDeflection,
-  EllipseDeflection,
-  HarmonicFunctionParserBuilder,
-  HarmonicsElementType
-}
+import pl.agh.harmonytools.harmonics.parser.builders.{BackwardDeflection, ClassicDeflection, EllipseDeflection, HarmonicFunctionParserBuilder, HarmonicsElementType}
 import pl.agh.harmonytools.model.harmonicfunction.FunctionNames.TONIC
+import pl.agh.harmonytools.model.harmonicfunction.builder.HarmonicFunctionBuilder
 import pl.agh.harmonytools.model.key.Mode.MINOR
 import pl.agh.harmonytools.model.key.{Key, Mode}
 import pl.agh.harmonytools.model.scale.{MajorScale, MinorScale, ScaleDegree}
@@ -98,16 +93,16 @@ object DeflectionsHandler {
     }
   }
 
-  private def calculateKey(
-    deflectionTargetHarmonicFunction: HarmonicFunctionParserBuilder
+  def calculateKey(
+    deflectionTargetHarmonicFunction: HarmonicFunctionBuilder
   )(implicit exerciseKey: Key): Key = {
     val keyToUse = deflectionTargetHarmonicFunction.getKey match {
       case Some(value) => value
       case None        => exerciseKey
     }
     val pitchesToUse = keyToUse.mode match {
-      case Mode.MAJOR => MajorScale(keyToUse).pitches
-      case Mode.MINOR => MinorScale(keyToUse).pitches
+      case Mode.MAJOR => MajorScale.pitches
+      case Mode.MINOR => MinorScale.pitches
     }
 
     val degree   = deflectionTargetHarmonicFunction.getDegree

@@ -3,7 +3,7 @@ package pl.agh.harmonytools.harmonics.solver
 import pl.agh.harmonytools.algorithm.graph.SingleLevelGraph
 import pl.agh.harmonytools.algorithm.graph.builders.SingleLevelGraphBuilder
 import pl.agh.harmonytools.algorithm.graph.dijkstra.DijkstraAlgorithm
-import pl.agh.harmonytools.harmonics.exercise.HarmonicsExercise
+import pl.agh.harmonytools.exercise.harmonics.HarmonicsExercise
 import pl.agh.harmonytools.harmonics.solver.evaluator.ChordRulesChecker
 import pl.agh.harmonytools.harmonics.solver.generator.{ChordGenerator, ChordGeneratorInput}
 import pl.agh.harmonytools.harmonics.solver.utils.{ExerciseCorrector, PreChecker}

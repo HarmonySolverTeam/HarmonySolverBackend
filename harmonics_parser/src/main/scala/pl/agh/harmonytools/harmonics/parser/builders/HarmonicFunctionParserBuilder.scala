@@ -26,9 +26,8 @@ class HarmonicFunctionParserBuilder extends HarmonicFunctionBasicBuilder {
   def withType(t: HarmonicsElementType): Unit            = hfType = t
 
   def getIsRelatedBackwards: Boolean      = isRelatedBackwards
-  def getKey: Option[Key]                 = key
   def getType: HarmonicsElementType       = hfType
-  def getPosition: Option[ChordComponent] = position
+  override def getPosition: Option[ChordComponent] = position
 
   def copy(): HarmonicFunctionParserBuilder = {
     val builder = new HarmonicFunctionParserBuilder

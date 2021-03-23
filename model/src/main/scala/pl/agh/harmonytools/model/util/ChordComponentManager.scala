@@ -20,6 +20,10 @@ object ChordComponentManager {
     }
   }
 
+  def chordComponentWithIsDown(chordComponent: ChordComponent): ChordComponent = {
+    chordComponentFromString(chordComponent.chordComponentString, isDown = true)
+  }
+
   @deprecated
   def basicChordComponentFromPitch(pitch: Int, isDown: Boolean): ChordComponent = {
     pitch match {

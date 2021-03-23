@@ -1,24 +1,15 @@
 package pl.agh.harmonytools.harmonics.parser
 
-import pl.agh.harmonytools.harmonics.parser.builders.{
-  BackwardDeflection,
-  BackwardDeflection1,
-  ClassicDeflection,
-  ClassicDeflection1,
-  Deflection,
-  Ellipse,
-  HarmonicFunctionParserBuilder,
-  HarmonicsExerciseParserBuilder,
-  MeasureParserBuilder
-}
+import pl.agh.harmonytools.harmonics.parser.builders.{BackwardDeflection, BackwardDeflection1, ClassicDeflection, ClassicDeflection1, Deflection, Ellipse, HarmonicFunctionParserBuilder, HarmonicsExerciseParserBuilder, MeasureParserBuilder}
 import pl.agh.harmonytools.model.chord.ChordSystem.System
 import pl.agh.harmonytools.model.harmonicfunction.FunctionNames._
-import pl.agh.harmonytools.harmonics.exercise.{HarmonicsExercise, Meter}
+import pl.agh.harmonytools.exercise.harmonics.HarmonicsExercise
 import pl.agh.harmonytools.model.key.Mode.BaseMode
 import pl.agh.harmonytools.model.scale.ScaleDegree.Degree
 import pl.agh.harmonytools.model.chord.{ChordComponent, ChordSystem}
 import pl.agh.harmonytools.model.harmonicfunction.{Delay, FunctionNames}
 import pl.agh.harmonytools.model.key.{Key, Mode}
+import pl.agh.harmonytools.model.measure.Meter
 import pl.agh.harmonytools.model.scale.ScaleDegree
 import pl.agh.harmonytools.model.util.ChordComponentManager
 

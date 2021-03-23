@@ -62,7 +62,7 @@ object PreChecker {
       }
 
       if (currentChords.isEmpty) {
-        throw PreCheckerError("Could not generate any chord for harmonic function:" + indexes(i))
+        throw PreCheckerError("Could not generate any chord for harmonic function: " + indexes(i))
       }
       usedCurrentChords = currentChords.map(_ => false)
 
