@@ -25,7 +25,7 @@ class HarmonicFunctionValidatorTest extends FunSuite with Matchers {
 
   test("Validate delay with omit, extra, revolution and position") {
     val hf1 = HarmonicFunction(baseFunction = TONIC, delay = List(Delay("4", "3")), extra = List(seventh))
-    val hf2 = HarmonicFunction(baseFunction = TONIC, revolution = third, delay = List(Delay("4", "3")), extra = List(seventh))
+    val hf2 = HarmonicFunction(baseFunction = TONIC, revolution = Some(third), delay = List(Delay("4", "3")), extra = List(seventh))
     val hf3 = HarmonicFunction(baseFunction = TONIC, delay = List(Delay("4", "3")), extra = List(seventh, ninth), omit = List(fifth))
     val hf4 = HarmonicFunction(baseFunction = TONIC, delay = List(Delay("6", "5")), omit = List(fifth))
     List(hf1, hf2, hf3, hf4).foreach(validate)

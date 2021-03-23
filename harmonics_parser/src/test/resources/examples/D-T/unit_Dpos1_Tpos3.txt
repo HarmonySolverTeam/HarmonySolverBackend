@@ -1,4 +1,0 @@
-C
-4/4
-D{"position":"1"}
-T{"position":"3"}

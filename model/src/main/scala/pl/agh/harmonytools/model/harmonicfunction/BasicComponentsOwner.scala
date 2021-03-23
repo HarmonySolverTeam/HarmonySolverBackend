@@ -15,6 +15,7 @@ trait BasicComponentsOwner {
   protected def getOmit: List[ChordComponent]
   protected def getDelay: List[Delay]
   protected def getDegree: ScaleDegree.Degree
+  protected def getRevolution: ChordComponent
 
   def getPrime: ChordComponent = ChordComponentManager.chordComponentFromString("1", getIsDown)
   def getThird: ChordComponent = {
@@ -45,4 +46,6 @@ trait BasicComponentsOwner {
     }
     count
   }
+
+  def getPossibleToDouble: List[ChordComponent] = getBasicChordComponents.filterNot(getOmit.contains)
 }

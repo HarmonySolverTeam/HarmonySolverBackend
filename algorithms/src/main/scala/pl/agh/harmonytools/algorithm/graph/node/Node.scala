@@ -83,14 +83,14 @@ class Node[T <: NodeContent](
     newNode
   }
 
-  private var distanceFromBeginning: Int            = Int.MaxValue
+  private var distanceFromBeginning: Double            = Int.MaxValue
   private var prevsInShortestPath: List[Node[T]] = List.empty
 
-  override def getDistanceFromBeginning: Int = distanceFromBeginning
+  override def getDistanceFromBeginning: Double = distanceFromBeginning
 
   override def getPrevsInShortestPath: List[Node[T]] = prevsInShortestPath
 
-  def setDistanceFromBeginning(distance: Int): Unit         = distanceFromBeginning = distance
+  def setDistanceFromBeginning(distance: Double): Unit         = distanceFromBeginning = distance
   def setPrevsInShortestPath(prevs: List[Node[T]]): Unit = prevsInShortestPath = prevs
   def addPrevsInShortestPath(prevs: Node[T]*): Unit      = prevsInShortestPath ++= prevs
 

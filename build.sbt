@@ -21,7 +21,8 @@ lazy val rootProject = project
   .aggregate(
     model,
     harmonics_parser,
-    algorithms
+    algorithms,
+    solver
   )
 
 lazy val model = project
@@ -29,6 +30,9 @@ lazy val model = project
     name := "model",
     settings,
     libraryDependencies ++= testDependencies
+  )
+  .dependsOn(
+    algorithms
   )
 
 lazy val harmonics_parser = project
@@ -44,4 +48,29 @@ lazy val algorithms = project
     name := "algorithms",
     settings,
     libraryDependencies ++= testDependencies
+  )
+
+lazy val solver = project
+  .settings(
+    name := "solver",
+    settings,
+    libraryDependencies ++= testDependencies
+  )
+  .aggregate(
+    harmonics_solver
+  )
+  .dependsOn(
+    model
+  )
+
+lazy val harmonics_solver = project
+  .in(file("solver/harmonics_solver"))
+  .settings(
+    name := "harmonics_solver",
+    settings,
+    libraryDependencies ++= testDependencies
+  )
+  .dependsOn(
+    harmonics_parser,
+    algorithms
   )
