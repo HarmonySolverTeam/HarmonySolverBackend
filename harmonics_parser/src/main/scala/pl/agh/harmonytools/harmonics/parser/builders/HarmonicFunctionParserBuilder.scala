@@ -29,24 +29,6 @@ class HarmonicFunctionParserBuilder extends HarmonicFunctionBasicBuilder {
   def getType: HarmonicsElementType       = hfType
   override def getPosition: Option[ChordComponent] = position
 
-
-  override def preprocessHarmonicFunction(): HarmonicFunction = {
-    HarmonicFunction(
-      baseFunction.getOrElse(sys.error("Base Function has to be defined to initialize HarmonicFunction")),
-      degree,
-      position,
-      revolution,
-      delay,
-      extra,
-      omit,
-      isDown,
-      system,
-      mode,
-      key,
-      isRelatedBackwards
-    )
-  }
-
   def copy(): HarmonicFunctionParserBuilder = {
     val builder = new HarmonicFunctionParserBuilder
     builder.withBaseFunction(
