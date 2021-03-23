@@ -12,7 +12,7 @@ abstract class HarmonicFunctionBuilder(withValidation: Boolean = true) extends B
   protected var baseFunction: Option[FunctionNames.BaseFunction] = None
   protected var degree: Option[ScaleDegree.Degree]               = None
   protected var position: Option[ChordComponent]                 = None
-  protected var revolution: ChordComponent                       = ChordComponentManager.getRoot
+  protected var revolution: Option[ChordComponent]               = None
   protected var delay: List[Delay]                               = List.empty
   protected var extra: List[ChordComponent]                      = List.empty
   protected var omit: List[ChordComponent]                       = List.empty
@@ -35,11 +35,17 @@ abstract class HarmonicFunctionBuilder(withValidation: Boolean = true) extends B
   override def getBaseFunction: BaseFunction  = baseFunction.getOrElse(sys.error("Base function not defined"))
   override def getKey: Option[Key]            = key
   def getPosition: Option[ChordComponent]     = position
+  override def getRevolution: ChordComponent = {
+    revolution match {
+      case Some(value) => value
+      case None => ChordComponentManager.getRoot(isDown)
+    }
+  }
 
   def withBaseFunction(bf: BaseFunction): Unit  = baseFunction = Some(bf)
   def withDegree(d: ScaleDegree.Degree): Unit   = degree = Some(d)
   def withPosition(p: ChordComponent): Unit     = position = Some(p)
-  def withRevolution(r: ChordComponent): Unit   = revolution = r
+  def withRevolution(r: ChordComponent): Unit   = revolution = Some(r)
   def withDelay(d: List[Delay]): Unit           = delay = d
   def withExtra(e: List[ChordComponent]): Unit  = extra = e
   def withOmit(o: List[ChordComponent]): Unit   = omit = o
@@ -54,9 +60,9 @@ abstract class HarmonicFunctionBuilder(withValidation: Boolean = true) extends B
   protected def initializeHarmonicFunction(): HarmonicFunction = {
     HarmonicFunction(
       baseFunction.getOrElse(sys.error("Base function has to be defined when initializing HarmonicFunction")),
-      degree,
+      getDegree,
       position,
-      revolution,
+      getRevolution,
       delay,
       extra,
       omit,

@@ -7,7 +7,7 @@ import scala.collection.mutable
 
 case class DijkstraAlgorithm[T <: NodeContent](graph: ScoreGraph[T]) {
 
-  private def isInfinity(x: Int): Boolean = x == Int.MaxValue
+  private def isInfinity(x: Double): Boolean = x == Double.MaxValue
 
   private implicit def nodesOrdering[A <: DijkstraNode]: Ordering[A] = Ordering.by(_.getDistanceFromBeginning)
 
@@ -18,7 +18,7 @@ case class DijkstraAlgorithm[T <: NodeContent](graph: ScoreGraph[T]) {
     graph.getFirst.setDistanceFromBeginning(0)
   }
 
-  private def relax(u: Node[T], v: Node[T], w: Int): Unit = {
+  private def relax(u: Node[T], v: Node[T], w: Double): Unit = {
     if (isInfinity(u.getDistanceFromBeginning))
       throw new InternalError("u cannot have infinity distance from beginning")
     if (u.getDistanceFromBeginning + w < v.getDistanceFromBeginning || isInfinity(v.getDistanceFromBeginning)) {

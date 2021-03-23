@@ -1,7 +1,11 @@
 package pl.agh.harmonytools.model.measure
 
-case class Measure[T <: MeasureContent](content: List[T]) {
-  def merge(other: Measure[T]): Measure[T] = {
-    Measure[T](content ++ other.content)
+import pl.agh.harmonytools.model.harmonicfunction.HarmonicFunction
+
+case class Measure(harmonicFunctions: List[HarmonicFunction]) {
+  def merge(other: Measure): Measure = {
+    Measure(harmonicFunctions ++ other.harmonicFunctions)
   }
+
+  def contentCount: Int = harmonicFunctions.length
 }

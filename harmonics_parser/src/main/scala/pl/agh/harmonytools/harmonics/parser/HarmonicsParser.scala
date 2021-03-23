@@ -281,7 +281,7 @@ object TestParser extends HarmonicsParser {
         |(S{delay: 4-3}) T{} [T{}]""".stripMargin
     ) match {
       case Success(matched, _) =>
-        println(Seq(matched.measures.map(_.content.length).sum.toString, matched).mkString(": "))
+        println(Seq(matched.measures.map(_.harmonicFunctions.length).sum.toString, matched).mkString(": "))
       case Failure(msg, _) => println(msg)
       case Error(msg, _)   => println(msg)
     }

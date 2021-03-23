@@ -9,8 +9,6 @@ import pl.agh.harmonytools.model.util.ChordComponentManager
 
 case class BassHarmonicFunctionBuilder() extends HarmonicFunctionBasicBuilder {
 
-  def getRevolution: ChordComponent = revolution
-
   def copy(): BassHarmonicFunctionBuilder = {
     val builder = BassHarmonicFunctionBuilder()
     builder.withDelay(delay)
@@ -24,7 +22,7 @@ case class BassHarmonicFunctionBuilder() extends HarmonicFunctionBasicBuilder {
     builder.withSystem(system)
     builder.withMode(mode)
     builder.withIsRelatedBackwards(false)
-    builder.withRevolution(revolution)
+    builder.withRevolution(getRevolution)
     position match {
       case Some(value) => builder.withPosition(value)
       case None =>
@@ -56,7 +54,7 @@ case class BassHarmonicFunctionBuilder() extends HarmonicFunctionBasicBuilder {
         case Some(value) => withPosition(value.getIncreasedByHalfTone)
         case None =>
       }
-      withRevolution(revolution.getIncreasedByHalfTone)
+      withRevolution(getRevolution.getIncreasedByHalfTone)
       withDelay(getDelay.map(d => Delay(d.first.getIncreasedByHalfTone, d.second.getIncreasedByHalfTone)))
     }
   }
@@ -114,9 +112,9 @@ case class BassHarmonicFunctionBuilder() extends HarmonicFunctionBasicBuilder {
     if (isDown) {
       HarmonicFunction(
         baseFunction.getOrElse(sys.error("Base function has to be defined when initializing HarmonicFunction")),
-        degree,
+        getDegree,
         position.flatMap(cc => Some(ChordComponentManager.chordComponentWithIsDown(cc))),
-        ChordComponentManager.chordComponentWithIsDown(revolution),
+        ChordComponentManager.chordComponentWithIsDown(getRevolution),
         delay.map(d => Delay(ChordComponentManager.chordComponentWithIsDown(d.first), ChordComponentManager.chordComponentWithIsDown(d.second))),
         extra.map(e => ChordComponentManager.chordComponentWithIsDown(e)),
         omit.map(o => ChordComponentManager.chordComponentWithIsDown(o)),

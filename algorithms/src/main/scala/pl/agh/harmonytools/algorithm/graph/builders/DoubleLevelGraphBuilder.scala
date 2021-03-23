@@ -95,7 +95,7 @@ abstract class DoubleLevelGraphBuilder[T <: NodeContent with GeneratorInput, S <
 
   private def propagateEdgeWeightIntoNestedLayer(
     node: NodeWithNestedLayer[T, S],
-    weight: Int,
+    weight: Double,
     nextNodeContent: T
   ): Unit = {
     for (nestedNode <- node.getNestedLayer.getNodeList) {

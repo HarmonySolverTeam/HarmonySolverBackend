@@ -19,6 +19,7 @@ trait BasicComponentsOwner {
   protected def getDegree: ScaleDegree.Degree
   protected def getKey: Option[Key]
   protected def getBaseFunction: BaseFunction
+  protected def getRevolution: ChordComponent
 
   def isInDominantRelation(next: BasicComponentsOwner): Boolean = {
     if(getIsDown != next.getIsDown && getKey == next.getKey && !(getBaseFunction == TONIC
@@ -63,4 +64,6 @@ trait BasicComponentsOwner {
     }
     count
   }
+
+  def getPossibleToDouble: List[ChordComponent] = getBasicChordComponents.filterNot(getOmit.contains)
 }

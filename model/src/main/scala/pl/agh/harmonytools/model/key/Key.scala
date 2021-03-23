@@ -87,6 +87,16 @@ object Key {
     "a##" -> 71
   )
 
+  lazy val possibleMajorKeys: List[Key] = {
+    val keysString = List("C", "C#", "Db", "D", "Eb", "E", "F", "F#", "Gb", "G", "Ab", "A", "Bb", "B", "Cb")
+    keysString.map(Key(_))
+  }
+
+  lazy val possibleMinorKeys: List[Key] = {
+    val keysString = List("c", "c#", "d", "d#", "eb", "e", "f", "f#", "g", "g#", "ab", "a", "a#", "bb", "b")
+    keysString.map(Key(_))
+  }
+
   private final val pitchKeyStr: HashMap[Integer, Set[String]] =
     HashMap.from(keyStrPitch.groupBy(_._2).view.mapValues(_.keySet))
 }
