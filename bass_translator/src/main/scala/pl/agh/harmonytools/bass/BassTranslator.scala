@@ -240,7 +240,14 @@ object BassTranslator {
       }
       var secondNumber = revNumber + currentDelay.second.baseComponent
       if (firstNumber > 9) secondNumber -= 7
-      val newSecond = createChordComponent(secondNumber.toString + currentDelay.second.alteration)
+      var newSecond = createChordComponent(secondNumber.toString + currentDelay.second.alteration)
+      if (newSecond.alteration.isEmpty && secondNumber != 8) {
+        val pitchDifference = (pitches((secondNumber + degree - 1) %% 7) - pitches(degree)) %% 12
+        if (baseComponentsSemitonesNumber(secondNumber) > pitchDifference)
+          newSecond = createChordComponent(secondNumber.toString + LOWERED.value)
+        else if (baseComponentsSemitonesNumber(secondNumber) < pitchDifference)
+          newSecond = createChordComponent(secondNumber.toString + LOWERED.value)
+      }
       Delay(newFirst, newSecond)
     }.toSet
   }
