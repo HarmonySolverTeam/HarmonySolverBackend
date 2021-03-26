@@ -39,7 +39,7 @@ case class BassHarmonicFunctionBuilder() extends HarmonicFunctionBasicBuilder {
   }
 
   def handleDownChord(): Unit = {
-    if (extra.exists(_.chordComponentString == "1<")) {
+    if (extra.exists(_.chordComponentString == "1>")) {
       withOmit(List.empty)
       withMode(MINOR)
       withIsDown(true)

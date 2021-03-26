@@ -340,4 +340,24 @@ class BassTranslatorEndToEndTest extends FunSuite with Matchers {
     ex.measures.head.harmonicFunctions.length shouldBe 1
     ex.measures.head.harmonicFunctions.head.delay.map(d => d.first.chordComponentString + "-" + d.second.chordComponentString) shouldBe List("6-5", "4-3")
   }
+
+  test("altered VI") {
+    val ex = BassTranslator.createExerciseFromFiguredBass(
+      FiguredBassExercise(
+        Key("e"),
+        Meter(4, 4),
+        List(
+          FiguredBassElement(
+            NoteBuilder(49, C, 1)
+          )
+        )
+      )
+    )
+
+    ex.measures.head.harmonicFunctions.length shouldBe 1
+    val hf = ex.measures.head.harmonicFunctions.head
+    hf.revolution.chordComponentString shouldBe "1<"
+    hf.extra.map(_.chordComponentString) shouldBe List("1<")
+    hf.omit.map(_.chordComponentString) shouldBe List("1")
+  }
 }

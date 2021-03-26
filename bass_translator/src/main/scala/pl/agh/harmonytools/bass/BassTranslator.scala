@@ -2,6 +2,7 @@ package pl.agh.harmonytools.bass
 
 import pl.agh.harmonytools.bass.AlterationType.{ELEVATED, FLAT, LOWERED, NATURAL, SHARP}
 import pl.agh.harmonytools.exercise.harmonics.HarmonicsExercise
+import pl.agh.harmonytools.exercise.harmonics.helpers.DelayHandler
 import pl.agh.harmonytools.harmonics.parser.DeflectionsHandler
 import pl.agh.harmonytools.model.chord.ChordComponent
 import pl.agh.harmonytools.model.chord.ChordSystem.UNDEFINED
@@ -219,7 +220,9 @@ object BassTranslator {
       4 -> 5,
       5 -> 7,
       6 -> 9,
-      7 -> 10
+      7 -> 10,
+      8 -> 12,
+      9 -> 14
     )
 
     val pitches = if (mode == MAJOR) MajorScale.pitches else MinorScale.pitches
@@ -580,9 +583,9 @@ object BassTranslator {
     val scalePitches = if (key.mode == MAJOR) MajorScale.pitches else MinorScale.pitches
     val noteNumber   = (noteBuilder.baseNote.value - key.baseNote.value) %% 7
 
-    if ((scalePitches(noteNumber) + key.baseNote.value + 1) %% 12 == noteBuilder.pitch %% 12)
+    if ((scalePitches(noteNumber) + key.tonicPitch + 1) %% 12 == noteBuilder.pitch %% 12)
       AlterationType.SHARP
-    else if ((scalePitches(noteNumber) + key.baseNote.value - 1) %% 12 == noteBuilder.pitch %% 12)
+    else if ((scalePitches(noteNumber) + key.tonicPitch - 1) %% 12 == noteBuilder.pitch %% 12)
       AlterationType.FLAT
     else
       AlterationType.NATURAL
@@ -720,11 +723,11 @@ object BassTranslator {
     val bassLine                     = figuredBassExercise.elements.map(_.bassNote)
     val (harmonicFunctionsAfterSplit, bassLineAfterSplit, chordElementsAfterSplit) = split33Delays(harmonicFunctions, bassLine, chordElements)
     val newFunctions                 = handleDeflections(harmonicFunctionsAfterSplit, key, chordElementsAfterSplit)
-    HarmonicsExercise(key, figuredBassExercise.meter, List(Measure(newFunctions.map(_.getHarmonicFunction))), Some(bassLineAfterSplit.map(_.getResult)))
+    HarmonicsExercise(
+      key,
+      figuredBassExercise.meter,
+      List(Measure(newFunctions.map(_.getHarmonicFunction))),
+      Some(bassLineAfterSplit.map(_.getResult))
+    )
   }
-
-  def main(args: Array[String]): Unit = {
-    print(createExerciseFromFiguredBass(FiguredBassExercise(Key("Bb"), Meter(4, 4), List(FiguredBassElement(NoteBuilder(53, F, 1), symbols = List(BassSymbol(9, Some(AlterationType.FLAT)), BassSymbol(3, Some(AlterationType.FLAT))), delays = List.empty)))))
-  }
-
 }
