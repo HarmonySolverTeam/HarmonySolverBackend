@@ -99,7 +99,7 @@ class HardRulesTest extends FunSuite with Matchers with TestUtils {
   }
 
   test("Delay Correctness test") {
-    val hf1 = HarmonicFunction(DOMINANT, delay = List(Delay(sixth, fifth), Delay(fourth, third)), extra = List(sixth, fourth), omit = List(fifth, third))
+    val hf1 = HarmonicFunction(DOMINANT, delay = Set(Delay(sixth, fifth), Delay(fourth, third)), extra = Set(sixth, fourth), omit = Set(fifth, third))
     val ch1  = Chord(Note(67, G, prime), Note(64, E, sixth), Note(60, C, fourth), Note(55, G, prime), hf1)
     val ch2  = Chord(Note(67, G, prime), Note(62, D, fifth), Note(59, B, third), Note(43, G, prime), dominant)
     val ch3  = Chord(Note(65, F, seventh), Note(62, D, fifth), Note(59, B, third), Note(43, G, prime), dominant)
@@ -122,8 +122,8 @@ class HardRulesTest extends FunSuite with Matchers with TestUtils {
     val ch1  = Chord(Note(68, A, fifthD), Note(65, F, thirdD), Note(61, D, primeD), Note(41, F, thirdD), neapolitan)
     val ch2  = Chord(Note(67, G, prime), Note(62, D, fifth), Note(59, B, third), Note(43, G, prime), dominant)
 
-    val d1 = HarmonicFunction(DOMINANT, extra = List(seventh), key = Some(Key("D")))
-    val d2 = HarmonicFunction(DOMINANT, extra = List(seventh), omit = List(fifth))
+    val d1 = HarmonicFunction(DOMINANT, extra = Set(seventh), key = Some(Key("D")))
+    val d2 = HarmonicFunction(DOMINANT, extra = Set(seventh), omit = Set(fifth))
 
     val ch3 = Chord(Note(76, E, fifth), Note(67, G, seventh), Note(61, C, third), Note(45, A, prime), d1)
     val ch4 = Chord(Note(72, C, seventh), Note(66, F, third), Note(62, D, prime), Note(50, D, prime), d2)

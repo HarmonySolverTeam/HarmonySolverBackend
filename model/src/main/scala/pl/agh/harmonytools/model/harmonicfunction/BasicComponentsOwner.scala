@@ -13,9 +13,9 @@ trait BasicComponentsOwner {
 
   protected def getIsDown: Boolean
   protected def getMode: Mode.BaseMode
-  protected def getExtra: List[ChordComponent]
-  protected def getOmit: List[ChordComponent]
-  protected def getDelay: List[Delay]
+  protected def getExtra: Set[ChordComponent]
+  protected def getOmit: Set[ChordComponent]
+  protected def getDelay: Set[Delay]
   protected def getDegree: ScaleDegree.Degree
   protected def getKey: Option[Key]
   protected def getBaseFunction: BaseFunction
@@ -56,8 +56,8 @@ trait BasicComponentsOwner {
 
   def countChordComponents: Int = {
     var count = 3
-    count += getExtra.length
-    count -= getOmit.length
+    count += getExtra.size
+    count -= getOmit.size
     for (d <- getDelay) {
       if (!getExtra.contains(d.first) && (getOmit.contains(d.second) || d.second.baseComponent == 8)) count += 1
       if (getExtra.contains(d.first) && (!getOmit.contains(d.second) && d.second.baseComponent != 8)) count -= 1

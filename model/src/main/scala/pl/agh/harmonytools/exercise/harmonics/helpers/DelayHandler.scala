@@ -16,12 +16,12 @@ object DelayHandler {
       var currentHf = harmonicFunctionList(i)
       if (currentHf.delay.nonEmpty) {
         var currentHfCopy = currentHf.copy()
-        currentHfCopy = currentHfCopy.copy(delay = List())
+        currentHfCopy = currentHfCopy.copy(delay = Set())
         for (d <- currentHf.delay) {
           if (d.second.baseComponent >= 8 && !currentHfCopy.extra.contains(d.second))
-            currentHfCopy = currentHfCopy.copy(extra = currentHfCopy.extra.appended(d.second))
-          currentHf = currentHf.copy(extra = currentHf.extra.appended(d.first))
-          currentHf = currentHf.copy(omit = currentHf.omit.appended(d.second))
+            currentHfCopy = currentHfCopy.copy(extra = currentHfCopy.extra + d.second)
+          currentHf = currentHf.copy(extra = currentHf.extra + d.first)
+          currentHf = currentHf.copy(omit = currentHf.omit + d.second)
           currentHf = currentHf.copy(extra = currentHf.extra.filter(_ != d.second))
           if (currentHf.position.isDefined && d.second == currentHf.position.get)
             currentHf = currentHf.copy(position = Some(d.first))

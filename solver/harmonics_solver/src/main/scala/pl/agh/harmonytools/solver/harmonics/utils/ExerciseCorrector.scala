@@ -61,7 +61,7 @@ case class ExerciseCorrector(
     val tonicHarmonicFunction = resultHarmonicFunctions(tonicIndex)
     if (chopinHarmonicFunction.isChopin && chopinHarmonicFunction.isInDominantRelation(tonicHarmonicFunction)) {
       if (!tonicHarmonicFunction.omit.contains(tonicHarmonicFunction.getFifth)) {
-        resultHarmonicFunctions = resultHarmonicFunctions.updated(tonicIndex, tonicHarmonicFunction.copy(omit = tonicHarmonicFunction.omit :+ tonicHarmonicFunction.getFifth))
+        resultHarmonicFunctions = resultHarmonicFunctions.updated(tonicIndex, tonicHarmonicFunction.copy(omit = tonicHarmonicFunction.omit + tonicHarmonicFunction.getFifth))
       }
     }
   }
@@ -77,9 +77,9 @@ case class ExerciseCorrector(
       if (changeCurrentChord) {
         val hf = resultHarmonicFunctions(i)
         if (hf.position.contains(hf.getFifth)) {
-          resultHarmonicFunctions = resultHarmonicFunctions.updated(i, hf.copy(revolution = hf.getThird, omit = hf.omit :+ hf.getPrime))
+          resultHarmonicFunctions = resultHarmonicFunctions.updated(i, hf.copy(revolution = hf.getThird, omit = hf.omit + hf.getPrime))
         } else {
-          resultHarmonicFunctions = resultHarmonicFunctions.updated(i, hf.copy(omit = hf.omit :+ hf.getFifth))
+          resultHarmonicFunctions = resultHarmonicFunctions.updated(i, hf.copy(omit = hf.omit + hf.getFifth))
         }
       }
       changeCurrentChord = !changeCurrentChord

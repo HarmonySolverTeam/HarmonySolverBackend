@@ -13,8 +13,8 @@ class BassTranslatorEndToEndTest extends FunSuite with Matchers {
     )
     ex.measures.head.harmonicFunctions.head.revolution.chordComponentString shouldBe "1"
     ex.measures.head.harmonicFunctions.head.countChordComponents shouldBe 3
-    ex.measures.head.harmonicFunctions.head.extra shouldBe List.empty
-    ex.measures.head.harmonicFunctions.head.omit shouldBe List.empty
+    ex.measures.head.harmonicFunctions.head.extra shouldBe Set.empty
+    ex.measures.head.harmonicFunctions.head.omit shouldBe Set.empty
   }
 
   test("1st major triad inversion") {
@@ -27,8 +27,8 @@ class BassTranslatorEndToEndTest extends FunSuite with Matchers {
     )
     ex.measures.head.harmonicFunctions.head.revolution.chordComponentString shouldBe "3"
     ex.measures.head.harmonicFunctions.head.countChordComponents shouldBe 3
-    ex.measures.head.harmonicFunctions.head.extra shouldBe List.empty
-    ex.measures.head.harmonicFunctions.head.omit shouldBe List.empty
+    ex.measures.head.harmonicFunctions.head.extra shouldBe Set.empty
+    ex.measures.head.harmonicFunctions.head.omit shouldBe Set.empty
   }
 
   test("2nd major triad inversion") {
@@ -41,8 +41,8 @@ class BassTranslatorEndToEndTest extends FunSuite with Matchers {
     )
     ex.measures.head.harmonicFunctions.head.revolution.chordComponentString shouldBe "5"
     ex.measures.head.harmonicFunctions.head.countChordComponents shouldBe 3
-    ex.measures.head.harmonicFunctions.head.extra shouldBe List.empty
-    ex.measures.head.harmonicFunctions.head.omit shouldBe List.empty
+    ex.measures.head.harmonicFunctions.head.extra shouldBe Set.empty
+    ex.measures.head.harmonicFunctions.head.omit shouldBe Set.empty
   }
 
   test("Base minor triad") {
@@ -52,8 +52,8 @@ class BassTranslatorEndToEndTest extends FunSuite with Matchers {
     ex.measures.head.harmonicFunctions.head.revolution.chordComponentString shouldBe "1"
     ex.measures.head.harmonicFunctions.head.getThird.chordComponentString shouldBe "3>"
     ex.measures.head.harmonicFunctions.head.countChordComponents shouldBe 3
-    ex.measures.head.harmonicFunctions.head.extra shouldBe List.empty
-    ex.measures.head.harmonicFunctions.head.omit shouldBe List.empty
+    ex.measures.head.harmonicFunctions.head.extra shouldBe Set.empty
+    ex.measures.head.harmonicFunctions.head.omit shouldBe Set.empty
   }
 
   test("1st minor triad inversion") {
@@ -66,8 +66,8 @@ class BassTranslatorEndToEndTest extends FunSuite with Matchers {
     )
     ex.measures.head.harmonicFunctions.head.revolution.chordComponentString shouldBe "3>"
     ex.measures.head.harmonicFunctions.head.countChordComponents shouldBe 3
-    ex.measures.head.harmonicFunctions.head.extra shouldBe List.empty
-    ex.measures.head.harmonicFunctions.head.omit shouldBe List.empty
+    ex.measures.head.harmonicFunctions.head.extra shouldBe Set.empty
+    ex.measures.head.harmonicFunctions.head.omit shouldBe Set.empty
   }
 
   test("2nd minor triad inversion") {
@@ -81,8 +81,8 @@ class BassTranslatorEndToEndTest extends FunSuite with Matchers {
     println(ex.measures.head.harmonicFunctions.head)
     ex.measures.head.harmonicFunctions.head.revolution.chordComponentString shouldBe "5"
     ex.measures.head.harmonicFunctions.head.countChordComponents shouldBe 3
-    ex.measures.head.harmonicFunctions.head.extra shouldBe List.empty
-    ex.measures.head.harmonicFunctions.head.omit shouldBe List.empty
+    ex.measures.head.harmonicFunctions.head.extra shouldBe Set.empty
+    ex.measures.head.harmonicFunctions.head.omit shouldBe Set.empty
   }
 
   test("Picardian triad") {
@@ -96,8 +96,8 @@ class BassTranslatorEndToEndTest extends FunSuite with Matchers {
     ex.measures.head.harmonicFunctions.head.revolution.chordComponentString shouldBe "1"
     ex.measures.head.harmonicFunctions.head.getThird.chordComponentString shouldBe "3"
     ex.measures.head.harmonicFunctions.head.countChordComponents shouldBe 3
-    ex.measures.head.harmonicFunctions.head.extra shouldBe List.empty
-    ex.measures.head.harmonicFunctions.head.omit shouldBe List.empty
+    ex.measures.head.harmonicFunctions.head.extra shouldBe Set.empty
+    ex.measures.head.harmonicFunctions.head.omit shouldBe Set.empty
   }
 
   test("Base D7") {
@@ -110,8 +110,8 @@ class BassTranslatorEndToEndTest extends FunSuite with Matchers {
     )
     ex.measures.head.harmonicFunctions.head.revolution.chordComponentString shouldBe "1"
     ex.measures.head.harmonicFunctions.head.countChordComponents shouldBe 4
-    ex.measures.head.harmonicFunctions.head.extra.map(_.chordComponentString) shouldBe List("7")
-    ex.measures.head.harmonicFunctions.head.omit.map(_.chordComponentString) shouldBe List.empty
+    ex.measures.head.harmonicFunctions.head.extra.map(_.chordComponentString) shouldBe Set("7")
+    ex.measures.head.harmonicFunctions.head.omit.map(_.chordComponentString) shouldBe Set.empty
   }
 
   test("1st inversion D7") {
@@ -124,8 +124,8 @@ class BassTranslatorEndToEndTest extends FunSuite with Matchers {
     )
     ex.measures.head.harmonicFunctions.head.revolution.chordComponentString shouldBe "3"
     ex.measures.head.harmonicFunctions.head.countChordComponents shouldBe 4
-    ex.measures.head.harmonicFunctions.head.extra.map(_.chordComponentString) shouldBe List("7")
-    ex.measures.head.harmonicFunctions.head.omit.map(_.chordComponentString) shouldBe List.empty
+    ex.measures.head.harmonicFunctions.head.extra.map(_.chordComponentString) shouldBe Set("7")
+    ex.measures.head.harmonicFunctions.head.omit.map(_.chordComponentString) shouldBe Set.empty
   }
 
   test("2nd inversion D7") {
@@ -138,8 +138,8 @@ class BassTranslatorEndToEndTest extends FunSuite with Matchers {
     )
     ex.measures.head.harmonicFunctions.head.revolution.chordComponentString shouldBe "5"
     ex.measures.head.harmonicFunctions.head.countChordComponents shouldBe 4
-    ex.measures.head.harmonicFunctions.head.extra.map(_.chordComponentString) shouldBe List("7")
-    ex.measures.head.harmonicFunctions.head.omit.map(_.chordComponentString) shouldBe List.empty
+    ex.measures.head.harmonicFunctions.head.extra.map(_.chordComponentString) shouldBe Set("7")
+    ex.measures.head.harmonicFunctions.head.omit.map(_.chordComponentString) shouldBe Set.empty
   }
 
   test("3rd inversion D7") {
@@ -152,8 +152,8 @@ class BassTranslatorEndToEndTest extends FunSuite with Matchers {
     )
     ex.measures.head.harmonicFunctions.head.revolution.chordComponentString shouldBe "7"
     ex.measures.head.harmonicFunctions.head.countChordComponents shouldBe 4
-    ex.measures.head.harmonicFunctions.head.extra.map(_.chordComponentString) shouldBe List("7")
-    ex.measures.head.harmonicFunctions.head.omit.map(_.chordComponentString) shouldBe List.empty
+    ex.measures.head.harmonicFunctions.head.extra.map(_.chordComponentString) shouldBe Set("7")
+    ex.measures.head.harmonicFunctions.head.omit.map(_.chordComponentString) shouldBe Set.empty
   }
 
   test("Base D7 in minor key") {
@@ -173,8 +173,8 @@ class BassTranslatorEndToEndTest extends FunSuite with Matchers {
     ex.measures.head.harmonicFunctions.head.revolution.chordComponentString shouldBe "1"
     ex.measures.head.harmonicFunctions.head.getThird.chordComponentString shouldBe "3"
     ex.measures.head.harmonicFunctions.head.countChordComponents shouldBe 4
-    ex.measures.head.harmonicFunctions.head.extra.map(_.chordComponentString) shouldBe List("7")
-    ex.measures.head.harmonicFunctions.head.omit.map(_.chordComponentString) shouldBe List.empty
+    ex.measures.head.harmonicFunctions.head.extra.map(_.chordComponentString) shouldBe Set("7")
+    ex.measures.head.harmonicFunctions.head.omit.map(_.chordComponentString) shouldBe Set.empty
   }
 
   test("1st inversion D7 in minor key") {
@@ -188,8 +188,8 @@ class BassTranslatorEndToEndTest extends FunSuite with Matchers {
     ex.measures.head.harmonicFunctions.head.revolution.chordComponentString shouldBe "3"
     ex.measures.head.harmonicFunctions.head.getThird.chordComponentString shouldBe "3"
     ex.measures.head.harmonicFunctions.head.countChordComponents shouldBe 4
-    ex.measures.head.harmonicFunctions.head.extra.map(_.chordComponentString) shouldBe List("7")
-    ex.measures.head.harmonicFunctions.head.omit.map(_.chordComponentString) shouldBe List.empty
+    ex.measures.head.harmonicFunctions.head.extra.map(_.chordComponentString) shouldBe Set("7")
+    ex.measures.head.harmonicFunctions.head.omit.map(_.chordComponentString) shouldBe Set.empty
   }
 
   test("2nd inversion D7 in minor key") {
@@ -208,8 +208,8 @@ class BassTranslatorEndToEndTest extends FunSuite with Matchers {
     ex.measures.head.harmonicFunctions.head.revolution.chordComponentString shouldBe "5"
     ex.measures.head.harmonicFunctions.head.getThird.chordComponentString shouldBe "3"
     ex.measures.head.harmonicFunctions.head.countChordComponents shouldBe 4
-    ex.measures.head.harmonicFunctions.head.extra.map(_.chordComponentString) shouldBe List("7")
-    ex.measures.head.harmonicFunctions.head.omit.map(_.chordComponentString) shouldBe List.empty
+    ex.measures.head.harmonicFunctions.head.extra.map(_.chordComponentString) shouldBe Set("7")
+    ex.measures.head.harmonicFunctions.head.omit.map(_.chordComponentString) shouldBe Set.empty
   }
 
   test("3rd inversion D7 in minor key") {
@@ -227,8 +227,8 @@ class BassTranslatorEndToEndTest extends FunSuite with Matchers {
     )
     ex.measures.head.harmonicFunctions.head.revolution.chordComponentString shouldBe "7"
     ex.measures.head.harmonicFunctions.head.countChordComponents shouldBe 4
-    ex.measures.head.harmonicFunctions.head.extra.map(_.chordComponentString) shouldBe List("7")
-    ex.measures.head.harmonicFunctions.head.omit.map(_.chordComponentString) shouldBe List.empty
+    ex.measures.head.harmonicFunctions.head.extra.map(_.chordComponentString) shouldBe Set("7")
+    ex.measures.head.harmonicFunctions.head.omit.map(_.chordComponentString) shouldBe Set.empty
   }
 
   test("Base minor with 7") {
@@ -242,8 +242,8 @@ class BassTranslatorEndToEndTest extends FunSuite with Matchers {
     ex.measures.head.harmonicFunctions.head.revolution.chordComponentString shouldBe "1"
     ex.measures.head.harmonicFunctions.head.getThird.chordComponentString shouldBe "3>"
     ex.measures.head.harmonicFunctions.head.countChordComponents shouldBe 4
-    ex.measures.head.harmonicFunctions.head.extra.map(_.chordComponentString) shouldBe List("7")
-    ex.measures.head.harmonicFunctions.head.omit.map(_.chordComponentString) shouldBe List.empty
+    ex.measures.head.harmonicFunctions.head.extra.map(_.chordComponentString) shouldBe Set("7")
+    ex.measures.head.harmonicFunctions.head.omit.map(_.chordComponentString) shouldBe Set.empty
   }
 
   test("1st inversion minor with 7") {
@@ -257,8 +257,8 @@ class BassTranslatorEndToEndTest extends FunSuite with Matchers {
     ex.measures.head.harmonicFunctions.head.revolution.chordComponentString shouldBe "3>"
     ex.measures.head.harmonicFunctions.head.getThird.chordComponentString shouldBe "3>"
     ex.measures.head.harmonicFunctions.head.countChordComponents shouldBe 4
-    ex.measures.head.harmonicFunctions.head.extra.map(_.chordComponentString) shouldBe List("7")
-    ex.measures.head.harmonicFunctions.head.omit.map(_.chordComponentString) shouldBe List.empty
+    ex.measures.head.harmonicFunctions.head.extra.map(_.chordComponentString) shouldBe Set("7")
+    ex.measures.head.harmonicFunctions.head.omit.map(_.chordComponentString) shouldBe Set.empty
   }
 
   test("2nd inversion minor with 7") {
@@ -272,8 +272,8 @@ class BassTranslatorEndToEndTest extends FunSuite with Matchers {
     ex.measures.head.harmonicFunctions.head.revolution.chordComponentString shouldBe "5"
     ex.measures.head.harmonicFunctions.head.getThird.chordComponentString shouldBe "3>"
     ex.measures.head.harmonicFunctions.head.countChordComponents shouldBe 4
-    ex.measures.head.harmonicFunctions.head.extra.map(_.chordComponentString) shouldBe List("7")
-    ex.measures.head.harmonicFunctions.head.omit.map(_.chordComponentString) shouldBe List.empty
+    ex.measures.head.harmonicFunctions.head.extra.map(_.chordComponentString) shouldBe Set("7")
+    ex.measures.head.harmonicFunctions.head.omit.map(_.chordComponentString) shouldBe Set.empty
   }
 
   test("3rd inversion minor with 7") {
@@ -287,8 +287,8 @@ class BassTranslatorEndToEndTest extends FunSuite with Matchers {
     ex.measures.head.harmonicFunctions.head.revolution.chordComponentString shouldBe "7"
     ex.measures.head.harmonicFunctions.head.getThird.chordComponentString shouldBe "3>"
     ex.measures.head.harmonicFunctions.head.countChordComponents shouldBe 4
-    ex.measures.head.harmonicFunctions.head.extra.map(_.chordComponentString) shouldBe List("7")
-    ex.measures.head.harmonicFunctions.head.omit.map(_.chordComponentString) shouldBe List.empty
+    ex.measures.head.harmonicFunctions.head.extra.map(_.chordComponentString) shouldBe Set("7")
+    ex.measures.head.harmonicFunctions.head.omit.map(_.chordComponentString) shouldBe Set.empty
   }
 
   test("4-3 delay") {
@@ -301,7 +301,7 @@ class BassTranslatorEndToEndTest extends FunSuite with Matchers {
     )
     ex.measures.head.harmonicFunctions.head.delay.map(d =>
       d.first.chordComponentString + "-" + d.second.chordComponentString
-    ) shouldBe List("4-3")
+    ) shouldBe Set("4-3")
   }
 
   test("3-3> delay") {
@@ -320,8 +320,8 @@ class BassTranslatorEndToEndTest extends FunSuite with Matchers {
     ex.measures.head.harmonicFunctions.length shouldBe 2
     ex.measures.head.harmonicFunctions.head.mode shouldBe MAJOR
     ex.measures.head.harmonicFunctions.last.mode shouldBe MINOR
-    ex.measures.head.harmonicFunctions.head.delay shouldBe List.empty
-    ex.measures.head.harmonicFunctions.last.delay shouldBe List.empty
+    ex.measures.head.harmonicFunctions.head.delay shouldBe Set.empty
+    ex.measures.head.harmonicFunctions.last.delay shouldBe Set.empty
   }
 
   test("6-5, 4-3 delay") {
@@ -338,7 +338,7 @@ class BassTranslatorEndToEndTest extends FunSuite with Matchers {
       )
     )
     ex.measures.head.harmonicFunctions.length shouldBe 1
-    ex.measures.head.harmonicFunctions.head.delay.map(d => d.first.chordComponentString + "-" + d.second.chordComponentString) shouldBe List("6-5", "4-3")
+    ex.measures.head.harmonicFunctions.head.delay.map(d => d.first.chordComponentString + "-" + d.second.chordComponentString) shouldBe Set("6-5", "4-3")
   }
 
   test("altered VI") {
@@ -357,7 +357,7 @@ class BassTranslatorEndToEndTest extends FunSuite with Matchers {
     ex.measures.head.harmonicFunctions.length shouldBe 1
     val hf = ex.measures.head.harmonicFunctions.head
     hf.revolution.chordComponentString shouldBe "1<"
-    hf.extra.map(_.chordComponentString) shouldBe List("1<")
-    hf.omit.map(_.chordComponentString) shouldBe List("1")
+    hf.extra.map(_.chordComponentString) shouldBe Set("1<")
+    hf.omit.map(_.chordComponentString) shouldBe Set("1")
   }
 }

@@ -14,23 +14,23 @@ class ExerciseCorrectorTest extends FunSuite with Matchers with TestUtils {
 
   test("Make chords incomplete to avoid concurrent 5s") {
     val harmonicFunctions = List(
-      HarmonicFunction(DOMINANT, extra = List(seventh), key = Some(keyD)),
-      HarmonicFunction(DOMINANT, extra = List(seventh), key = Some(keyG)),
+      HarmonicFunction(DOMINANT, extra = Set(seventh), key = Some(keyD)),
+      HarmonicFunction(DOMINANT, extra = Set(seventh), key = Some(keyG)),
       dominant7,
       tonic,
-      HarmonicFunction(DOMINANT, extra = List(seventh), key = Some(keyG)),
+      HarmonicFunction(DOMINANT, extra = Set(seventh), key = Some(keyG)),
       dominant7,
       tonic,
-      HarmonicFunction(DOMINANT, extra = List(seventh), key = Some(keyE)),
-      HarmonicFunction(DOMINANT, extra = List(seventh), key = Some(keyA)),
-      HarmonicFunction(DOMINANT, extra = List(seventh), key = Some(keyD)),
-      HarmonicFunction(DOMINANT, extra = List(seventh), omit = List(fifth), key = Some(keyG)),
+      HarmonicFunction(DOMINANT, extra = Set(seventh), key = Some(keyE)),
+      HarmonicFunction(DOMINANT, extra = Set(seventh), key = Some(keyA)),
+      HarmonicFunction(DOMINANT, extra = Set(seventh), key = Some(keyD)),
+      HarmonicFunction(DOMINANT, extra = Set(seventh), omit = Set(fifth), key = Some(keyG)),
       dominant7,
       tonic,
-      HarmonicFunction(DOMINANT, extra = List(seventh), key = Some(keyG)),
+      HarmonicFunction(DOMINANT, extra = Set(seventh), key = Some(keyG)),
       dominant7,
       tonic,
-      HarmonicFunction(DOMINANT, extra = List(seventh, fifthAltUp), key = Some(keyG)),
+      HarmonicFunction(DOMINANT, extra = Set(seventh, fifthAltUp), key = Some(keyG)),
       dominant7,
       tonic
     )

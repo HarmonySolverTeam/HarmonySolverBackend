@@ -151,9 +151,9 @@ class ChordGeneratorTest extends FunSuite with Matchers with TestUtils {
     V,
     None,
     getCC("1"),
-    List.empty,
-    List(getCC("7")),
-    List.empty,
+    Set.empty,
+    Set(getCC("7")),
+    Set.empty,
     false,
     UNDEFINED,
     MAJOR,
@@ -212,9 +212,9 @@ class ChordGeneratorTest extends FunSuite with Matchers with TestUtils {
       I,
       None,
       getCC("3"),
-      List.empty,
-      List.empty,
-      List(getCC("1")),
+      Set.empty,
+      Set.empty,
+      Set(getCC("1")),
       false,
       UNDEFINED,
       MAJOR,
@@ -242,9 +242,9 @@ class ChordGeneratorTest extends FunSuite with Matchers with TestUtils {
       I,
       None,
       getCC("1"),
-      List.empty,
-      List.empty,
-      List(getCC("5")),
+      Set.empty,
+      Set.empty,
+      Set(getCC("5")),
       false,
       UNDEFINED,
       MAJOR,
@@ -272,9 +272,9 @@ class ChordGeneratorTest extends FunSuite with Matchers with TestUtils {
       II,
       None,
       getCC("1"),
-      List.empty,
-      List.empty,
-      List(getCC("5")),
+      Set.empty,
+      Set.empty,
+      Set(getCC("5")),
       false,
       UNDEFINED,
       MAJOR,
@@ -300,9 +300,9 @@ class ChordGeneratorTest extends FunSuite with Matchers with TestUtils {
       II,
       None,
       getCC("1"),
-      List.empty,
-      List.empty,
-      List(getCC("5>")),
+      Set.empty,
+      Set.empty,
+      Set(getCC("5>")),
       false,
       UNDEFINED,
       MINOR,
@@ -328,9 +328,9 @@ class ChordGeneratorTest extends FunSuite with Matchers with TestUtils {
       II,
       None,
       getCC("1", isDown = true),
-      List.empty,
-      List.empty,
-      List(getCC("5", isDown = true)),
+      Set.empty,
+      Set.empty,
+      Set(getCC("5", isDown = true)),
       true,
       UNDEFINED,
       MINOR,
@@ -356,9 +356,9 @@ class ChordGeneratorTest extends FunSuite with Matchers with TestUtils {
       VII,
       None,
       getCC("1"),
-      List.empty,
-      List.empty,
-      List.empty,
+      Set.empty,
+      Set.empty,
+      Set.empty,
       false,
       UNDEFINED,
       MAJOR,
@@ -379,9 +379,9 @@ class ChordGeneratorTest extends FunSuite with Matchers with TestUtils {
       VII,
       None,
       getCC("1"),
-      List.empty,
-      List.empty,
-      List(getCC("5>")),
+      Set.empty,
+      Set.empty,
+      Set(getCC("5>")),
       false,
       UNDEFINED,
       MAJOR,
@@ -483,7 +483,7 @@ class ChordGeneratorTest extends FunSuite with Matchers with TestUtils {
     )
   }
 
-  private val Dspec = HarmonicFunction(DOMINANT, position = Some(getCC("3")), extra = List(getCC("9>"), getCC("7")), omit = List(getCC("5")))
+  private val Dspec = HarmonicFunction(DOMINANT, position = Some(getCC("3")), extra = Set(getCC("9>"), getCC("7")), omit = Set(getCC("5")))
 
   test("D spec with position 3 contains 3 in position in all generated chords") {
     generatorTest(
@@ -547,7 +547,7 @@ class ChordGeneratorTest extends FunSuite with Matchers with TestUtils {
   }
 
   test("Double only 1, 3 or 5") {
-    val hf = HarmonicFunction(DOMINANT, extra = List(getCC("7")), omit = List(getCC("5")))
+    val hf = HarmonicFunction(DOMINANT, extra = Set(getCC("7")), omit = Set(getCC("5")))
     val res = ChordGenerator(Key("C")).generate(ChordGeneratorInput(hf))
     res.length should not be 0
     for (r <- res) {
@@ -592,7 +592,7 @@ class ChordGeneratorTest extends FunSuite with Matchers with TestUtils {
   }
 
   test("Generating extra 7 test") {
-    val hf = HarmonicFunction(DOMINANT, extra = List(getCC("7")))
+    val hf = HarmonicFunction(DOMINANT, extra = Set(getCC("7")))
     val res = ChordGenerator(Key("C")).generate(ChordGeneratorInput(hf))
 
     val scale = MajorScale(Key("C"))
@@ -610,7 +610,7 @@ class ChordGeneratorTest extends FunSuite with Matchers with TestUtils {
   }
 
   test("Generating extra 7> test") {
-    val hf = HarmonicFunction(DOMINANT, extra = List(getCC("7>")))
+    val hf = HarmonicFunction(DOMINANT, extra = Set(getCC("7>")))
     val res = ChordGenerator(Key("C")).generate(ChordGeneratorInput(hf))
 
     val scale = MajorScale(Key("C"))
@@ -628,7 +628,7 @@ class ChordGeneratorTest extends FunSuite with Matchers with TestUtils {
   }
 
   test("Generating extra <7 test") {
-    val hf = HarmonicFunction(DOMINANT, extra = List(getCC("7<")))
+    val hf = HarmonicFunction(DOMINANT, extra = Set(getCC("7<")))
     val res = ChordGenerator(Key("C")).generate(ChordGeneratorInput(hf))
 
     val scale = MajorScale(Key("C"))
@@ -646,7 +646,7 @@ class ChordGeneratorTest extends FunSuite with Matchers with TestUtils {
   }
   
   test("Generating extra 7 with 7 in soprano test") {
-    val hf = HarmonicFunction(DOMINANT, extra = List(getCC("7")), position = Some(getCC("7")))
+    val hf = HarmonicFunction(DOMINANT, extra = Set(getCC("7")), position = Some(getCC("7")))
     val res = ChordGenerator(Key("C")).generate(ChordGeneratorInput(hf))
 
     val scale = MajorScale(Key("C"))
@@ -665,7 +665,7 @@ class ChordGeneratorTest extends FunSuite with Matchers with TestUtils {
   }
 
   test("Generating extra 7 with 7 in bass test") {
-    val hf = HarmonicFunction(DOMINANT, extra = List(getCC("7")), revolution = Some(getCC("7")))
+    val hf = HarmonicFunction(DOMINANT, extra = Set(getCC("7")), revolution = Some(getCC("7")))
     val res = ChordGenerator(Key("C")).generate(ChordGeneratorInput(hf))
 
     val scale = MajorScale(Key("C"))
@@ -694,8 +694,8 @@ class ChordGeneratorTest extends FunSuite with Matchers with TestUtils {
   }
 
   test("Generating Chopin chord") {
-    val d1 = HarmonicFunction(DOMINANT, extra = List(sixth, seventh), omit = List(fifth), key = Some(keyC))
-    val d2 = HarmonicFunction(DOMINANT, extra = List(sixthDim, seventh), omit = List(fifth), key = Some(keyc))
+    val d1 = HarmonicFunction(DOMINANT, extra = Set(sixth, seventh), omit = Set(fifth), key = Some(keyC))
+    val d2 = HarmonicFunction(DOMINANT, extra = Set(sixthDim, seventh), omit = Set(fifth), key = Some(keyc))
 
 
     val ch1 = Chord(Note(76, E, sixth), Note(71, B, third), Note(65, F, seventh), Note(55, G, prime), d1)
@@ -708,7 +708,7 @@ class ChordGeneratorTest extends FunSuite with Matchers with TestUtils {
   }
 
   test("Chord with 7,8 in extra") {
-    val hf = HarmonicFunction(DOMINANT, extra = List(seventh, eighth), omit = List(fifth))
+    val hf = HarmonicFunction(DOMINANT, extra = Set(seventh, eighth), omit = Set(fifth))
     generatorTest(
       None,
       hf,

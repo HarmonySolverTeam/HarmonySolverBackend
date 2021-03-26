@@ -83,9 +83,9 @@ class SoftRulesTest extends FunSuite with Matchers with TestUtils {
   test("D -> T6-4 test") {
     val t64 = HarmonicFunction(
       TONIC,
-      delay = List(Delay(sixth, fifth), Delay(fourth, third)),
-      extra = List(sixth, fourth),
-      omit = List(fifth, third)
+      delay = Set(Delay(sixth, fifth), Delay(fourth, third)),
+      extra = Set(sixth, fourth),
+      omit = Set(fifth, third)
     )
     val ch1 = Chord(Note(77, F, seventh), Note(71, B, third), Note(62, D, fifth), Note(55, G, prime), dominant7)
     val ch2 = Chord(Note(77, F, fourth), Note(72, C, prime), Note(69, A, sixth), Note(60, C, prime), t64)
@@ -94,7 +94,7 @@ class SoftRulesTest extends FunSuite with Matchers with TestUtils {
   }
 
   test("Connection for modulations test") {
-    val hf1 = HarmonicFunction(DOMINANT, extra = List(seventh), omit = List(fifth), key = Some(keyF))
+    val hf1 = HarmonicFunction(DOMINANT, extra = Set(seventh), omit = Set(fifth), key = Some(keyF))
     val hf2 = HarmonicFunction(DOMINANT, key = Some(keyC))
 
     val ch1 = Chord(Note(72, C, prime), Note(70, A, seventh), Note(64, E, third), Note(48, C, prime), hf1)
@@ -111,10 +111,10 @@ class SoftRulesTest extends FunSuite with Matchers with TestUtils {
   }
 
   test("Chopin -> tonic connection test") {
-    val d1 = HarmonicFunction(DOMINANT, extra = List(sixth, seventh), omit = List(fifth), key = Some(keyC))
-    val d2 = HarmonicFunction(DOMINANT, extra = List(sixthDim, seventh), omit = List(fifth), key = Some(keyc))
-    val t1 = HarmonicFunction(TONIC, omit = List(fifth), key = Some(keyC))
-    val t2 = HarmonicFunction(TONIC, omit = List(fifth), key = Some(keyc))
+    val d1 = HarmonicFunction(DOMINANT, extra = Set(sixth, seventh), omit = Set(fifth), key = Some(keyC))
+    val d2 = HarmonicFunction(DOMINANT, extra = Set(sixthDim, seventh), omit = Set(fifth), key = Some(keyc))
+    val t1 = HarmonicFunction(TONIC, omit = Set(fifth), key = Some(keyC))
+    val t2 = HarmonicFunction(TONIC, omit = Set(fifth), key = Some(keyc))
 
     val ch1 = Chord(Note(76, E, sixth), Note(71, B, third), Note(65, F, seventh), Note(55, G, prime), d1)
     val ch2 = Chord(Note(75, E, sixthDim), Note(71, B, third), Note(65, F, seventh), Note(55, G, prime), d2)

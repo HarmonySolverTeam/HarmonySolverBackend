@@ -15,7 +15,7 @@ class HarmonicFunctionValidator(private val hf: HarmonicFunction) {
 
   private def validateDelay(): Unit = {
     val delays = hf.delay
-    if (delays.length > 4) handleValidationFailure("Too large delay list - there are only 4 voices")
+    if (delays.size > 4) handleValidationFailure("Too large delay list - there are only 4 voices")
     for (delay <- delays)
       if (Math.abs(delay.first.baseComponent - delay.second.baseComponent) > 1)
         handleValidationFailure("Too large difference in delay")
@@ -26,7 +26,6 @@ class HarmonicFunctionValidator(private val hf: HarmonicFunction) {
     for (extra <- extras)
       if (hf.getBasicChordComponents.contains(extra))
         handleValidationFailure("Extra contains basic chord component which is not allowed")
-    if (extras.toSet.size < extras.length) handleValidationFailure("Extra contains duplicates")
   }
 
   private def validateOmit(): Unit = {
@@ -34,8 +33,7 @@ class HarmonicFunctionValidator(private val hf: HarmonicFunction) {
     for (omit <- omits)
       if (!hf.getBasicChordComponents.contains(omit) && omit.chordComponentString != "8")
         handleValidationFailure("Omit contains not basic chord component which is not allowed")
-    if (omits.length == 2 && omits.head == omits.last) handleValidationFailure("Omit contains duplicates")
-    if (omits.length > 2) handleValidationFailure("Omit is too large")
+    if (omits.size > 2) handleValidationFailure("Omit is too large")
   }
 
   private def checkAllChordComponentNumber(): Unit =

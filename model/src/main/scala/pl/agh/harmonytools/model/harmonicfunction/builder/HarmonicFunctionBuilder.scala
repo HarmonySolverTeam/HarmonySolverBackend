@@ -13,9 +13,9 @@ abstract class HarmonicFunctionBuilder(withValidation: Boolean = true) extends B
   protected var degree: Option[ScaleDegree.Degree]               = None
   protected var position: Option[ChordComponent]                 = None
   protected var revolution: Option[ChordComponent]               = None
-  protected var delay: List[Delay]                               = List.empty
-  protected var extra: List[ChordComponent]                      = List.empty
-  protected var omit: List[ChordComponent]                       = List.empty
+  protected var delay: Set[Delay]                                = Set.empty
+  protected var extra: Set[ChordComponent]                       = Set.empty
+  protected var omit: Set[ChordComponent]                        = Set.empty
   protected var isDown: Boolean                                  = false
   protected var system: ChordSystem.System                       = ChordSystem.UNDEFINED
   protected var mode: Mode.BaseMode                              = Mode.MAJOR
@@ -27,18 +27,18 @@ abstract class HarmonicFunctionBuilder(withValidation: Boolean = true) extends B
       case Some(value) => value
       case None        => baseFunction.getOrElse(sys.error("Base Function undefined")).baseDegree
     }
-  override def getIsDown: Boolean             = isDown
-  override def getMode: Mode.BaseMode         = mode
-  override def getExtra: List[ChordComponent] = extra
-  override def getOmit: List[ChordComponent]  = omit
-  override def getDelay: List[Delay]          = delay
-  override def getBaseFunction: BaseFunction  = baseFunction.getOrElse(sys.error("Base function not defined"))
-  override def getKey: Option[Key]            = key
-  def getPosition: Option[ChordComponent]     = position
+  override def getIsDown: Boolean            = isDown
+  override def getMode: Mode.BaseMode        = mode
+  override def getExtra: Set[ChordComponent] = extra
+  override def getOmit: Set[ChordComponent]  = omit
+  override def getDelay: Set[Delay]          = delay
+  override def getBaseFunction: BaseFunction = baseFunction.getOrElse(sys.error("Base function not defined"))
+  override def getKey: Option[Key]           = key
+  def getPosition: Option[ChordComponent]    = position
   override def getRevolution: ChordComponent = {
     revolution match {
       case Some(value) => value
-      case None => ChordComponentManager.getRoot(isDown)
+      case None        => ChordComponentManager.getRoot(isDown)
     }
   }
 
@@ -46,9 +46,9 @@ abstract class HarmonicFunctionBuilder(withValidation: Boolean = true) extends B
   def withDegree(d: ScaleDegree.Degree): Unit   = degree = Some(d)
   def withPosition(p: ChordComponent): Unit     = position = Some(p)
   def withRevolution(r: ChordComponent): Unit   = revolution = Some(r)
-  def withDelay(d: List[Delay]): Unit           = delay = d
-  def withExtra(e: List[ChordComponent]): Unit  = extra = e
-  def withOmit(o: List[ChordComponent]): Unit   = omit = o
+  def withDelay(d: Set[Delay]): Unit            = delay = d
+  def withExtra(e: Set[ChordComponent]): Unit   = extra = e
+  def withOmit(o: Set[ChordComponent]): Unit    = omit = o
   def withIsDown(d: Boolean): Unit              = isDown = d
   def withSystem(s: ChordSystem.System): Unit   = system = s
   def withMode(m: Mode.BaseMode): Unit          = mode = m

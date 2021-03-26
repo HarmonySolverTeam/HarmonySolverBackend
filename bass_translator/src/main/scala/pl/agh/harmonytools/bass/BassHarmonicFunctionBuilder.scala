@@ -40,13 +40,13 @@ case class BassHarmonicFunctionBuilder() extends HarmonicFunctionBasicBuilder {
 
   def handleDownChord(): Unit = {
     if (extra.exists(_.chordComponentString == "1>")) {
-      withOmit(List.empty)
+      withOmit(Set.empty)
       withMode(MINOR)
       withIsDown(true)
-      var extra = List.empty[ChordComponent]
+      var extra = Set.empty[ChordComponent]
       for (e <- getExtra) {
         if (e.baseComponent > 5) {
-          extra = extra :+ e.getIncreasedByHalfTone
+          extra = extra + e.getIncreasedByHalfTone
         }
       }
       withExtra(extra)
@@ -70,7 +70,7 @@ case class BassHarmonicFunctionBuilder() extends HarmonicFunctionBasicBuilder {
 
   def addOmit3ForS2IfNecessary(): Unit = {
     if (getDegree == II && getMode == MINOR && getRevolution.chordComponentString == "3" && getOmit.exists(_.chordComponentString == "3>")) {
-      withOmit(getOmit :+ getCC("3>"))
+      withOmit(getOmit + getCC("3>"))
     }
   }
 
@@ -86,8 +86,8 @@ case class BassHarmonicFunctionBuilder() extends HarmonicFunctionBasicBuilder {
   private def handleThirdAlterationIn236Chords(): Unit = {
     if (List(II, III, VI).contains(getDegree) && (getMode == MAJOR || getDegree == II)) {
       if (omit.exists(_.chordComponentString == "3") && extra.exists(_.chordComponentString == "3<")) {
-        omit = omit.filterNot(_.chordComponentString == "3") :+ getCC("3>")
-        extra = extra.filterNot(_.chordComponentString == "3>") :+ getCC("3")
+        omit = omit.filterNot(_.chordComponentString == "3") + getCC("3>")
+        extra = extra.filterNot(_.chordComponentString == "3>") + getCC("3")
       }
     }
   }
@@ -98,8 +98,8 @@ case class BassHarmonicFunctionBuilder() extends HarmonicFunctionBasicBuilder {
         if (omit.exists(_.chordComponentString == "5"))
           omit = omit.filterNot(_.chordComponentString == "5")
       if (!omit.exists(_.chordComponentString == "5>"))
-        omit = omit :+ getCC("5>")
-      extra = extra.filterNot(_.chordComponentString == "5<") :+ getCC("5")
+        omit = omit + getCC("5>")
+      extra = extra.filterNot(_.chordComponentString == "5<") + getCC("5")
     }
   }
 

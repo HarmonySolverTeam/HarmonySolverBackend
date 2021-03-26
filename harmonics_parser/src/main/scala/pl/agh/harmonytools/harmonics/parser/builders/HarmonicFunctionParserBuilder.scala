@@ -15,9 +15,9 @@ class HarmonicFunctionParserBuilder extends HarmonicFunctionBasicBuilder {
   override def withDegree(d: ScaleDegree.Degree): Unit   = degree = Some(d)
   override def withPosition(p: ChordComponent): Unit     = position = Some(p)
   override def withRevolution(r: ChordComponent): Unit   = revolution = Some(r)
-  override def withDelay(d: List[Delay]): Unit           = delay = d
-  override def withExtra(e: List[ChordComponent]): Unit  = extra = e
-  override def withOmit(o: List[ChordComponent]): Unit   = omit = o
+  override def withDelay(d: Set[Delay]): Unit           = delay = d
+  override def withExtra(e: Set[ChordComponent]): Unit   = extra = e
+  override def withOmit(o: Set[ChordComponent]): Unit    = omit = o
   override def withIsDown(d: Boolean): Unit              = isDown = d
   override def withSystem(s: ChordSystem.System): Unit   = system = s
   override def withMode(m: Mode.BaseMode): Unit          = mode = m
@@ -25,8 +25,8 @@ class HarmonicFunctionParserBuilder extends HarmonicFunctionBasicBuilder {
   override def withIsRelatedBackwards(rb: Boolean): Unit = isRelatedBackwards = rb
   def withType(t: HarmonicsElementType): Unit            = hfType = t
 
-  def getIsRelatedBackwards: Boolean      = isRelatedBackwards
-  def getType: HarmonicsElementType       = hfType
+  def getIsRelatedBackwards: Boolean               = isRelatedBackwards
+  def getType: HarmonicsElementType                = hfType
   override def getPosition: Option[ChordComponent] = position
 
   def copy(): HarmonicFunctionParserBuilder = {

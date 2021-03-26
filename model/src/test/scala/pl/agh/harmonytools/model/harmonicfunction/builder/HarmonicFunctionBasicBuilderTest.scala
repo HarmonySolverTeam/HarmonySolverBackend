@@ -11,7 +11,7 @@ class HarmonicFunctionBasicBuilderTest extends FunSuite with Matchers {
   private def constructNinthChordBuilder(position: String, revolution: String): HarmonicFunctionBasicBuilder = {
     val builder = new HarmonicFunctionBasicBuilder
     builder.withBaseFunction(DOMINANT)
-    builder.withExtra(List(ChordComponentManager.chordComponentFromString("9")))
+    builder.withExtra(Set(ChordComponentManager.chordComponentFromString("9")))
     builder.withPosition(ChordComponentManager.chordComponentFromString(position))
     builder.withRevolution(ChordComponentManager.chordComponentFromString(revolution))
     builder
@@ -20,8 +20,8 @@ class HarmonicFunctionBasicBuilderTest extends FunSuite with Matchers {
   test("Correct 5 adding to omit when applying ninth chord with delay") {
     val builder = new HarmonicFunctionBasicBuilder
     builder.withBaseFunction(DOMINANT)
-    builder.withDelay(List(Delay("9", "8")))
-    builder.withExtra(List(ChordComponentManager.chordComponentFromString("7")))
+    builder.withDelay(Set(Delay("9", "8")))
+    builder.withExtra(Set(ChordComponentManager.chordComponentFromString("7")))
     builder.getHarmonicFunction.omit.contains(ChordComponentManager.chordComponentFromString("5"))
   }
 
