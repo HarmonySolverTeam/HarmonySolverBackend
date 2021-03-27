@@ -173,7 +173,7 @@ object BassTranslator {
     var isLowered = false
 
     if (revolutionInt == 3) {
-      val d = if (degree == ScaleDegree.VII) ScaleDegree.IV else degree
+      val d = if (degree == ScaleDegree.VII) ScaleDegree.V else degree
       if (IntervalUtils.getThirdMode(key, d) == MINOR)
         isLowered = true
     }
@@ -236,17 +236,20 @@ object BassTranslator {
         if (baseComponentsSemitonesNumber(firstNumber) > pitchDifference)
           newFirst = createChordComponent(firstNumber.toString + LOWERED.value)
         else if (baseComponentsSemitonesNumber(firstNumber) < pitchDifference)
-          newFirst = createChordComponent(firstNumber.toString + LOWERED.value)
+          newFirst = createChordComponent(firstNumber.toString + ELEVATED.value)
       }
       var secondNumber = revNumber + currentDelay.second.baseComponent
-      if (firstNumber > 9) secondNumber -= 7
+      if (secondNumber > 9) secondNumber -= 7
       var newSecond = createChordComponent(secondNumber.toString + currentDelay.second.alteration)
       if (newSecond.alteration.isEmpty && secondNumber != 8) {
         val pitchDifference = (pitches((secondNumber + degree - 1) %% 7) - pitches(degree)) %% 12
         if (baseComponentsSemitonesNumber(secondNumber) > pitchDifference)
           newSecond = createChordComponent(secondNumber.toString + LOWERED.value)
         else if (baseComponentsSemitonesNumber(secondNumber) < pitchDifference)
-          newSecond = createChordComponent(secondNumber.toString + LOWERED.value)
+          newSecond = createChordComponent(secondNumber.toString + ELEVATED.value)
+      }
+      if (newSecond.chordComponentString == "3<" && mode == MINOR) {
+        newSecond = createChordComponent(newSecond.baseComponent.toString)
       }
       Delay(newFirst, newSecond)
     }.toSet
@@ -664,7 +667,7 @@ object BassTranslator {
       val hf     = harmonicFunctions(i)
       val nextHf = harmonicFunctions(i + 1)
       if (
-        hf.getExtra.exists(_.baseComponent == 7) && (hf.getExtra.exists(_.baseComponent == 3) || hf.testThird) &&
+        hf.getExtra.exists(_.baseComponent == 7) && (hf.getExtra.exists(_.baseComponent == 3) || hf.testThird || hf.getRevolution.chordComponentString == "3") &&
         hf.isInDominantRelation(nextHf) && DeflectionsHandler.calculateKey(nextHf)(key) != key &&
         chordElements(i).bassElement.bassNote.pitch %% 12 ==
           (DeflectionsHandler.calculateKey(nextHf)(key).tonicPitch + hf.getRevolution.semitonesNumber + 7 + {
@@ -688,15 +691,16 @@ object BassTranslator {
               7
             )
         )
-        hf.withExtra(
-          hf.getExtra.filterNot(_.baseComponent == 9) +
-            calculateChordComponentForSpecificNote(
-              hf.getMode,
-              calculatedKey,
-              chordElements(i).getPrimeNote,
-              9
-            )
-        )
+        if (hf.getExtra.exists(_.baseComponent == 9))
+          hf.withExtra(
+            hf.getExtra.filterNot(_.baseComponent == 9) +
+              calculateChordComponentForSpecificNote(
+                hf.getMode,
+                calculatedKey,
+                chordElements(i).getPrimeNote,
+                9
+              )
+          )
         if (hf.getRevolution.baseComponent == 7) {
           hf.withRevolution(
               calculateChordComponentForSpecificNote(hf.getMode, calculatedKey, chordElements(i).getPrimeNote, 7)

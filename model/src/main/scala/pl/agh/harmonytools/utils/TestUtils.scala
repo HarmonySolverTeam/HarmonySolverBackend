@@ -55,6 +55,9 @@ trait TestUtils {
     val thirdDim: ChordComponent   = getCC("3>")
     val fifthAltUp: ChordComponent = getCC("5<")
     val ninth: ChordComponent      = getCC("9")
+    val ninthDim: ChordComponent   = getCC("9>")
+    val fifthDim: ChordComponent   = getCC("5>")
+    val primeAltUp: ChordComponent = getCC("1<")
   }
 
   protected object Keys {

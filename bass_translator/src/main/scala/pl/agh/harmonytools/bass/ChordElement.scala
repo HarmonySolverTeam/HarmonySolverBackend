@@ -30,16 +30,16 @@ case class ChordElement(var notesNumbers: List[Int], var omit: List[Int], bassEl
           if (j == i) tmp = tmp :+ (notesNumbers(j) + 2)
         }
         notesNumbers = tmp
-        if (notesNumbers.length >= 5) {
-          omit = omit :+ ((notesNumbers.last %% 7) + 1)
-        }
+//        if (notesNumbers.length >= 5) {
+//          omit = omit :+ ((notesNumbers.last %% 7) + 1)
+//        }
         return
       }
     }
     notesNumbers = notesNumbers :+ (notesNumbers.last + 2)
-    if (notesNumbers.length >= 5) {
-      omit = omit :+ (notesNumbers.last %% 7) + 1
-    }
+//    if (notesNumbers.length >= 5) {
+//      omit = omit :+ (notesNumbers.last %% 7) + 1
+//    }
   }
 
   def completeUntilTwoNextThirds(): Unit = {

@@ -16,7 +16,7 @@ case class FiguredBassElement(bassNote: NoteBuilder, var symbols: List[BassSymbo
           symbols = symbols :+ BassSymbol(bn)
     }
 
-    symbols = symbols.sortWith((b1, b2) => b1.component > b2.component)
+    symbols = symbols.sortWith((b1, b2) => b1.component < b2.component)
   }
 
   def buildChordElement(): ChordElement =

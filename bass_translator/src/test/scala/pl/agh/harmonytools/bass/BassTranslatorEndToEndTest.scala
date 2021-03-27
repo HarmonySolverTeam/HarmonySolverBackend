@@ -4,9 +4,14 @@ import org.scalatest.{FunSuite, Matchers}
 import pl.agh.harmonytools.model.key.Key
 import pl.agh.harmonytools.model.key.Mode.{MAJOR, MINOR}
 import pl.agh.harmonytools.model.measure.Meter
-import pl.agh.harmonytools.model.note.BaseNote.{B, C, D, E, F, G}
+import pl.agh.harmonytools.model.note.BaseNote.{A, B, C, D, E, F, G}
+import pl.agh.harmonytools.model.scale.ScaleDegree.V
+import pl.agh.harmonytools.utils.TestUtils
 
-class BassTranslatorEndToEndTest extends FunSuite with Matchers {
+class BassTranslatorEndToEndTest extends FunSuite with Matchers with TestUtils {
+
+  import ChordComponents._
+
   test("Base major triad") {
     val ex = BassTranslator.createExerciseFromFiguredBass(
       FiguredBassExercise(Key("C"), Meter(4, 4), List(FiguredBassElement(NoteBuilder(48, C, 1))))
@@ -359,5 +364,79 @@ class BassTranslatorEndToEndTest extends FunSuite with Matchers {
     hf.revolution.chordComponentString shouldBe "1<"
     hf.extra.map(_.chordComponentString) shouldBe Set("1<")
     hf.omit.map(_.chordComponentString) shouldBe Set("1")
+  }
+
+  test("2 4# 10 symbols -> D9 on 7") {
+    val ex = BassTranslator.createExerciseFromFiguredBass(
+      FiguredBassExercise(
+        Key("f#"),
+        Meter(4, 4),
+        List(
+          FiguredBassElement(
+            NoteBuilder(47, B, 1),
+            symbols = List(
+              BassSymbol(2),
+              BassSymbol(4, Some(AlterationType.SHARP)),
+              BassSymbol(10)
+            )
+          )
+        )
+      )
+    )
+    // b c# e# d
+    ex.measures.head.harmonicFunctions.length shouldBe 1
+    val hf = ex.measures.head.harmonicFunctions.head
+    hf.degree shouldBe V
+    hf.revolution shouldBe seventh
+    hf.extra shouldBe Set(seventh, ninthDim)
+    hf.omit shouldBe Set(fifth)
+  }
+
+  test("Dmaj on 5 Dmin on 5 delay") {
+    val ex = BassTranslator.createExerciseFromFiguredBass(
+      FiguredBassExercise(
+        Key("G"),
+        Meter(4, 4),
+        List(
+          FiguredBassElement(
+            NoteBuilder(57, A, 1),
+            symbols = List(
+              BassSymbol(6),
+              BassSymbol(4)
+            ),
+            delays = List(
+              BassDelay(BassSymbol(6), BassSymbol(6, Some(AlterationType.FLAT)))
+            )
+          )
+        )
+      )
+    )
+    ex.measures.head.harmonicFunctions.length shouldBe 2
+    ex.measures.head.harmonicFunctions.head.mode shouldBe MAJOR
+    ex.measures.head.harmonicFunctions.last.mode shouldBe MINOR
+  }
+
+  test("SII (dim chord) in minor key - I inversion") {
+    val ex = BassTranslator.createExerciseFromFiguredBass(
+      FiguredBassExercise(
+        Key("a"),
+        Meter(4, 4),
+        List(
+          FiguredBassElement(
+            NoteBuilder(50, D, 1),
+            symbols = List(
+              BassSymbol(6)
+            )
+          )
+        )
+      )
+    )
+    ex.measures.head.harmonicFunctions.length shouldBe 1
+    val hf = ex.measures.head.harmonicFunctions.head
+    hf.revolution shouldBe thirdDim
+    hf.omit shouldBe Set()
+    hf.extra shouldBe Set()
+    hf.countChordComponents shouldBe 3
+    hf.getFifth shouldBe fifthDim
   }
 }
