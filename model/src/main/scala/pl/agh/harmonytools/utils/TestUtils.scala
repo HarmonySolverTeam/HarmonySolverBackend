@@ -21,9 +21,9 @@ trait TestUtils {
       II,
       None,
       getCC("3", isDown = true),
-      List.empty,
-      List.empty,
-      List.empty,
+      Set.empty,
+      Set.empty,
+      Set.empty,
       true,
       UNDEFINED,
       MINOR,
@@ -34,8 +34,8 @@ trait TestUtils {
     val tonic: HarmonicFunction       = HarmonicFunction(TONIC)
     val subdominant: HarmonicFunction = HarmonicFunction(SUBDOMINANT)
     val dominant: HarmonicFunction    = HarmonicFunction(DOMINANT)
-    val dominant7: HarmonicFunction   = HarmonicFunction(DOMINANT, extra = List(ChordComponents.seventh))
-    val tonicOmit5: HarmonicFunction  = HarmonicFunction(TONIC, omit = List(ChordComponents.fifth))
+    val dominant7: HarmonicFunction   = HarmonicFunction(DOMINANT, extra = Set(ChordComponents.seventh))
+    val tonicOmit5: HarmonicFunction  = HarmonicFunction(TONIC, omit = Set(ChordComponents.fifth))
     val tonicVI: HarmonicFunction     = HarmonicFunction(TONIC, degree = Some(VI))
     val tonicVIDown: HarmonicFunction = HarmonicFunction(TONIC, degree = Some(VI), isDown = true)
   }
@@ -50,10 +50,14 @@ trait TestUtils {
     val sixth: ChordComponent      = getCC("6")
     val fourth: ChordComponent     = getCC("4")
     val seventh: ChordComponent    = getCC("7")
+    val eighth: ChordComponent     = getCC("8")
     val sixthDim: ChordComponent   = getCC("6>")
     val thirdDim: ChordComponent   = getCC("3>")
     val fifthAltUp: ChordComponent = getCC("5<")
     val ninth: ChordComponent      = getCC("9")
+    val ninthDim: ChordComponent   = getCC("9>")
+    val fifthDim: ChordComponent   = getCC("5>")
+    val primeAltUp: ChordComponent = getCC("1<")
   }
 
   protected object Keys {

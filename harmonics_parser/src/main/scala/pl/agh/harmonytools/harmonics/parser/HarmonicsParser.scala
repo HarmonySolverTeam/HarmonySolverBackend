@@ -1,6 +1,16 @@
 package pl.agh.harmonytools.harmonics.parser
 
-import pl.agh.harmonytools.harmonics.parser.builders.{BackwardDeflection, BackwardDeflection1, ClassicDeflection, ClassicDeflection1, Deflection, Ellipse, HarmonicFunctionParserBuilder, HarmonicsExerciseParserBuilder, MeasureParserBuilder}
+import pl.agh.harmonytools.harmonics.parser.builders.{
+  BackwardDeflection,
+  BackwardDeflection1,
+  ClassicDeflection,
+  ClassicDeflection1,
+  Deflection,
+  Ellipse,
+  HarmonicFunctionParserBuilder,
+  HarmonicsExerciseParserBuilder,
+  MeasureParserBuilder
+}
 import pl.agh.harmonytools.model.chord.ChordSystem.System
 import pl.agh.harmonytools.model.harmonicfunction.FunctionNames._
 import pl.agh.harmonytools.exercise.harmonics.HarmonicsExercise
@@ -54,9 +64,9 @@ case class Position(string: String)           extends ParserModel
 case class Revolution(string: String)         extends ParserModel
 case class IsRelatedBackwards(value: Boolean) extends ParserModel
 case class IsDown(value: Boolean)             extends ParserModel
-case class Extra(stringList: List[String])    extends ParserModel
-case class Omit(stringList: List[String])     extends ParserModel
-case class Delays(value: List[Delay])         extends ParserModel
+case class Extra(stringSet: Set[String])      extends ParserModel
+case class Omit(stringSet: Set[String])       extends ParserModel
+case class Delays(value: Set[Delay])         extends ParserModel
 
 class HarmonicsParser extends RegexParsers {
   override val whiteSpace: Regex = """[ \t\r]+""".r
@@ -139,12 +149,12 @@ class HarmonicsParser extends RegexParsers {
 
   def extraDef: Parser[Extra] =
     Tokens.extra ~ Tokens.colon ~> chordComponent ~ rep(Tokens.comma ~ chordComponent) ^^ {
-      case cc ~ rep => Extra(List(cc).appendedAll(rep.map(x => x._2)))
+      case cc ~ rep => Extra(Set(cc) ++ (rep.map(x => x._2)))
     }
 
   def omitDef: Parser[Omit] =
     Tokens.omit ~ Tokens.colon ~> chordComponent ~ rep(Tokens.comma ~ chordComponent) ^^ {
-      case cc ~ rep => Omit(List(cc).appendedAll(rep.map(x => x._2)))
+      case cc ~ rep => Omit(Set(cc) ++ (rep.map(x => x._2)))
     }
 
   def delayDef: Parser[Delays] =
@@ -152,7 +162,7 @@ class HarmonicsParser extends RegexParsers {
       Tokens.comma ~ chordComponent ~ Tokens.dash ~ chordComponent
     ) ^^ {
       case cc1 ~ d ~ cc2 ~ rep =>
-        Delays(List((cc1, cc2)).appendedAll(rep.map(x => (x._1._1._2, x._2))).map(Delay(_)))
+        Delays(List((cc1, cc2)).appendedAll(rep.map(x => (x._1._1._2, x._2))).map(Delay(_)).toSet)
     }
 
   def systemName: Parser[String] = Tokens.closeSystem | Tokens.openSystem ^^ { _.toString }
@@ -182,14 +192,14 @@ class HarmonicsParser extends RegexParsers {
 
               implicit def stringToChordComponent(x: String): ChordComponent =
                 ChordComponentManager.chordComponentFromString(x, down)
-              implicit def stringListToChordComponentList(xs: List[String]): List[ChordComponent] =
-                xs.map(stringToChordComponent)
+              implicit def stringListToChordComponentList(xs: Set[String]): Set[ChordComponent] =
+                xs.map(stringToChordComponent).toSet
 
               contents.foreach {
                 case s: System              => builder.withSystem(s)
                 case d: Delays              => builder.withDelay(d.value)
-                case o: Omit                => builder.withOmit(o.stringList)
-                case e: Extra               => builder.withExtra(e.stringList)
+                case o: Omit                => builder.withOmit(o.stringSet)
+                case e: Extra               => builder.withExtra(e.stringSet)
                 case rb: IsRelatedBackwards => builder.withIsRelatedBackwards(rb.value)
                 case d: IsDown              => builder.withIsDown(d.value)
                 case r: Revolution          => builder.withRevolution(r.string)

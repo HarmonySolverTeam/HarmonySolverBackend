@@ -2,6 +2,15 @@ package pl.agh.harmonytools.bass
 
 object AlterationType {
 
+  def fromStringToBass(s: String): FiguredBassType = {
+    s match {
+      case "#" => SHARP
+      case "b" => FLAT
+      case "h" => NATURAL
+      case _   => sys.error("Forbidden symbol")
+    }
+  }
+
   sealed abstract class FiguredBassType(val value: String)
 
   case object SHARP extends FiguredBassType("#")

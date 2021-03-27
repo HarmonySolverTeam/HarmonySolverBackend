@@ -16,7 +16,7 @@ case class FiguredBassElement(bassNote: NoteBuilder, var symbols: List[BassSymbo
           symbols = symbols :+ BassSymbol(bn)
     }
 
-    symbols = symbols.sortWith((b1, b2) => b1.component > b2.component)
+    symbols = symbols.sortWith((b1, b2) => b1.component < b2.component)
   }
 
   def buildChordElement(): ChordElement =
@@ -27,7 +27,7 @@ case class FiguredBassElement(bassNote: NoteBuilder, var symbols: List[BassSymbo
     )
 }
 
-case class NoteBuilder(pitch: Int, baseNote: BaseNote.BaseNoteType, duration: Float, private var chordComponentString: Option[String] = None) {
+case class NoteBuilder(pitch: Int, baseNote: BaseNote.BaseNoteType, duration: Float = 0, private var chordComponentString: Option[String] = None) {
   def withChordComponentString(cc: String): Unit = chordComponentString = Some(cc)
   def getResult: Note = Note(pitch, baseNote, chordComponentString.getOrElse(sys.error("CC not defined")), duration)
 }

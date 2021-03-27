@@ -9,5 +9,6 @@ case class HarmonicsExercise(
   key: Key,
   meter: Meter,
   measures: List[Measure],
-  bassLine: Option[List[Note]] = None
+  bassLine: Option[List[Note]] = None,
+  sopranoLine: Option[List[Note]] = None
 ) extends Exercise(key, meter, measures)

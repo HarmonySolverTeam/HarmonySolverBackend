@@ -92,7 +92,7 @@ case class ExerciseSolution(exercise: Exercise, rating: Double, chords: List[Cho
     }
   }
 
-  def setDurations(): ExerciseSolution = {
+  def setDurations(): Unit = {
     val measures = exercise.getMeasures
     var offset = 0
     for (measure <- measures) {
@@ -140,6 +140,5 @@ case class ExerciseSolution(exercise: Exercise, rating: Double, chords: List[Cho
       }
       offset += measure.contentCount
     }
-    this
   }
 }

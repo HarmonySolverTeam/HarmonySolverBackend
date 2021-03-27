@@ -15,7 +15,7 @@ class MeasureParserBuilder(private var harmonicFunctions: Option[List[HarmonicFu
       .getOrElse(sys.error("HarmonicFunction list should be defined to initialize Measure"))
       .map(_.getHarmonicFunction)
 
-    Measure(DelayHandler.handleDelays(hfs))
+    Measure(hfs)
   }
 
   override def toString: String =

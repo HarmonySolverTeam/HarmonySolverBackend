@@ -15,9 +15,9 @@ case class HarmonicFunction(
   degree: ScaleDegree.Degree,
   position: Option[ChordComponent],
   revolution: ChordComponent,
-  delay: List[Delay],
-  extra: List[ChordComponent],
-  omit: List[ChordComponent],
+  delay: Set[Delay],
+  extra: Set[ChordComponent],
+  omit: Set[ChordComponent],
   isDown: Boolean,
   system: ChordSystem.System,
   mode: Mode.BaseMode,
@@ -28,9 +28,9 @@ case class HarmonicFunction(
   override protected def getDegree: ScaleDegree.Degree  = degree
   override protected def getIsDown: Boolean             = isDown
   override protected def getMode: Mode.BaseMode         = mode
-  override protected def getExtra: List[ChordComponent] = extra
-  override protected def getOmit: List[ChordComponent]  = omit
-  override protected def getDelay: List[Delay]          = delay
+  override protected def getExtra: Set[ChordComponent] = extra
+  override protected def getOmit: Set[ChordComponent]  = omit
+  override protected def getDelay: Set[Delay]          = delay
   override protected def getKey: Option[Key] = key
   override protected def getBaseFunction: FunctionNames.BaseFunction = baseFunction
   override protected def getRevolution: ChordComponent  = revolution
@@ -105,9 +105,9 @@ object HarmonicFunction {
     degree: Option[ScaleDegree.Degree] = None,
     position: Option[ChordComponent] = None,
     revolution: Option[ChordComponent] = None,
-    delay: List[Delay] = List.empty,
-    extra: List[ChordComponent] = List.empty,
-    omit: List[ChordComponent] = List.empty,
+    delay: Set[Delay] = Set.empty,
+    extra: Set[ChordComponent] = Set.empty,
+    omit: Set[ChordComponent] = Set.empty,
     isDown: Boolean = false,
     system: ChordSystem.System = ChordSystem.UNDEFINED,
     mode: Mode.BaseMode = Mode.MAJOR,

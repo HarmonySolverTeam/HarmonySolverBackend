@@ -83,3 +83,15 @@ lazy val harmonics_solver = project
     harmonics_parser,
     algorithms
   )
+
+lazy val bass_solver = project
+  .in(file("solver/bass_solver"))
+  .settings(
+    name := "bass_solver",
+    settings,
+    libraryDependencies ++= testDependencies ++ Seq("io.spray" %% "spray-json" % "1.3.6")
+  )
+  .dependsOn(
+    harmonics_solver,
+    bass_translator
+  )

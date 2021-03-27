@@ -13,28 +13,28 @@ class HarmonicFunctionBasicBuilder extends HarmonicFunctionBuilder(false) {
       (extra.contains(getCC("9")) || extra.contains(getCC("9>")) || extra
         .contains(getCC("9<"))) && !extra.contains(getCC("7")) && !extra.contains(getCC("7<"))
     )
-      withExtra(extra.appended(getCC("7")))
+      withExtra(extra + getCC("7"))
     position match {
-      case Some(p) if !extra.contains(p) && !getBasicChordComponents.contains(p) => withExtra(extra.appended(p))
+      case Some(p) if !extra.contains(p) && !getBasicChordComponents.contains(p) => withExtra(extra + p)
       case _                                                                     =>
     }
     if (!extra.contains(getRevolution) && !getBasicChordComponents.contains(getRevolution))
-      withExtra(extra.appended(getRevolution))
+      withExtra(extra + getRevolution)
     if ((extra.contains(getCC("5<")) || extra.contains(getCC("5>"))) && !omit.contains(getCC("5")))
-      withOmit(omit.appended(getCC("5")))
+      withOmit(omit + getCC("5"))
     if (omit.contains(getCC("1")) && getRevolution == getCC("1")) withRevolution(getThird)
     if (omit.contains(getCC("5"))) {
       val fifth = getCC("5")
       if (fifth != getFifth) {
         withOmit(omit.filter(_ != fifth))
-        withOmit(omit.appended(getFifth))
+        withOmit(omit + getFifth)
       }
     }
     if (omit.contains(getCC("3"))) {
       val third = getCC("3")
       if (third != getThird) {
         withOmit(omit.filter(_ != third))
-        withOmit(omit.appended(getThird))
+        withOmit(omit + getThird)
       }
     }
     if (getRevolution == getCC("5")) withRevolution(getFifth)
@@ -51,9 +51,9 @@ class HarmonicFunctionBasicBuilder extends HarmonicFunctionBuilder(false) {
             "Ninth chord could not have both prime or fifth in position or revolution"
           )
         if (!omit.contains(fifth) && !position.contains(fifth) && getRevolution != fifth)
-          withOmit(omit.appended(fifth))
+          withOmit(omit + fifth)
         else if (!omit.contains(prime)) {
-          withOmit(omit.appended(prime))
+          withOmit(omit + prime)
           if (getRevolution == prime)
             withRevolution(getThird)
         }
