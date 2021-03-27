@@ -208,7 +208,7 @@ class HarmonicsSolverTest extends FunSuite with Matchers with TestUtils with Bef
 object HarmonicsSolverTest extends HarmonicsParser {
   override def reset(): Unit = super.reset()
 
-  private def parseInput(input: String): ParseResult[HarmonicsExercise] =
+  private[harmonics] def parseInput(input: String): ParseResult[HarmonicsExercise] =
     parse(harmonicsExerciseDef, input)
 }
 
