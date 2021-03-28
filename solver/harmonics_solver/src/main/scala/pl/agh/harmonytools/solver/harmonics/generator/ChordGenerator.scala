@@ -31,7 +31,7 @@ case class ChordGenerator(key: Key) extends LayerGenerator[Chord, ChordGenerator
     var soprano: Option[ChordComponent] = None
 
     var needToAdd: List[ChordComponent] = harmonicFunction.getBasicChordComponents ++ harmonicFunction.extra
-    needToAdd = needToAdd.filterNot(harmonicFunction.omit.contains(_))
+    needToAdd = needToAdd.filterNot(harmonicFunction.omit.contains)
     harmonicFunction.position match {
       case Some(position) =>
         soprano = Some(position)
@@ -180,7 +180,7 @@ case class ChordGenerator(key: Key) extends LayerGenerator[Chord, ChordGenerator
     schemas.map(_.map(el => chordFirstPitch + el.semitonesNumber))
   }
 
-  private def generatePossibleSopranoNotesFor(harmonicFunction: HarmonicFunction): List[Note] = {
+  def generatePossibleSopranoNotesFor(harmonicFunction: HarmonicFunction): List[Note] = {
     val temp                    = getChordTemplate(harmonicFunction)
     val schemas                 = getSchemas(harmonicFunction, temp)
     val schemasMapped           = mapSchemas(harmonicFunction, schemas)
@@ -225,7 +225,7 @@ case class ChordGenerator(key: Key) extends LayerGenerator[Chord, ChordGenerator
                     )
                     if (checkChordCorrectness(Chord(sopranoNote, altoNote, tenorNote, bassNote, harmonicFunction))) {
                       if (
-                        resultNotes.exists(n =>
+                        !resultNotes.exists(n =>
                           IntervalUtils.convertPitchToOneOctave(n.pitch) == IntervalUtils
                             .convertPitchToOneOctave(sopranoNote.pitch)
                         )

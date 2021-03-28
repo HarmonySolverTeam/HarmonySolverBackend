@@ -11,15 +11,15 @@ import pl.agh.harmonytools.utils.Extensions.ExtendedInt
 
 trait BasicComponentsOwner {
 
-  protected def getIsDown: Boolean
-  protected def getMode: Mode.BaseMode
-  protected def getExtra: Set[ChordComponent]
-  protected def getOmit: Set[ChordComponent]
-  protected def getDelay: Set[Delay]
-  protected def getDegree: ScaleDegree.Degree
-  protected def getKey: Option[Key]
-  protected def getBaseFunction: BaseFunction
-  protected def getRevolution: ChordComponent
+  def getIsDown: Boolean
+  def getMode: Mode.BaseMode
+  def getExtra: Set[ChordComponent]
+  def getOmit: Set[ChordComponent]
+  def getDelay: Set[Delay]
+  def getDegree: ScaleDegree.Degree
+  def getKey: Option[Key]
+  def getBaseFunction: BaseFunction
+  def getRevolution: ChordComponent
 
   def isInDominantRelation(next: BasicComponentsOwner): Boolean = {
     if(getIsDown != next.getIsDown && getKey == next.getKey && !(getBaseFunction == TONIC

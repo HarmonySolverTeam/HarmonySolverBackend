@@ -5,7 +5,7 @@ import pl.agh.harmonytools.solver.harmonics.evaluator.ChordRulesChecker
 import pl.agh.harmonytools.solver.harmonics.generator.{ChordGenerator, ChordGeneratorInput}
 import pl.agh.harmonytools.model.chord.Chord
 import pl.agh.harmonytools.model.harmonicfunction.HarmonicFunction
-import pl.agh.harmonytools.model.note.Note
+import pl.agh.harmonytools.model.note.{Note, NoteWithoutChordContext}
 import pl.agh.harmonytools.solver.harmonics.generator.ChordGenerator
 
 object PreChecker {
@@ -13,7 +13,7 @@ object PreChecker {
     harmonicFunctions: List[HarmonicFunction],
     chordGenerator: ChordGenerator,
     bassLine: Option[List[Note]] = None,
-    sopranoLine: Option[List[Note]] = None
+    sopranoLine: Option[List[NoteWithoutChordContext]] = None
   ): Unit = {
     if (sopranoLine.isEmpty) {
       val indexes = getHarmonicFunctionsIndexesBasedOnDelays(harmonicFunctions)

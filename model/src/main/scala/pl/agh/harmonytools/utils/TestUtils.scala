@@ -7,7 +7,7 @@ import pl.agh.harmonytools.model.harmonicfunction.HarmonicFunction
 import pl.agh.harmonytools.model.key.Key
 import pl.agh.harmonytools.model.key.Mode.MINOR
 import pl.agh.harmonytools.model.note.BaseNote.C
-import pl.agh.harmonytools.model.note.Note
+import pl.agh.harmonytools.model.note.{Note, NoteWithoutChordContext}
 import pl.agh.harmonytools.model.scale.ScaleDegree.{II, VI}
 import pl.agh.harmonytools.model.util.ChordComponentManager
 
@@ -31,13 +31,15 @@ trait TestUtils {
       false
     )
 
-    val tonic: HarmonicFunction       = HarmonicFunction(TONIC)
-    val subdominant: HarmonicFunction = HarmonicFunction(SUBDOMINANT)
-    val dominant: HarmonicFunction    = HarmonicFunction(DOMINANT)
-    val dominant7: HarmonicFunction   = HarmonicFunction(DOMINANT, extra = Set(ChordComponents.seventh))
-    val tonicOmit5: HarmonicFunction  = HarmonicFunction(TONIC, omit = Set(ChordComponents.fifth))
-    val tonicVI: HarmonicFunction     = HarmonicFunction(TONIC, degree = Some(VI))
-    val tonicVIDown: HarmonicFunction = HarmonicFunction(TONIC, degree = Some(VI), isDown = true)
+    val tonic: HarmonicFunction        = HarmonicFunction(TONIC)
+    val subdominant: HarmonicFunction  = HarmonicFunction(SUBDOMINANT)
+    val dominant: HarmonicFunction     = HarmonicFunction(DOMINANT)
+    val dominant7: HarmonicFunction    = HarmonicFunction(DOMINANT, extra = Set(ChordComponents.seventh))
+    val tonicOmit5: HarmonicFunction   = HarmonicFunction(TONIC, omit = Set(ChordComponents.fifth))
+    val tonicVI: HarmonicFunction      = HarmonicFunction(TONIC, degree = Some(VI))
+    val tonicVIDown: HarmonicFunction  = HarmonicFunction(TONIC, degree = Some(VI), isDown = true)
+    val subdominant6: HarmonicFunction = HarmonicFunction(SUBDOMINANT, extra = Set(ChordComponents.sixth))
+    val subdominantII: HarmonicFunction  = HarmonicFunction(SUBDOMINANT, degree = Some(II))
   }
 
   protected object ChordComponents {
@@ -73,5 +75,6 @@ trait TestUtils {
     val keya: Key = Key("a")
   }
 
-  val anyNote: Note = Note(0, C, ChordComponents.prime)
+  val anyNote: Note                                       = Note(0, C, ChordComponents.prime)
+  val anyNoteWithoutChordContext: NoteWithoutChordContext = NoteWithoutChordContext(0, C)
 }
