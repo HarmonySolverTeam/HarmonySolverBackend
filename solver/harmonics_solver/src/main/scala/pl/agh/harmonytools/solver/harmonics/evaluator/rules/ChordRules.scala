@@ -1,4 +1,4 @@
-package pl.agh.harmonytools.solver.harmonics.ecase objectuator
+package pl.agh.harmonytools.solver.harmonics.evaluator.rules
 
 object ChordRules {
   abstract class Rule(name: String)
@@ -11,4 +11,15 @@ object ChordRules {
   case object FalseRelation extends Rule("FalseRelation")
   case object SameFunctionCheckConnection extends Rule("SameFunctionCheckConnection")
   case object IllegalDoubledThird extends Rule("IllegalDoubledThird")
+  def getValues: List[Rule] = List(
+      ParallelOctaves,
+      ParallelFifths,
+      CrossingVoices,
+      OneDirection,
+      ForbiddenJump,
+      HiddenOctaves,
+      FalseRelation,
+      SameFunctionCheckConnection,
+      IllegalDoubledThird
+    )
 }

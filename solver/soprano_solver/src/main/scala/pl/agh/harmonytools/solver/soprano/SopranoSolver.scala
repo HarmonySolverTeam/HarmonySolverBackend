@@ -6,7 +6,7 @@ import pl.agh.harmonytools.exercise.soprano.SopranoExercise
 import pl.agh.harmonytools.model.chord.Chord
 import pl.agh.harmonytools.model.harmonicfunction.HarmonicFunction
 import pl.agh.harmonytools.model.measure.{Measure, MeasurePlace}
-import pl.agh.harmonytools.solver.harmonics.ecase.ChordRules
+import pl.agh.harmonytools.solver.harmonics.evaluator.rules.ChordRules
 import pl.agh.harmonytools.solver.harmonics.generator.ChordGeneratorInput
 import pl.agh.harmonytools.solver.{ExerciseSolution, Solver}
 import pl.agh.harmonytools.solver.soprano.evaluator.SopranoRulesChecker
@@ -20,7 +20,7 @@ case class SopranoSolver(exercise: SopranoExercise, punishmentRatios: Option[Map
     var inputs: List[HarmonicFunctionGeneratorInput] = List.empty
     for (i <- exercise.measures.indices) {
       val measure     = exercise.measures(i)
-      var durationSum = 0
+      var durationSum = 0.0
       for (j <- measure.indices) {
         val note = measure(j)
         inputs = inputs :+ HarmonicFunctionGeneratorInput(

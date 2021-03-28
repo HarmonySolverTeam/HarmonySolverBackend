@@ -2,7 +2,7 @@ package pl.agh.harmonytools.solver.soprano.evaluator
 
 import pl.agh.harmonytools.algorithm.evaluator.{ConnectionEvaluator, HardRule, SoftRule}
 import pl.agh.harmonytools.model.key.Key
-import pl.agh.harmonytools.solver.harmonics.ecase.ChordRules
+import pl.agh.harmonytools.solver.harmonics.evaluator.rules.ChordRules
 import pl.agh.harmonytools.solver.harmonics.evaluator.{AdaptiveRulesChecker, ChordRulesChecker}
 import pl.agh.harmonytools.solver.harmonics.generator.ChordGenerator
 import pl.agh.harmonytools.solver.soprano.evaluator.rules.hard.{DegreeRule, DownAndNotDownRule, ExistsSolutionRule, ForbiddenDSConnectionRule, KeepBasicChordsInSecondRelationRule, Revolution5Rule, SecondaryDominantConnectionRule}

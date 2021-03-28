@@ -10,7 +10,7 @@ import pl.agh.harmonytools.solver.harmonics.generator.ChordGenerator
 import pl.agh.harmonytools.solver.harmonics.utils.ExerciseCorrector
 import pl.agh.harmonytools.model.chord.Chord
 import pl.agh.harmonytools.model.note.{Note, NoteWithoutChordContext}
-import pl.agh.harmonytools.solver.harmonics.ecase.ChordRules
+import pl.agh.harmonytools.solver.harmonics.evaluator.rules.ChordRules
 import pl.agh.harmonytools.solver.harmonics.evaluator.{AdaptiveRulesChecker, ChordRulesChecker}
 import pl.agh.harmonytools.solver.harmonics.generator.{ChordGenerator, ChordGeneratorInput}
 import pl.agh.harmonytools.solver.harmonics.utils.{ExerciseCorrector, PreChecker}

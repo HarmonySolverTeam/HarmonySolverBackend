@@ -1,12 +1,16 @@
-package pl.agh.harmonytools.solver.soprano.evaluation
+package pl.agh.harmonytools.solver.soprano.evaluator
 
 import org.scalatest.{FunSuite, Matchers}
 import pl.agh.harmonytools.algorithm.evaluator.Connection
+import pl.agh.harmonytools.model.chord.Chord
 import pl.agh.harmonytools.model.harmonicfunction.FunctionNames.DOMINANT
 import pl.agh.harmonytools.model.harmonicfunction.HarmonicFunction
 import pl.agh.harmonytools.model.measure.MeasurePlace
-import pl.agh.harmonytools.model.note.BaseNote.{A, B, C, D}
-import pl.agh.harmonytools.model.note.NoteWithoutChordContext
+import pl.agh.harmonytools.model.note.BaseNote.{A, B, C, D, E, F, G}
+import pl.agh.harmonytools.model.note.{Note, NoteWithoutChordContext}
+import pl.agh.harmonytools.solver.harmonics.evaluator.AdaptiveRulesChecker
+import pl.agh.harmonytools.solver.harmonics.evaluator.rules.ChordRules
+import pl.agh.harmonytools.solver.harmonics.evaluator.rules.hard.ParallelOctavesRule
 import pl.agh.harmonytools.solver.soprano.evaluator.rules.hard.{ForbiddenDSConnectionRule, SecondaryDominantConnectionRule}
 import pl.agh.harmonytools.solver.soprano.evaluator.rules.soft.{ChangeFunctionAtMeasureBeginningRule, ChangeFunctionConnectionRule, ChangeFunctionOnDownBeatRule, DominantRelationRule, FourthChordsRule, JumpRule, SecondRelationRule}
 import pl.agh.harmonytools.solver.soprano.evaluator.{HarmonicFunctionWithSopranoInfo, SopranoRulesChecker}
@@ -15,6 +19,7 @@ import pl.agh.harmonytools.utils.TestUtils
 class SopranoRulesCheckerTest extends FunSuite with Matchers with TestUtils {
   import Keys._
   import HarmonicFunctions._
+  import ChordComponents._
 
   private val rulesChecker = SopranoRulesChecker(keyC)
 
@@ -168,5 +173,31 @@ class SopranoRulesCheckerTest extends FunSuite with Matchers with TestUtils {
     val rule = FourthChordsRule()
     rule.isNotBroken(connection1)
     rule.isBroken(connection2)
+  }
+
+  private var punishmentRatios = ChordRules.getValues.map(_ -> 1.0).toMap
+  private var adaptiveChordRulesChecker = AdaptiveRulesChecker(punishmentRatios)
+
+  test("Adaptive chord rules checker init with all hard rules test") {
+    adaptiveChordRulesChecker.getHardRules.length shouldBe 11
+  }
+
+  test("Adaptive chord rules checker init with some soft rules test") {
+    val ch1 = Chord(Note(72, C, prime), Note(67, G, fifth), Note(64, E, third), Note(48, C, prime), tonic)
+    val ch2 = Chord(Note(77, F, prime), Note(69, A, third), Note(60, C, fifth), Note(53, F, prime), subdominant)
+    val connection = Connection(ch2, ch1)
+    val rule1Opt = adaptiveChordRulesChecker.getHardRules.find(_.isInstanceOf[ParallelOctavesRule])
+    rule1Opt.isDefined shouldBe true
+    val rule1 = rule1Opt.get
+    val firstResult = rule1.evaluate(connection)
+    punishmentRatios = punishmentRatios.updated(ChordRules.ParallelFifths, 0.5)
+    punishmentRatios = punishmentRatios.updated(ChordRules.ParallelOctaves, 0.5)
+    adaptiveChordRulesChecker = AdaptiveRulesChecker(punishmentRatios)
+    val rule2Opt = adaptiveChordRulesChecker.getSoftRules.find(_.isInstanceOf[ParallelOctavesRule])
+    rule2Opt.isDefined shouldBe true
+    val rule2 = rule2Opt.get
+    val secondResult = rule2.evaluate(connection)
+    adaptiveChordRulesChecker.getHardRules.length shouldBe 9
+    secondResult shouldBe firstResult * 0.5
   }
 }

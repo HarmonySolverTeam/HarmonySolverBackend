@@ -1,12 +1,12 @@
 package pl.agh.harmonytools.solver.soprano.evaluator.rules.hard
 
 import pl.agh.harmonytools.algorithm.evaluator.{Connection, HardRule}
-import pl.agh.harmonytools.solver.harmonics.evaluator.ChordRulesChecker
+import pl.agh.harmonytools.solver.harmonics.evaluator.{BasicChordRulesChecker, ChordRulesChecker}
 import pl.agh.harmonytools.solver.harmonics.generator.{ChordGenerator, ChordGeneratorInput}
 import pl.agh.harmonytools.solver.soprano.evaluator.HarmonicFunctionWithSopranoInfo
 import pl.agh.harmonytools.solver.soprano.evaluator.rules.{satisfied, totallyBroken}
 
-case class ExistsSolutionRule(chordRulesChecker: ChordRulesChecker, chordGenerator: ChordGenerator)
+case class ExistsSolutionRule(chordRulesChecker: BasicChordRulesChecker, chordGenerator: ChordGenerator)
   extends HardRule[HarmonicFunctionWithSopranoInfo] {
   override def evaluate(connection: Connection[HarmonicFunctionWithSopranoInfo]): Double = {
     val prevFunction = connection.prev.harmonicFunction
