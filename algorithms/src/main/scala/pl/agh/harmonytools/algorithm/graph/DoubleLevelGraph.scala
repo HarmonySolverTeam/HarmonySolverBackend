@@ -1,7 +1,9 @@
 package pl.agh.harmonytools.algorithm.graph
+import pl.agh.harmonytools.algorithm.generator.GeneratorInput
+import pl.agh.harmonytools.algorithm.graph.builders.SingleLevelGraphBuilder
 import pl.agh.harmonytools.algorithm.graph.node.{DoubleLevelLayer, Layer, NeighbourNode, NeighbourNodes, Node, NodeContent, NodeWithNestedLayer}
 
-class DoubleLevelGraph[T <: NodeContent, S <: NodeContent, Q](
+class DoubleLevelGraph[T <: NodeContent, S <: NodeContent, Q, R <: GeneratorInput](
   private val firstNode: NodeWithNestedLayer[T, S],
   private val lastNode: NodeWithNestedLayer[T, S],
   private var doubleLevelLayers: List[DoubleLevelLayer[T, S]],
@@ -17,16 +19,16 @@ class DoubleLevelGraph[T <: NodeContent, S <: NodeContent, Q](
       .reduce(_ ++ _)
       .concat(List(nestedFirst, nestedLast))
 
-  final def reduceToSingleLevelGraph(): SingleLevelGraph[T, S] = {
+  final def reduceToSingleLevelGraphBuilder(): SingleLevelGraphBuilder[S, R] = {
     if (getLast.getDistanceFromBeginning == Int.MaxValue)
       throw new InternalError("Shortest paths are not calculated properly: " + getNodes.length)
 
-    var layers: List[Layer[T]] = List.empty
-    var stack: List[Node[T]]   = List(lastNode)
+    var layers: List[Layer[S]] = List.empty
+    var stack: List[Node[S]]   = List(nestedLast)
 
     while (stack.length != 1 || stack.head == getFirst) {
-      var edges: List[(Node[T], Node[T])] = List.empty
-      var newStack: List[Node[T]]            = List.empty
+      var edges: List[(Node[S], Node[S])] = List.empty
+      var newStack: List[Node[S]]            = List.empty
       for (currentNode <- stack) {
         for (prevNode <- currentNode.getPrevsInShortestPath) {
           edges = edges :+ (prevNode, currentNode)
@@ -37,14 +39,16 @@ class DoubleLevelGraph[T <: NodeContent, S <: NodeContent, Q](
       newStack.foreach(_.overrideNextNeighbours(NeighbourNodes.empty))
       edges.foreach(e => e._1.addNextNeighbour(new NeighbourNode(e._2)))
       stack = newStack
-      val layer = new Layer[T](stack)
+      val layer = new Layer[S](stack)
       layers = layers :+ layer
     }
     layers = layers.drop(1)
     getFirst.getNextNeighbours.foreach(_.setWeight(0))
     getLast.getPrevNeighbours.foreach(_.setWeight(0))
 
-    new SingleLevelGraph[T, S](layers, firstNode, lastNode)
+    val builder = new SingleLevelGraphBuilder[S, R](nestedFirst, nestedLast)
+    builder.withConnectedLayers(layers)
+    builder
   }
 
   def printInfoSingleNode[A <: NodeContent](node: Node[A], neighbourNode: NeighbourNode[A], layerId: Int): Unit =

@@ -1,5 +1,6 @@
 package pl.agh.harmonytools.exercise.soprano
 
+import pl.agh.harmonytools.model.exercise.Exercise
 import pl.agh.harmonytools.model.harmonicfunction.HarmonicFunction
 import pl.agh.harmonytools.model.key.Key
 import pl.agh.harmonytools.model.measure.Meter
@@ -12,4 +13,4 @@ case class SopranoExercise(
   durations: List[Double],
   measures: List[List[NoteWithoutChordContext]],
   possibleFunctionsList: List[HarmonicFunction]
-)
+) extends Exercise(key, meter, measures = List.empty) // todo

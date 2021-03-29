@@ -161,14 +161,10 @@ class SingleLevelGraphBuilder[T <: NodeContent, S <: GeneratorInput](first: Node
 
 }
 
-class NestedSingleLevelGraphBuilder[T <: NodeContent with GeneratorInput, S <: NodeContent, Q <: GeneratorInput](
+class NestedSingleLevelGraphBuilder[T <: NodeContent, S <: NodeContent, Q <: GeneratorInput](
   first: NodeWithNestedLayer[T, S],
   last: NodeWithNestedLayer[T, S]
 ) extends SingleLevelGraphBuilder[T, Q](first, last) {
-
-  def this(firstContent: T, lastContent: T) = {
-    this(new NodeWithNestedLayer[T, S](firstContent), new NodeWithNestedLayer[T, S](lastContent))
-  }
 
   override protected def generateLayers(): Unit =
     getInputs.foreach(input =>

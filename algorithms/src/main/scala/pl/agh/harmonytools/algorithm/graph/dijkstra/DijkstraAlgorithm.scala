@@ -28,7 +28,7 @@ case class DijkstraAlgorithm[T <: NodeContent](graph: ScoreGraph[T]) {
       v.addPrevsInShortestPath(u)
   }
 
-  private def findShortestPaths(): Unit = {
+  def findShortestPaths(): Unit = {
     init()
     while (queue.nonEmpty) {
       val u = queue.dequeue
