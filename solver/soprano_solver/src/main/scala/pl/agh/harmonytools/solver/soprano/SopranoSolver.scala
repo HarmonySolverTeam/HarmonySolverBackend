@@ -2,14 +2,14 @@ package pl.agh.harmonytools.solver.soprano
 
 import pl.agh.harmonytools.algorithm.graph.builders.{DoubleLevelGraphBuilder, SingleLevelGraphBuilder}
 import pl.agh.harmonytools.algorithm.graph.dijkstra.DijkstraAlgorithm
-import pl.agh.harmonytools.algorithm.graph.node.NodeWithNestedLayer
+import pl.agh.harmonytools.algorithm.graph.node.{EmptyContent, Node}
 import pl.agh.harmonytools.exercise.soprano.SopranoExercise
 import pl.agh.harmonytools.model.chord.Chord
 import pl.agh.harmonytools.model.harmonicfunction.FunctionNames.{DOMINANT, SUBDOMINANT, TONIC}
 import pl.agh.harmonytools.model.harmonicfunction.HarmonicFunction
 import pl.agh.harmonytools.model.key.Key
 import pl.agh.harmonytools.model.measure.{Measure, MeasurePlace, Meter}
-import pl.agh.harmonytools.model.note.BaseNote.{C, D}
+import pl.agh.harmonytools.model.note.BaseNote.{C, D, E}
 import pl.agh.harmonytools.model.note.NoteWithoutChordContext
 import pl.agh.harmonytools.solver.harmonics.evaluator.{AdaptiveRulesChecker, ChordRulesChecker}
 import pl.agh.harmonytools.solver.harmonics.evaluator.rules.ChordRules
@@ -58,7 +58,7 @@ case class SopranoSolver(exercise: SopranoExercise, punishmentRatios: Option[Map
       firstContent = first,
       lastContent = last
     ) {
-      def prepareInnerGeneratorInput(node: NodeWithNestedLayer[T, S], outerGeneratorInput: Q, layerId: Int): R =
+      def prepareInnerGeneratorInput(node: Node[T, S], outerGeneratorInput: Q, layerId: Int): R =
         ChordGeneratorInput(node.getContent.harmonicFunction, layerId != 0, Some(outerGeneratorInput.sopranoNote))
     }
 
@@ -74,16 +74,16 @@ case class SopranoSolver(exercise: SopranoExercise, punishmentRatios: Option[Map
 
     val sopranoGraph = graphBuilder.build()
 
-    val dijkstra = new DijkstraAlgorithm[S](sopranoGraph)
+    val dijkstra = new DijkstraAlgorithm[S, EmptyContent](sopranoGraph)
     dijkstra.findShortestPaths()
     val chordGraph = sopranoGraph.reduceToSingleLevelGraphBuilder()
 
-    val chordGraphBuilder = new SingleLevelGraphBuilder[S, R](nestedFirst, nestedLast)
+    val chordGraphBuilder = new SingleLevelGraphBuilder[S, R, EmptyContent](nestedFirst, nestedLast)
     chordGraphBuilder.withEvaluator(innerEvaluator)
     chordGraphBuilder.withGraphTemplate(chordGraph)
     val innerGraph = chordGraphBuilder.build()
 
-    val dijkstra2     = new DijkstraAlgorithm[S](innerGraph)
+    val dijkstra2     = new DijkstraAlgorithm[S, EmptyContent](innerGraph)
     val solutionNodes = dijkstra2.getShortestPathToLastNode
 
     if (solutionNodes.length != innerGraph.getLayers.length)
@@ -101,7 +101,7 @@ object SopranoSolver extends App {
     Meter(4, 4),
     measures = List(
       List(NoteWithoutChordContext(72, C, 0.5), NoteWithoutChordContext(72, C, 0.5)),
-      List(NoteWithoutChordContext(74, D, 0.5), NoteWithoutChordContext(72, C, 0.5))
+      List(NoteWithoutChordContext(74, D, 0.5), NoteWithoutChordContext(76, E, 0.5))
     ),
     durations = List.empty,
     notes = List.empty,

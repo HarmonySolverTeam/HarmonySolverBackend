@@ -3,6 +3,7 @@ package pl.agh.harmonytools.solver.harmonics
 import pl.agh.harmonytools.algorithm.graph.SingleLevelGraph
 import pl.agh.harmonytools.algorithm.graph.builders.SingleLevelGraphBuilder
 import pl.agh.harmonytools.algorithm.graph.dijkstra.DijkstraAlgorithm
+import pl.agh.harmonytools.algorithm.graph.node.EmptyContent
 import pl.agh.harmonytools.exercise.harmonics.HarmonicsExercise
 import pl.agh.harmonytools.exercise.harmonics.helpers.DelayHandler
 import pl.agh.harmonytools.harmonics.parser.DeflectionsHandler
@@ -83,8 +84,8 @@ case class HarmonicsSolver(
   private val first: Chord = Chord.empty
   private val last: Chord = Chord.empty
 
-  private def prepareGraph(): SingleLevelGraph[Chord, ChordGeneratorInput] = {
-    val graphBuilder = new SingleLevelGraphBuilder[Chord, ChordGeneratorInput](first, last)
+  private def prepareGraph(): SingleLevelGraph[Chord, EmptyContent] = {
+    val graphBuilder = new SingleLevelGraphBuilder[Chord, ChordGeneratorInput, EmptyContent](first, last)
     graphBuilder.withGenerator(chordGenerator)
     graphBuilder.withEvaluator(
       punishmentRatios match {
@@ -101,7 +102,7 @@ case class HarmonicsSolver(
       PreChecker.run(harmonicFunctions, chordGenerator, bassLine, sopranoLine)
     }
     val graph = prepareGraph()
-    val dijkstra = new DijkstraAlgorithm[Chord](graph)
+    val dijkstra = new DijkstraAlgorithm[Chord, EmptyContent](graph)
     val solutionNodes = dijkstra.getShortestPathToLastNode
     if (solutionNodes.length != graph.getLayers.length)
       return ExerciseSolution(exercise, -1, List.empty, success = false)

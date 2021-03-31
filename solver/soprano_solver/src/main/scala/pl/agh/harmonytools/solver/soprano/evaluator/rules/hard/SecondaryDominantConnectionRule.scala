@@ -8,7 +8,7 @@ import pl.agh.harmonytools.solver.soprano.evaluator.rules.{totallyBroken, satisf
 
 case class SecondaryDominantConnectionRule(key: Key) extends HardRule[HarmonicFunctionWithSopranoInfo] {
   override def evaluate(connection: Connection[HarmonicFunctionWithSopranoInfo]): Double = {
-    if (specificConnectionRuleDT.isNotBroken(connection) && connection.prev.harmonicFunction.key == connection.prev.harmonicFunction.key) {
+    if (specificConnectionRuleDT.isBroken(connection) && connection.prev.harmonicFunction.key != connection.current.harmonicFunction.key) {
       if (!connection.prev.harmonicFunction.key.contains(DeflectionsHandler.calculateKey(connection.current.harmonicFunction)(key))) {
         return totallyBroken
       }

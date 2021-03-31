@@ -3,7 +3,7 @@ package pl.agh.harmonytools.solver.soprano.evaluator.rules.soft
 import pl.agh.harmonytools.algorithm.evaluator.{Connection, IRule, SoftRule}
 import pl.agh.harmonytools.model.scale.ScaleDegree.{I, V}
 import pl.agh.harmonytools.solver.soprano.evaluator.HarmonicFunctionWithSopranoInfo
-import pl.agh.harmonytools.solver.soprano.evaluator.rules.{totallyBroken, satisfied}
+import pl.agh.harmonytools.solver.soprano.evaluator.rules.satisfied
 
 case class HarmonicFunctionRelationRule() extends SoftRule[HarmonicFunctionWithSopranoInfo] {
   private var allSubRulesBroken = true

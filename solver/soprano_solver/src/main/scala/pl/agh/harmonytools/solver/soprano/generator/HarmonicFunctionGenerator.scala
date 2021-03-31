@@ -19,7 +19,7 @@ case class HarmonicFunctionGenerator(
   for (hf <- allowedHarmonicFunctions) {
     val possibleNotesToHarmonize = chordGenerator.generatePossibleSopranoNotesFor(hf)
     for (note <- possibleNotesToHarmonize) {
-      map.pushToValues(note.pitch %% 12 + 60, note.baseNote, hf)
+      map.pushToValues(note.pitch %% 12 + 60, note.baseNote, hf.copy(position = Some(note.chordComponent)))
     }
   }
 

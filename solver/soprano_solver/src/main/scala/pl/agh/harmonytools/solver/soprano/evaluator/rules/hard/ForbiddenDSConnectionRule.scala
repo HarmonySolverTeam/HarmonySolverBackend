@@ -7,7 +7,7 @@ import pl.agh.harmonytools.solver.soprano.evaluator.rules.{specificConnectionRul
 case class ForbiddenDSConnectionRule() extends HardRule[HarmonicFunctionWithSopranoInfo] {
   override def evaluate(connection: Connection[HarmonicFunctionWithSopranoInfo]): Double = {
     val dsRule = specificConnectionRuleDS
-    if (dsRule.isNotBroken(connection) && connection.prev.harmonicFunction.hasMajorMode)
+    if (dsRule.isBroken(connection) && connection.prev.harmonicFunction.hasMajorMode)
       totallyBroken
     else
       satisfied

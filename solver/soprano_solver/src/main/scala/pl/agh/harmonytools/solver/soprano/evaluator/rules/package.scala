@@ -14,6 +14,8 @@ package object rules {
   val specificConnectionRuleDS: SpecificFunctionConnectionRule = SpecificFunctionConnectionRule(DOMINANT, SUBDOMINANT)
   val specificConnectionRuleSD: SpecificFunctionConnectionRule = SpecificFunctionConnectionRule(SUBDOMINANT, DOMINANT)
   val specificConnectionRuleTS: SpecificFunctionConnectionRule = SpecificFunctionConnectionRule(TONIC, SUBDOMINANT)
+  val specificConnectionRuleST: SpecificFunctionConnectionRule = SpecificFunctionConnectionRule(SUBDOMINANT, TONIC)
+  val specificConnectionRuleTD: SpecificFunctionConnectionRule = SpecificFunctionConnectionRule(TONIC, DOMINANT)
   val sameFunctionRule: SameFunctionRule                       = SameFunctionRule()
   val notChangeFunctionRule: NotChangeFunctionRule             = NotChangeFunctionRule()
 }
