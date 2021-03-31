@@ -103,7 +103,17 @@ lazy val soprano_solver = project
   .settings(
     name := "soprano_solver",
     settings,
-    libraryDependencies ++= testDependencies ++ Seq("io.spray" %% "spray-json" % "1.3.6")
+    libraryDependencies ++= testDependencies
+  )
+  .dependsOn(
+    harmonics_solver
+  )
+
+lazy val validator = project
+  .settings(
+    name := "validator",
+    settings,
+    libraryDependencies ++= testDependencies
   )
   .dependsOn(
     harmonics_solver

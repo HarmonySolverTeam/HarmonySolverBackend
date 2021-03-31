@@ -16,7 +16,7 @@ case class ForbiddenJumpRule(
     val prevChord = connection.prev
     for (i <- voicesIndexes) {
       if (pitchOffsetBetween(currentChord.notes(i), prevChord.notes(i)) > 9 && !(notNeighbourChords && i == 0) &&
-        !(i == 0 && pitchOffsetBetween(currentChord.notes(i), prevChord.notes(i)) == 12) && !skipCheckingVoiceIncorrectJump(i)) {
+        !(i == 3 && pitchOffsetBetween(currentChord.notes(i), prevChord.notes(i)) == 12) && !skipCheckingVoiceIncorrectJump(i)) {
         return evaluationRatio * 40
       }
       if (isAlteredInterval(prevChord.notes(i), currentChord.notes(i))) {
