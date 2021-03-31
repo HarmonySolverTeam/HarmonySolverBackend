@@ -31,15 +31,15 @@ trait TestUtils {
       false
     )
 
-    val tonic: HarmonicFunction        = HarmonicFunction(TONIC)
-    val subdominant: HarmonicFunction  = HarmonicFunction(SUBDOMINANT)
-    val dominant: HarmonicFunction     = HarmonicFunction(DOMINANT)
-    val dominant7: HarmonicFunction    = HarmonicFunction(DOMINANT, extra = Set(ChordComponents.seventh))
-    val tonicOmit5: HarmonicFunction   = HarmonicFunction(TONIC, omit = Set(ChordComponents.fifth))
-    val tonicVI: HarmonicFunction      = HarmonicFunction(TONIC, degree = Some(VI))
-    val tonicVIDown: HarmonicFunction  = HarmonicFunction(TONIC, degree = Some(VI), isDown = true)
-    val subdominant6: HarmonicFunction = HarmonicFunction(SUBDOMINANT, extra = Set(ChordComponents.sixth))
-    val subdominantII: HarmonicFunction  = HarmonicFunction(SUBDOMINANT, degree = Some(II))
+    val tonic: HarmonicFunction         = HarmonicFunction(TONIC)
+    val subdominant: HarmonicFunction   = HarmonicFunction(SUBDOMINANT)
+    val dominant: HarmonicFunction      = HarmonicFunction(DOMINANT)
+    val dominant7: HarmonicFunction     = HarmonicFunction(DOMINANT, extra = Set(ChordComponents.seventh))
+    val tonicOmit5: HarmonicFunction    = HarmonicFunction(TONIC, omit = Set(ChordComponents.fifth))
+    val tonicVI: HarmonicFunction       = HarmonicFunction(TONIC, degree = Some(VI))
+    val tonicVIDown: HarmonicFunction   = HarmonicFunction(TONIC, degree = Some(VI), isDown = true)
+    val subdominant6: HarmonicFunction  = HarmonicFunction(SUBDOMINANT, extra = Set(ChordComponents.sixth))
+    val subdominantII: HarmonicFunction = HarmonicFunction(SUBDOMINANT, degree = Some(II))
   }
 
   protected object ChordComponents {
@@ -63,16 +63,26 @@ trait TestUtils {
   }
 
   protected object Keys {
-    val keyF: Key = Key("F")
-    val keyC: Key = Key("C")
-    val keyG: Key = Key("G")
-    val keyD: Key = Key("D")
-    val keyA: Key = Key("A")
-    val keyE: Key = Key("E")
-    val keyB: Key = Key("B")
+    val keyF: Key  = Key("F")
+    val keyC: Key  = Key("C")
+    val keyG: Key  = Key("G")
+    val keyD: Key  = Key("D")
+    val keyA: Key  = Key("A")
+    val keyE: Key  = Key("E")
+    val keyB: Key  = Key("B")
+    val keyBb: Key = Key("Bb")
+    val keyEb: Key = Key("Eb")
+    val keyAb: Key = Key("Ab")
+    val keyGb: Key = Key("Gb")
 
-    val keyc: Key = Key("c")
-    val keya: Key = Key("a")
+    val keyc: Key      = Key("c")
+    val keya: Key      = Key("a")
+    val keyb: Key      = Key("b")
+    val keyf: Key      = Key("f")
+    val keybb: Key     = Key("bb")
+    val keyfsharp: Key = Key("f#")
+    val keycsharp: Key = Key("c#")
+    val keygsharp: Key = Key("g#")
   }
 
   val anyNote: Note                                       = Note(0, C, ChordComponents.prime)

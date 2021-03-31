@@ -14,7 +14,7 @@ import pl.agh.harmonytools.model.note.NoteWithoutChordContext
 import pl.agh.harmonytools.solver.harmonics.evaluator.{AdaptiveRulesChecker, ChordRulesChecker}
 import pl.agh.harmonytools.solver.harmonics.evaluator.rules.ChordRules
 import pl.agh.harmonytools.solver.harmonics.generator.{ChordGenerator, ChordGeneratorInput}
-import pl.agh.harmonytools.solver.{ExerciseSolution, Solver}
+import pl.agh.harmonytools.solver.{ExerciseSolution, Solver, SolverError}
 import pl.agh.harmonytools.solver.soprano.evaluator.{HarmonicFunctionWithSopranoInfo, SopranoRulesChecker}
 import pl.agh.harmonytools.solver.soprano.generator.{HarmonicFunctionGenerator, HarmonicFunctionGeneratorInput}
 
@@ -46,12 +46,12 @@ case class SopranoSolver(exercise: SopranoExercise, punishmentRatios: Option[Map
   private val nestedLast: Chord                      = Chord.empty
   private val first: HarmonicFunctionWithSopranoInfo = HarmonicFunctionWithSopranoInfo.empty
   private val last: HarmonicFunctionWithSopranoInfo  = HarmonicFunctionWithSopranoInfo.empty
+  type T = HarmonicFunctionWithSopranoInfo
+  type S = Chord
+  type Q = HarmonicFunctionGeneratorInput
+  type R = ChordGeneratorInput
 
   override def solve(): ExerciseSolution = {
-    type T = HarmonicFunctionWithSopranoInfo
-    type S = Chord
-    type Q = HarmonicFunctionGeneratorInput
-    type R = ChordGeneratorInput
     val graphBuilder = new DoubleLevelGraphBuilder[T, S, Q, R](
       nestedFirstContent = nestedFirst,
       nestedLastContent = nestedLast,

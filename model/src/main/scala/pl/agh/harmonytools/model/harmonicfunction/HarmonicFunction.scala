@@ -24,6 +24,8 @@ case class HarmonicFunction(
   key: Option[Key],
   isRelatedBackwards: Boolean
 ) extends BasicComponentsOwner with MeasureContent {
+  def getSimpleName: String = baseFunction.name + degree + {if (revolution != getPrime) "rev" + revolution.chordComponentString else ""}
+
 
   override def getDegree: ScaleDegree.Degree  = degree
   override def getIsDown: Boolean             = isDown
