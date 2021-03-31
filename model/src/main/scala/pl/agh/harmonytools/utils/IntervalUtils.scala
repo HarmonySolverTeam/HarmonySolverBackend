@@ -5,7 +5,7 @@ import pl.agh.harmonytools.model.harmonicfunction.HarmonicFunction
 import pl.agh.harmonytools.model.key.{Key, Mode}
 import pl.agh.harmonytools.model.key.Mode.{BaseMode, MAJOR, MINOR}
 import pl.agh.harmonytools.model.note.BaseNote.BaseNoteType
-import pl.agh.harmonytools.model.note.{BaseNote, Note}
+import pl.agh.harmonytools.model.note.{BaseNote, Note, NoteWithoutChordContext}
 import pl.agh.harmonytools.model.scale.{MajorScale, MinorScale}
 import pl.agh.harmonytools.model.scale.ScaleDegree.Degree
 import pl.agh.harmonytools.utils.Extensions.ExtendedInt
@@ -25,6 +25,9 @@ object IntervalUtils {
   }
 
   def pitchOffsetBetween(note1: Note, note2: Note): Int =
+    Math.abs(note1.pitch - note2.pitch)
+
+  def pitchOffsetBetween(note1: NoteWithoutChordContext, note2: NoteWithoutChordContext): Int =
     Math.abs(note1.pitch - note2.pitch)
 
   def toBaseNote(

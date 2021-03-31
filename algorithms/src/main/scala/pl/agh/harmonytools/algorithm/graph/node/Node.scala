@@ -1,19 +1,20 @@
 package pl.agh.harmonytools.algorithm.graph.node
 
+import pl.agh.harmonytools.algorithm.{LeafLayer, LeafNeighbourNode}
 import pl.agh.harmonytools.algorithm.graph.dijkstra.DijkstraNode
 
-class Node[T <: NodeContent](
-  private val content: T,
-  private var nextNeighbours: NeighbourNodes[T] = NeighbourNodes.empty[T],
-  private var prevNeighbours: NeighbourNodes[T] = NeighbourNodes.empty[T]
+class Node[T <: NodeContent, S <: NodeContent](
+  protected val content: T,
+  protected var nextNeighbours: NeighbourNodes[T, S] = NeighbourNodes.empty[T, S],
+  protected var prevNeighbours: NeighbourNodes[T, S] = NeighbourNodes.empty[T, S]
 ) extends DijkstraNode {
+  private var nestedLayer: Option[LeafLayer[S]] = None
+  def setNestedLayer(l: LeafLayer[S]): Unit     = nestedLayer = Some(l)
+  def getNestedLayer: LeafLayer[S]              = nestedLayer.getOrElse(sys.error("Nested layer not defined"))
+  def hasNestedLayer: Boolean               = nestedLayer.isDefined
 
-  private var nestedLayer: Option[Layer[T]] = None
-//  def setNestedLayer(l: Layer[T, S]): Unit     = nestedLayer = Some(l)
-//  def getNestedLayer: Layer[T, S]              = nestedLayer.getOrElse(sys.error("Nested layer not defined"))
-//  def hasNestedLayer: Boolean                  = nestedLayer.isDefined
 
-  final def getPrevContentIfSingle: T =
+  def getPrevContentIfSingle: T =
     getUniquePrevContents.headOption
       .getOrElse(
         throw new InternalError(
@@ -24,26 +25,26 @@ class Node[T <: NodeContent](
       .node
       .getContent
 
-  def getUniquePrevContents: List[NeighbourNode[T]] = prevNeighbours.getList.distinct
+  def getUniquePrevContents: List[NeighbourNode[T, S]] = prevNeighbours.getList.distinct
 
   def getUniquePrevContentsCount: Int = getUniquePrevContents.length
 
   def getContent: T = content
 
-  def getPrevNeighbours: List[NeighbourNode[T]] = prevNeighbours.getList
+  def getPrevNeighbours: List[NeighbourNode[T, S]] = prevNeighbours.getList
 
-  def getNextNeighbours: List[NeighbourNode[T]] = nextNeighbours.getList
+  def getNextNeighbours: List[NeighbourNode[T, S]] = nextNeighbours.getList
 
   def hasNext: Boolean = nextNeighbours.nonEmpty
 
   def hasPrev: Boolean = prevNeighbours.nonEmpty
 
-  def addNextNeighbour(neighbourNode: NeighbourNode[T]): Unit = {
+  def addNextNeighbour(neighbourNode: NeighbourNode[T, S]): Unit = {
     nextNeighbours.add(neighbourNode)
     neighbourNode.node.prevNeighbours.add(this)
   }
 
-  def setNextNeighbours(neighboursList: List[NeighbourNode[T]]): Unit =
+  def setNextNeighbours(neighboursList: List[NeighbourNode[T, S]]): Unit =
     nextNeighbours = NeighbourNodes(neighboursList)
 
   def removeLeftConnections(): Unit = {
@@ -65,36 +66,32 @@ class Node[T <: NodeContent](
    * Removes given node from nextNeighbours in this and this from prevNeighbours in given node.
    * @param node which has to be removed
    */
-  def removeNextNeighbour(node: Node[T]): Unit = {
-    nextNeighbours = NeighbourNodes(nextNeighbours.getList.filter(neighbour => neighbour.node != node))
+  def removeNextNeighbour(node: Node[T, S]): Unit = {
+    nextNeighbours.remove(node)
     node.prevNeighbours.remove(this)
   }
 
-  def overridePrevNeighbours(newPrevNeighbours: NeighbourNodes[T]): Unit =
-    prevNeighbours = newPrevNeighbours;
+  def overridePrevNeighbours(newPrevNeighbours: NeighbourNodes[T, S]): Unit =
+    prevNeighbours = newPrevNeighbours
 
-  def overrideNextNeighbours(newNextNeighbours: NeighbourNodes[T]): Unit =
-    nextNeighbours = newNextNeighbours;
+  def overrideNextNeighbours(newNextNeighbours: NeighbourNodes[T, S]): Unit =
+    nextNeighbours = newNextNeighbours
 
-  def duplicate(): Node[T] = {
-    val newNode = new Node[T](content);
+  def duplicate(): Node[T, S] = {
+    val newNode = new Node[T, S](content);
     for (neighbour <- nextNeighbours.getList)
       newNode.addNextNeighbour(new NeighbourNode(neighbour.node, neighbour.weight))
     newNode
   }
 
-  private var distanceFromBeginning: Double            = Int.MaxValue
-  private var prevsInShortestPath: List[Node[T]] = List.empty
+  private var distanceFromBeginning: Double      = Double.MaxValue
+  private var prevsInShortestPath: List[Node[T, S]] = List.empty
 
   override def getDistanceFromBeginning: Double = distanceFromBeginning
 
-  override def getPrevsInShortestPath: List[Node[T]] = prevsInShortestPath
+  override def getPrevsInShortestPath: List[Node[T, S]] = prevsInShortestPath
 
-  def setDistanceFromBeginning(distance: Double): Unit         = distanceFromBeginning = distance
-  def setPrevsInShortestPath(prevs: List[Node[T]]): Unit = prevsInShortestPath = prevs
-  def addPrevsInShortestPath(prevs: Node[T]*): Unit      = prevsInShortestPath ++= prevs
-
-  private var id: Option[Int]       = None
-  final def setId(newId: Int): Unit = id = Some(newId)
-  final def getId: Option[Int]      = id
+  def setDistanceFromBeginning(distance: Double): Unit   = distanceFromBeginning = distance
+  def setPrevsInShortestPath(prevs: List[Node[T, S]]): Unit = prevsInShortestPath = prevs
+  def addPrevsInShortestPath(prevs: Node[T, S]*): Unit      = prevsInShortestPath ++= prevs
 }

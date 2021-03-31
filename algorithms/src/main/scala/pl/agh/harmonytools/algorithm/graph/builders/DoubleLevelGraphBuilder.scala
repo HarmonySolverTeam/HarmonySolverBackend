@@ -1,31 +1,31 @@
 package pl.agh.harmonytools.algorithm.graph.builders
 
+import pl.agh.harmonytools.algorithm.{LeafLayer, LeafNeighbourNode, LeafNode}
 import pl.agh.harmonytools.algorithm.evaluator.{Connection, ConnectionEvaluator}
 import pl.agh.harmonytools.algorithm.generator.{GeneratorInput, LayerGenerator}
 import pl.agh.harmonytools.algorithm.graph.DoubleLevelGraph
-import pl.agh.harmonytools.algorithm.graph.node.{Layer, NeighbourNode, Node, NodeContent, NodeWithNestedLayer}
+import pl.agh.harmonytools.algorithm.graph.node.{Layer, NeighbourNode, Node, NodeContent}
 
-abstract class DoubleLevelGraphBuilder[T <: NodeContent with GeneratorInput, S <: NodeContent, Q <: GeneratorInput](
+abstract class DoubleLevelGraphBuilder[T <: NodeContent, S <: NodeContent, Q <: GeneratorInput, R <: GeneratorInput](
   nestedFirstContent: S,
   nestedLastContent: S,
   firstContent: T,
   lastContent: T
 ) {
-  def prepareInnerGeneratorInput(node: NodeWithNestedLayer[T, S], outerGeneratorInput: Q, layerId: Int): T
-  // = new ChordGeneratorInput(node.getContent.harmonicFunction, layerId !=0, outerGeneratorInput.sopranoNote)
+  def prepareInnerGeneratorInput(node: Node[T, S], outerGeneratorInput: Q, layerId: Int): R
 
   private var outerEvaluator: Option[ConnectionEvaluator[T]] = None
   private var innerEvaluator: Option[ConnectionEvaluator[S]] = None
   private var outerGenerator: Option[LayerGenerator[T, Q]]   = None
-  private var innerGenerator: Option[LayerGenerator[S, T]]   = None
+  private var innerGenerator: Option[LayerGenerator[S, R]]   = None
   private var outerGeneratorInputs: Option[List[Q]]          = None
-  private val nestedFirst: Node[S]                           = new Node[S](nestedFirstContent)
-  private val nestedLast: Node[S]                            = new Node[S](nestedLastContent)
+  private val nestedFirst: LeafNode[S]                           = new LeafNode[S](nestedFirstContent)
+  private val nestedLast: LeafNode[S]                            = new LeafNode[S](nestedLastContent)
 
   def withOuterEvaluator(outerEvaluator: ConnectionEvaluator[T]): Unit = this.outerEvaluator = Some(outerEvaluator)
   def withInnerEvaluator(innerEvaluator: ConnectionEvaluator[S]): Unit = this.innerEvaluator = Some(innerEvaluator)
   def withOuterGenerator(outerGenerator: LayerGenerator[T, Q]): Unit   = this.outerGenerator = Some(outerGenerator)
-  def withInnerGenerator(innerGenerator: LayerGenerator[S, T]): Unit   = this.innerGenerator = Some(innerGenerator)
+  def withInnerGenerator(innerGenerator: LayerGenerator[S, R]): Unit   = this.innerGenerator = Some(innerGenerator)
   def withOuterGeneratorInputs(outerGeneratorInputs: List[Q]): Unit =
     this.outerGeneratorInputs = Some(outerGeneratorInputs)
 
@@ -37,20 +37,16 @@ abstract class DoubleLevelGraphBuilder[T <: NodeContent with GeneratorInput, S <
     outerGeneratorInputs.getOrElse(sys.error("OuterGeneratorInputs not defined"))
   private def getInnerEvaluator: ConnectionEvaluator[S] =
     innerEvaluator.getOrElse(sys.error("InnerEvaluator not defined"))
-  private def getInnerGenerator: LayerGenerator[S, T] =
+  private def getInnerGenerator: LayerGenerator[S, R] =
     innerGenerator.getOrElse(sys.error("InnerGenerator not defined"))
 
-  private val templateSingleGraphBuilder = new NestedSingleLevelGraphBuilder[T, S, Q](firstContent, lastContent)
-  templateSingleGraphBuilder.withEvaluator(getOuterEvaluator)
-  templateSingleGraphBuilder.withGenerator(getOuterGenerator)
-  templateSingleGraphBuilder.withGeneratorInput(getOuterGeneratorInputs)
-  templateSingleGraphBuilder.buildWithoutWeights()
+  private val templateSingleGraphBuilder = new SingleLevelGraphBuilder[T, Q, S](new Node[T, S](firstContent), new Node[T, S](lastContent))
 
   private def generateNestedLayers(): Unit = {
     for (layerId <- templateSingleGraphBuilder.getLayers.indices) {
       for (currentNode <- templateSingleGraphBuilder.getLayers(layerId).getNodeList) {
-        val innerGeneratorInput: T = prepareInnerGeneratorInput(currentNode, getOuterGeneratorInputs(layerId), layerId)
-        currentNode.setNestedLayer(new Layer[S](getInnerGenerator.generate(innerGeneratorInput).map(new Node[S](_))))
+        val innerGeneratorInput: R = prepareInnerGeneratorInput(currentNode, getOuterGeneratorInputs(layerId), layerId)
+        currentNode.setNestedLayer(new LeafLayer[S](getInnerGenerator.generate(innerGeneratorInput).map(new LeafNode[S](_))))
       }
     }
   }
@@ -94,14 +90,16 @@ abstract class DoubleLevelGraphBuilder[T <: NodeContent with GeneratorInput, S <
       layer.removeUselessNodes()
 
   private def propagateEdgeWeightIntoNestedLayer(
-    node: NodeWithNestedLayer[T, S],
+    node: Node[T, S],
     weight: Double,
     nextNodeContent: T
   ): Unit = {
     for (nestedNode <- node.getNestedLayer.getNodeList) {
-      for (nestedNeighbour <- nestedNode.getNextNeighbours)
-        if (nestedNeighbour.node.getContent.isRelatedTo(nextNodeContent))
+      for (nestedNeighbour <- nestedNode.getNextNeighbours) {
+        if (nextNodeContent.isRelatedTo(nestedNeighbour.node.getContent)) {
           nestedNeighbour.setWeight(weight)
+        }
+      }
     }
   }
 
@@ -122,17 +120,21 @@ abstract class DoubleLevelGraphBuilder[T <: NodeContent with GeneratorInput, S <
     for (currentNode <- templateSingleGraphBuilder.getLayers.head.getNodeList) {
       for (currentNestedNode <- currentNode.getNestedLayer.getNodeList)
         if (currentNestedNode.hasNext)
-          nestedFirst.addNextNeighbour(new NeighbourNode[S](currentNestedNode))
+          nestedFirst.addNextNeighbour(new LeafNeighbourNode[S](currentNestedNode))
     }
 
     for (currentNode <- templateSingleGraphBuilder.getLayers.last.getNodeList) {
       for (currentNestedNode <- currentNode.getNestedLayer.getNodeList)
         if (currentNestedNode.hasPrev)
-          currentNestedNode.addNextNeighbour(new NeighbourNode[S](nestedLast))
+          currentNestedNode.addNextNeighbour(new LeafNeighbourNode[S](nestedLast))
     }
   }
 
-  def build(): DoubleLevelGraph[T, S, Q] = {
+  def build(): DoubleLevelGraph[T, S, Q, R] = {
+    templateSingleGraphBuilder.withEvaluator(getOuterEvaluator)
+    templateSingleGraphBuilder.withGenerator(getOuterGenerator)
+    templateSingleGraphBuilder.withGeneratorInput(getOuterGeneratorInputs)
+    templateSingleGraphBuilder.buildWithoutWeights()
     generateNestedLayers()
     connectNestedLayers()
     removeUselessNodesInNestedLayers()
@@ -140,17 +142,17 @@ abstract class DoubleLevelGraphBuilder[T <: NodeContent with GeneratorInput, S <
     setEdgeWeightsAndPropagate()
 
     removeNodesWithEmptyNestedLayers()
-
     attachNestedFirstAndLast()
 
     val result = getResult
     if (result.getNodes.length == 2)
       throw InvalidGraphConstruction("Cannot find any harmonic function sequence which could be harmonised")
+
     result
   }
 
-  private def getResult: DoubleLevelGraph[T, S, Q] =
-    new DoubleLevelGraph[T, S, Q](
+  private def getResult: DoubleLevelGraph[T, S, Q, R] =
+    new DoubleLevelGraph[T, S, Q, R](
       templateSingleGraphBuilder.getFirst,
       templateSingleGraphBuilder.getLast,
       templateSingleGraphBuilder.getLayers,

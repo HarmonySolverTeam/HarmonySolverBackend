@@ -4,7 +4,7 @@ import org.scalatest.{FunSuite, Matchers}
 import pl.agh.harmonytools.algorithm.evaluator.{Connection, ConnectionEvaluator, HardRule, IRule, SoftRule}
 import pl.agh.harmonytools.algorithm.generator.{GeneratorInput, LayerGenerator}
 import pl.agh.harmonytools.algorithm.graph.builders.SingleLevelGraphBuilder
-import pl.agh.harmonytools.algorithm.graph.node.NodeContent
+import pl.agh.harmonytools.algorithm.graph.node.{EmptyContent, NodeContent}
 
 class SingleLevelGraphBuilderTest extends FunSuite with Matchers {
   object MockGenerator extends LayerGenerator[Content, GenInput] {
@@ -32,7 +32,7 @@ class SingleLevelGraphBuilderTest extends FunSuite with Matchers {
   test("Building test") {
     val firstContent = Content(-1)
     val lastContent  = Content(-2)
-    val graphBuilder = new SingleLevelGraphBuilder[Content, GenInput](firstContent, lastContent)
+    val graphBuilder = new SingleLevelGraphBuilder[Content, GenInput, EmptyContent](firstContent, lastContent)
     graphBuilder.withGenerator(MockGenerator)
     graphBuilder.withEvaluator(MockEvaluator)
     graphBuilder.withGeneratorInput(List(1, 2, 3).map(GenInput))

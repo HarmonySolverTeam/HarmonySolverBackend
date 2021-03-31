@@ -1,7 +1,7 @@
 package pl.agh.harmonytools.model.harmonicfunction
 
 import pl.agh.harmonytools.algorithm.graph.node.NodeContent
-import pl.agh.harmonytools.model.chord.{ChordComponent, ChordSystem}
+import pl.agh.harmonytools.model.chord.{Chord, ChordComponent, ChordSystem}
 import pl.agh.harmonytools.model.harmonicfunction.FunctionNames.{DOMINANT, SUBDOMINANT, TONIC}
 import pl.agh.harmonytools.model.key.Mode.{MAJOR, MINOR}
 import pl.agh.harmonytools.model.key.{Key, Mode}
@@ -24,16 +24,18 @@ case class HarmonicFunction(
   key: Option[Key],
   isRelatedBackwards: Boolean
 ) extends BasicComponentsOwner with MeasureContent {
+  def getSimpleName: String = baseFunction.name + degree + {if (revolution != getPrime) "rev" + revolution.chordComponentString else ""}
 
-  override protected def getDegree: ScaleDegree.Degree  = degree
-  override protected def getIsDown: Boolean             = isDown
-  override protected def getMode: Mode.BaseMode         = mode
-  override protected def getExtra: Set[ChordComponent] = extra
-  override protected def getOmit: Set[ChordComponent]  = omit
-  override protected def getDelay: Set[Delay]          = delay
-  override protected def getKey: Option[Key] = key
-  override protected def getBaseFunction: FunctionNames.BaseFunction = baseFunction
-  override protected def getRevolution: ChordComponent  = revolution
+
+  override def getDegree: ScaleDegree.Degree  = degree
+  override def getIsDown: Boolean             = isDown
+  override def getMode: Mode.BaseMode         = mode
+  override def getExtra: Set[ChordComponent] = extra
+  override def getOmit: Set[ChordComponent]  = omit
+  override def getDelay: Set[Delay]          = delay
+  override def getKey: Option[Key] = key
+  override def getBaseFunction: FunctionNames.BaseFunction = baseFunction
+  override def getRevolution: ChordComponent  = revolution
 
   def isChopin: Boolean =
     baseFunction == DOMINANT && omit.exists(_.chordComponentString == "5") && extra.exists(
@@ -60,6 +62,16 @@ case class HarmonicFunction(
       List(4, -3).contains(degree.root - next.degree.root)
     else false;
   }
+
+  def isInSubdominantRelation(next: HarmonicFunction): Boolean = {
+    if (key != next.key && key.isDefined) {
+      List(-4, 3).contains(degree.root - 1)
+    }
+    else if (key == next.key)
+      List(-4, 3).contains(degree.root - next.degree.root)
+    else false;
+  }
+
 
   def isInSecondRelation(next: HarmonicFunction): Boolean = {
     next.degree.root - degree.root == 1

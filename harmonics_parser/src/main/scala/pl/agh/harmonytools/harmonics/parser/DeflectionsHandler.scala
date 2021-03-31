@@ -1,6 +1,7 @@
 package pl.agh.harmonytools.harmonics.parser
 
 import pl.agh.harmonytools.harmonics.parser.builders.{BackwardDeflection, ClassicDeflection, EllipseDeflection, HarmonicFunctionParserBuilder, HarmonicsElementType}
+import pl.agh.harmonytools.model.harmonicfunction.BasicComponentsOwner
 import pl.agh.harmonytools.model.harmonicfunction.FunctionNames.TONIC
 import pl.agh.harmonytools.model.harmonicfunction.builder.HarmonicFunctionBuilder
 import pl.agh.harmonytools.model.key.Mode.MINOR
@@ -94,7 +95,7 @@ object DeflectionsHandler {
   }
 
   def calculateKey(
-    deflectionTargetHarmonicFunction: HarmonicFunctionBuilder
+    deflectionTargetHarmonicFunction: BasicComponentsOwner
   )(implicit exerciseKey: Key): Key = {
     val keyToUse = deflectionTargetHarmonicFunction.getKey match {
       case Some(value) => value

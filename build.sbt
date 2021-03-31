@@ -66,7 +66,9 @@ lazy val solver = project
     libraryDependencies ++= testDependencies
   )
   .aggregate(
-    harmonics_solver
+    harmonics_solver,
+    bass_solver,
+    soprano_solver
   )
   .dependsOn(
     model
@@ -94,4 +96,15 @@ lazy val bass_solver = project
   .dependsOn(
     harmonics_solver,
     bass_translator
+  )
+
+lazy val soprano_solver = project
+  .in(file("solver/soprano_solver"))
+  .settings(
+    name := "soprano_solver",
+    settings,
+    libraryDependencies ++= testDependencies ++ Seq("io.spray" %% "spray-json" % "1.3.6")
+  )
+  .dependsOn(
+    harmonics_solver
   )

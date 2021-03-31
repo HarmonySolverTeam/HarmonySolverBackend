@@ -3,14 +3,16 @@ package pl.agh.harmonytools.solver.harmonics
 import pl.agh.harmonytools.algorithm.graph.SingleLevelGraph
 import pl.agh.harmonytools.algorithm.graph.builders.SingleLevelGraphBuilder
 import pl.agh.harmonytools.algorithm.graph.dijkstra.DijkstraAlgorithm
+import pl.agh.harmonytools.algorithm.graph.node.EmptyContent
 import pl.agh.harmonytools.exercise.harmonics.HarmonicsExercise
 import pl.agh.harmonytools.exercise.harmonics.helpers.DelayHandler
 import pl.agh.harmonytools.harmonics.parser.DeflectionsHandler
 import pl.agh.harmonytools.solver.harmonics.generator.ChordGenerator
 import pl.agh.harmonytools.solver.harmonics.utils.ExerciseCorrector
 import pl.agh.harmonytools.model.chord.Chord
-import pl.agh.harmonytools.model.note.Note
-import pl.agh.harmonytools.solver.harmonics.evaluator.ChordRulesChecker
+import pl.agh.harmonytools.model.note.{Note, NoteWithoutChordContext}
+import pl.agh.harmonytools.solver.harmonics.evaluator.rules.ChordRules
+import pl.agh.harmonytools.solver.harmonics.evaluator.{AdaptiveRulesChecker, ChordRulesChecker}
 import pl.agh.harmonytools.solver.harmonics.generator.{ChordGenerator, ChordGeneratorInput}
 import pl.agh.harmonytools.solver.harmonics.utils.{ExerciseCorrector, PreChecker}
 import pl.agh.harmonytools.solver.{ExerciseSolution, Solver}
@@ -19,12 +21,12 @@ case class HarmonicsSolver(
   exercise: HarmonicsExercise,
   correctDisabled: Boolean = false,
   precheckDisabled: Boolean = false,
-  punishmentRatios: Option[Any] = None
+  punishmentRatios: Option[Map[ChordRules.Rule, Double]] = None
 ) extends Solver {
 
 
   private val bassLine: Option[List[Note]] = handleDelaysInBassLine()
-  private val sopranoLine: Option[List[Note]] = exercise.sopranoLine
+  private val sopranoLine: Option[List[NoteWithoutChordContext]] = exercise.sopranoLine
 
   def handleDelaysInBassLine(): Option[List[Note]] = {
     exercise.bassLine match {
@@ -82,10 +84,15 @@ case class HarmonicsSolver(
   private val first: Chord = Chord.empty
   private val last: Chord = Chord.empty
 
-  private def prepareGraph(): SingleLevelGraph[Chord, ChordGeneratorInput] = {
-    val graphBuilder = new SingleLevelGraphBuilder[Chord, ChordGeneratorInput](first, last)
+  private def prepareGraph(): SingleLevelGraph[Chord, EmptyContent] = {
+    val graphBuilder = new SingleLevelGraphBuilder[Chord, ChordGeneratorInput, EmptyContent](first, last)
     graphBuilder.withGenerator(chordGenerator)
-    graphBuilder.withEvaluator(ChordRulesChecker(isFixedBass = bassLine.isDefined, isFixedSoprano = sopranoLine.isDefined))
+    graphBuilder.withEvaluator(
+      punishmentRatios match {
+        case Some(value) => AdaptiveRulesChecker(value)
+        case None => ChordRulesChecker(isFixedBass = bassLine.isDefined, isFixedSoprano = sopranoLine.isDefined)
+      }
+    )
     graphBuilder.withGeneratorInput(getGeneratorInput)
     graphBuilder.build()
   }
@@ -95,7 +102,7 @@ case class HarmonicsSolver(
       PreChecker.run(harmonicFunctions, chordGenerator, bassLine, sopranoLine)
     }
     val graph = prepareGraph()
-    val dijkstra = new DijkstraAlgorithm[Chord](graph)
+    val dijkstra = new DijkstraAlgorithm[Chord, EmptyContent](graph)
     val solutionNodes = dijkstra.getShortestPathToLastNode
     if (solutionNodes.length != graph.getLayers.length)
       return ExerciseSolution(exercise, -1, List.empty, success = false)

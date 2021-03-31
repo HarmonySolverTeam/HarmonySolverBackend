@@ -7,21 +7,9 @@ import pl.agh.harmonytools.model.chord.Chord
 import pl.agh.harmonytools.solver.harmonics.evaluator.rules.hard.{CrossingVoicesRule, DelayCorrectnessRule, DominantSubdominantConnectionRule, FalseRelationRule, ForbiddenJumpRule, HiddenOctavesRule, IllegalDoubledThirdRule, OneDirectionRule, ParallelFifthsRule, ParallelOctavesRule, SameFunctionConnectionRule}
 import pl.agh.harmonytools.solver.harmonics.evaluator.rules.soft.{ClosestMoveInBassRule, ClosestMoveRule, DominantRelationConnectionRule, DominantSecondRelationConnectionRule, DoublePrimeOrFifthRule, ForbiddenSumJumpRule, SopranoBestLine, SubdominantDominantConnectionRule}
 
-case class ChordRulesChecker(isFixedBass: Boolean = false, isFixedSoprano: Boolean = false) extends ConnectionEvaluator[Chord] {
+case class ChordRulesChecker(isFixedBass: Boolean = false, isFixedSoprano: Boolean = false) extends BasicChordRulesChecker(isFixedSoprano) {
   override protected val connectionSize: Int = 3
 
-  override protected val softRules: List[SoftRule[Chord]] = {
-    List(
-      ClosestMoveInBassRule(isFixedSoprano = isFixedSoprano),
-      ClosestMoveRule(),
-      DominantRelationConnectionRule(),
-      DominantSecondRelationConnectionRule(),
-      DoublePrimeOrFifthRule(),
-      ForbiddenSumJumpRule(),
-      SopranoBestLine(),
-      SubdominantDominantConnectionRule()
-    )
-  }
   override protected val hardRules: List[HardRule[Chord]] = {
     List(
       CrossingVoicesRule(),
@@ -37,4 +25,5 @@ case class ChordRulesChecker(isFixedBass: Boolean = false, isFixedSoprano: Boole
       SameFunctionConnectionRule()
     )
   }
+  override protected val softRules: List[SoftRule[Chord]] = basicSoftRules
 }

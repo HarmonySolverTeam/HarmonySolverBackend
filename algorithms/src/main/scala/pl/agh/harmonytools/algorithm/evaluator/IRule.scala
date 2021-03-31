@@ -9,7 +9,7 @@ trait IRule[T <: NodeContent] {
 
   def isNotBroken(connection: Connection[T]): Boolean = !isBroken(connection)
 
-  def caption: String
+  def caption: String = this.getClass.getSimpleName
 }
 
 trait SoftRule[T <: NodeContent] extends IRule[T]
