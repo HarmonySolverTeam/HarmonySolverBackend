@@ -1,8 +1,8 @@
 package pl.agh.harmonytools.algorithm.graph
 
 import pl.agh.harmonytools.algorithm.LeafNode
-import pl.agh.harmonytools.algorithm.graph.dijkstra.DijkstraNode
 import pl.agh.harmonytools.algorithm.graph.node.{Node, NodeContent}
+import pl.agh.harmonytools.algorithm.graph.shortestpath.ShortestPathNode
 
 import scala.annotation.tailrec
 
@@ -24,7 +24,7 @@ trait ScoreGraph[T <: NodeContent, S <: NodeContent] {
     var currentId = 0
 
     @tailrec
-    def enumerateGivenNodes(nodes: List[DijkstraNode]): Unit = {
+    def enumerateGivenNodes(nodes: List[ShortestPathNode]): Unit = {
       nodes match {
         case head :: tail =>
           head.setId(currentId)

@@ -1,8 +1,10 @@
 package pl.agh.harmonytools.solver.soprano
 
 import pl.agh.harmonytools.algorithm.graph.builders.{DoubleLevelGraphBuilder, SingleLevelGraphBuilder}
-import pl.agh.harmonytools.algorithm.graph.dijkstra.DijkstraAlgorithm
+import pl.agh.harmonytools.algorithm.graph.shortestpath.dijkstra.DijkstraAlgorithm
 import pl.agh.harmonytools.algorithm.graph.node.{EmptyContent, Node}
+import pl.agh.harmonytools.algorithm.graph.shortestpath.{ShortestPathAlgorithm, ShortestPathAlgorithmCompanion}
+import pl.agh.harmonytools.algorithm.graph.shortestpath.topologicalsort.TopologicalSortAlgorithm
 import pl.agh.harmonytools.exercise.soprano.SopranoExercise
 import pl.agh.harmonytools.model.chord.Chord
 import pl.agh.harmonytools.model.harmonicfunction.FunctionNames.{DOMINANT, SUBDOMINANT, TONIC}
@@ -18,8 +20,11 @@ import pl.agh.harmonytools.solver.{ExerciseSolution, Solver, SolverError}
 import pl.agh.harmonytools.solver.soprano.evaluator.{HarmonicFunctionWithSopranoInfo, SopranoRulesChecker}
 import pl.agh.harmonytools.solver.soprano.generator.{HarmonicFunctionGenerator, HarmonicFunctionGeneratorInput}
 
-case class SopranoSolver(exercise: SopranoExercise, punishmentRatios: Option[Map[ChordRules.Rule, Double]] = None)
-  extends Solver {
+case class SopranoSolver(
+  exercise: SopranoExercise,
+  punishmentRatios: Option[Map[ChordRules.Rule, Double]] = None,
+  override val shortestPathCompanion: ShortestPathAlgorithmCompanion = TopologicalSortAlgorithm
+) extends Solver {
   private val harmonicFunctionGenerator = HarmonicFunctionGenerator(exercise.possibleFunctionsList, exercise.key)
   private val sopranoRulesChecker       = SopranoRulesChecker(exercise.key, punishmentRatios)
 
@@ -74,8 +79,8 @@ case class SopranoSolver(exercise: SopranoExercise, punishmentRatios: Option[Map
 
     val sopranoGraph = graphBuilder.build()
 
-    val dijkstra = new DijkstraAlgorithm[S, EmptyContent](sopranoGraph)
-    dijkstra.findShortestPaths()
+    val shortestPathAlgorithm = shortestPathCompanion(sopranoGraph)
+    shortestPathAlgorithm.findShortestPaths()
     val chordGraph = sopranoGraph.reduceToSingleLevelGraphBuilder()
 
     val chordGraphBuilder = new SingleLevelGraphBuilder[S, R, EmptyContent](nestedFirst, nestedLast)
@@ -83,8 +88,8 @@ case class SopranoSolver(exercise: SopranoExercise, punishmentRatios: Option[Map
     chordGraphBuilder.withGraphTemplate(chordGraph)
     val innerGraph = chordGraphBuilder.build()
 
-    val dijkstra2     = new DijkstraAlgorithm[S, EmptyContent](innerGraph)
-    val solutionNodes = dijkstra2.getShortestPathToLastNode
+    val shortestPathAlgorithm2 = shortestPathCompanion(innerGraph)
+    val solutionNodes          = shortestPathAlgorithm2.getShortestPathToLastNode
 
     if (solutionNodes.length != innerGraph.getLayers.length)
       throw new InternalError("Shortest path to last node does not exist");

@@ -12,7 +12,7 @@ class SingleLevelGraph[T <: NodeContent, S <: NodeContent](
   override protected val last: Node[T, S]  = lastNode
 
   override def getNodes: List[Node[T, S]] =
-    layers.map(_.getNodeList).reduce(_ ++ _).concat(List(first, last))
+    List(first) ++ layers.map(_.getNodeList).reduce(_ ++ _) ++ (List(last))
 
   def getLayers: List[Layer[T, S]] = layers
 

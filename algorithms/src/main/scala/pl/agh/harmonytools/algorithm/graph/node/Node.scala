@@ -1,13 +1,13 @@
 package pl.agh.harmonytools.algorithm.graph.node
 
+import pl.agh.harmonytools.algorithm.graph.shortestpath.ShortestPathNode
 import pl.agh.harmonytools.algorithm.{LeafLayer, LeafNeighbourNode}
-import pl.agh.harmonytools.algorithm.graph.dijkstra.DijkstraNode
 
 class Node[T <: NodeContent, S <: NodeContent](
   protected val content: T,
   protected var nextNeighbours: NeighbourNodes[T, S] = NeighbourNodes.empty[T, S],
   protected var prevNeighbours: NeighbourNodes[T, S] = NeighbourNodes.empty[T, S]
-) extends DijkstraNode {
+) extends ShortestPathNode {
   private var nestedLayer: Option[LeafLayer[S]] = None
   def setNestedLayer(l: LeafLayer[S]): Unit     = nestedLayer = Some(l)
   def getNestedLayer: LeafLayer[S]              = nestedLayer.getOrElse(sys.error("Nested layer not defined"))
