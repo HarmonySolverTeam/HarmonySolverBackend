@@ -1,16 +1,18 @@
-package pl.agh.harmonytools.algorithm.graph.dijkstra
+package pl.agh.harmonytools.algorithm.graph.shortestpath
 
 import org.scalatest.{FunSuite, Matchers}
-import pl.agh.harmonytools.algorithm.{LeafLayer, LeafNeighbourNode, LeafNode}
 import pl.agh.harmonytools.algorithm.graph.SingleLevelGraph
 import pl.agh.harmonytools.algorithm.graph.node.{EmptyContent, NodeContent}
+import pl.agh.harmonytools.algorithm.graph.shortestpath.dijkstra.DijkstraAlgorithm
+import pl.agh.harmonytools.algorithm.graph.shortestpath.topologicalsort.TopologicalSortAlgorithm
+import pl.agh.harmonytools.algorithm.{LeafLayer, LeafNeighbourNode, LeafNode}
 
-class DijkstraAlgorithmTest extends FunSuite with Matchers {
+class ShortestPathTest extends FunSuite with Matchers {
+  case class Content(value: String) extends NodeContent {
+    override def isRelatedTo(other: NodeContent): Boolean = ???
+  }
 
-  test("Dijkstra with only one shortest path") {
-    case class Content(value: String) extends NodeContent {
-      override def isRelatedTo(other: NodeContent): Boolean = ???
-    }
+  private def getGraph: SingleLevelGraph[Content, EmptyContent] = {
     implicit def String2Content(s: String): Content = Content(s)
 
     val A = new LeafNode[Content]("A")
@@ -59,10 +61,18 @@ class DijkstraAlgorithmTest extends FunSuite with Matchers {
     val l3     = new LeafLayer[Content](List(F, G, H))
     val layers = List(l1, l2, l3)
 
-    val graph = new SingleLevelGraph[Content, EmptyContent](layers, first, last)
+    new SingleLevelGraph[Content, EmptyContent](layers, first, last)
+  }
 
-    val dijkstra          = new DijkstraAlgorithm[Content, EmptyContent](graph)
+  test("Dijkstra with only one shortest path") {
+    val dijkstra          = new DijkstraAlgorithm[Content, EmptyContent](getGraph)
     val shortestPathNodes = dijkstra.getShortestPathToLastNode
+    shortestPathNodes.map(_.getContent) shouldBe List(Content("C"), Content("E"), Content("F"))
+  }
+
+  test("Topological sort with only one shortest path") {
+    val topo          = new TopologicalSortAlgorithm[Content, EmptyContent](getGraph)
+    val shortestPathNodes = topo.getShortestPathToLastNode
     shortestPathNodes.map(_.getContent) shouldBe List(Content("C"), Content("E"), Content("F"))
   }
 }

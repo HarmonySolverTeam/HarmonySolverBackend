@@ -1,6 +1,8 @@
-package pl.agh.harmonytools.algorithm.graph.dijkstra
+package pl.agh.harmonytools.algorithm.graph.shortestpath.dijkstra
 
-class DijkstraPriorityQueue[T <: DijkstraNode](implicit ordering: Ordering[T]) {
+import pl.agh.harmonytools.algorithm.graph.shortestpath.ShortestPathNode
+
+class DijkstraPriorityQueue[T <: ShortestPathNode](implicit ordering: Ordering[T]) {
 
   private var nodeList: List[T] = List.empty
 

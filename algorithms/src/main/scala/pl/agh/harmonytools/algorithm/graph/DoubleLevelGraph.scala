@@ -15,10 +15,11 @@ class DoubleLevelGraph[T <: NodeContent, S <: NodeContent, Q, R <: GeneratorInpu
   final override protected val last: LeafNode[S]  = nestedLast
 
   final override def getNodes: List[LeafNode[S]] =
+    List(nestedFirst) ++
     doubleLevelLayers
       .map(_.getNodeList.map(_.getNestedLayer.getNodeList).reduce(_ ++ _))
-      .reduce(_ ++ _)
-      .concat(List(nestedFirst, nestedLast))
+      .reduce(_ ++ _) ++
+      List(nestedLast)
 
   final def reduceToSingleLevelGraphBuilder(): SingleLevelGraphBuilder[S, R, EmptyContent] = {
     if (getLast.getDistanceFromBeginning == Double.MaxValue)
