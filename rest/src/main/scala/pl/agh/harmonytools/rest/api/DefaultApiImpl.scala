@@ -9,18 +9,18 @@ import pl.agh.harmonytools.rest.dto.{BassExerciseDto, HLNotationHarmonicsExercis
 class DefaultApiImpl extends DefaultApi {
 
   override def solveHarmonicFunctionsExercise(harmonicsExerciseDto: Option[HarmonicsExerciseDto]): Unit = {
-    //todo: Implement better logic
+    ???
   }
 
   override def solveBassExercise(bassExerciseDto: Option[BassExerciseDto]): Unit = {
-    //todo: Implement better logic
+    ???
   }
 
   override def solveSopranoExercise(sopranoExerciseDto: Option[SopranoExerciseDto]): Unit = {
-    //todo: Implement better logic
+    ???
   }
 
   override def parseHarmonicsExercise(hLNotationHarmonicsExerciseDto: Option[HLNotationHarmonicsExerciseDto]): HarmonicsExerciseDto = {
-    //todo: Implement better logic
+    ???
   }
 }
