@@ -54,6 +54,9 @@ lazy val rest = project
     libraryDependencies ++= testDependencies,
     libraryDependencies ++= playDependencies
   )
+  .dependsOn(
+    soprano_solver
+  )
 
 lazy val model = project
   .settings(

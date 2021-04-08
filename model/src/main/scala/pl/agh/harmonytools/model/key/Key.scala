@@ -1,6 +1,6 @@
 package pl.agh.harmonytools.model.key
 
-import pl.agh.harmonytools.model.key.Mode.BaseMode
+import pl.agh.harmonytools.model.key.Mode.{BaseMode, MAJOR}
 import pl.agh.harmonytools.model.note.BaseNote
 
 import scala.collection.immutable.HashMap
@@ -9,7 +9,16 @@ case class Key(
   mode: BaseMode,
   tonicPitch: Integer,
   baseNote: BaseNote.BaseNoteType
-)
+) {
+  override def toString: String = {
+    val keyLower = Key.pitchKeyStr(tonicPitch).find(_.head.toUpper == baseNote.name).getOrElse(sys.error("Internal error in key to string"))
+    if (mode == MAJOR) {
+      keyLower.head.toUpper + keyLower.tail
+    } else {
+      keyLower
+    }
+  }
+}
 
 object Key {
 

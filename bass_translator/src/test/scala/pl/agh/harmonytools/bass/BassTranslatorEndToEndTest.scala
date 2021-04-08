@@ -83,7 +83,6 @@ class BassTranslatorEndToEndTest extends FunSuite with Matchers with TestUtils {
         List(FiguredBassElement(NoteBuilder(55, G, 1), symbols = List(BassSymbol(6), BassSymbol(4))))
       )
     )
-    println(ex.measures.head.harmonicFunctions.head)
     ex.measures.head.harmonicFunctions.head.revolution.chordComponentString shouldBe "5"
     ex.measures.head.harmonicFunctions.head.countChordComponents shouldBe 3
     ex.measures.head.harmonicFunctions.head.extra shouldBe Set.empty
@@ -174,7 +173,6 @@ class BassTranslatorEndToEndTest extends FunSuite with Matchers with TestUtils {
         )
       )
     )
-    println(ex.measures.head.harmonicFunctions.head)
     ex.measures.head.harmonicFunctions.head.revolution.chordComponentString shouldBe "1"
     ex.measures.head.harmonicFunctions.head.getThird.chordComponentString shouldBe "3"
     ex.measures.head.harmonicFunctions.head.countChordComponents shouldBe 4

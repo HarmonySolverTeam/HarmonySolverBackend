@@ -7,6 +7,10 @@ object BaseNote  {
     def +(x: Int): BaseNoteType = {
       fromInt((value + x) %% 7)
     }
+
+    def name: Char = {
+      getClass.getSimpleName.head
+    }
   }
 
   case object C extends BaseNoteType(0)
