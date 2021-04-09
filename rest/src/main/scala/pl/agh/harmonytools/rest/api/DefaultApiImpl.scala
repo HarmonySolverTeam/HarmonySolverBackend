@@ -2,7 +2,8 @@ package pl.agh.harmonytools.rest.api
 
 import pl.agh.harmonytools.harmonics.parser.HarmonicsParser
 import pl.agh.harmonytools.rest.dto.{BassExerciseDto, HLNotationHarmonicsExerciseDto, HarmonicsExerciseDto, HarmonicsExerciseSolutionDto, SopranoExerciseDto}
-import pl.agh.harmonytools.rest.mapper.{ExerciseSolutionMapper, HarmonicsExerciseMapper}
+import pl.agh.harmonytools.rest.mapper.{BassExerciseMapper, HarmonicsExerciseSolutionMapper, HarmonicsExerciseMapper}
+import pl.agh.harmonytools.solver.bass.BassSolver
 import pl.agh.harmonytools.solver.harmonics.HarmonicsSolver
 
 /**
@@ -16,16 +17,28 @@ class DefaultApiImpl extends DefaultApi {
       case Some(exerciseDto) =>
         val exercise = HarmonicsExerciseMapper.mapToModel(exerciseDto)
         val solution = HarmonicsSolver(exercise).solve()
-        ExerciseSolutionMapper.mapToDTO(solution)
+        HarmonicsExerciseSolutionMapper.mapToDTO(solution)
       case None => ???
     }
   }
 
-  override def solveBassExercise(bassExerciseDto: Option[BassExerciseDto]): Unit =
-    ???
+  override def solveBassExercise(bassExerciseDto: Option[BassExerciseDto]): Unit = {
+    bassExerciseDto match {
+      case Some(exerciseDto) =>
+        val exercise = BassExerciseMapper.mapToModel(exerciseDto)
+        val solution = BassSolver(exercise).solve()
+        HarmonicsExerciseSolutionMapper.mapToDTO(solution)
+      case None => ???
+    }
+  }
 
-  override def solveSopranoExercise(sopranoExerciseDto: Option[SopranoExerciseDto]): Unit =
-    ???
+  override def solveSopranoExercise(sopranoExerciseDto: Option[SopranoExerciseDto]): Unit = {
+    sopranoExerciseDto match {
+      case Some(exerciseDto) =>
+
+      case None => ???
+    }
+  }
 
   override def parseHarmonicsExercise(hLNotationHarmonicsExerciseDto: Option[HLNotationHarmonicsExerciseDto]): HarmonicsExerciseDto = {
     hLNotationHarmonicsExerciseDto match {

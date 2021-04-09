@@ -1,10 +1,10 @@
 package pl.agh.harmonytools.rest.mapper
 
 import pl.agh.harmonytools.exercise.harmonics.HarmonicsExercise
-import pl.agh.harmonytools.rest.dto.{ExerciseSolutionDto, HarmonicsExerciseDto, HarmonicsExerciseSolutionDto}
+import pl.agh.harmonytools.rest.dto.HarmonicsExerciseSolutionDto
 import pl.agh.harmonytools.solver.ExerciseSolution
 
-object ExerciseSolutionMapper extends Mapper[ExerciseSolution, HarmonicsExerciseSolutionDto] {
+object HarmonicsExerciseSolutionMapper extends Mapper[ExerciseSolution, HarmonicsExerciseSolutionDto] {
   override def mapToModel(dto: HarmonicsExerciseSolutionDto): ExerciseSolution = {
     ExerciseSolution(
       exercise = HarmonicsExerciseMapper.mapToModel(dto.exercise),

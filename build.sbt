@@ -56,6 +56,7 @@ lazy val rest = project
   )
   .dependsOn(
     harmonics_parser,
+    bass_solver,
     soprano_solver
   )
 

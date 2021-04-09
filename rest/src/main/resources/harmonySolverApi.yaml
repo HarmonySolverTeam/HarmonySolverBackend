@@ -185,9 +185,37 @@ components:
           type: string
           description: Second element of delay. Should be string consists of number and additional characters '>' or '<' representing interval
 
+    HarmonicsExerciseSolutionDto:
+      type: object
+      required:
+        - exercise
+        - rating
+        - chords
+        - success
+      properties:
+        exercise:
+          type: object
+          $ref: '#/components/schemas/HarmonicsExerciseDto'
+          description: Given exercise as input
+        rating:
+          type: double
+          description: Solution rating
+        chords:
+          type: array
+          description: List of chords that solution contains
+          items:
+            $ref: '#/components/schemas/ChordDto'
+        success:
+          type: boolean
+          description: Shows if exercise was successfully solved
+
     #BASS
     BassExerciseDto:
       type: object
+      required:
+        - key
+        - meter
+        - measures
       properties:
         key:
           type: string
@@ -198,7 +226,7 @@ components:
         measures:
           type: array
           items:
-            $ref: '#/components/schemas/BassMeasureDto'
+            $ref: '#/components/schemas/BassElementDto'
 
     BassMeasureDto:
       properties:
@@ -208,6 +236,8 @@ components:
             $ref: '#/components/schemas/BassElementDto'
 
     BassElementDto:
+      required:
+        - note
       properties:
         note:
           $ref: '#/components/schemas/NoteDto'
@@ -216,6 +246,21 @@ components:
           description: Ordered bass symbol list. Each bass symbol should be string.
           items:
             type: string
+        delays:
+          type: array
+          description: Ordered delays list. Each bass symbol should be string.
+          items:
+            $ref: '#/components/schemas/BassDelayDto'
+
+    BassDelayDto:
+      required:
+        - first
+        - second
+      properties:
+        first:
+          type: string
+        second:
+          type: string
 
     #SOPRANO
     SopranoExerciseDto:
@@ -284,30 +329,6 @@ components:
         duration:
           type: float
           description: Duration of note. Full note has duration equal 1.0
-
-    HarmonicsExerciseSolutionDto:
-      type: object
-      required:
-        - exercise
-        - rating
-        - chords
-        - success
-      properties:
-        exercise:
-          type: object
-          $ref: '#/components/schemas/HarmonicsExerciseDto'
-          description: Given exercise as input
-        rating:
-          type: double
-          description: Solution rating
-        chords:
-          type: array
-          description: List of chords that solution contains
-          items:
-            $ref: '#/components/schemas/ChordDto'
-        success:
-          type: boolean
-          description: Shows if exercise was successfully solved
 
     ChordDto:
       type: object
