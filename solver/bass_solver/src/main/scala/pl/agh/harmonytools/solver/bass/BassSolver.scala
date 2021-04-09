@@ -8,10 +8,17 @@ import pl.agh.harmonytools.solver.{ExerciseSolution, Solver}
 
 case class BassSolver(
   exercise: FiguredBassExercise,
+  correctDisabled: Boolean = false,
+  precheckDisabled: Boolean = false,
   override val shortestPathCompanion: ShortestPathAlgorithmCompanion = TopologicalSortAlgorithm
 ) extends Solver {
   override def solve(): ExerciseSolution = {
     val harmonicsExercise = BassTranslator.createExerciseFromFiguredBass(exercise)
-    HarmonicsSolver(harmonicsExercise, shortestPathCompanion = shortestPathCompanion).solve()
+    HarmonicsSolver(
+      exercise = harmonicsExercise,
+      correctDisabled = correctDisabled,
+      precheckDisabled = precheckDisabled,
+      shortestPathCompanion = shortestPathCompanion
+    ).solve()
   }
 }

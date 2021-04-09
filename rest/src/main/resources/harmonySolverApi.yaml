@@ -19,7 +19,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/HarmonicsExerciseDto'
+              $ref: '#/components/schemas/HarmonicsExerciseRequestDto'
       responses:
         200:
           description: OK
@@ -37,7 +37,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/BassExerciseDto'
+              $ref: '#/components/schemas/BassExerciseRequestDto'
       responses:
         200:
           description: OK
@@ -103,6 +103,16 @@ paths:
 components:
   schemas:
     #HARMONICS
+    HarmonicsExerciseRequestDto:
+      type: object
+      required:
+        - exercise
+      properties:
+        exercise:
+          $ref: '#/components/schemas/HarmonicsExerciseDto'
+        configuration:
+          $ref: '#/components/schemas/ConfigurationDto'
+
     HarmonicsExerciseDto:
       type: object
       required:
@@ -234,6 +244,17 @@ components:
           description: Shows if exercise was successfully solved
 
     #BASS
+    BassExerciseRequestDto:
+      type: object
+      required:
+        - exercise
+      properties:
+        exercise:
+          $ref: '#/components/schemas/BassExerciseDto'
+          description: Given bass exercise
+        configuration:
+          $ref: '#/components/schemas/ConfigurationDto'
+
     BassExerciseDto:
       type: object
       required:
@@ -397,6 +418,16 @@ components:
         duration:
           type: double
           description: Duration of note. Full note has duration equal 1.0
+
+    ConfigurationDto:
+      type: object
+      properties:
+        enablePrechecker:
+          type: boolean
+          description: Indicates if prechecker has to be used
+        enableCorrector:
+          type: boolean
+          descritpion: Indicates if corrector has to be used
 
     ChordDto:
       type: object

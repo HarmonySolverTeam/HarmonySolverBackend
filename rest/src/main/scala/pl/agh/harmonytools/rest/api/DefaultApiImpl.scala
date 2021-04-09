@@ -1,7 +1,7 @@
 package pl.agh.harmonytools.rest.api
 
 import pl.agh.harmonytools.harmonics.parser.HarmonicsParser
-import pl.agh.harmonytools.rest.dto.{BassExerciseDto, ChordDto, HLNotationHarmonicsExerciseDto, HarmonicsExerciseDto, HarmonicsExerciseSolutionDto, SopranoExerciseDto, SopranoExerciseSolutionDto}
+import pl.agh.harmonytools.rest.dto.{BassExerciseDto, BassExerciseRequestDto, ChordDto, HLNotationHarmonicsExerciseDto, HarmonicsExerciseDto, HarmonicsExerciseRequestDto, HarmonicsExerciseSolutionDto, SopranoExerciseDto, SopranoExerciseSolutionDto}
 import pl.agh.harmonytools.rest.mapper.{BassExerciseMapper, ChordMapper, HarmonicsExerciseMapper, HarmonicsExerciseSolutionMapper, SopranoExerciseMapper, SopranoExerciseSolutionMapper}
 import pl.agh.harmonytools.solver.bass.BassSolver
 import pl.agh.harmonytools.solver.harmonics.HarmonicsSolver
@@ -14,21 +14,25 @@ import pl.agh.harmonytools.solver.soprano.SopranoSolver
 @javax.annotation.Generated(value = Array("org.openapitools.codegen.languages.ScalaPlayFrameworkServerCodegen"), date = "2021-03-10T20:08:16.676551600+01:00[Europe/Belgrade]")
 class DefaultApiImpl extends DefaultApi {
 
-  override def solveHarmonicFunctionsExercise(harmonicsExerciseDto: Option[HarmonicsExerciseDto]): HarmonicsExerciseSolutionDto = {
-    harmonicsExerciseDto match {
-      case Some(exerciseDto) =>
-        val exercise = HarmonicsExerciseMapper.mapToModel(exerciseDto)
-        val solution = HarmonicsSolver(exercise).solve()
+  override def solveHarmonicFunctionsExercise(harmonicsExerciseRequestDto: Option[HarmonicsExerciseRequestDto]): HarmonicsExerciseSolutionDto = {
+    harmonicsExerciseRequestDto match {
+      case Some(exerciseRequest) =>
+        val exercise = HarmonicsExerciseMapper.mapToModel(exerciseRequest.exercise)
+        val precheckDisabled = !exerciseRequest.configuration.flatMap(_.enablePrechecker).getOrElse(true)
+        val correctDisabled = !exerciseRequest.configuration.flatMap(_.enableCorrector).getOrElse(true)
+        val solution = HarmonicsSolver(exercise = exercise, correctDisabled = correctDisabled, precheckDisabled = precheckDisabled).solve()
         HarmonicsExerciseSolutionMapper.mapToDTO(solution)
       case None => ???
     }
   }
 
-  override def solveBassExercise(bassExerciseDto: Option[BassExerciseDto]): HarmonicsExerciseSolutionDto = {
-    bassExerciseDto match {
-      case Some(exerciseDto) =>
-        val exercise = BassExerciseMapper.mapToModel(exerciseDto)
-        val solution = BassSolver(exercise).solve()
+  override def solveBassExercise(bassExerciseRequestDto: Option[BassExerciseRequestDto]): HarmonicsExerciseSolutionDto = {
+    bassExerciseRequestDto match {
+      case Some(exerciseRequest) =>
+        val exercise = BassExerciseMapper.mapToModel(exerciseRequest.exercise)
+        val precheckDisabled = !exerciseRequest.configuration.flatMap(_.enablePrechecker).getOrElse(true)
+        val correctDisabled = !exerciseRequest.configuration.flatMap(_.enableCorrector).getOrElse(true)
+        val solution = BassSolver(exercise = exercise, correctDisabled = correctDisabled, precheckDisabled = precheckDisabled).solve()
         HarmonicsExerciseSolutionMapper.mapToDTO(solution)
       case None => ???
     }
