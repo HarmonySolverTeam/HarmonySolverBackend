@@ -106,6 +106,9 @@ object Key {
     keysString.map(Key(_))
   }
 
-  private final val pitchKeyStr: HashMap[Integer, Set[String]] =
-    HashMap.from(keyStrPitch.groupBy(_._2).view.mapValues(_.keySet))
+  private final val pitchKeyStr: HashMap[Integer, Set[String]] = {
+    val builder = HashMap.newBuilder[Integer, Set[String]]
+    builder ++= keyStrPitch.groupBy(_._2).mapValues(_.keySet)
+    builder.result()
+  }
 }

@@ -162,7 +162,7 @@ class HarmonicsParser extends RegexParsers {
       Tokens.comma ~ chordComponent ~ Tokens.dash ~ chordComponent
     ) ^^ {
       case cc1 ~ d ~ cc2 ~ rep =>
-        Delays(List((cc1, cc2)).appendedAll(rep.map(x => (x._1._1._2, x._2))).map(Delay(_)).toSet)
+        Delays(Set(Delay(cc1, cc2)) ++ (rep.map(x => (x._1._1._2, x._2))).map(Delay(_)).toSet)
     }
 
   def systemName: Parser[String] = Tokens.closeSystem | Tokens.openSystem ^^ { _.toString }
@@ -187,7 +187,7 @@ class HarmonicsParser extends RegexParsers {
         case Some(value) =>
           value match {
             case hfContent ~ rep =>
-              val contents = rep.prepended(hfContent)
+              val contents = List(hfContent) ++ rep
               val down     = contents.contains(IsDown(true))
 
               implicit def stringToChordComponent(x: String): ChordComponent =

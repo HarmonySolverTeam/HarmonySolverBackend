@@ -40,26 +40,26 @@ object JSONBassExerciseParser extends DefaultJsonProtocol {
           val exerciseBuilder = new FiguredBassExerciseBuilder
           for (field <- fields) {
             field match {
-              case "key" -> k => exerciseBuilder.withKey(k.convertTo[String])
-              case "meter" -> m =>
-                val meterAsList = m.convertTo[List[Int]]
+              case k if k._1 == "key" => exerciseBuilder.withKey(k._2.convertTo[String])
+              case m if m._1 == "meter" =>
+                val meterAsList = m._2.convertTo[List[Int]]
                 exerciseBuilder.withMeter(meterAsList.head, meterAsList.last)
-              case "elements" -> e =>
-                e match {
+              case e if e._1 == "elements" =>
+                e._2 match {
                   case JsArray(elements) =>
-                    val mappedElements = elements map[FiguredBassElement] { field =>
+                    val mappedElements = elements map { field =>
                       val elementBuilder = new FiguredBassElementBuilder
                       field match {
                         case JsObject(fields) =>
                           fields foreach {
-                            case "bassNote" -> n =>
-                              val noteFields = n.asJsObject.fields
+                            case n if n._1 == "bassNote" =>
+                              val noteFields = n._2.asJsObject.fields
                               elementBuilder.withBassNote(
                                 noteFields.getOrElse("pitch", sys.error("Pitch not defined")).convertTo[Int],
                                 noteFields.getOrElse("baseNote", sys.error("Pitch not defined")).convertTo[Int]
                               )
-                            case "delays" -> d =>
-                              d match {
+                            case d if d._1 == "delays" =>
+                              d._2 match {
                                 case JsArray(elements) =>
                                   elements foreach { delay =>
                                     val delayAsList = delay.convertTo[List[String]]
@@ -67,8 +67,8 @@ object JSONBassExerciseParser extends DefaultJsonProtocol {
                                   }
                                 case _ =>
                               }
-                            case "symbols" -> s =>
-                              s match {
+                            case s if s._1 == "symbols" =>
+                              s._2 match {
                                 case JsArray(symbols) =>
                                   symbols foreach { s =>
                                     val symbolFields = s.asJsObject.fields

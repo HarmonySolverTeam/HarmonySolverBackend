@@ -21,7 +21,7 @@ case class FiguredBassElement(bassNote: NoteBuilder, var symbols: List[BassSymbo
 
   def buildChordElement(): ChordElement =
     ChordElement(
-      List(bassNote.baseNote.value).concat(symbols.map(bassNote.baseNote.value + _.component - 1)),
+      List(bassNote.baseNote.value) ++ symbols.map(bassNote.baseNote.value + _.component - 1),
       List.empty,
       this
     )

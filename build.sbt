@@ -1,5 +1,5 @@
 // Project setup
-val scalaV   = "2.13.4"
+val scalaV   = "2.12.6"
 val projectV = "1.0"
 
 externalResolvers += Resolver.sonatypeRepo("snapshots")

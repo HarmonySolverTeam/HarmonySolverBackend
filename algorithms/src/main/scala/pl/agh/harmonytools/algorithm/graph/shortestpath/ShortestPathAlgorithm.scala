@@ -17,7 +17,7 @@ abstract class ShortestPathAlgorithm[T <: NodeContent, S <: NodeContent](graph: 
     var currentNode              = graph.getLast
     var result: List[Node[T, S]] = List.empty
     while (currentNode.getPrevsInShortestPath.nonEmpty) {
-      result = result.appended(currentNode)
+      result = result :+ currentNode
       currentNode = currentNode.getPrevsInShortestPath.head
     }
     result.drop(1).reverse

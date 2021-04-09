@@ -2,10 +2,10 @@ package pl.agh.harmonytools.algorithm.graph.node
 
 case class NeighbourNodes[T <: NodeContent, S <: NodeContent](private var nodeList: List[NeighbourNode[T, S]]) {
   def add(node: Node[T, S]): Unit =
-    nodeList = nodeList.appended(new NeighbourNode(node))
+    nodeList = nodeList :+ new NeighbourNode(node)
 
   def add(neighbourNode: NeighbourNode[T, S]): Unit =
-    nodeList = nodeList.appended(neighbourNode)
+    nodeList = nodeList :+ neighbourNode
 
   def size: Int = nodeList.length
 
