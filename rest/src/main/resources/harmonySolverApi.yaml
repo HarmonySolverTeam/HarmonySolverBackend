@@ -331,6 +331,30 @@ components:
           description: List of possible harmonic functions which could be used in solution.
           items:
             $ref: '#/components/schemas/HarmonicFunctionDto'
+        punishmentRatios:
+          $ref: '#/components/schemas/PunishmentRatiosDto'
+
+    PunishmentRatiosDto:
+      type: object
+      properties:
+        concurrentOctaves:
+          type: double
+        concurrentFifths:
+          type: double
+        crossingVoices:
+          type: double
+        oneDirection:
+          type: double
+        forbiddenJump:
+          type: double
+        hiddenOctaves:
+          type: double
+        falseRelation:
+          type: double
+        sameFunctionCheckConnection:
+          type: double
+        illegalDoubledThird:
+          type: double
 
     SopranoMeasureDto:
       required:

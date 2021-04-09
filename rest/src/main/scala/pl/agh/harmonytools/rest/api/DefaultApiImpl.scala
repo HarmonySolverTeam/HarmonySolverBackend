@@ -2,7 +2,7 @@ package pl.agh.harmonytools.rest.api
 
 import pl.agh.harmonytools.harmonics.parser.HarmonicsParser
 import pl.agh.harmonytools.rest.dto.{BassExerciseDto, BassExerciseRequestDto, ChordDto, HLNotationHarmonicsExerciseDto, HarmonicsExerciseDto, HarmonicsExerciseRequestDto, HarmonicsExerciseSolutionDto, SopranoExerciseDto, SopranoExerciseSolutionDto}
-import pl.agh.harmonytools.rest.mapper.{BassExerciseMapper, ChordMapper, HarmonicsExerciseMapper, HarmonicsExerciseSolutionMapper, SopranoExerciseMapper, SopranoExerciseSolutionMapper}
+import pl.agh.harmonytools.rest.mapper.{BassExerciseMapper, ChordMapper, HarmonicsExerciseMapper, HarmonicsExerciseSolutionMapper, PunishmentRatiosMapper, SopranoExerciseMapper, SopranoExerciseSolutionMapper}
 import pl.agh.harmonytools.solver.bass.BassSolver
 import pl.agh.harmonytools.solver.harmonics.HarmonicsSolver
 import pl.agh.harmonytools.solver.harmonics.validator.SolvedExerciseValidator
@@ -42,7 +42,8 @@ class DefaultApiImpl extends DefaultApi {
     sopranoExerciseDto match {
       case Some(exerciseDto) =>
         val exercise = SopranoExerciseMapper.mapToModel(exerciseDto)
-        val solution = SopranoSolver(exercise).solve()
+        val punishmentRatios = exerciseDto.punishmentRatios.map(PunishmentRatiosMapper.mapToModel)
+        val solution = SopranoSolver(exercise, punishmentRatios = punishmentRatios).solve()
         SopranoExerciseSolutionMapper.mapToDTO(solution)
       case None => ???
     }

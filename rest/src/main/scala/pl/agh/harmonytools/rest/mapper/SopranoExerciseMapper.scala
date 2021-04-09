@@ -20,7 +20,8 @@ object SopranoExerciseMapper extends Mapper[SopranoExercise, SopranoExerciseDto]
       key = model.key.toString,
       meter = model.meter.toString,
       measures = model.measures.map(SopranoMeasureMapper.mapToDTO),
-      harmonicFunctions = model.possibleFunctionsList.map(HarmonicFunctionMapper.mapToDTO)
+      harmonicFunctions = model.possibleFunctionsList.map(HarmonicFunctionMapper.mapToDTO),
+      punishmentRatios = None
     )
   }
 }
