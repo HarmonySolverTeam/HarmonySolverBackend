@@ -13,7 +13,6 @@ import pl.agh.harmonytools.solver.harmonics.evaluator.rules.ChordRules
 import pl.agh.harmonytools.solver.harmonics.evaluator.rules.hard.ParallelOctavesRule
 import pl.agh.harmonytools.solver.soprano.evaluator.rules.hard.{ForbiddenDSConnectionRule, SecondaryDominantConnectionRule}
 import pl.agh.harmonytools.solver.soprano.evaluator.rules.soft.{ChangeFunctionAtMeasureBeginningRule, ChangeFunctionConnectionRule, ChangeFunctionOnDownBeatRule, DominantRelationRule, FourthChordsRule, JumpRule, SecondRelationRule}
-import pl.agh.harmonytools.solver.soprano.evaluator.{HarmonicFunctionWithSopranoInfo, SopranoRulesChecker}
 import pl.agh.harmonytools.utils.TestUtils
 
 class SopranoRulesCheckerTest extends FunSuite with Matchers with TestUtils {

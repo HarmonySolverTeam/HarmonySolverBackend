@@ -41,7 +41,10 @@ paths:
       responses:
         200:
           description: OK
-          content: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HarmonicsExerciseSolutionDto'
 
   /soprano:
     post:
@@ -56,14 +59,17 @@ paths:
       responses:
         200:
           description: OK
-          content: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SopranoExerciseSolutionDto'
 
   /parser:
     post:
       summary: Post new harmonics exercise
       operationId: parseHarmonicsExercise
       requestBody:
-        description: Exercixe object that needs to be send
+        description: Exercise object that needs to be send
         content:
           application/json:
             schema:
@@ -75,6 +81,24 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/HarmonicsExerciseDto'
+
+  /validator:
+    post:
+      summary: Post new solved exercise
+      operationId: validateSolvedExercise
+      requestBody:
+        description: User's solution providaded like ordered list of chords
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChordListDto'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationResultDto'
 
 components:
   schemas:
@@ -265,6 +289,11 @@ components:
     #SOPRANO
     SopranoExerciseDto:
       type: object
+      required:
+        - key
+        - meter
+        - measures
+        - harmonicFunctions
       properties:
         key:
           type: string
@@ -283,11 +312,38 @@ components:
             $ref: '#/components/schemas/HarmonicFunctionDto'
 
     SopranoMeasureDto:
+      required:
+        - elements
       properties:
         elements:
           type: array
           items:
             $ref: '#/components/schemas/NoteDto'
+
+
+    SopranoExerciseSolutionDto:
+      type: object
+      required:
+        - exercise
+        - rating
+        - chords
+        - success
+      properties:
+        exercise:
+          type: object
+          $ref: '#/components/schemas/SopranoExerciseDto'
+          description: Given exercise as input
+        rating:
+          type: double
+          description: Solution rating
+        chords:
+          type: array
+          description: List of chords that solution contains
+          items:
+            $ref: '#/components/schemas/ChordDto'
+        success:
+          type: boolean
+          description: Shows if exercise was successfully solved
 
     #PARSER
     HLNotationHarmonicsExerciseDto:
@@ -301,6 +357,18 @@ components:
         exercise:
           type: string
           description: HarmonicsExercise written in specific notation that should be parsed.
+
+    #VALIDATOR
+    ChordListDto:
+      description: Ordered list of chords
+      type: array
+      items:
+        $ref: '#/components/schemas/ChordDto'
+
+    ValidationResultDto:
+      type: string
+      description: Validation result as string report
+
 
     #COMMONS
     NoteDto:
@@ -327,7 +395,7 @@ components:
           type: string
           description: Context for chord which part that note is
         duration:
-          type: float
+          type: double
           description: Duration of note. Full note has duration equal 1.0
 
     ChordDto:

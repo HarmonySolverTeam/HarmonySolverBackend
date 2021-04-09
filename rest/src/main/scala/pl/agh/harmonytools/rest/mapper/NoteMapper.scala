@@ -9,7 +9,7 @@ object NoteMapper extends Mapper[Note, NoteDto] {
       dto.pitch,
       BaseNoteMapper.mapToModel(dto.baseNote),
       dto.chordComponent.getOrElse("1"), //todo
-      dto.duration.getOrElse(0.toFloat)
+      dto.duration.getOrElse(0.0)
     )
   }
 

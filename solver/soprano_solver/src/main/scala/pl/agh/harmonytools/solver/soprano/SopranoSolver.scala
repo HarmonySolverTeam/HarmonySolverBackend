@@ -108,8 +108,6 @@ object SopranoSolver extends App {
       List(NoteWithoutChordContext(72, C, 0.5), NoteWithoutChordContext(72, C, 0.5)),
       List(NoteWithoutChordContext(74, D, 0.5), NoteWithoutChordContext(76, E, 0.5))
     ),
-    durations = List.empty,
-    notes = List.empty,
     possibleFunctionsList = List(
       HarmonicFunction(TONIC),
       HarmonicFunction(SUBDOMINANT),

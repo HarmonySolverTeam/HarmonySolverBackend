@@ -57,7 +57,8 @@ lazy val rest = project
   .dependsOn(
     harmonics_parser,
     bass_solver,
-    soprano_solver
+    soprano_solver,
+    validator
   )
 
 lazy val model = project

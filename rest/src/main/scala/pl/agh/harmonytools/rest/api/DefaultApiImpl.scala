@@ -1,10 +1,12 @@
 package pl.agh.harmonytools.rest.api
 
 import pl.agh.harmonytools.harmonics.parser.HarmonicsParser
-import pl.agh.harmonytools.rest.dto.{BassExerciseDto, HLNotationHarmonicsExerciseDto, HarmonicsExerciseDto, HarmonicsExerciseSolutionDto, SopranoExerciseDto}
-import pl.agh.harmonytools.rest.mapper.{BassExerciseMapper, HarmonicsExerciseSolutionMapper, HarmonicsExerciseMapper}
+import pl.agh.harmonytools.rest.dto.{BassExerciseDto, ChordDto, HLNotationHarmonicsExerciseDto, HarmonicsExerciseDto, HarmonicsExerciseSolutionDto, SopranoExerciseDto, SopranoExerciseSolutionDto}
+import pl.agh.harmonytools.rest.mapper.{BassExerciseMapper, ChordMapper, HarmonicsExerciseMapper, HarmonicsExerciseSolutionMapper, SopranoExerciseMapper, SopranoExerciseSolutionMapper}
 import pl.agh.harmonytools.solver.bass.BassSolver
 import pl.agh.harmonytools.solver.harmonics.HarmonicsSolver
+import pl.agh.harmonytools.solver.harmonics.validator.SolvedExerciseValidator
+import pl.agh.harmonytools.solver.soprano.SopranoSolver
 
 /**
  * Provides a default implementation for [[DefaultApi]].
@@ -22,7 +24,7 @@ class DefaultApiImpl extends DefaultApi {
     }
   }
 
-  override def solveBassExercise(bassExerciseDto: Option[BassExerciseDto]): Unit = {
+  override def solveBassExercise(bassExerciseDto: Option[BassExerciseDto]): HarmonicsExerciseSolutionDto = {
     bassExerciseDto match {
       case Some(exerciseDto) =>
         val exercise = BassExerciseMapper.mapToModel(exerciseDto)
@@ -32,10 +34,12 @@ class DefaultApiImpl extends DefaultApi {
     }
   }
 
-  override def solveSopranoExercise(sopranoExerciseDto: Option[SopranoExerciseDto]): Unit = {
+  override def solveSopranoExercise(sopranoExerciseDto: Option[SopranoExerciseDto]): SopranoExerciseSolutionDto = {
     sopranoExerciseDto match {
       case Some(exerciseDto) =>
-
+        val exercise = SopranoExerciseMapper.mapToModel(exerciseDto)
+        val solution = SopranoSolver(exercise).solve()
+        SopranoExerciseSolutionMapper.mapToDTO(solution)
       case None => ???
     }
   }
@@ -45,6 +49,15 @@ class DefaultApiImpl extends DefaultApi {
       case Some(notation) =>
         val parsedExercise = new HarmonicsParser().parse(notation.exercise)
         HarmonicsExerciseMapper.mapToDTO(parsedExercise)
+      case None => ???
+    }
+  }
+
+  override def validateSolvedExercise(chordDto: Option[List[ChordDto]]): String = {
+    chordDto match {
+      case Some(solutionChordList) =>
+        val chordList = solutionChordList.map(ChordMapper.mapToModel)
+        SolvedExerciseValidator.getBrokenRulesReport(chordList)
       case None => ???
     }
   }

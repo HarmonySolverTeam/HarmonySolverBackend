@@ -8,7 +8,7 @@ object NoteBuilderMapper extends Mapper[NoteBuilder, NoteDto] {
     NoteBuilder(
       pitch = dto.pitch,
       baseNote = BaseNoteMapper.mapToModel(dto.baseNote),
-      duration = dto.duration.getOrElse(1.toFloat)
+      duration = dto.duration.getOrElse(0.0)
     )
   }
 

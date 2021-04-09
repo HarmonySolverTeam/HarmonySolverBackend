@@ -8,7 +8,7 @@ case class Note(
   pitch: Int,
   baseNote: BaseNote.BaseNoteType,
   chordComponent: ChordComponent,
-  duration: Float = 0 //todo builder for harmonics
+  duration: Double = 0.0 //todo builder for harmonics
 ) {
   override def toString: String = {
     "Pitch: " + pitch + " BaseNote: " + baseNote + " ChordComponent: " + chordComponent.toString
@@ -34,7 +34,7 @@ case class Note(
 }
 
 object Note {
-  def apply(pitch: Int, baseNote: BaseNote.BaseNoteType, chordComponentString: String, duration: Float): Note = {
+  def apply(pitch: Int, baseNote: BaseNote.BaseNoteType, chordComponentString: String, duration: Double): Note = {
     Note(pitch, baseNote, ChordComponentManager.chordComponentFromString(chordComponentString), duration)
   }
 }

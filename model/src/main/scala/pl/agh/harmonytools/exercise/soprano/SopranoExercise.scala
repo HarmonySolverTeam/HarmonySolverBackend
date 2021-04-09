@@ -9,8 +9,9 @@ import pl.agh.harmonytools.model.note.NoteWithoutChordContext
 case class SopranoExercise(
   key: Key,
   meter: Meter,
-  notes: List[NoteWithoutChordContext],
-  durations: List[Double],
   measures: List[List[NoteWithoutChordContext]],
   possibleFunctionsList: List[HarmonicFunction]
 ) extends Exercise(key, meter, measures = List.empty) // todo
+{
+  lazy val notes: List[NoteWithoutChordContext] = measures.reduce(_ ++ _)
+}

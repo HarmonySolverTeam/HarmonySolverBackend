@@ -114,7 +114,7 @@ class SopranoSolverTest extends FunSuite with Matchers with TestUtils {
     _meter: Meter,
     _NoteWithoutChordContexts: List[NoteWithoutChordContext],
     val name: String = ""
-  ) extends SopranoExercise(_key, _meter, _NoteWithoutChordContexts, List.empty, List.empty, List.empty)
+  ) extends SopranoExercise(_key, _meter, List(_NoteWithoutChordContexts), List.empty)
 
   test("Combinations Test") {
     val ex = new TestExercise(keyC, Meter(4, 4), List.empty)
@@ -514,7 +514,7 @@ class SopranoSolverTest extends FunSuite with Matchers with TestUtils {
       }
     }
 
-    val sopranoExercise = SopranoExercise(ex.key, ex.meter, ex.notes, List.empty, measures, harmonicFunctions)
+    val sopranoExercise = SopranoExercise(ex.key, ex.meter, measures, harmonicFunctions)
     val sopranoSolver   = SopranoSolver(sopranoExercise);
     val solution        = sopranoSolver.solve()
     solution.success shouldBe true
