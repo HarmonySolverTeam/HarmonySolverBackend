@@ -23,7 +23,10 @@ paths:
       responses:
         200:
           description: OK
-          content: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HarmonicsExerciseSolutionDto'
 
   /bass:
     post:
@@ -244,6 +247,8 @@ components:
     #PARSER
     HLNotationHarmonicsExerciseDto:
       type: object
+      required:
+        - exercise
       properties:
         version:
           type: string
@@ -255,6 +260,9 @@ components:
     #COMMONS
     NoteDto:
       type: object
+      required:
+        - pitch
+        - baseNote
       properties:
         pitch:
           type: integer
@@ -270,6 +278,63 @@ components:
             - G
             - A
             - B
+        chordComponent:
+          type: string
+          description: Context for chord which part that note is
         duration:
-          type: number
-          description: Duration of note. Full note has duration equal 1
+          type: float
+          description: Duration of note. Full note has duration equal 1.0
+
+    HarmonicsExerciseSolutionDto:
+      type: object
+      required:
+        - exercise
+        - rating
+        - chords
+        - success
+      properties:
+        exercise:
+          type: object
+          $ref: '#/components/schemas/HarmonicsExerciseDto'
+          description: Given exercise as input
+        rating:
+          type: double
+          description: Solution rating
+        chords:
+          type: array
+          description: List of chords that solution contains
+          items:
+            $ref: '#/components/schemas/ChordDto'
+        success:
+          type: boolean
+          description: Shows if exercise was successfully solved
+
+    ChordDto:
+      type: object
+      required:
+        - sopranoNote
+        - altoNote
+        - tenorNote
+        - bassNote
+        - harmonicFunction
+      properties:
+        sopranoNote:
+          type: object
+          $ref: '#/components/schemas/NoteDto'
+          description: Soprano note
+        altoNote:
+          type: object
+          $ref: '#/components/schemas/NoteDto'
+          description: Alto note
+        tenorNote:
+          type: object
+          $ref: '#/components/schemas/NoteDto'
+          description: Tenor note
+        bassNote:
+          type: object
+          $ref: '#/components/schemas/NoteDto'
+          description: Bass note
+        harmonicFunction:
+          type: object
+          $ref: '#/components/schemas/HarmonicFunctionDto'
+          descritpion: Harmonic function of chord

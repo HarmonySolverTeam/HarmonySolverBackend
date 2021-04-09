@@ -55,6 +55,7 @@ lazy val rest = project
     libraryDependencies ++= playDependencies
   )
   .dependsOn(
+    harmonics_parser,
     soprano_solver
   )
 
