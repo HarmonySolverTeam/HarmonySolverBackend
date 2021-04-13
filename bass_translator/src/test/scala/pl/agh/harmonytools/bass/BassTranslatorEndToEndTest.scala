@@ -94,7 +94,7 @@ class BassTranslatorEndToEndTest extends FunSuite with Matchers with TestUtils {
       FiguredBassExercise(
         Key("c"),
         Meter(4, 4),
-        List(FiguredBassElement(NoteBuilder(48, C, 1), symbols = List(BassSymbol(3, Some(AlterationType.NATURAL)))))
+        List(FiguredBassElement(NoteBuilder(48, C, 1), symbols = List(BassSymbol(3, AlterationType.NATURAL))))
       )
     )
     ex.measures.head.harmonicFunctions.head.revolution.chordComponentString shouldBe "1"
@@ -168,7 +168,7 @@ class BassTranslatorEndToEndTest extends FunSuite with Matchers with TestUtils {
         List(
           FiguredBassElement(
             NoteBuilder(55, G, 1),
-            symbols = List(BassSymbol(7), BassSymbol(3, Some(AlterationType.NATURAL)))
+            symbols = List(BassSymbol(7), BassSymbol(3, AlterationType.NATURAL))
           )
         )
       )
@@ -203,7 +203,7 @@ class BassTranslatorEndToEndTest extends FunSuite with Matchers with TestUtils {
         List(
           FiguredBassElement(
             NoteBuilder(50, D, 1),
-            symbols = List(BassSymbol(6, Some(AlterationType.NATURAL)), BassSymbol(4), BassSymbol(3))
+            symbols = List(BassSymbol(6, AlterationType.NATURAL), BassSymbol(4), BassSymbol(3))
           )
         )
       )
@@ -223,7 +223,7 @@ class BassTranslatorEndToEndTest extends FunSuite with Matchers with TestUtils {
         List(
           FiguredBassElement(
             NoteBuilder(53, F, 1),
-            symbols = List(BassSymbol(4, Some(AlterationType.NATURAL)), BassSymbol(2))
+            symbols = List(BassSymbol(4, AlterationType.NATURAL), BassSymbol(2))
           )
         )
       )
@@ -315,7 +315,7 @@ class BassTranslatorEndToEndTest extends FunSuite with Matchers with TestUtils {
         List(
           FiguredBassElement(
             NoteBuilder(48, C, 1),
-            delays = List(BassDelay(BassSymbol(3), BassSymbol(3, Some(AlterationType.FLAT))))
+            delays = List(BassDelay(BassSymbol(3), BassSymbol(3, AlterationType.FLAT)))
           )
         )
       )
@@ -374,7 +374,7 @@ class BassTranslatorEndToEndTest extends FunSuite with Matchers with TestUtils {
             NoteBuilder(47, B, 1),
             symbols = List(
               BassSymbol(2),
-              BassSymbol(4, Some(AlterationType.SHARP)),
+              BassSymbol(4, AlterationType.SHARP),
               BassSymbol(10)
             )
           )
@@ -403,7 +403,7 @@ class BassTranslatorEndToEndTest extends FunSuite with Matchers with TestUtils {
               BassSymbol(4)
             ),
             delays = List(
-              BassDelay(BassSymbol(6), BassSymbol(6, Some(AlterationType.FLAT)))
+              BassDelay(BassSymbol(6), BassSymbol(6, AlterationType.FLAT))
             )
           )
         )

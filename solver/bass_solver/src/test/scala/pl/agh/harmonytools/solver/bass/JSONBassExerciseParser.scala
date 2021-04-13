@@ -15,22 +15,22 @@ import pl.agh.harmonytools.model.note.{BaseNote, Note}
 
 object JSONBassExerciseParser extends DefaultJsonProtocol {
 
-  private implicit def stringToAlterationType(s: Option[String]): Option[AlterationType.FiguredBassType] = s.map(AlterationType.fromStringToBass)
+  private implicit def stringToAlterationType(s: String): AlterationType.FiguredBassType = AlterationType.fromStringToBass(s)
 
   implicit object BassExerciseJsonFormat extends RootJsonFormat[FiguredBassExercise] {
 
     def createBassSymbol(symbolFields: Map[String, JsValue]): BassSymbol = {
       BassSymbol(
         symbolFields.getOrElse("component", JsNumber(3)).convertTo[Int],
-        symbolFields.getOrElse("alteration", JsNull).convertTo[Option[String]]
+        AlterationType.fromStringToBass(symbolFields.getOrElse("alteration", JsString("")).convertTo[String])
       )
     }
 
     def createBassSymbol(s: String): BassSymbol = {
       if (s.length == 1 && s.head.isDigit) BassSymbol(s.toInt)
-      else if (s.length == 1 && !s.head.isDigit) BassSymbol(alteration = stringToAlterationType(Some(s)))
+      else if (s.length == 1 && !s.head.isDigit) BassSymbol(alteration = stringToAlterationType(s))
       else {
-        BassSymbol(s.head.toString.toInt, stringToAlterationType(Some(s.tail)))
+        BassSymbol(s.head.toString.toInt, stringToAlterationType(s.tail))
       }
     }
 

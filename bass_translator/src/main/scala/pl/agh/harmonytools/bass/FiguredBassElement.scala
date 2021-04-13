@@ -29,5 +29,6 @@ case class FiguredBassElement(bassNote: NoteBuilder, var symbols: List[BassSymbo
 
 case class NoteBuilder(pitch: Int, baseNote: BaseNote.BaseNoteType, duration: Double = 0.0, private var chordComponentString: Option[String] = None) {
   def withChordComponentString(cc: String): Unit = chordComponentString = Some(cc)
-  def getResult: Note = Note(pitch, baseNote, chordComponentString.getOrElse(sys.error("CC not defined")), duration)
+  def getChordComponentString: Option[String] = chordComponentString
+  def getResult: Note = Note(pitch, baseNote, chordComponentString.getOrElse("1" /*todo*/), duration)
 }

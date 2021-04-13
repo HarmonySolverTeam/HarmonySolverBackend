@@ -515,7 +515,7 @@ class SopranoSolverTest extends FunSuite with Matchers with TestUtils {
     }
 
     val sopranoExercise = SopranoExercise(ex.key, ex.meter, measures, harmonicFunctions)
-    val sopranoSolver   = SopranoSolver(sopranoExercise);
+    val sopranoSolver   = SopranoSolver(sopranoExercise)
     val solution        = sopranoSolver.solve()
     solution.success shouldBe true
   }

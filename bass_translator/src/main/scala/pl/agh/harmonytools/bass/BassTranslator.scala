@@ -381,7 +381,7 @@ object BassTranslator {
       var extras = List.empty[String]
       for (symbol <- chordElements(i).bassElement.symbols) {
         symbol.alteration match {
-          case Some(alt) =>
+          case alt if alt != AlterationType.EMPTY =>
             val number                     = symbol.component
             var alteration: Option[String] = None
             val baseNoteToAlter            = (number + chordElements(i).bassElement.bassNote.baseNote.value - 1) %% 7
@@ -405,7 +405,7 @@ object BassTranslator {
               omits = omits :+ componentToAlter
               extras = extras :+ (componentToAlter.toString + alteration.get)
             }
-          case None =>
+          case _ =>
         }
       }
       val alterationSymbol =

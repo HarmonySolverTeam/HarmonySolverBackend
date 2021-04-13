@@ -1,3 +1,4 @@
+# add ```filters.disabled+=play.filters.csrf.CSRFFilter``` to application.conf to disable CSRF
 openapi: 3.0.1
 info:
   title: Harmony Solver API
@@ -15,7 +16,8 @@ paths:
       summary: Post new harmonic functions exercise
       operationId: solveHarmonicFunctionsExercise
       requestBody:
-        description: Exercixe object that needs to be send
+        required: true
+        description: Exercise object that needs to be send
         content:
           application/json:
             schema:
@@ -33,7 +35,8 @@ paths:
       summary: Post new bass exercise
       operationId: solveBassExercise
       requestBody:
-        description: Exercixe object that needs to be send
+        required: true
+        description: Exercise object that needs to be send
         content:
           application/json:
             schema:
@@ -51,11 +54,12 @@ paths:
       summary: Post new soprano exercise
       operationId: solveSopranoExercise
       requestBody:
-        description: Exercixe object that needs to be send
+        required: true
+        description: Exercise object that needs to be send
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/SopranoExerciseDto'
+              $ref: '#/components/schemas/SopranoExerciseRequestDto'
       responses:
         200:
           description: OK
@@ -69,6 +73,7 @@ paths:
       summary: Post new harmonics exercise
       operationId: parseHarmonicsExercise
       requestBody:
+        required: true
         description: Exercise object that needs to be send
         content:
           application/json:
@@ -87,6 +92,7 @@ paths:
       summary: Post new solved exercise
       operationId: validateSolvedExercise
       requestBody:
+        required: true
         description: User's solution providaded like ordered list of chords
         content:
           application/json:
@@ -131,6 +137,8 @@ components:
             $ref: '#/components/schemas/HarmonicsMeasureDto'
 
     HarmonicsMeasureDto:
+      required:
+        - elements
       properties:
         elements:
           type: array
@@ -308,6 +316,16 @@ components:
           type: string
 
     #SOPRANO
+    SopranoExerciseRequestDto:
+      type: object
+      required:
+        - exercise
+      properties:
+        exercise:
+          $ref: '#/components/schemas/SopranoExerciseDto'
+        punishmentRatios:
+          $ref: '#/components/schemas/PunishmentRatiosDto'
+
     SopranoExerciseDto:
       type: object
       required:
@@ -331,8 +349,6 @@ components:
           description: List of possible harmonic functions which could be used in solution.
           items:
             $ref: '#/components/schemas/HarmonicFunctionDto'
-        punishmentRatios:
-          $ref: '#/components/schemas/PunishmentRatiosDto'
 
     PunishmentRatiosDto:
       type: object

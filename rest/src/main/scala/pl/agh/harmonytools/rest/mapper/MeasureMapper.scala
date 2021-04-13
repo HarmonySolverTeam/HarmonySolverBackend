@@ -7,14 +7,13 @@ object MeasureMapper extends Mapper[Measure, HarmonicsMeasureDto] {
   override def mapToModel(dto: HarmonicsMeasureDto): Measure = {
     Measure(
       dto.elements
-        .getOrElse(List.empty)
         .map(HarmonicFunctionMapper.mapToModel)
     )
   }
 
   override def mapToDTO(model: Measure): HarmonicsMeasureDto = {
     HarmonicsMeasureDto(
-      Some(model.harmonicFunctions.map(HarmonicFunctionMapper.mapToDTO))
+      model.harmonicFunctions.map(HarmonicFunctionMapper.mapToDTO)
     )
   }
 }

@@ -8,7 +8,8 @@ object NoteBuilderMapper extends Mapper[NoteBuilder, NoteDto] {
     NoteBuilder(
       pitch = dto.pitch,
       baseNote = BaseNoteMapper.mapToModel(dto.baseNote),
-      duration = dto.duration.getOrElse(0.0)
+      duration = dto.duration.getOrElse(0.0),
+      chordComponentString = dto.chordComponent
     )
   }
 
@@ -17,7 +18,7 @@ object NoteBuilderMapper extends Mapper[NoteBuilder, NoteDto] {
       pitch = model.pitch,
       baseNote = BaseNoteMapper.mapToDTO(model.baseNote),
       duration = Some(model.duration),
-      chordComponent = None
+      chordComponent = model.getChordComponentString
     )
   }
 }

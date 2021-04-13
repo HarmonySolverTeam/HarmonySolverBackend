@@ -5,4 +5,6 @@ object Mode {
 
   case object MAJOR extends BaseMode
   case object MINOR extends BaseMode
+
+  val values: List[BaseMode] = List(MAJOR, MINOR)
 }

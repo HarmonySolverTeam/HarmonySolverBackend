@@ -6,12 +6,12 @@ object BassSymbolMapper extends Mapper[BassSymbol, String] {
   override def mapToModel(dto: String): BassSymbol = {
     val altType = if (!dto.last.isDigit) {
       dto.last.toString match {
-        case AlterationType.NATURAL.value => Some(AlterationType.NATURAL)
-        case AlterationType.SHARP.value   => Some(AlterationType.SHARP)
-        case AlterationType.FLAT.value    => Some(AlterationType.FLAT)
+        case AlterationType.NATURAL.value => AlterationType.NATURAL
+        case AlterationType.SHARP.value   => AlterationType.SHARP
+        case AlterationType.FLAT.value    => AlterationType.FLAT
         case unknown                      => throw new InternalError("Unknown alteration type: " + unknown)
       }
-    } else None
+    } else AlterationType.EMPTY
     BassSymbol(
       dto.takeWhile(_.isDigit).toInt,
       altType
@@ -19,6 +19,6 @@ object BassSymbolMapper extends Mapper[BassSymbol, String] {
   }
 
   override def mapToDTO(model: BassSymbol): String = {
-    model.mapToChordComponentSymbol().toString
+    model.toString
   }
 }
