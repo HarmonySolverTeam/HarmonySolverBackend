@@ -22,12 +22,12 @@ class BassExerciseMapperTest
       Meter(4, 4),
       List(
         FiguredBassElement(
-          NoteBuilder(55, BaseNote.G),
+          NoteBuilder(55, BaseNote.G, 0.0, Some("1")),
           List(BassSymbol(7)),
           List(BassDelay(BassSymbol(4), BassSymbol(3, AlterationType.NATURAL)))
         ),
         FiguredBassElement(
-          NoteBuilder(60, BaseNote.C)
+          NoteBuilder(60, BaseNote.C, 0.0, Some("1"))
         )
       )
     )

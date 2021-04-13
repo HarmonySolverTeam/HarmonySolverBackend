@@ -7,7 +7,7 @@ import pl.agh.harmonytools.rest.dto.{BassDelayDto, BassElementDto, NoteDto}
 class FiguredBassElementMapperTest extends MapperTest[FiguredBassElement, BassElementDto](FiguredBassElementMapper) {
   override protected val models: List[FiguredBassElement] = List(
     FiguredBassElement(
-      NoteBuilder(60, BaseNote.C),
+      NoteBuilder(60, BaseNote.C, 0.0, Some("1")),
       symbols = List(BassSymbol(), BassSymbol(6, AlterationType.FLAT)),
       delays = List(
         BassDelay(BassSymbol(4), BassSymbol()),
