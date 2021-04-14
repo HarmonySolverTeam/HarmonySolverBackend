@@ -4,7 +4,7 @@ import pl.agh.harmonytools.algorithm.graph.shortestpath.ShortestPathAlgorithmCom
 import pl.agh.harmonytools.algorithm.graph.shortestpath.topologicalsort.TopologicalSortAlgorithm
 import pl.agh.harmonytools.bass.{BassTranslator, FiguredBassExercise}
 import pl.agh.harmonytools.solver.harmonics.HarmonicsSolver
-import pl.agh.harmonytools.solver.{ExerciseSolution, Solver}
+import pl.agh.harmonytools.solver.{ExerciseSolution, Solver, SolverError}
 
 case class BassSolver(
   exercise: FiguredBassExercise,

@@ -17,16 +17,16 @@ class DefaultApiImpl extends DefaultApi {
 
   override def solveHarmonicFunctionsExercise(harmonicsExerciseRequestDto: HarmonicsExerciseRequestDto): HarmonicsExerciseSolutionDto = {
     val exercise = HarmonicsExerciseMapper.mapToModel(harmonicsExerciseRequestDto.exercise)
-    val precheckDisabled = !harmonicsExerciseRequestDto.configuration.flatMap(_.enablePrechecker).getOrElse(true)
-    val correctDisabled = !harmonicsExerciseRequestDto.configuration.flatMap(_.enableCorrector).getOrElse(true)
+    val precheckDisabled = !harmonicsExerciseRequestDto.configuration.flatMap(_.enablePrechecker).getOrElse(false)
+    val correctDisabled = !harmonicsExerciseRequestDto.configuration.flatMap(_.enableCorrector).getOrElse(false)
     val solution = HarmonicsSolver(exercise = exercise, correctDisabled = correctDisabled, precheckDisabled = precheckDisabled).solve()
     HarmonicsExerciseSolutionMapper.mapToDTO(solution)
   }
 
   override def solveBassExercise(bassExerciseRequestDto: BassExerciseRequestDto): HarmonicsExerciseSolutionDto = {
     val exercise = BassExerciseMapper.mapToModel(bassExerciseRequestDto.exercise)
-    val precheckDisabled = !bassExerciseRequestDto.configuration.flatMap(_.enablePrechecker).getOrElse(true)
-    val correctDisabled = !bassExerciseRequestDto.configuration.flatMap(_.enableCorrector).getOrElse(true)
+    val precheckDisabled = !bassExerciseRequestDto.configuration.flatMap(_.enablePrechecker).getOrElse(false)
+    val correctDisabled = !bassExerciseRequestDto.configuration.flatMap(_.enableCorrector).getOrElse(false)
     val solution = BassSolver(exercise = exercise, correctDisabled = correctDisabled, precheckDisabled = precheckDisabled).solve()
     HarmonicsExerciseSolutionMapper.mapToDTO(solution)
   }
@@ -35,7 +35,6 @@ class DefaultApiImpl extends DefaultApi {
     val exercise = SopranoExerciseMapper.mapToModel(sopranoExerciseRequestDto.exercise)
     val punishmentRatios = sopranoExerciseRequestDto.punishmentRatios.map(PunishmentRatiosMapper.mapToModel)
     val solution = SopranoSolver(exercise, punishmentRatios = punishmentRatios).solve()
-    println(solution)
     SopranoExerciseSolutionMapper.mapToDTO(solution)
   }
 

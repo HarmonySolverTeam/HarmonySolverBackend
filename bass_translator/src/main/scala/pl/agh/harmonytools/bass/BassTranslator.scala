@@ -15,6 +15,7 @@ import pl.agh.harmonytools.model.note.BaseNote.{B, F}
 import pl.agh.harmonytools.model.scale.{MajorScale, MinorScale, ScaleDegree}
 import pl.agh.harmonytools.model.scale.ScaleDegree.{Degree, II, III, IV, V, VI, VII}
 import pl.agh.harmonytools.model.util.ChordComponentManager
+import pl.agh.harmonytools.solver.SolverError
 import pl.agh.harmonytools.utils.Extensions.ExtendedInt
 import pl.agh.harmonytools.utils.IntervalUtils
 
@@ -728,6 +729,9 @@ object BassTranslator {
   }
 
   def createExerciseFromFiguredBass(figuredBassExercise: FiguredBassExercise): HarmonicsExercise = {
+    if (figuredBassExercise.elements.isEmpty) {
+      throw SolverError("Elements of exercise could not be empty.")
+    }
     val (chordElements, harmonicFunctions) = convertToHarmonicFunctions(figuredBassExercise)
     val key                               = figuredBassExercise.key
     handleAlterations(harmonicFunctions, chordElements, figuredBassExercise)
