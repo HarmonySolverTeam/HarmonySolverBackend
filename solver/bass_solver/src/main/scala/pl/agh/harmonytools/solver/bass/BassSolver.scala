@@ -4,14 +4,21 @@ import pl.agh.harmonytools.algorithm.graph.shortestpath.ShortestPathAlgorithmCom
 import pl.agh.harmonytools.algorithm.graph.shortestpath.topologicalsort.TopologicalSortAlgorithm
 import pl.agh.harmonytools.bass.{BassTranslator, FiguredBassExercise}
 import pl.agh.harmonytools.solver.harmonics.HarmonicsSolver
-import pl.agh.harmonytools.solver.{ExerciseSolution, Solver}
+import pl.agh.harmonytools.solver.{ExerciseSolution, Solver, SolverError}
 
 case class BassSolver(
   exercise: FiguredBassExercise,
+  correctDisabled: Boolean = false,
+  precheckDisabled: Boolean = false,
   override val shortestPathCompanion: ShortestPathAlgorithmCompanion = TopologicalSortAlgorithm
 ) extends Solver {
   override def solve(): ExerciseSolution = {
     val harmonicsExercise = BassTranslator.createExerciseFromFiguredBass(exercise)
-    HarmonicsSolver(harmonicsExercise, shortestPathCompanion = shortestPathCompanion).solve()
+    HarmonicsSolver(
+      exercise = harmonicsExercise,
+      correctDisabled = correctDisabled,
+      precheckDisabled = precheckDisabled,
+      shortestPathCompanion = shortestPathCompanion
+    ).solve()
   }
 }

@@ -17,4 +17,6 @@ object FunctionNames {
       case _                => throw new IllegalArgumentException("Illegal function name: " + x)
     }
   }
+
+  val values: List[BaseFunction] = List(TONIC, SUBDOMINANT, DOMINANT)
 }

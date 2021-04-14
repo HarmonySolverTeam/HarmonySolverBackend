@@ -1,7 +1,6 @@
 package pl.agh.harmonytools.model.harmonicfunction
 
-import pl.agh.harmonytools.algorithm.graph.node.NodeContent
-import pl.agh.harmonytools.model.chord.{Chord, ChordComponent, ChordSystem}
+import pl.agh.harmonytools.model.chord.{ChordComponent, ChordSystem}
 import pl.agh.harmonytools.model.harmonicfunction.FunctionNames.{DOMINANT, SUBDOMINANT, TONIC}
 import pl.agh.harmonytools.model.key.Mode.{MAJOR, MINOR}
 import pl.agh.harmonytools.model.key.{Key, Mode}

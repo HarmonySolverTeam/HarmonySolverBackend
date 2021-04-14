@@ -7,19 +7,21 @@ object AlterationType {
       case "#" => SHARP
       case "b" => FLAT
       case "h" => NATURAL
+      case ""  => EMPTY
       case _   => sys.error("Forbidden symbol")
     }
   }
 
   sealed abstract class FiguredBassType(val value: String)
 
-  case object SHARP extends FiguredBassType("#")
-  case object FLAT extends FiguredBassType("b")
+  case object SHARP   extends FiguredBassType("#")
+  case object FLAT    extends FiguredBassType("b")
   case object NATURAL extends FiguredBassType("h")
+  case object EMPTY   extends FiguredBassType("")
 
   sealed abstract class ChordComponentType(val value: String)
 
-  case object LOWERED extends ChordComponentType(">")
-  case object ELEVATED extends ChordComponentType("<")
+  case object LOWERED   extends ChordComponentType(">")
+  case object ELEVATED  extends ChordComponentType("<")
   case object CANCELLED extends ChordComponentType("h")
 }

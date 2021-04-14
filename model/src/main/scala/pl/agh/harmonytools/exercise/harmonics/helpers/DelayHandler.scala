@@ -27,8 +27,8 @@ object DelayHandler {
             currentHf = currentHf.copy(position = Some(d.first))
           if (d.second == currentHf.revolution) currentHf = currentHf.copy(revolution = d.first)
         }
-        resultHfs = resultHfs.appendedAll(List(currentHf, currentHfCopy))
-      } else resultHfs = resultHfs.appended(currentHf)
+        resultHfs = resultHfs ++ List(currentHf, currentHfCopy)
+      } else resultHfs = resultHfs :+ currentHf
     }
     resultHfs
   }

@@ -1,0 +1,500 @@
+# add ```filters.disabled+=play.filters.csrf.CSRFFilter``` to application.conf to disable CSRF
+openapi: 3.0.1
+info:
+  title: Harmony Solver API
+  description: 'Main api providing core functionalities of HarmonySolver'
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+servers:
+  - url: https://localhost:9000/harmonytools
+
+paths:
+  /harmonics:
+    post:
+      summary: Post new harmonic functions exercise
+      operationId: solveHarmonicFunctionsExercise
+      requestBody:
+        required: true
+        description: Exercise object that needs to be send
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HarmonicsExerciseRequestDto'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HarmonicsExerciseSolutionDto'
+
+  /bass:
+    post:
+      summary: Post new bass exercise
+      operationId: solveBassExercise
+      requestBody:
+        required: true
+        description: Exercise object that needs to be send
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BassExerciseRequestDto'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HarmonicsExerciseSolutionDto'
+
+  /soprano:
+    post:
+      summary: Post new soprano exercise
+      operationId: solveSopranoExercise
+      requestBody:
+        required: true
+        description: Exercise object that needs to be send
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SopranoExerciseRequestDto'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SopranoExerciseSolutionDto'
+
+  /parser:
+    post:
+      summary: Post new harmonics exercise
+      operationId: parseHarmonicsExercise
+      requestBody:
+        required: true
+        description: Exercise object that needs to be send
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HLNotationHarmonicsExerciseDto'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HarmonicsExerciseDto'
+
+  /validator:
+    post:
+      summary: Post new solved exercise
+      operationId: validateSolvedExercise
+      requestBody:
+        required: true
+        description: User's solution providaded like ordered list of chords
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChordListDto'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationResultDto'
+
+components:
+  schemas:
+    #HARMONICS
+    HarmonicsExerciseRequestDto:
+      type: object
+      required:
+        - exercise
+      properties:
+        exercise:
+          $ref: '#/components/schemas/HarmonicsExerciseDto'
+        configuration:
+          $ref: '#/components/schemas/ConfigurationDto'
+
+    HarmonicsExerciseDto:
+      type: object
+      required:
+        - key
+        - meter
+      properties:
+        key:
+          type: string
+          description: Key in which exercise should be solved, f.e. 'C#'. Moreover assume that 'C#' has major mode and 'c#' has minor mode.
+        meter:
+          type: string
+          description: Meter of solution in format <nominator>/<denominator> f.e. '3/4', '6/8'
+        measures:
+          type: array
+          items:
+            $ref: '#/components/schemas/HarmonicsMeasureDto'
+
+    HarmonicsMeasureDto:
+      required:
+        - elements
+      properties:
+        elements:
+          type: array
+          items:
+            $ref: '#/components/schemas/HarmonicFunctionDto'
+
+    HarmonicFunctionDto:
+      type: object
+      required:
+        - functionName
+      properties:
+        functionName:
+          type: string
+          description: Name of harmnic function, should be one of 'T', 'S', 'D'. If not defined could be inferred basing on degree.
+          enum:
+            - T
+            - S
+            - D
+        degree:
+          type: string
+          description: Degree of harmonic function, should be one of 'I', 'II', 'III' ... 'VII'. If not defined would be inferred basing on functionName.
+          enum:
+            - I
+            - II
+            - III
+            - IV
+            - V
+            - VI
+            - VII
+        position:
+          type: string
+          description: Position of harmonic function, should be string consists of number and additional characters '>' or '<' representing interval
+        revolution:
+          type: string
+          description: Revolution of harmonic function, should be string consists of number and additional characters '>' or '<' representing interval
+        delays:
+          type: array
+          description: List of delays
+          items:
+            $ref: '#/components/schemas/DelayDto'
+        extra:
+          type: array
+          description: List of extra elements of chord. Each chord component, should be string consists of number and additional characters '>' or '<' representing interval
+          items:
+            type: string
+        omit:
+          type: array
+          description: Omit element of chord, should be string consists of number and additional characters '>' or '<' representing interval.
+          items:
+            type: string
+        isDown:
+          type: boolean
+          description: Indicates if harmonic function is down or not.
+        system:
+          type: string
+          description: Indicates structure of notes in chord representing harmonic function. Possible values are 'open', 'close' or 'undefined' (default).
+          default: undefined
+          enum:
+            - open
+            - close
+            - undefined
+        mode:
+          type: string
+          description: Mode of harmonic function. If not defined set to 'major'.
+          default: 'major'
+          enum:
+            - major
+            - minor
+        key:
+          type: string
+          description: Key of harmonic function f.e. 'C#'. If not defined, exercise key would be used.
+        isRelatedBackwards:
+          type: boolean
+          description: Indicates if harmonic function is the deflection related backwards.
+
+    DelayDto:
+      type: object
+      required:
+        - first
+        - second
+      properties:
+        first:
+          type: string
+          description: First element of delay. Should be string consists of number and additional characters '>' or '<' representing interval
+        second:
+          type: string
+          description: Second element of delay. Should be string consists of number and additional characters '>' or '<' representing interval
+
+    HarmonicsExerciseSolutionDto:
+      type: object
+      required:
+        - exercise
+        - rating
+        - chords
+        - success
+      properties:
+        exercise:
+          type: object
+          $ref: '#/components/schemas/HarmonicsExerciseDto'
+          description: Given exercise as input
+        rating:
+          type: double
+          description: Solution rating
+        chords:
+          type: array
+          description: List of chords that solution contains
+          items:
+            $ref: '#/components/schemas/ChordDto'
+        success:
+          type: boolean
+          description: Shows if exercise was successfully solved
+
+    #BASS
+    BassExerciseRequestDto:
+      type: object
+      required:
+        - exercise
+      properties:
+        exercise:
+          $ref: '#/components/schemas/BassExerciseDto'
+          description: Given bass exercise
+        configuration:
+          $ref: '#/components/schemas/ConfigurationDto'
+
+    BassExerciseDto:
+      type: object
+      required:
+        - key
+        - meter
+        - measures
+      properties:
+        key:
+          type: string
+          description: Key in which exercise should be solved, f.e. 'C#'. Moreover assume that 'C#' has major mode and 'c#' has minor mode.
+        meter:
+          type: string
+          description: Meter of solution in format <nominator>/<denominator> f.e. '3/4', '6/8'
+        measures:
+          type: array
+          items:
+            $ref: '#/components/schemas/BassElementDto'
+
+    BassMeasureDto:
+      properties:
+        elements:
+          type: array
+          items:
+            $ref: '#/components/schemas/BassElementDto'
+
+    BassElementDto:
+      required:
+        - note
+      properties:
+        note:
+          $ref: '#/components/schemas/NoteDto'
+        symbols:
+          type: array
+          description: Ordered bass symbol list. Each bass symbol should be string.
+          items:
+            type: string
+        delays:
+          type: array
+          description: Ordered delays list. Each bass symbol should be string.
+          items:
+            $ref: '#/components/schemas/BassDelayDto'
+
+    BassDelayDto:
+      required:
+        - first
+        - second
+      properties:
+        first:
+          type: string
+        second:
+          type: string
+
+    #SOPRANO
+    SopranoExerciseRequestDto:
+      type: object
+      required:
+        - exercise
+      properties:
+        exercise:
+          $ref: '#/components/schemas/SopranoExerciseDto'
+        punishmentRatios:
+          $ref: '#/components/schemas/PunishmentRatiosDto'
+
+    SopranoExerciseDto:
+      type: object
+      required:
+        - key
+        - meter
+        - measures
+        - harmonicFunctions
+      properties:
+        key:
+          type: string
+          description: Key in which exercise should be solved, f.e. 'C#'. Moreover assume that 'C#' has major mode and 'c#' has minor mode.
+        meter:
+          type: string
+          description: Meter of solution in format <nominator>/<denominator> f.e. '3/4', '6/8'
+        measures:
+          type: array
+          items:
+            $ref: '#/components/schemas/SopranoMeasureDto'
+        harmonicFunctions:
+          type: array
+          description: List of possible harmonic functions which could be used in solution.
+          items:
+            $ref: '#/components/schemas/HarmonicFunctionDto'
+
+    PunishmentRatiosDto:
+      type: object
+      properties:
+        concurrentOctaves:
+          type: double
+        concurrentFifths:
+          type: double
+        crossingVoices:
+          type: double
+        oneDirection:
+          type: double
+        forbiddenJump:
+          type: double
+        hiddenOctaves:
+          type: double
+        falseRelation:
+          type: double
+        sameFunctionCheckConnection:
+          type: double
+        illegalDoubledThird:
+          type: double
+
+    SopranoMeasureDto:
+      required:
+        - elements
+      properties:
+        elements:
+          type: array
+          items:
+            $ref: '#/components/schemas/NoteDto'
+
+
+    SopranoExerciseSolutionDto:
+      type: object
+      required:
+        - exercise
+        - rating
+        - chords
+        - success
+      properties:
+        exercise:
+          type: object
+          $ref: '#/components/schemas/SopranoExerciseDto'
+          description: Given exercise as input
+        rating:
+          type: double
+          description: Solution rating
+        chords:
+          type: array
+          description: List of chords that solution contains
+          items:
+            $ref: '#/components/schemas/ChordDto'
+        success:
+          type: boolean
+          description: Shows if exercise was successfully solved
+
+    #PARSER
+    HLNotationHarmonicsExerciseDto:
+      type: object
+      required:
+        - exercise
+      properties:
+        version:
+          type: string
+          description: Version of used notation
+        exercise:
+          type: string
+          description: HarmonicsExercise written in specific notation that should be parsed.
+
+    #VALIDATOR
+    ChordListDto:
+      description: Ordered list of chords
+      type: array
+      items:
+        $ref: '#/components/schemas/ChordDto'
+
+    ValidationResultDto:
+      type: string
+      description: Validation result as string report
+
+
+    #COMMONS
+    NoteDto:
+      type: object
+      required:
+        - pitch
+        - baseNote
+      properties:
+        pitch:
+          type: integer
+          description: Pitch of note
+        baseNote:
+          type: string
+          description: TODO
+          enum:
+            - C
+            - D
+            - E
+            - F
+            - G
+            - A
+            - B
+        chordComponent:
+          type: string
+          description: Context for chord which part that note is
+        duration:
+          type: double
+          description: Duration of note. Full note has duration equal 1.0
+
+    ConfigurationDto:
+      type: object
+      properties:
+        enablePrechecker:
+          type: boolean
+          description: Indicates if prechecker has to be used
+        enableCorrector:
+          type: boolean
+          descritpion: Indicates if corrector has to be used
+
+    ChordDto:
+      type: object
+      required:
+        - sopranoNote
+        - altoNote
+        - tenorNote
+        - bassNote
+        - harmonicFunction
+      properties:
+        sopranoNote:
+          type: object
+          $ref: '#/components/schemas/NoteDto'
+          description: Soprano note
+        altoNote:
+          type: object
+          $ref: '#/components/schemas/NoteDto'
+          description: Alto note
+        tenorNote:
+          type: object
+          $ref: '#/components/schemas/NoteDto'
+          description: Tenor note
+        bassNote:
+          type: object
+          $ref: '#/components/schemas/NoteDto'
+          description: Bass note
+        harmonicFunction:
+          type: object
+          $ref: '#/components/schemas/HarmonicFunctionDto'
+          descritpion: Harmonic function of chord

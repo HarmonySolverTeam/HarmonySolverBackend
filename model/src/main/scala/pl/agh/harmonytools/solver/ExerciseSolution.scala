@@ -97,7 +97,7 @@ case class ExerciseSolution(exercise: Exercise, rating: Double, chords: List[Cho
     var offset = 0
     for (measure <- measures) {
       val funList: List[(Int, Int)] = divideFunChanged(measure)
-      var durations: List[Double] = funList.map(_ => 0)
+      var durations: List[Double] = funList.map(_ => 0.0)
       def addTimeToFun(list: List[(Int, Int)], value: Double): Unit = {
         if (list.length == 1) {
           durations = durations.updated(list(0)._2, value)

@@ -14,4 +14,6 @@ object ChordSystem {
       case _       => throw new IllegalArgumentException("Illegal system name: " + x)
     }
   }
+
+  val values: List[System] = List(OPEN, CLOSE, UNDEFINED)
 }

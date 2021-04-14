@@ -21,7 +21,8 @@ object ScaleDegree {
       case 5 => V
       case 6 => VI
       case 7 => VII
-
     }
   }
+
+  val values: List[Degree] = List(I, II, III, IV, V, VI, VII)
 }

@@ -17,7 +17,7 @@ import pl.agh.harmonytools.solver.harmonics.evaluator.rules.ChordRules
 import pl.agh.harmonytools.solver.harmonics.evaluator.{AdaptiveRulesChecker, ChordRulesChecker}
 import pl.agh.harmonytools.solver.harmonics.generator.{ChordGenerator, ChordGeneratorInput}
 import pl.agh.harmonytools.solver.harmonics.utils.{ExerciseCorrector, PreChecker}
-import pl.agh.harmonytools.solver.{ExerciseSolution, Solver}
+import pl.agh.harmonytools.solver.{ExerciseSolution, Solver, SolverError}
 
 case class HarmonicsSolver(
   exercise: HarmonicsExercise,
@@ -26,6 +26,10 @@ case class HarmonicsSolver(
   punishmentRatios: Option[Map[ChordRules.Rule, Double]] = None,
   override val shortestPathCompanion: ShortestPathAlgorithmCompanion = TopologicalSortAlgorithm
 ) extends Solver {
+
+  if (exercise.measures.isEmpty) {
+    throw new SolverError("Measures could not be empty")
+  }
 
   private val bassLine: Option[List[Note]]                       = handleDelaysInBassLine()
   private val sopranoLine: Option[List[NoteWithoutChordContext]] = exercise.sopranoLine
@@ -101,6 +105,9 @@ case class HarmonicsSolver(
     if (!precheckDisabled)
       PreChecker.run(harmonicFunctions, chordGenerator, bassLine, sopranoLine)
     val graph         = prepareGraph()
+    if (graph.getNodes.size == 2) {
+      throw SolverError("Could not generate any chord sequence. For more informations turn on prechecker.")
+    }
     val shortestPathAlgorithm = shortestPathCompanion(graph)
     val solutionNodes = shortestPathAlgorithm.getShortestPathToLastNode
     if (solutionNodes.length != graph.getLayers.length)

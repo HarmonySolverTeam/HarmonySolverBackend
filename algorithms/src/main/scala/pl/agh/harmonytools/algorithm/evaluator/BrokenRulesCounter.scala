@@ -25,5 +25,5 @@ case class BrokenRulesCounter[T <: NodeContent](rules: List[IRule[T]]) {
     info.result()
   }
 
-  def initialize(): Unit = counters = counters.view.mapValues(_ => 0).toMap
+  def initialize(): Unit = counters = counters.mapValues(_ => 0)
 }
