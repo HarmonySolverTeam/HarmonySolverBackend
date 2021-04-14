@@ -1,16 +1,7 @@
 package pl.agh.harmonytools.harmonics.parser
 
-import pl.agh.harmonytools.harmonics.parser.builders.{
-  BackwardDeflection,
-  BackwardDeflection1,
-  ClassicDeflection,
-  ClassicDeflection1,
-  Deflection,
-  Ellipse,
-  HarmonicFunctionParserBuilder,
-  HarmonicsExerciseParserBuilder,
-  MeasureParserBuilder
-}
+import pl.agh.harmonytools.error.{HarmonySolverError, UnexpectedInternalError}
+import pl.agh.harmonytools.harmonics.parser.builders.{BackwardDeflection, BackwardDeflection1, ClassicDeflection, ClassicDeflection1, Deflection, Ellipse, HarmonicFunctionParserBuilder, HarmonicsExerciseParserBuilder, MeasureParserBuilder}
 import pl.agh.harmonytools.model.chord.ChordSystem.System
 import pl.agh.harmonytools.model.harmonicfunction.FunctionNames._
 import pl.agh.harmonytools.exercise.harmonics.HarmonicsExercise
@@ -302,4 +293,6 @@ object TestParser extends HarmonicsParser {
   }
 }
 
-case class HarmonicsParserException(msg: String) extends IllegalArgumentException(msg)
+case class HarmonicsParserException(msg: String) extends HarmonySolverError(msg) {
+  override val source: String = "Error during parsing harmonic functions input"
+}

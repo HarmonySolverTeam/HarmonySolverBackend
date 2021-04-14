@@ -1,12 +1,14 @@
 package pl.agh.harmonytools.bass
 
+import pl.agh.harmonytools.error.UnexpectedInternalError
+
 import Math.abs
 import pl.agh.harmonytools.utils.Extensions.ExtendedInt
 
 case class ChordElement(var notesNumbers: List[Int], var omit: List[Int], bassElement: FiguredBassElement) {
   private var primeNote: Option[Int] = None
   def setPrimeNote(baseNote: Int): Unit = primeNote = Some(baseNote)
-  def getPrimeNote: Int = primeNote.getOrElse(sys.error("PrimeNote not defined"))
+  def getPrimeNote: Int = primeNote.getOrElse(throw UnexpectedInternalError("PrimeNote not defined"))
 
   def hasTwoNextThirds: Boolean = {
     if (notesNumbers.length < 3) false

@@ -2,6 +2,7 @@ package pl.agh.harmonytools.algorithm.graph.shortestpath
 
 import pl.agh.harmonytools.algorithm.graph.ScoreGraph
 import pl.agh.harmonytools.algorithm.graph.node.{Node, NodeContent}
+import pl.agh.harmonytools.error.UnexpectedInternalError
 
 abstract class ShortestPathAlgorithm[T <: NodeContent, S <: NodeContent](graph: ScoreGraph[T, S]) {
   /**
@@ -27,7 +28,7 @@ abstract class ShortestPathAlgorithm[T <: NodeContent, S <: NodeContent](graph: 
 
   protected def relax(u: Node[T, S], v: Node[T, S], w: Double): Unit = {
     if (isInfinity(u.getDistanceFromBeginning))
-      throw new InternalError("u cannot have infinity distance from beginning")
+      throw UnexpectedInternalError("u cannot have infinity distance from beginning")
     if (u.getDistanceFromBeginning + w < v.getDistanceFromBeginning || isInfinity(v.getDistanceFromBeginning)) {
       v.setDistanceFromBeginning(u.getDistanceFromBeginning + w)
       v.setPrevsInShortestPath(List(u))

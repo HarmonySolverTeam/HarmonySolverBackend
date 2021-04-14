@@ -1,5 +1,6 @@
 package pl.agh.harmonytools.model.key
 
+import pl.agh.harmonytools.error.{HarmonySolverError, UnexpectedInternalError}
 import pl.agh.harmonytools.model.key.Mode.{BaseMode, MAJOR}
 import pl.agh.harmonytools.model.note.BaseNote
 
@@ -11,7 +12,7 @@ case class Key(
   baseNote: BaseNote.BaseNoteType
 ) {
   override def toString: String = {
-    val keyLower = Key.pitchKeyStr(tonicPitch).find(_.head.toUpper == baseNote.name).getOrElse(sys.error("Internal error in key to string"))
+    val keyLower = Key.pitchKeyStr(tonicPitch).find(_.head.toUpper == baseNote.name).getOrElse(throw UnexpectedInternalError("Internal error in key to string"))
     if (mode == MAJOR) {
       keyLower.head.toUpper + keyLower.tail
     } else {
@@ -25,14 +26,14 @@ object Key {
   private def baseNoteFromKeySignature(keySignature: String): BaseNote.BaseNoteType =
     BaseNote.values
       .find(b => b.toString == keySignature.toUpperCase.head.toString)
-      .getOrElse(throw new IllegalArgumentException("Unsupported key signature: " + keySignature))
+      .getOrElse(throw KeyParseError("Unsupported key signature: " + keySignature))
 
   def apply(keySignature: String): Key = {
     Key(
       if (keySignature.head.isLower) Mode.MINOR else Mode.MAJOR,
       keyStrPitch.getOrElse(
         keySignature.toLowerCase,
-        throw new IllegalArgumentException("Illegal keySignature: " + keySignature)
+        throw KeyParseError("Illegal keySignature: " + keySignature)
       ),
       baseNoteFromKeySignature(keySignature)
     )
@@ -40,13 +41,13 @@ object Key {
 
   def inferKeySignature(baseNote: BaseNote.BaseNoteType, tonicPitch: Integer): String = {
     val possibleKeySignatures = pitchKeyStr
-      .getOrElse(tonicPitch, sys.error("Illegal tonicPitch: " + tonicPitch))
+      .getOrElse(tonicPitch, throw UnexpectedInternalError("Illegal tonicPitch: " + tonicPitch))
       .filter(keyCandidate => baseNoteFromKeySignature(keyCandidate).equals(baseNote))
       .toList
     possibleKeySignatures match {
-      case Nil       => throw new IllegalArgumentException("Cannot infer a key")
+      case Nil       => throw UnexpectedInternalError("Cannot infer a key")
       case el :: Nil => el
-      case _         => throw new IllegalArgumentException("Cannot infer a key - too many possible keys for given arguments")
+      case _         => throw UnexpectedInternalError("Cannot infer a key - too many possible keys for given arguments")
     }
   }
 
@@ -111,4 +112,8 @@ object Key {
     builder ++= keyStrPitch.groupBy(_._2).mapValues(_.keySet)
     builder.result()
   }
+}
+
+case class KeyParseError(msg: String, det: Option[String] = None) extends HarmonySolverError(msg, det) {
+  override val source: String = "Key is provided in incorrect format"
 }

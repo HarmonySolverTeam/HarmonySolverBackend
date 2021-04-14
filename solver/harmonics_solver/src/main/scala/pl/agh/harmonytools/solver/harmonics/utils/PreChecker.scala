@@ -1,6 +1,7 @@
 package pl.agh.harmonytools.solver.harmonics.utils
 
 import pl.agh.harmonytools.algorithm.evaluator.Connection
+import pl.agh.harmonytools.error.{HarmonySolverError, RequirementChecker, UnexpectedInternalError}
 import pl.agh.harmonytools.solver.harmonics.evaluator.ChordRulesChecker
 import pl.agh.harmonytools.solver.harmonics.generator.{ChordGenerator, ChordGeneratorInput}
 import pl.agh.harmonytools.model.chord.Chord
@@ -43,17 +44,19 @@ object PreChecker {
     bassLine: Option[List[Note]],
     indexes: List[Int]
   ): Unit = {
-    require(bassLine.isEmpty || bassLine.get.length == harmonicFunctions.length)
-    var currentChords = List.empty[Chord]
-    var prevChords = List.empty[Chord]
+    RequirementChecker.isRequired(
+      bassLine.isEmpty || bassLine.get.length == harmonicFunctions.length,
+      UnexpectedInternalError("Bass line length must be as long as harmonic functions length")
+    )
+    var currentChords     = List.empty[Chord]
+    var prevChords        = List.empty[Chord]
     var goodCurrentChords = List.empty[Chord]
     var usedCurrentChords = List.empty[Boolean]
-    val rulesChecker = ChordRulesChecker(isFixedBass = bassLine.isDefined)
+    val rulesChecker      = ChordRulesChecker(isFixedBass = bassLine.isDefined)
     for (i <- harmonicFunctions.indices) {
       var allConnections = 0
-      if (i != 0) {
+      if (i != 0)
         prevChords = goodCurrentChords
-      }
       goodCurrentChords = List.empty[Chord]
       usedCurrentChords = List.empty[Boolean]
       currentChords = bassLine match {
@@ -63,9 +66,10 @@ object PreChecker {
           chordGenerator.generate(ChordGeneratorInput(harmonicFunctions(i), i != 0))
       }
 
-      if (currentChords.isEmpty) {
-        throw PreCheckerError(s"Could not generate any chord for harmonic function: ${indexes(i)}\n" + harmonicFunctions(i))
-      }
+      if (currentChords.isEmpty)
+        throw PreCheckerError(
+          s"Could not generate any chord for harmonic function: ${indexes(i)}\n" + harmonicFunctions(i)
+        )
       usedCurrentChords = currentChords.map(_ => false)
 
       rulesChecker.initializeBrokenRulesCounter()
@@ -110,4 +114,6 @@ object PreChecker {
   }
 }
 
-case class PreCheckerError(msg: String) extends RuntimeException(msg)
+case class PreCheckerError(msg: String) extends HarmonySolverError(msg) {
+  override val source: String = "Error during checking exercise correctness"
+}

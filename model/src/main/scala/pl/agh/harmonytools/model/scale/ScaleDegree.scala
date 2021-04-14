@@ -1,5 +1,7 @@
 package pl.agh.harmonytools.model.scale
 
+import pl.agh.harmonytools.error.{RequirementChecker, UnexpectedInternalError}
+
 object ScaleDegree {
   sealed abstract class Degree(val root: Int)
 
@@ -12,7 +14,10 @@ object ScaleDegree {
   case object VII extends Degree(7)
 
   def fromValue(x: Int): Degree = {
-    require(x >= 1 && x <= 7, s"Degree should be in [1,7]. Found: ${x}")
+    RequirementChecker.isRequired(
+      x >= 1 && x <= 7,
+      UnexpectedInternalError("s\"Degree should be in [1,7]. Found: ${x}\"")
+    )
     x match {
       case 1 => I
       case 2 => II

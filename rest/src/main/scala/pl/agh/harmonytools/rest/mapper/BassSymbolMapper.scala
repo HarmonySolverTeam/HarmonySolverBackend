@@ -1,6 +1,7 @@
 package pl.agh.harmonytools.rest.mapper
 
 import pl.agh.harmonytools.bass.{AlterationType, BassSymbol}
+import pl.agh.harmonytools.error.UnexpectedInternalError
 
 object BassSymbolMapper extends Mapper[BassSymbol, String] {
   override def mapToModel(dto: String): BassSymbol = {
@@ -9,7 +10,7 @@ object BassSymbolMapper extends Mapper[BassSymbol, String] {
         case AlterationType.NATURAL.value => AlterationType.NATURAL
         case AlterationType.SHARP.value   => AlterationType.SHARP
         case AlterationType.FLAT.value    => AlterationType.FLAT
-        case unknown                      => throw new InternalError("Unknown alteration type: " + unknown)
+        case unknown                      => throw UnexpectedInternalError(s"Unknown alteration type: $unknown")
       }
     } else AlterationType.EMPTY
     BassSymbol(

@@ -49,7 +49,7 @@ case class DominantRelationConnectionRule() extends ConnectionRule with SoftRule
     if (dominantVoiceWith7 > -1 && !prevChord.notes(dominantVoiceWith7).equalPitches(currentChord.notes(dominantVoiceWith7)) &&
       !currentChord.notes(dominantVoiceWith7).baseChordComponentEquals(3) && !currentChord.harmonicFunction.containsDelayedBaseChordComponent(3)) {
       if ((currentChord.harmonicFunction.revolution.chordComponentString == "3" || currentChord.harmonicFunction.revolution.chordComponentString == "3>" ||
-        (currentChord.harmonicFunction.position.isDefined && (currentChord.harmonicFunction.position.get.baseComponent == 3))) && dominantVoiceWith7 > dominantVoiceWith3) {
+        (currentChord.harmonicFunction.position.isDefined && (currentChord.harmonicFunction.position.get.baseComponent == 3))) && dominantVoiceWith7 < dominantVoiceWith3) {
         if (!currentChord.notes(dominantVoiceWith7).baseChordComponentEquals(5)) return true
       } else return true
     }

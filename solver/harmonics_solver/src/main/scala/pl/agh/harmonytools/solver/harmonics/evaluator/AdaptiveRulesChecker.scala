@@ -1,9 +1,22 @@
 package pl.agh.harmonytools.solver.harmonics.evaluator
 
 import pl.agh.harmonytools.algorithm.evaluator.{HardRule, SoftRule}
+import pl.agh.harmonytools.error.UnexpectedInternalError
 import pl.agh.harmonytools.model.chord.Chord
 import pl.agh.harmonytools.solver.harmonics.evaluator.rules.ChordRules
-import pl.agh.harmonytools.solver.harmonics.evaluator.rules.hard.{CrossingVoicesRule, DelayCorrectnessRule, DominantSubdominantConnectionRule, FalseRelationRule, ForbiddenJumpRule, HiddenOctavesRule, IllegalDoubledThirdRule, OneDirectionRule, ParallelFifthsRule, ParallelOctavesRule, SameFunctionConnectionRule}
+import pl.agh.harmonytools.solver.harmonics.evaluator.rules.hard.{
+  CrossingVoicesRule,
+  DelayCorrectnessRule,
+  DominantSubdominantConnectionRule,
+  FalseRelationRule,
+  ForbiddenJumpRule,
+  HiddenOctavesRule,
+  IllegalDoubledThirdRule,
+  OneDirectionRule,
+  ParallelFifthsRule,
+  ParallelOctavesRule,
+  SameFunctionConnectionRule
+}
 
 case class AdaptiveRulesChecker(punishmentRatios: Map[ChordRules.Rule, Double])
   extends BasicChordRulesChecker(isFixedSoprano = true) {
@@ -13,23 +26,23 @@ case class AdaptiveRulesChecker(punishmentRatios: Map[ChordRules.Rule, Double])
   for ((rule, punishment) <- punishmentRatios.toList) {
     val ruleObject = {
       rule match {
-        case ChordRules.OneDirection => OneDirectionRule(punishment)
+        case ChordRules.OneDirection  => OneDirectionRule(punishment)
         case ChordRules.FalseRelation => FalseRelationRule(punishment)
-        case ChordRules.ForbiddenJump => ForbiddenJumpRule(notNeighbourChords = false, isFixedBass = false, isFixedSoprano = true, punishment)
-        case ChordRules.HiddenOctaves => HiddenOctavesRule(punishment)
-        case ChordRules.CrossingVoices => CrossingVoicesRule(punishment)
-        case ChordRules.ParallelFifths => ParallelFifthsRule(punishment)
-        case ChordRules.ParallelOctaves => ParallelOctavesRule(punishment)
-        case ChordRules.IllegalDoubledThird => IllegalDoubledThirdRule(punishment)
+        case ChordRules.ForbiddenJump =>
+          ForbiddenJumpRule(notNeighbourChords = false, isFixedBass = false, isFixedSoprano = true, punishment)
+        case ChordRules.HiddenOctaves               => HiddenOctavesRule(punishment)
+        case ChordRules.CrossingVoices              => CrossingVoicesRule(punishment)
+        case ChordRules.ParallelFifths              => ParallelFifthsRule(punishment)
+        case ChordRules.ParallelOctaves             => ParallelOctavesRule(punishment)
+        case ChordRules.IllegalDoubledThird         => IllegalDoubledThirdRule(punishment)
         case ChordRules.SameFunctionCheckConnection => SameFunctionConnectionRule(punishment)
-        case _ => sys.error("Unexpected rule name!")
+        case other                                  => throw UnexpectedInternalError(s"Unexpected rule name: $other")
       }
     }
-    if (punishment == 1.0) {
+    if (punishment == 1.0)
       hRules = hRules :+ ruleObject
-    } else {
+    else
       sRules = sRules :+ ruleObject
-    }
   }
 
   override protected val hardRules: List[HardRule[Chord]] = List(

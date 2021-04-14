@@ -4,7 +4,7 @@ import pl.agh.harmonytools.model.harmonicfunction.Delay
 import pl.agh.harmonytools.model.util.ChordComponentManager
 import pl.agh.harmonytools.rest.dto.DelayDto
 
-case class DelayMapper(implicit isDown: Boolean = false) extends Mapper[Delay, DelayDto] {
+case class DelayMapper(isDown: Boolean = false) extends Mapper[Delay, DelayDto] {
   override def mapToModel(dto: DelayDto): Delay =
     Delay(
       ChordComponentManager.chordComponentFromString(dto.first, isDown = isDown),

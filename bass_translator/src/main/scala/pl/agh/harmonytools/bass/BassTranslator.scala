@@ -1,6 +1,7 @@
 package pl.agh.harmonytools.bass
 
 import pl.agh.harmonytools.bass.AlterationType.{ELEVATED, FLAT, LOWERED, NATURAL, SHARP}
+import pl.agh.harmonytools.error.{HarmonySolverError, UnexpectedInternalError}
 import pl.agh.harmonytools.exercise.harmonics.HarmonicsExercise
 import pl.agh.harmonytools.exercise.harmonics.helpers.DelayHandler
 import pl.agh.harmonytools.harmonics.parser.DeflectionsHandler
@@ -57,7 +58,7 @@ object BassTranslator {
               resultList = resultList :+ f1
           } else
             resultList = resultList :+ f1
-        case _ => sys.error("Unexpected possible functions")
+        case _ => throw UnexpectedInternalError("Unexpected possible functions")
       }
     }
     resultList
@@ -111,7 +112,7 @@ object BassTranslator {
           case l                => l
         }
       case head :: tail =>
-        throw new IllegalArgumentException("Illegal bass numbers: %s".format(head :: tail))
+        throw new BassNumbersParseError("Illegal bass numbers: %s".format(head :: tail))
     }
   }
 
@@ -131,7 +132,7 @@ object BassTranslator {
       case 4 => List(DOMINANT)
       case 5 => List(TONIC, SUBDOMINANT)
       case 6 => List(DOMINANT)
-      case p => throw new IllegalArgumentException("Illegal prime note: %s".format(p))
+      case p => throw UnexpectedInternalError("Illegal prime note: %s".format(p))
     }
   }
 
@@ -745,4 +746,8 @@ object BassTranslator {
       Some(bassLineAfterSplit.map(_.getResult))
     )
   }
+}
+
+case class BassNumbersParseError(msg: String) extends HarmonySolverError(msg) {
+  override val source: String = "Error during parsing bass numbers from figured bass symbol"
 }

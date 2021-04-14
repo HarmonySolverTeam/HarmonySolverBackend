@@ -1,5 +1,6 @@
 package pl.agh.harmonytools.model.harmonicfunction
 
+import pl.agh.harmonytools.error.UnexpectedInternalError
 import pl.agh.harmonytools.model.scale.ScaleDegree
 
 object FunctionNames {
@@ -14,7 +15,7 @@ object FunctionNames {
       case TONIC.name       => TONIC
       case SUBDOMINANT.name => SUBDOMINANT
       case DOMINANT.name    => DOMINANT
-      case _                => throw new IllegalArgumentException("Illegal function name: " + x)
+      case other            => throw UnexpectedInternalError(s"Illegal function name: $other")
     }
   }
 

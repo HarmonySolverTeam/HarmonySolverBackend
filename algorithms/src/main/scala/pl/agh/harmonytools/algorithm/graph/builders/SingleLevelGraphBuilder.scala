@@ -5,6 +5,7 @@ import pl.agh.harmonytools.algorithm.evaluator.{Connection, ConnectionEvaluator}
 import pl.agh.harmonytools.algorithm.generator.{GeneratorInput, LayerGenerator}
 import pl.agh.harmonytools.algorithm.graph.SingleLevelGraph
 import pl.agh.harmonytools.algorithm.graph.node.{Layer, NeighbourNode, Node, NodeContent}
+import pl.agh.harmonytools.error.UnexpectedInternalError
 
 class SingleLevelGraphBuilder[T <: NodeContent, GenInput <: GeneratorInput, S <: NodeContent](first: Node[T, S], last: Node[T, S]) {
 
@@ -31,29 +32,29 @@ class SingleLevelGraphBuilder[T <: NodeContent, GenInput <: GeneratorInput, S <:
 
   def withLayers(layers: List[Layer[T, S]]): Unit = this.layers = Some(layers)
 
-  protected[builders] def getLayers: List[Layer[T, S]] = layers.getOrElse(sys.error("Connected layers not defined"))
+  protected[builders] def getLayers: List[Layer[T, S]] = layers.getOrElse(throw UnexpectedInternalError("Connected layers not defined"))
 
   protected def pushLayer(LeafLayer: Layer[T, S]*): Unit =
     layers match {
       case Some(layerList) => withLayers(layerList ++ LeafLayer)
-      case None            => sys.error("Connected layers not defined")
+      case None            => throw UnexpectedInternalError("Connected layers not defined")
     }
 
-  private def getEvaluator: ConnectionEvaluator[T] = evaluator.getOrElse(sys.error("Evaluator not defined"))
+  private def getEvaluator: ConnectionEvaluator[T] = evaluator.getOrElse(throw UnexpectedInternalError("Evaluator not defined"))
 
-  protected def getInputs: List[GenInput] = generatorInputs.getOrElse(sys.error("Inputs not defined"))
+  protected def getInputs: List[GenInput] = generatorInputs.getOrElse(throw UnexpectedInternalError("Inputs not defined"))
 
-  protected def getGenerator: LayerGenerator[T, GenInput] = generator.getOrElse(sys.error("Generator not defined"))
+  protected def getGenerator: LayerGenerator[T, GenInput] = generator.getOrElse(throw UnexpectedInternalError("Generator not defined"))
 
   protected[builders] def getFirst: Node[T, S] = first
 
   protected[builders] def getLast: Node[T, S] = last
 
   private def getConnectedLayers: List[Layer[T, S]] =
-    connectedLayers.getOrElse(sys.error("ConnectedLayers not defined"))
+    connectedLayers.getOrElse(throw UnexpectedInternalError("ConnectedLayers not defined"))
 
   private def getGraphTemplate: SingleLevelGraphBuilder[T, GenInput, S] =
-    graphTemplate.getOrElse(sys.error("GraphTemplate not defined"))
+    graphTemplate.getOrElse(throw UnexpectedInternalError("GraphTemplate not defined"))
 
   private def removeUnexpectedNeighboursIfExists(): Unit =
     for (layerId <- getLayers.dropRight(1).indices)

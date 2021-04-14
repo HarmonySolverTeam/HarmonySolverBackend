@@ -1,5 +1,6 @@
 package pl.agh.harmonytools.model.note
 
+import pl.agh.harmonytools.error.{RequirementChecker, UnexpectedInternalError}
 import pl.agh.harmonytools.utils.Extensions.ExtendedInt
 
 object BaseNote  {
@@ -26,7 +27,7 @@ object BaseNote  {
   val values: List[BaseNoteType] = List(C, D, E, F, G, A, B)
 
   def fromInt(x: Int): BaseNoteType = {
-    require(0 <= x && x < 7, "Base note should be from [0,6]")
+    RequirementChecker.isRequired(0 <= x && x < 7, UnexpectedInternalError("Base note should be from [0,6]"))
     x match {
       case 0 => C
       case 1 => D

@@ -1,5 +1,7 @@
 package pl.agh.harmonytools.model.chord
 
+import pl.agh.harmonytools.error.UnexpectedInternalError
+
 object ChordSystem {
   sealed trait System
 
@@ -11,7 +13,7 @@ object ChordSystem {
     x match {
       case "open"  => OPEN
       case "close" => CLOSE
-      case _       => throw new IllegalArgumentException("Illegal system name: " + x)
+      case other   => throw UnexpectedInternalError(s"Illegal system name: $other")
     }
   }
 
