@@ -1,5 +1,6 @@
 package pl.agh.harmonytools.model.harmonicfunction.builder
 
+import pl.agh.harmonytools.error.UnexpectedInternalError
 import pl.agh.harmonytools.model.chord.{ChordComponent, ChordSystem}
 import pl.agh.harmonytools.model.harmonicfunction.FunctionNames.BaseFunction
 import pl.agh.harmonytools.model.harmonicfunction.validator.HarmonicFunctionValidator
@@ -25,14 +26,14 @@ abstract class HarmonicFunctionBuilder(withValidation: Boolean = true) extends B
   override def getDegree: ScaleDegree.Degree =
     degree match {
       case Some(value) => value
-      case None        => baseFunction.getOrElse(sys.error("Base Function undefined")).baseDegree
+      case None        => baseFunction.getOrElse(throw UnexpectedInternalError("Base Function undefined")).baseDegree
     }
   override def getIsDown: Boolean            = isDown
   override def getMode: Mode.BaseMode        = mode
   override def getExtra: Set[ChordComponent] = extra
   override def getOmit: Set[ChordComponent]  = omit
   override def getDelay: Set[Delay]          = delay
-  override def getBaseFunction: BaseFunction = baseFunction.getOrElse(sys.error("Base function not defined"))
+  override def getBaseFunction: BaseFunction = baseFunction.getOrElse(throw UnexpectedInternalError("Base function not defined"))
   override def getKey: Option[Key]           = key
   def getPosition: Option[ChordComponent]    = position
   override def getRevolution: ChordComponent = {
@@ -59,7 +60,7 @@ abstract class HarmonicFunctionBuilder(withValidation: Boolean = true) extends B
 
   protected def initializeHarmonicFunction(): HarmonicFunction = {
     HarmonicFunction(
-      baseFunction.getOrElse(sys.error("Base function has to be defined when initializing HarmonicFunction")),
+      baseFunction.getOrElse(throw UnexpectedInternalError("Base function has to be defined when initializing HarmonicFunction")),
       getDegree,
       position,
       getRevolution,

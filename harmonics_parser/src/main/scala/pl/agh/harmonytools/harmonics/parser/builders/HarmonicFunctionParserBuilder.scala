@@ -1,5 +1,6 @@
 package pl.agh.harmonytools.harmonics.parser.builders
 
+import pl.agh.harmonytools.error.UnexpectedInternalError
 import pl.agh.harmonytools.model.harmonicfunction.FunctionNames.BaseFunction
 import pl.agh.harmonytools.model.chord.{ChordComponent, ChordSystem}
 import pl.agh.harmonytools.model.harmonicfunction.builder.{HarmonicFunctionBasicBuilder, HarmonicFunctionBuilder}
@@ -32,7 +33,7 @@ class HarmonicFunctionParserBuilder extends HarmonicFunctionBasicBuilder {
   def copy(): HarmonicFunctionParserBuilder = {
     val builder = new HarmonicFunctionParserBuilder
     builder.withBaseFunction(
-      baseFunction.getOrElse(sys.error("Base Function has to be defined to initialize HarmonicFunction"))
+      baseFunction.getOrElse(throw UnexpectedInternalError("Base Function has to be defined to initialize HarmonicFunction"))
     )
     builder.withDegree(getDegree)
     position match {

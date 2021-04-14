@@ -1,5 +1,6 @@
 package pl.agh.harmonytools.bass
 
+import pl.agh.harmonytools.error.UnexpectedInternalError
 import pl.agh.harmonytools.model.chord.ChordComponent
 import pl.agh.harmonytools.model.harmonicfunction.{Delay, HarmonicFunction}
 import pl.agh.harmonytools.model.harmonicfunction.builder.{HarmonicFunctionBasicBuilder, HarmonicFunctionBuilder}
@@ -113,7 +114,7 @@ case class BassHarmonicFunctionBuilder() extends HarmonicFunctionBasicBuilder {
 
   override def initializeHarmonicFunction(): HarmonicFunction = {
       HarmonicFunction(
-        baseFunction.getOrElse(sys.error("Base function has to be defined when initializing HarmonicFunction")),
+        baseFunction.getOrElse(throw UnexpectedInternalError("Base function has to be defined when initializing HarmonicFunction")),
         degree,
         position,
         revolution,

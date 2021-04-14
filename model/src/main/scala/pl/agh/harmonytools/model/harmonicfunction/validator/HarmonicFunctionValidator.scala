@@ -1,5 +1,6 @@
 package pl.agh.harmonytools.model.harmonicfunction.validator
 
+import pl.agh.harmonytools.error.{HarmonySolverError, UnexpectedInternalError}
 import pl.agh.harmonytools.model.harmonicfunction.HarmonicFunction
 
 class HarmonicFunctionValidator(private val hf: HarmonicFunction) {
@@ -54,4 +55,6 @@ class HarmonicFunctionValidator(private val hf: HarmonicFunction) {
   }
 }
 
-case class HarmonicFunctionValidationError(msg: String) extends IllegalArgumentException(msg)
+case class HarmonicFunctionValidationError(msg: String) extends HarmonySolverError(msg) {
+  override val source: String = "Error during validating harmonic functions input"
+}

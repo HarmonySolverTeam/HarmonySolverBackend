@@ -1,8 +1,7 @@
 package pl.agh.harmonytools.solver.harmonics.evaluator.rules.hard
 
 import pl.agh.harmonytools.algorithm.evaluator.{Connection, HardRule}
-import pl.agh.harmonytools.solver.harmonics.evaluator.ChordRulesCheckerError
-import pl.agh.harmonytools.solver.harmonics.evaluator.rules.{ConnectionRule, satisfied, specificConnectionRuleDS, totallyBroken}
+import pl.agh.harmonytools.solver.harmonics.evaluator.rules.{satisfied, specificConnectionRuleDS, totallyBroken}
 import pl.agh.harmonytools.model.chord.Chord
 import pl.agh.harmonytools.solver.harmonics.evaluator.rules.ConnectionRule
 

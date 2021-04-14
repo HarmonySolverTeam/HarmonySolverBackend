@@ -17,11 +17,7 @@ class ChordComponentTest extends FunSuite with Matchers {
       "7>" -> 7,
       "7>>" -> 7,
       "7<" -> 7,
-      "7<<" -> 7,
-      ">7" -> 7,
-      ">>7" -> 7,
-      "<7" -> 7,
-      "<<7" -> 7
+      "7<<" -> 7
     )
 
     testCases.foreach(el => testBaseComponent(el._1, el._2))

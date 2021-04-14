@@ -1,6 +1,7 @@
 package pl.agh.harmonytools.model.chord
 
 import pl.agh.harmonytools.algorithm.graph.node.NodeContent
+import pl.agh.harmonytools.error.{HarmonySolverError, RequirementChecker, UnexpectedInternalError}
 import pl.agh.harmonytools.model.harmonicfunction.FunctionNames.TONIC
 import pl.agh.harmonytools.model.harmonicfunction.HarmonicFunction
 import pl.agh.harmonytools.model.measure.Meter
@@ -15,7 +16,12 @@ case class Chord(
   harmonicFunction: HarmonicFunction,
   var duration: Option[Meter] = None
 ) extends NodeContent {
-  require(sopranoNote.isUpperThanOrEqual(altoNote) && altoNote.isUpperThanOrEqual(tenorNote) && tenorNote.isUpperThanOrEqual(bassNote))
+  RequirementChecker.isRequired(
+    sopranoNote.isUpperThanOrEqual(altoNote) && altoNote.isUpperThanOrEqual(tenorNote) && tenorNote.isUpperThanOrEqual(
+      bassNote
+    ),
+    UnexpectedInternalError("Error during creating chord")
+  )
 
   /**
    * List of notes of chord ordered from top to down: (soprano, alto, tenor, bass).
@@ -39,7 +45,7 @@ case class Chord(
   override def isRelatedTo(other: NodeContent): Boolean = {
     other match {
       case Chord(_, _, _, _, harmonicFunction, _) => this.harmonicFunction.baseFunction == harmonicFunction.baseFunction
-      case _                                   => false
+      case _                                      => false
     }
   }
 
@@ -50,31 +56,26 @@ case class Chord(
     else terCounter > 1
   }
 
-  def countBaseComponents(baseComponent: Int): Int = {
+  def countBaseComponents(baseComponent: Int): Int =
     notes.count(_.baseChordComponentEquals(baseComponent))
-  }
 
-  def hasCorrespondingNotesUpperThan(other: Chord): Boolean = {
+  def hasCorrespondingNotesUpperThan(other: Chord): Boolean =
     notes.zip(other.notes).forall(p => p._1.isUpperThan(p._2))
-  }
 
-  def hasCorrespondingNotesLowerThan(other: Chord): Boolean = {
+  def hasCorrespondingNotesLowerThan(other: Chord): Boolean =
     notes.zip(other.notes).forall(p => p._1.isLowerThan(p._2))
-  }
 
   def getVoiceWithBaseComponent(baseComponent: Int): Int = {
-    for (i <- 0 until 4) {
+    for (i <- 0 until 4)
       if (notes(i).baseChordComponentEquals(baseComponent))
         return i
-    }
     -1
   }
 
   def getVoiceWithComponentString(chordComponent: String): Int = {
-    for (i <- 0 until 4) {
+    for (i <- 0 until 4)
       if (notes(i).chordComponentEquals(chordComponent))
         return i
-    }
     -1
   }
 

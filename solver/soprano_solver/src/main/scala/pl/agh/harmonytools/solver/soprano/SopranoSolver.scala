@@ -5,6 +5,7 @@ import pl.agh.harmonytools.algorithm.graph.shortestpath.dijkstra.DijkstraAlgorit
 import pl.agh.harmonytools.algorithm.graph.node.{EmptyContent, Node}
 import pl.agh.harmonytools.algorithm.graph.shortestpath.{ShortestPathAlgorithm, ShortestPathAlgorithmCompanion}
 import pl.agh.harmonytools.algorithm.graph.shortestpath.topologicalsort.TopologicalSortAlgorithm
+import pl.agh.harmonytools.error.UnexpectedInternalError
 import pl.agh.harmonytools.exercise.soprano.SopranoExercise
 import pl.agh.harmonytools.model.chord.Chord
 import pl.agh.harmonytools.model.harmonicfunction.FunctionNames.{DOMINANT, SUBDOMINANT, TONIC}
@@ -92,7 +93,7 @@ case class SopranoSolver(
     val solutionNodes          = shortestPathAlgorithm2.getShortestPathToLastNode
 
     if (solutionNodes.length != innerGraph.getLayers.length)
-      throw new InternalError("Shortest path to last node does not exist");
+      throw new UnexpectedInternalError("Shortest path to last node does not exist")
 
     val solutionChords: List[Chord] = solutionNodes.map(_.getContent)
 

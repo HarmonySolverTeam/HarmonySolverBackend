@@ -1,5 +1,6 @@
 package pl.agh.harmonytools.harmonics.parser.builders
 
+import pl.agh.harmonytools.error.UnexpectedInternalError
 import pl.agh.harmonytools.exercise.harmonics.HarmonicsExercise
 import pl.agh.harmonytools.harmonics.parser.DeflectionsHandler
 import pl.agh.harmonytools.model.key.Key
@@ -17,9 +18,9 @@ class HarmonicsExerciseParserBuilder(
 
   def getHarmonicsExercise: HarmonicsExercise = {
 
-    implicit val exKey: Key = key.getOrElse(sys.error("Key should be declared to initialize HarmonicsExercise"))
-    val exMeter             = meter.getOrElse(sys.error("Meter should be declared to initialize HarmonicsExercise"))
-    val exMeasures          = measures.getOrElse(sys.error("Measures should be declared to initialize HarmonicsExercise"))
+    implicit val exKey: Key = key.getOrElse(throw UnexpectedInternalError("Key should be declared to initialize HarmonicsExercise"))
+    val exMeter             = meter.getOrElse(throw UnexpectedInternalError("Meter should be declared to initialize HarmonicsExercise"))
+    val exMeasures          = measures.getOrElse(throw UnexpectedInternalError("Measures should be declared to initialize HarmonicsExercise"))
 
     DeflectionsHandler.handle(exMeasures.flatMap(_.getHarmonicFunctions))
 

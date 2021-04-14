@@ -3,6 +3,7 @@ import pl.agh.harmonytools.algorithm.{LeafLayer, LeafNode}
 import pl.agh.harmonytools.algorithm.generator.GeneratorInput
 import pl.agh.harmonytools.algorithm.graph.builders.SingleLevelGraphBuilder
 import pl.agh.harmonytools.algorithm.graph.node.{EmptyContent, Layer, NeighbourNode, NeighbourNodes, Node, NodeContent}
+import pl.agh.harmonytools.error.UnexpectedInternalError
 
 class DoubleLevelGraph[T <: NodeContent, S <: NodeContent, Q, R <: GeneratorInput](
   private val firstNode: Node[T, S],
@@ -23,7 +24,7 @@ class DoubleLevelGraph[T <: NodeContent, S <: NodeContent, Q, R <: GeneratorInpu
 
   final def reduceToSingleLevelGraphBuilder(): SingleLevelGraphBuilder[S, R, EmptyContent] = {
     if (getLast.getDistanceFromBeginning == Double.MaxValue)
-      throw new InternalError("Shortest paths are not calculated properly: " + getNodes.length)
+      throw UnexpectedInternalError("Shortest paths are not calculated properly: " + getNodes.length)
 
     var layers: List[LeafLayer[S]] = List.empty
     var stack: List[LeafNode[S]]   = List(getLast)
@@ -44,7 +45,7 @@ class DoubleLevelGraph[T <: NodeContent, S <: NodeContent, Q, R <: GeneratorInpu
       val layer = new LeafLayer[S](stack)
       layers = List(layer) ++ layers
 
-      if (stack.isEmpty) throw new InternalError("Fatal error: Stack could not be empty")
+      if (stack.isEmpty) throw UnexpectedInternalError("Fatal error: Stack could not be empty")
     }
     layers = layers.drop(1)
     getFirst.getNextNeighbours.foreach(_.setWeight(0))

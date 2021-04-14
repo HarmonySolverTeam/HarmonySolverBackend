@@ -5,6 +5,7 @@ import pl.agh.harmonytools.algorithm.evaluator.{Connection, ConnectionEvaluator}
 import pl.agh.harmonytools.algorithm.generator.{GeneratorInput, LayerGenerator}
 import pl.agh.harmonytools.algorithm.graph.DoubleLevelGraph
 import pl.agh.harmonytools.algorithm.graph.node.{Layer, NeighbourNode, Node, NodeContent}
+import pl.agh.harmonytools.error.UnexpectedInternalError
 
 abstract class DoubleLevelGraphBuilder[T <: NodeContent, S <: NodeContent, Q <: GeneratorInput, R <: GeneratorInput](
   nestedFirstContent: S,
@@ -30,15 +31,15 @@ abstract class DoubleLevelGraphBuilder[T <: NodeContent, S <: NodeContent, Q <: 
     this.outerGeneratorInputs = Some(outerGeneratorInputs)
 
   private def getOuterEvaluator: ConnectionEvaluator[T] =
-    outerEvaluator.getOrElse(sys.error("OuterEvaluator not defined"))
+    outerEvaluator.getOrElse(throw UnexpectedInternalError("OuterEvaluator not defined"))
   private def getOuterGenerator: LayerGenerator[T, Q] =
-    outerGenerator.getOrElse(sys.error("OuterEvaluator not defined"))
+    outerGenerator.getOrElse(throw UnexpectedInternalError("OuterEvaluator not defined"))
   private def getOuterGeneratorInputs: List[Q] =
-    outerGeneratorInputs.getOrElse(sys.error("OuterGeneratorInputs not defined"))
+    outerGeneratorInputs.getOrElse(throw UnexpectedInternalError("OuterGeneratorInputs not defined"))
   private def getInnerEvaluator: ConnectionEvaluator[S] =
-    innerEvaluator.getOrElse(sys.error("InnerEvaluator not defined"))
+    innerEvaluator.getOrElse(throw UnexpectedInternalError("InnerEvaluator not defined"))
   private def getInnerGenerator: LayerGenerator[S, R] =
-    innerGenerator.getOrElse(sys.error("InnerGenerator not defined"))
+    innerGenerator.getOrElse(throw UnexpectedInternalError("InnerGenerator not defined"))
 
   private val templateSingleGraphBuilder = new SingleLevelGraphBuilder[T, Q, S](new Node[T, S](firstContent), new Node[T, S](lastContent))
 
@@ -146,7 +147,7 @@ abstract class DoubleLevelGraphBuilder[T <: NodeContent, S <: NodeContent, Q <: 
 
     val result = getResult
     if (result.getNodes.length == 2)
-      throw InvalidGraphConstruction("Cannot find any harmonic function sequence which could be harmonised")
+      throw new InvalidGraphConstruction("Cannot find any harmonic function sequence which could be harmonised")
 
     result
   }
@@ -161,4 +162,6 @@ abstract class DoubleLevelGraphBuilder[T <: NodeContent, S <: NodeContent, Q <: 
     )
 }
 
-case class InvalidGraphConstruction(msg: String) extends InternalError(msg)
+class InvalidGraphConstruction(msg: String) extends UnexpectedInternalError(msg) {
+  override val source: String = "Some conditions on graph specific structure don't match"
+}

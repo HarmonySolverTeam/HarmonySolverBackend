@@ -51,9 +51,11 @@ class SoftRulesTest extends FunSuite with Matchers with TestUtils {
     val t1   = Chord(Note(64, E, third), Note(60, C, prime), Note(60, C, prime), Note(48, C, prime), tonicOmit5)
     val d    = Chord(Note(67, G, prime), Note(62, D, fifth), Note(59, B, third), Note(55, G, prime), dominant)
     val t2   = Chord(Note(67, G, fifth), Note(64, E, third), Note(60, C, prime), Note(48, C, prime), tonic)
+    val drev7   = Chord(Note(67, G, prime), Note(62, D, fifth), Note(59, B, third), Note(53, F, seventh), dominantRev7)
     val rule = DominantRelationConnectionRule()
     rule.isNotBroken(Connection(t1, d7)) shouldBe true
     rule.isNotBroken(Connection(t2, d)) shouldBe true
+    rule.isBroken(Connection(t2, drev7)) shouldBe true
   }
 
   test("D -> TVI test") {

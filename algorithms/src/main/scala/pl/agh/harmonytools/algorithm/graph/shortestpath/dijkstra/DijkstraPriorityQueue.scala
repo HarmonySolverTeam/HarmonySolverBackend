@@ -1,6 +1,7 @@
 package pl.agh.harmonytools.algorithm.graph.shortestpath.dijkstra
 
 import pl.agh.harmonytools.algorithm.graph.shortestpath.ShortestPathNode
+import pl.agh.harmonytools.error.UnexpectedInternalError
 
 class DijkstraPriorityQueue[T <: ShortestPathNode](implicit ordering: Ordering[T]) {
 
@@ -9,7 +10,7 @@ class DijkstraPriorityQueue[T <: ShortestPathNode](implicit ordering: Ordering[T
   def enqueue(node: T): Unit = nodeList = nodeList :+ node
 
   def dequeue: T = {
-    if (isEmpty) throw new InternalError("empty.dequeue")
+    if (isEmpty) throw UnexpectedInternalError("empty.dequeue")
     val minimum = nodeList.min
     nodeList = nodeList.filterNot(_ == minimum)
     minimum

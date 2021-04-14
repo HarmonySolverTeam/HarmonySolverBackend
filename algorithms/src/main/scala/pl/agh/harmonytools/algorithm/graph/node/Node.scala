@@ -2,6 +2,7 @@ package pl.agh.harmonytools.algorithm.graph.node
 
 import pl.agh.harmonytools.algorithm.graph.shortestpath.ShortestPathNode
 import pl.agh.harmonytools.algorithm.{LeafLayer, LeafNeighbourNode}
+import pl.agh.harmonytools.error.UnexpectedInternalError
 
 class Node[T <: NodeContent, S <: NodeContent](
   protected val content: T,
@@ -10,14 +11,14 @@ class Node[T <: NodeContent, S <: NodeContent](
 ) extends ShortestPathNode {
   private var nestedLayer: Option[LeafLayer[S]] = None
   def setNestedLayer(l: LeafLayer[S]): Unit     = nestedLayer = Some(l)
-  def getNestedLayer: LeafLayer[S]              = nestedLayer.getOrElse(sys.error("Nested layer not defined"))
+  def getNestedLayer: LeafLayer[S]              = nestedLayer.getOrElse(throw UnexpectedInternalError("Nested layer not defined"))
   def hasNestedLayer: Boolean               = nestedLayer.isDefined
 
 
   def getPrevContentIfSingle: T =
     getUniquePrevContents.headOption
       .getOrElse(
-        throw new InternalError(
+        throw UnexpectedInternalError(
           "Method not allowed in current state of node - there are "
             + getUniquePrevContents.length + " unique prev nodes contents instead of expected 1"
         )

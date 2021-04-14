@@ -1,14 +1,16 @@
 package pl.agh.harmonytools.bass
 
+import pl.agh.harmonytools.error.UnexpectedInternalError
+
 object AlterationType {
 
   def fromStringToBass(s: String): FiguredBassType = {
     s match {
-      case "#" => SHARP
-      case "b" => FLAT
-      case "h" => NATURAL
-      case ""  => EMPTY
-      case _   => sys.error("Forbidden symbol")
+      case "#"       => SHARP
+      case "b"       => FLAT
+      case "h"       => NATURAL
+      case ""        => EMPTY
+      case forbidden => throw UnexpectedInternalError(s"Forbidden symbol: $forbidden")
     }
   }
 
