@@ -95,7 +95,7 @@ case class SopranoSolver(
     if (solutionNodes.length != innerGraph.getLayers.length)
       throw new UnexpectedInternalError("Shortest path to last node does not exist")
 
-    val solutionChords: List[Chord] = solutionNodes.map(_.getContent)
+    val solutionChords: List[Chord] = solutionNodes.map(_.getContent).zip(exercise.notes).map{case (chord, note) => chord.copy(duration = note.duration)}
 
     ExerciseSolution(exercise, solutionNodes.last.getDistanceFromBeginning, solutionChords)
   }

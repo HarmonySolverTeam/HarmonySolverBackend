@@ -84,7 +84,8 @@ class BassExerciseEndpointTest extends EndpointTest("harmonytools/bass", HttpMet
       |                "system": "undefined",
       |                "mode": "minor",
       |                "isRelatedBackwards": false
-      |            }
+      |            },
+      |            "duration": 1.0
       |        }
       |    ],
       |    "success": true

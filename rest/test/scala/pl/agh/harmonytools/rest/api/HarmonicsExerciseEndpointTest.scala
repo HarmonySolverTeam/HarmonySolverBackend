@@ -99,7 +99,8 @@ class HarmonicsExerciseEndpointTest extends EndpointTest("harmonytools/harmonics
       |                "system": "undefined",
       |                "mode": "major",
       |                "isRelatedBackwards": false
-      |            }
+      |            },
+      |            "duration": 0.5
       |        },
       |        {
       |            "sopranoNote": {
@@ -137,7 +138,8 @@ class HarmonicsExerciseEndpointTest extends EndpointTest("harmonytools/harmonics
       |                "system": "undefined",
       |                "mode": "major",
       |                "isRelatedBackwards": false
-      |            }
+      |            },
+      |            "duration": 0.5
       |        }
       |    ],
       |    "success": true

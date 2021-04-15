@@ -16,12 +16,12 @@ class SopranoExerciseEndpointTest extends EndpointTest("harmonytools/soprano", H
                     {
                         "pitch": 72,
                         "baseNote": "C",
-                        "duration": 0.5
+                        "duration": 0.25
                     },
                     {
                     "pitch": 71,
                     "baseNote": "B",
-                    "duration": 0.5
+                    "duration": 0.25
                     },
                     {
                         "pitch": 72,
@@ -57,12 +57,12 @@ class SopranoExerciseEndpointTest extends EndpointTest("harmonytools/soprano", H
       |                    {
       |                        "pitch": 72,
       |                        "baseNote": "C",
-      |                        "duration": 0.5
+      |                        "duration": 0.25
       |                    },
       |                    {
       |                        "pitch": 71,
       |                        "baseNote": "B",
-      |                        "duration": 0.5
+      |                        "duration": 0.25
       |                    },
       |                    {
       |                        "pitch": 72,
@@ -138,7 +138,8 @@ class SopranoExerciseEndpointTest extends EndpointTest("harmonytools/soprano", H
       |                "system": "undefined",
       |                "mode": "major",
       |                "isRelatedBackwards": false
-      |            }
+      |            },
+      |            "duration": 0.25
       |        },
       |        {
       |            "sopranoNote": {
@@ -177,7 +178,8 @@ class SopranoExerciseEndpointTest extends EndpointTest("harmonytools/soprano", H
       |                "system": "undefined",
       |                "mode": "major",
       |                "isRelatedBackwards": false
-      |            }
+      |            },
+      |            "duration": 0.25
       |        },
       |        {
       |            "sopranoNote": {
@@ -216,7 +218,8 @@ class SopranoExerciseEndpointTest extends EndpointTest("harmonytools/soprano", H
       |                "system": "undefined",
       |                "mode": "major",
       |                "isRelatedBackwards": false
-      |            }
+      |            },
+      |            "duration": 0.5
       |        }
       |    ],
       |    "success": true

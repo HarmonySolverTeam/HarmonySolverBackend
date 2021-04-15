@@ -34,7 +34,8 @@ class ValidatorEndpointTest extends EndpointTest("harmonytools/validator", HttpM
             },
             "harmonicFunction": {
                 "functionName": "T"
-            }
+            },
+            "duration": 0
         },
         {
             "sopranoNote": {
@@ -63,7 +64,8 @@ class ValidatorEndpointTest extends EndpointTest("harmonytools/validator", HttpM
             },
             "harmonicFunction": {
                 "functionName": "D"
-            }
+            },
+            "duration": 0
         },
         {
             "sopranoNote": {
@@ -92,7 +94,8 @@ class ValidatorEndpointTest extends EndpointTest("harmonytools/validator", HttpM
             },
             "harmonicFunction": {
                 "functionName": "T"
-            }
+            },
+            "duration": 0
          }
         ]""".stripMargin)
 

@@ -5,14 +5,7 @@ import pl.agh.harmonytools.model.chord.Chord
 import pl.agh.harmonytools.model.measure.Meter
 import pl.agh.harmonytools.model.note.{BaseNote, Note, NoteWithoutChordContext}
 import pl.agh.harmonytools.rest.dto.HarmonicFunctionDto.{Degree, FunctionName, Mode}
-import pl.agh.harmonytools.rest.dto.{
-  ChordDto,
-  HarmonicFunctionDto,
-  NoteDto,
-  SopranoExerciseDto,
-  SopranoExerciseSolutionDto,
-  SopranoMeasureDto
-}
+import pl.agh.harmonytools.rest.dto.{ChordDto, HarmonicFunctionDto, NoteDto, SopranoExerciseDto, SopranoExerciseSolutionDto, SopranoMeasureDto}
 import pl.agh.harmonytools.solver.ExerciseSolution
 import pl.agh.harmonytools.utils.TestUtils
 
@@ -38,14 +31,16 @@ class SopranoExerciseSolutionMapperTest
           Note(67, BaseNote.G, prime, 1.0),
           Note(62, BaseNote.D, fifth, 1.0),
           Note(55, BaseNote.G, prime, 1.0),
-          dominant
+          dominant,
+          0.5
         ),
         Chord(
           Note(72, BaseNote.C, prime, 1.0),
           Note(67, BaseNote.G, fifth, 1.0),
           Note(64, BaseNote.E, third, 1.0),
           Note(60, BaseNote.C, prime, 1.0),
-          tonic
+          tonic,
+          0.5
         )
       ),
       success = true
@@ -99,14 +94,16 @@ class SopranoExerciseSolutionMapperTest
           NoteDto(67, NoteDto.BaseNote.G, Some(prime.chordComponentString), Some(1.0)),
           NoteDto(62, NoteDto.BaseNote.D, Some(fifth.chordComponentString), Some(1.0)),
           NoteDto(55, NoteDto.BaseNote.G, Some(prime.chordComponentString), Some(1.0)),
-          dominantDTO
+          dominantDTO,
+          0.5
         ),
         ChordDto(
           NoteDto(72, NoteDto.BaseNote.C, Some(prime.chordComponentString), Some(1.0)),
           NoteDto(67, NoteDto.BaseNote.G, Some(fifth.chordComponentString), Some(1.0)),
           NoteDto(64, NoteDto.BaseNote.E, Some(third.chordComponentString), Some(1.0)),
           NoteDto(60, NoteDto.BaseNote.C, Some(prime.chordComponentString), Some(1.0)),
-          tonicDTO
+          tonicDTO,
+          0.5
         )
       ),
       true

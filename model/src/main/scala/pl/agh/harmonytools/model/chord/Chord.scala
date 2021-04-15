@@ -1,10 +1,9 @@
 package pl.agh.harmonytools.model.chord
 
 import pl.agh.harmonytools.algorithm.graph.node.NodeContent
-import pl.agh.harmonytools.error.{HarmonySolverError, RequirementChecker, UnexpectedInternalError}
+import pl.agh.harmonytools.error.{RequirementChecker, UnexpectedInternalError}
 import pl.agh.harmonytools.model.harmonicfunction.FunctionNames.TONIC
 import pl.agh.harmonytools.model.harmonicfunction.HarmonicFunction
-import pl.agh.harmonytools.model.measure.Meter
 import pl.agh.harmonytools.model.note.{BaseNote, Note}
 import pl.agh.harmonytools.model.util.ChordComponentManager
 
@@ -14,7 +13,7 @@ case class Chord(
   tenorNote: Note,
   bassNote: Note,
   harmonicFunction: HarmonicFunction,
-  var duration: Option[Meter] = None
+  var duration: Double = 0.0
 ) extends NodeContent {
   RequirementChecker.isRequired(
     sopranoNote.isUpperThanOrEqual(altoNote) && altoNote.isUpperThanOrEqual(tenorNote) && tenorNote.isUpperThanOrEqual(
@@ -79,7 +78,7 @@ case class Chord(
     -1
   }
 
-  def setDuration(d: Meter): Unit = duration = Some(d)
+  def setDuration(d: Double): Unit = duration = d
 }
 
 object Chord {

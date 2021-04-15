@@ -477,6 +477,7 @@ components:
         - tenorNote
         - bassNote
         - harmonicFunction
+        - duration
       properties:
         sopranoNote:
           type: object
@@ -498,3 +499,5 @@ components:
           type: object
           $ref: '#/components/schemas/HarmonicFunctionDto'
           descritpion: Harmonic function of chord
+        duration:
+          type: double

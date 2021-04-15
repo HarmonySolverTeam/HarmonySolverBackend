@@ -24,7 +24,8 @@ class ChordMapperTest extends MapperTest[Chord, ChordDto](ChordMapper) with Test
         position = Some(seventh),
         system = ChordSystem.CLOSE,
         key = Some(keyf)
-      )
+      ),
+      duration = 0.5
     )
   )
   override protected val dtos: List[ChordDto] = List(
@@ -46,7 +47,8 @@ class ChordMapperTest extends MapperTest[Chord, ChordDto](ChordMapper) with Test
         position = Some(seventh.chordComponentString),
         system = Some(HarmonicFunctionDto.System.Close),
         key = Some(keyf.toString)
-      )
+      ),
+      0.5
     )
   )
 }
