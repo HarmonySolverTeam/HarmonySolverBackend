@@ -5,7 +5,7 @@ import pl.agh.harmonytools.rest.dto.SopranoMeasureDto
 
 object SopranoMeasureMapper extends Mapper[List[NoteWithoutChordContext], SopranoMeasureDto] {
   override def mapToModel(dto: SopranoMeasureDto): List[NoteWithoutChordContext] = {
-    dto.elements.map(NoteWithoutChordContextMapper.mapToModel)
+    dto.notes.map(NoteWithoutChordContextMapper.mapToModel)
   }
 
   override def mapToDTO(model: List[NoteWithoutChordContext]): SopranoMeasureDto = {

@@ -331,7 +331,7 @@ components:
         - key
         - meter
         - measures
-        - harmonicFunctions
+        - possibleFunctionsList
       properties:
         key:
           type: string
@@ -343,7 +343,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/SopranoMeasureDto'
-        harmonicFunctions:
+        possibleFunctionsList:
           type: array
           description: List of possible harmonic functions which could be used in solution.
           items:
@@ -373,9 +373,9 @@ components:
 
     SopranoMeasureDto:
       required:
-        - elements
+        - notes
       properties:
-        elements:
+        notes:
           type: array
           items:
             $ref: '#/components/schemas/NoteDto'

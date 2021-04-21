@@ -12,7 +12,7 @@ class SopranoExerciseEndpointTest extends EndpointTest("harmonytools/soprano", H
         "meter": [4, 4],
         "measures": [
             {
-                "elements": [
+                "notes": [
                     {
                         "pitch": 72,
                         "baseNote": 0,
@@ -31,7 +31,7 @@ class SopranoExerciseEndpointTest extends EndpointTest("harmonytools/soprano", H
                 ]
             }
         ],
-        "harmonicFunctions": [
+        "possibleFunctionsList": [
             {
                 "functionName": "T"
             },
@@ -53,7 +53,7 @@ class SopranoExerciseEndpointTest extends EndpointTest("harmonytools/soprano", H
       |        "meter": [4, 4],
       |        "measures": [
       |            {
-      |                "elements": [
+      |                "notes": [
       |                    {
       |                        "pitch": 72,
       |                        "baseNote": 0,
@@ -72,7 +72,7 @@ class SopranoExerciseEndpointTest extends EndpointTest("harmonytools/soprano", H
       |                ]
       |            }
       |        ],
-      |        "harmonicFunctions": [
+      |        "possibleFunctionsList": [
       |            {
       |                "functionName": "T",
       |                "degree": "I",
