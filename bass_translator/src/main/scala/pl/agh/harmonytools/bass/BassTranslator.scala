@@ -630,7 +630,8 @@ object BassTranslator {
             if (hf.getRevolution.chordComponentString == "3>")
               hf1.withRevolution(createChordComponent("3"))
             newFunctions = newFunctions :+ hf1 :+ hf2
-            newBassLine = newBassLine :+ bassLine(i).copy(duration = 2 * bassLine(i).duration / 3) :+ bassLine(i).copy(duration = bassLine(i).duration / 3) //todo rozbicie. Może klasa Duration?
+            val dur = bassLine(i).getResult.getDurationDivision
+            newBassLine = newBassLine :+ bassLine(i).copy(duration = dur._1) :+ bassLine(i).copy(duration = dur._2)
             newChordElements = newChordElements :+ chordElements(i) :+ chordElements(i)
             pushed = true
           } else if (
@@ -643,7 +644,8 @@ object BassTranslator {
             if (hf.getRevolution.chordComponentString == "3")
               hf1.withRevolution(createChordComponent("3>"))
             newFunctions = newFunctions :+ hf1 :+ hf2
-            newBassLine = newBassLine :+ bassLine(i).copy(duration = 2 * bassLine(i).duration / 3) :+ bassLine(i).copy(duration = bassLine(i).duration / 3)
+            val dur = bassLine(i).getResult.getDurationDivision
+            newBassLine = newBassLine :+ bassLine(i).copy(duration = dur._1) :+ bassLine(i).copy(duration = dur._2)
             newChordElements = newChordElements :+ chordElements(i) :+ chordElements(i)
             pushed = true
           }
@@ -743,9 +745,9 @@ object BassTranslator {
     var counter = 0.0
     var measures = List.empty[Measure]
     var measureHfs = List.empty[BassHarmonicFunctionBuilder]
-    for (i <- bassLine.indices) {
+    for (i <- bassLineAfterSplit.indices) {
       measureHfs = measureHfs :+ newFunctions(i)
-      counter += bassLine(i).duration
+      counter += bassLineAfterSplit(i).duration
       if (counter >= measureDuration) {
         measures = measures :+ Measure(measureHfs.map(_.getHarmonicFunction))
         counter = 0
