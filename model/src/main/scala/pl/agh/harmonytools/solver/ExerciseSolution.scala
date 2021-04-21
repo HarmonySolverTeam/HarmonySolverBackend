@@ -2,7 +2,7 @@ package pl.agh.harmonytools.solver
 
 import pl.agh.harmonytools.model.chord.Chord
 import pl.agh.harmonytools.model.exercise.Exercise
-import pl.agh.harmonytools.model.measure.{Measure, Meter}
+import pl.agh.harmonytools.model.measure.Measure
 
 import scala.annotation.tailrec
 
@@ -129,9 +129,9 @@ case class ExerciseSolution(exercise: Exercise, rating: Double, chords: List[Cho
           val lenList = defaultDivide(funList(funId)._1, List(durations(funId)))
           for (len <- lenList) {
             if (len >= 1) {
-              chords(counterMeasure + offset).setDuration(Meter(len.toInt, exercise.getMeter.denominator))
+              chords(counterMeasure + offset).setDuration(len.toDouble / exercise.getMeter.denominator)
             } else {
-              chords(counterMeasure + offset).setDuration(Meter(1, (exercise.getMeter.denominator * (1 / len)).toInt))
+              chords(counterMeasure + offset).setDuration(1.0 / (exercise.getMeter.denominator * (1.0 / len)))
             }
             counterMeasure += 1
           }

@@ -10,7 +10,8 @@ object ChordMapper extends Mapper[Chord, ChordDto] {
       altoNote = NoteMapper.mapToModel(dto.altoNote),
       tenorNote = NoteMapper.mapToModel(dto.tenorNote),
       bassNote = NoteMapper.mapToModel(dto.bassNote),
-      harmonicFunction = HarmonicFunctionMapper.mapToModel(dto.harmonicFunction)
+      harmonicFunction = HarmonicFunctionMapper.mapToModel(dto.harmonicFunction),
+      duration = dto.duration
     )
   }
 
@@ -20,7 +21,8 @@ object ChordMapper extends Mapper[Chord, ChordDto] {
       altoNote = NoteMapper.mapToDTO(model.altoNote),
       tenorNote = NoteMapper.mapToDTO(model.tenorNote),
       bassNote = NoteMapper.mapToDTO(model.bassNote),
-      harmonicFunction = HarmonicFunctionMapper.mapToDTO(model.harmonicFunction)
+      harmonicFunction = HarmonicFunctionMapper.mapToDTO(model.harmonicFunction),
+      duration = model.duration
     )
   }
 }

@@ -17,8 +17,8 @@ class ErrorHandler extends DefaultHttpErrorHandler {
             ByteString.apply(
               s"""{
                  |"message": "${h.message}",
-                 |"source": "${h.source}"
-                 |"details": "$details"
+                 |"source": "${h.source}",
+                 |"details": "${details.replace("\n","\\n")}"
                  |}""".stripMargin
             )
           case None =>

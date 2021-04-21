@@ -9,12 +9,12 @@ class BassExerciseEndpointTest extends EndpointTest("harmonytools/bass", HttpMet
   private val exerciseJson = Json.parse("""{
     "exercise": {
         "key": "c",
-        "meter": "4/4",
-        "measures": [
+        "meter": [4, 4],
+        "elements": [
             {
-                "note": {
+                "bassNote": {
                     "pitch": 60,
-                    "baseNote": "C",
+                    "baseNote": 0,
                     "duration": 1.0
                 }
             }
@@ -26,7 +26,7 @@ class BassExerciseEndpointTest extends EndpointTest("harmonytools/bass", HttpMet
     """{
       |    "exercise": {
       |        "key": "c",
-      |        "meter": "4/4",
+      |        "meter": [4, 4],
       |        "measures": [
       |            {
       |                "elements": [
@@ -51,25 +51,25 @@ class BassExerciseEndpointTest extends EndpointTest("harmonytools/bass", HttpMet
       |        {
       |            "sopranoNote": {
       |                "pitch": 75,
-      |                "baseNote": "E",
+      |                "baseNote": 2,
       |                "chordComponent": "3>",
       |                "duration": 0
       |            },
       |            "altoNote": {
       |                "pitch": 67,
-      |                "baseNote": "G",
+      |                "baseNote": 4,
       |                "chordComponent": "5",
       |                "duration": 0
       |            },
       |            "tenorNote": {
       |                "pitch": 67,
-      |                "baseNote": "G",
+      |                "baseNote": 4,
       |                "chordComponent": "5",
       |                "duration": 0
       |            },
       |            "bassNote": {
       |                "pitch": 60,
-      |                "baseNote": "C",
+      |                "baseNote": 0,
       |                "chordComponent": "1",
       |                "duration": 0
       |            },
@@ -84,7 +84,8 @@ class BassExerciseEndpointTest extends EndpointTest("harmonytools/bass", HttpMet
       |                "system": "undefined",
       |                "mode": "minor",
       |                "isRelatedBackwards": false
-      |            }
+      |            },
+      |            "duration": 1.0
       |        }
       |    ],
       |    "success": true

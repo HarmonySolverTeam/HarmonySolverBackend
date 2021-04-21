@@ -123,7 +123,7 @@ class FiguredBassElementBuilder {
   private var symbols: List[BassSymbol]     = List.empty
   private var delays: List[BassDelay]       = List.empty
 
-  def withBassNote(pitch: Int, baseNote: Int): Unit         = bassNote = Some(NoteBuilder(pitch, BaseNote.fromInt(baseNote)))
+  def withBassNote(pitch: Int, baseNote: Int): Unit         = bassNote = Some(NoteBuilder(pitch, BaseNote.fromInt(baseNote), 1.0 /*no matters in test*/))
   def addSymbol(bassSymbol: BassSymbol): Unit               = symbols = symbols :+ bassSymbol
   def addDelay(first: BassSymbol, second: BassSymbol): Unit = delays = delays :+ BassDelay(first, second)
 

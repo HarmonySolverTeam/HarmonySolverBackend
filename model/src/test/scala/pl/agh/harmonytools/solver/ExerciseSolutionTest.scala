@@ -16,14 +16,14 @@ class ExerciseSolutionTest extends FunSuite with Matchers with TestUtils {
     val exercise         = ExerciseImpl(keyC, Meter(3, 4), List(Measure(List(tonic, dominant, dominant))))
     val exerciseSolution = ExerciseSolution(exercise, 0, List(Chord.empty, Chord.empty, Chord.empty))
     exerciseSolution.setDurations()
-    exerciseSolution.chords.map(_.duration.get.asDouble) shouldBe List(1.0 / 4, 1.0 / 4, 1.0 / 4)
+    exerciseSolution.chords.map(_.duration) shouldBe List(0.25, 0.25, 0.25)
   }
 
   test("Exact divide for hfs 2") {
     val exercise         = ExerciseImpl(keyC, Meter(4, 4), List(Measure(List(tonic, subdominant, dominant))))
     val exerciseSolution = ExerciseSolution(exercise, 0, List(Chord.empty, Chord.empty, Chord.empty))
     exerciseSolution.setDurations()
-    exerciseSolution.chords.map(_.duration.get.asDouble) shouldBe List(2.0 / 4, 1.0 / 4, 1.0 / 4)
+    exerciseSolution.chords.map(_.duration) shouldBe List(0.5, 0.25, 0.25)
   }
 
   test("Exact divide for hfs 3") {
@@ -48,7 +48,7 @@ class ExerciseSolutionTest extends FunSuite with Matchers with TestUtils {
       )
     )
     exerciseSolution.setDurations()
-    exerciseSolution.chords.map(_.duration.get.asDouble) shouldBe List(1.0 / 4, 1.0 / 8, 1.0 / 8, 1.0 / 8, 1.0 / 8, 1.0 / 16, 1.0 / 32, 1.0 / 32, 1.0 / 8)
+    exerciseSolution.chords.map(_.duration) shouldBe List(0.25, 0.125, 0.125, 0.125, 0.125, 0.0625, 0.03125, 0.03125, 0.125)
   }
 
   test("Exact divide for hfs 4") {
@@ -69,7 +69,7 @@ class ExerciseSolutionTest extends FunSuite with Matchers with TestUtils {
       )
     )
     exerciseSolution.setDurations()
-    exerciseSolution.chords.map(_.duration.get.asDouble) shouldBe List(1.0 / 4, 1.0 / 4, 1.0 / 4, 1.0 / 4)
+    exerciseSolution.chords.map(_.duration) shouldBe List(0.25, 0.25, 0.25, 0.25)
   }
 
 }

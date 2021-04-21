@@ -68,7 +68,7 @@ object PreChecker {
 
       if (currentChords.isEmpty)
         throw PreCheckerError(
-          s"Could not generate any chord for harmonic function: ${indexes(i)}\n" + harmonicFunctions(i)
+          s"Could not generate any chord for harmonic function: ${indexes(i)}\n", harmonicFunctions(i).toString
         )
       usedCurrentChords = currentChords.map(_ => false)
 
@@ -99,14 +99,16 @@ object PreChecker {
 
         if (i != 0) {
           throw PreCheckerError(
-            s"Could not find valid connection between chords ${indexes(i - 1)} and " +
-              s"${indexes(i)}\nChord ${indexes(i - 1)}\n${harmonicFunctions(i - 1)}\n\n" +
+            msg = s"Could not find valid connection between chords ${indexes(i - 1)} and " +
+              s"${indexes(i)}",
+            det = s"Chord ${indexes(i - 1)}\n${harmonicFunctions(i - 1)}\n\n" +
               s"Chord ${indexes(i)}\n${harmonicFunctions(i)}\n\nBroken rules for all ${allConnections} " +
               s"possible connections between these chords:\n${brokenRulesInfo}"
           )
         } else {
           throw PreCheckerError(
-            s"Could not generate any correct chord for first chord\n${harmonicFunctions(i)}\nBroken rules:\n${brokenRulesInfo}"
+            msg = s"Could not generate any correct chord for first chord\n",
+            det = s"${harmonicFunctions(i)}\nBroken rules:\n${brokenRulesInfo}"
           )
         }
       }
@@ -114,6 +116,6 @@ object PreChecker {
   }
 }
 
-case class PreCheckerError(msg: String) extends HarmonySolverError(msg) {
+case class PreCheckerError(msg: String, det: String) extends HarmonySolverError(msg, Some(det)) {
   override val source: String = "Error during checking exercise correctness"
 }

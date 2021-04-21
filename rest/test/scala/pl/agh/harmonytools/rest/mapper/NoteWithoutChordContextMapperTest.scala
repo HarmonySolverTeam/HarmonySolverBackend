@@ -8,6 +8,6 @@ class NoteWithoutChordContextMapperTest extends MapperTest[NoteWithoutChordConte
     NoteWithoutChordContext(70, BaseNote.C, 1.0)
   )
   override protected val dtos: List[NoteDto] = List(
-    NoteDto(70, NoteDto.BaseNote.C, None, Some(1.0))
+    NoteDto(70, 0, None, Some(1.0))
   )
 }

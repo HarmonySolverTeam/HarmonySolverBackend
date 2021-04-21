@@ -44,8 +44,9 @@ case class HarmonicsSolver(
           for (hf <- measure.harmonicFunctions) {
             val delay = hf.delay
             if (delay.nonEmpty) {
-              val newNote = Note(bl(i).pitch, bl(i).baseNote, bl(i).chordComponent)
-              newBassLine = newBassLine.take(i + addedNotes) ++ List(newNote) ++ newBassLine.drop(i + addedNotes)
+              val durations = bl(i).getDurationDivision
+              val newNote = Note(bl(i).pitch, bl(i).baseNote, bl(i).chordComponent, duration = durations._2)
+              newBassLine = newBassLine.take(i + addedNotes) ++ List(bl(i).copy(duration = durations._1), newNote) ++ newBassLine.drop(i + addedNotes + 1)
               addedNotes += 1
             }
             i += 1
@@ -112,7 +113,16 @@ case class HarmonicsSolver(
     val solutionNodes = shortestPathAlgorithm.getShortestPathToLastNode
     if (solutionNodes.length != graph.getLayers.length)
       return ExerciseSolution(exercise, -1, List.empty, success = false)
-    val solutionChords = solutionNodes.map(_.getContent)
+    val solutionChords = {
+      bassLine match {
+        case Some(bassLine) => solutionNodes.map(_.getContent.copy()).zip(bassLine).map{case (chord, note) => chord.copy(duration = note.duration)}
+        case None =>
+          sopranoLine match {
+            case Some(sopranoLine) => solutionNodes.map(_.getContent.copy()).zip(sopranoLine).map{case (chord, note) => chord.copy(duration = note.duration)}
+            case None => solutionNodes.map(_.getContent)
+          }
+      }
+    }
     val solution =
       ExerciseSolution(exercise, solutionNodes.last.getDistanceFromBeginning, solutionChords, solutionChords.nonEmpty)
     if (bassLine.isEmpty && sopranoLine.isEmpty)

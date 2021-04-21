@@ -29,7 +29,7 @@ class HarmonicsExerciseMapperTest
   override protected val dtos: List[HarmonicsExerciseDto] = List(
     HarmonicsExerciseDto(
       "C",
-      "4/4",
+      List(4, 4),
       Some(
         List(
           HarmonicsMeasureDto(

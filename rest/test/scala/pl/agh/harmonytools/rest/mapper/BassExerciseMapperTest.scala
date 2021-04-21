@@ -1,16 +1,9 @@
 package pl.agh.harmonytools.rest.mapper
 
-import pl.agh.harmonytools.bass.{
-  AlterationType,
-  BassDelay,
-  BassSymbol,
-  FiguredBassElement,
-  FiguredBassExercise,
-  NoteBuilder
-}
+import pl.agh.harmonytools.bass.{AlterationType, BassDelay, BassSymbol, FiguredBassElement, FiguredBassExercise, NoteBuilder}
 import pl.agh.harmonytools.model.measure.Meter
 import pl.agh.harmonytools.model.note.BaseNote
-import pl.agh.harmonytools.rest.dto.{BassDelayDto, BassElementDto, BassExerciseDto, NoteDto}
+import pl.agh.harmonytools.rest.dto.{BassElementDto, BassExerciseDto, BassSymbolDto, NoteDto}
 import pl.agh.harmonytools.utils.TestUtils
 
 class BassExerciseMapperTest
@@ -35,15 +28,15 @@ class BassExerciseMapperTest
   override protected val dtos: List[BassExerciseDto] = List(
     BassExerciseDto(
       "c",
-      "4/4",
+      List(4, 4),
       List(
         BassElementDto(
-          NoteDto(55, NoteDto.BaseNote.G, Some("1"), Some(0.0)),
-          Some(List("7")),
-          Some(List(BassDelayDto("4", "3h")))
+          NoteDto(55, 4, Some("1"), Some(0.0)),
+          Some(List(BassSymbolDto(Some(7), None))),
+          Some(List(List("4", "3h")))
         ),
         BassElementDto(
-          NoteDto(60, NoteDto.BaseNote.C, Some("1"), Some(0.0)),
+          NoteDto(60, 0, Some("1"), Some(0.0)),
           Some(List()),
           Some(List())
         )

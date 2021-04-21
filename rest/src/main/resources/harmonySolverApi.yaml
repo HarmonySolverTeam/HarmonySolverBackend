@@ -129,7 +129,7 @@ components:
           type: string
           description: Key in which exercise should be solved, f.e. 'C#'. Moreover assume that 'C#' has major mode and 'c#' has minor mode.
         meter:
-          type: string
+          $ref: '#/components/schemas/MeterDto'
           description: Meter of solution in format <nominator>/<denominator> f.e. '3/4', '6/8'
         measures:
           type: array
@@ -268,15 +268,15 @@ components:
       required:
         - key
         - meter
-        - measures
+        - elements
       properties:
         key:
           type: string
           description: Key in which exercise should be solved, f.e. 'C#'. Moreover assume that 'C#' has major mode and 'c#' has minor mode.
         meter:
-          type: string
+          $ref: '#/components/schemas/MeterDto'
           description: Meter of solution in format <nominator>/<denominator> f.e. '3/4', '6/8'
-        measures:
+        elements:
           type: array
           items:
             $ref: '#/components/schemas/BassElementDto'
@@ -290,29 +290,28 @@ components:
 
     BassElementDto:
       required:
-        - note
+        - bassNote
       properties:
-        note:
+        bassNote:
           $ref: '#/components/schemas/NoteDto'
         symbols:
           type: array
           description: Ordered bass symbol list. Each bass symbol should be string.
           items:
-            type: string
+            $ref: '#/components/schemas/BassSymbolDto'
         delays:
           type: array
           description: Ordered delays list. Each bass symbol should be string.
           items:
-            $ref: '#/components/schemas/BassDelayDto'
+            type: array
+            items:
+              type: string
 
-    BassDelayDto:
-      required:
-        - first
-        - second
+    BassSymbolDto:
       properties:
-        first:
-          type: string
-        second:
+        component:
+          type: integer
+        alteration:
           type: string
 
     #SOPRANO
@@ -332,19 +331,19 @@ components:
         - key
         - meter
         - measures
-        - harmonicFunctions
+        - possibleFunctionsList
       properties:
         key:
           type: string
           description: Key in which exercise should be solved, f.e. 'C#'. Moreover assume that 'C#' has major mode and 'c#' has minor mode.
         meter:
-          type: string
+          $ref: '#/components/schemas/MeterDto'
           description: Meter of solution in format <nominator>/<denominator> f.e. '3/4', '6/8'
         measures:
           type: array
           items:
             $ref: '#/components/schemas/SopranoMeasureDto'
-        harmonicFunctions:
+        possibleFunctionsList:
           type: array
           description: List of possible harmonic functions which could be used in solution.
           items:
@@ -374,9 +373,9 @@ components:
 
     SopranoMeasureDto:
       required:
-        - elements
+        - notes
       properties:
-        elements:
+        notes:
           type: array
           items:
             $ref: '#/components/schemas/NoteDto'
@@ -442,16 +441,7 @@ components:
           type: integer
           description: Pitch of note
         baseNote:
-          type: string
-          description: TODO
-          enum:
-            - C
-            - D
-            - E
-            - F
-            - G
-            - A
-            - B
+          type: integer
         chordComponent:
           type: string
           description: Context for chord which part that note is
@@ -477,6 +467,7 @@ components:
         - tenorNote
         - bassNote
         - harmonicFunction
+        - duration
       properties:
         sopranoNote:
           type: object
@@ -498,3 +489,10 @@ components:
           type: object
           $ref: '#/components/schemas/HarmonicFunctionDto'
           descritpion: Harmonic function of chord
+        duration:
+          type: double
+
+    MeterDto:
+      type: array
+      items:
+        type: integer

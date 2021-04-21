@@ -43,7 +43,8 @@ class HarmonicsExerciseSolutionMapperTest extends MapperTest[ExerciseSolution, H
           Note(67, BaseNote.G, fifth),
           Note(64, BaseNote.E, third),
           Note(60, BaseNote.C, prime),
-          tonic
+          tonic,
+          0.5
         )
       ),
       success = true
@@ -53,17 +54,18 @@ class HarmonicsExerciseSolutionMapperTest extends MapperTest[ExerciseSolution, H
     HarmonicsExerciseSolutionDto(
       HarmonicsExerciseDto(
         "C",
-        "4/4",
+        List(4, 4),
         Some(List(HarmonicsMeasureDto(List(tonicDTO))))
       ),
       1.0,
       List(
         ChordDto(
-          NoteDto(72, NoteDto.BaseNote.C, Some(prime.chordComponentString), Some(0.0)),
-          NoteDto(67, NoteDto.BaseNote.G, Some(fifth.chordComponentString), Some(0.0)),
-          NoteDto(64, NoteDto.BaseNote.E, Some(third.chordComponentString), Some(0.0)),
-          NoteDto(60, NoteDto.BaseNote.C, Some(prime.chordComponentString), Some(0.0)),
-          tonicDTO
+          NoteDto(72, 0, Some(prime.chordComponentString), Some(0.0)),
+          NoteDto(67, 4, Some(fifth.chordComponentString), Some(0.0)),
+          NoteDto(64, 2, Some(third.chordComponentString), Some(0.0)),
+          NoteDto(60, 0, Some(prime.chordComponentString), Some(0.0)),
+          tonicDTO,
+          0.5
         )
       ),
       success = true

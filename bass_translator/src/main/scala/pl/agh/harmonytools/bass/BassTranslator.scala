@@ -630,7 +630,8 @@ object BassTranslator {
             if (hf.getRevolution.chordComponentString == "3>")
               hf1.withRevolution(createChordComponent("3"))
             newFunctions = newFunctions :+ hf1 :+ hf2
-            newBassLine = newBassLine :+ bassLine(i).copy(duration = 2 * bassLine(i).duration / 3) :+ bassLine(i).copy(duration = bassLine(i).duration / 3) //todo rozbicie. Może klasa Duration?
+            val dur = bassLine(i).getResult.getDurationDivision
+            newBassLine = newBassLine :+ bassLine(i).copy(duration = dur._1) :+ bassLine(i).copy(duration = dur._2)
             newChordElements = newChordElements :+ chordElements(i) :+ chordElements(i)
             pushed = true
           } else if (
@@ -643,7 +644,8 @@ object BassTranslator {
             if (hf.getRevolution.chordComponentString == "3")
               hf1.withRevolution(createChordComponent("3>"))
             newFunctions = newFunctions :+ hf1 :+ hf2
-            newBassLine = newBassLine :+ bassLine(i).copy(duration = 2 * bassLine(i).duration / 3) :+ bassLine(i).copy(duration = bassLine(i).duration / 3)
+            val dur = bassLine(i).getResult.getDurationDivision
+            newBassLine = newBassLine :+ bassLine(i).copy(duration = dur._1) :+ bassLine(i).copy(duration = dur._2)
             newChordElements = newChordElements :+ chordElements(i) :+ chordElements(i)
             pushed = true
           }
@@ -739,10 +741,23 @@ object BassTranslator {
     val bassLine                     = figuredBassExercise.elements.map(_.bassNote)
     val (harmonicFunctionsAfterSplit, bassLineAfterSplit, chordElementsAfterSplit) = split33Delays(harmonicFunctions, bassLine, chordElements)
     val newFunctions                 = handleDeflections(harmonicFunctionsAfterSplit, key, chordElementsAfterSplit)
+    val measureDuration = figuredBassExercise.meter.asDouble
+    var counter = 0.0
+    var measures = List.empty[Measure]
+    var measureHfs = List.empty[BassHarmonicFunctionBuilder]
+    for (i <- bassLineAfterSplit.indices) {
+      measureHfs = measureHfs :+ newFunctions(i)
+      counter += bassLineAfterSplit(i).duration
+      if (counter >= measureDuration) {
+        measures = measures :+ Measure(measureHfs.map(_.getHarmonicFunction))
+        counter = 0
+        measureHfs = List.empty[BassHarmonicFunctionBuilder]
+      }
+    }
     HarmonicsExercise(
       key,
       figuredBassExercise.meter,
-      List(Measure(newFunctions.map(_.getHarmonicFunction))),
+      measures,
       Some(bassLineAfterSplit.map(_.getResult))
     )
   }

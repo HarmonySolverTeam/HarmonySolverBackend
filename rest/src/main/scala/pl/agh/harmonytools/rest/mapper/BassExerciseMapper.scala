@@ -8,7 +8,7 @@ object BassExerciseMapper extends Mapper[FiguredBassExercise, BassExerciseDto] {
     FiguredBassExercise(
       key = KeyMapper.mapToModel(dto.key),
       meter = MeterMapper.mapToModel(dto.meter),
-      elements = dto.measures.map(FiguredBassElementMapper.mapToModel)
+      elements = dto.elements.map(FiguredBassElementMapper.mapToModel)
     )
   }
 
@@ -16,7 +16,7 @@ object BassExerciseMapper extends Mapper[FiguredBassExercise, BassExerciseDto] {
     BassExerciseDto(
       key = KeyMapper.mapToDTO(model.key),
       meter = MeterMapper.mapToDTO(model.meter),
-      measures = model.elements.map(FiguredBassElementMapper.mapToDTO)
+      elements = model.elements.map(FiguredBassElementMapper.mapToDTO)
     )
   }
 }

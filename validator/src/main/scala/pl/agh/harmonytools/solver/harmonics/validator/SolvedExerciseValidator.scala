@@ -20,14 +20,14 @@ object SolvedExerciseValidator {
   def getBrokenRulesReport(chords: List[Chord]): String = {
     val brokenRulesWithIdx = checkCorrectness(chords)
     if (brokenRulesWithIdx.nonEmpty) {
-      "Found some broken rules!\t\t\n" + brokenRulesWithIdx.map { case (i, brokenRules) =>
+      "Found some broken rules!\t\t\n\n" + brokenRulesWithIdx.map { case (i, brokenRules) =>
         val brokenRulesReport = new StringBuilder
-        brokenRulesReport.append(s"\nChord $i -> Chord ${i+1}")
+        brokenRulesReport.append(s"Chord $i -> Chord ${i+1}")
         for (brokenRule <- brokenRules) {
-          brokenRulesReport.append(s"\n\t- $brokenRule")
+          brokenRulesReport.append(s"\n\t- ${brokenRule.caption}")
         }
         brokenRulesReport.result()
-      }
+      }.mkString("\n")
     } else {
       "Correct!\t\t"
     }
