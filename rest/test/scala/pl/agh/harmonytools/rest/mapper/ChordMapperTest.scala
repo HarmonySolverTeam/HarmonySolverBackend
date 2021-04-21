@@ -30,10 +30,10 @@ class ChordMapperTest extends MapperTest[Chord, ChordDto](ChordMapper) with Test
   )
   override protected val dtos: List[ChordDto] = List(
     ChordDto(
-      NoteDto(70, NoteDto.BaseNote.B, Some(seventh.chordComponentString), Some(0.0)),
-      NoteDto(68, NoteDto.BaseNote.G, Some(fifthAltUp.chordComponentString), Some(0.0)),
-      NoteDto(65, NoteDto.BaseNote.F, Some(fourth.chordComponentString), Some(0.0)),
-      NoteDto(60, NoteDto.BaseNote.C, Some(prime.chordComponentString), Some(0.0)),
+      NoteDto(70, 6, Some(seventh.chordComponentString), Some(0.0)),
+      NoteDto(68, 4, Some(fifthAltUp.chordComponentString), Some(0.0)),
+      NoteDto(65, 3, Some(fourth.chordComponentString), Some(0.0)),
+      NoteDto(60, 0, Some(prime.chordComponentString), Some(0.0)),
       HarmonicFunctionDto(
         functionName = HarmonicFunctionDto.FunctionName.D,
         extra = Some(List(seventh.chordComponentString, fifthAltUp.chordComponentString)),

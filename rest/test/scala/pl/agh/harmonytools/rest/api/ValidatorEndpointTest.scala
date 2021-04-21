@@ -10,25 +10,25 @@ class ValidatorEndpointTest extends EndpointTest("harmonytools/validator", HttpM
         {
             "sopranoNote": {
                 "pitch": 72,
-                "baseNote": "C",
+                "baseNote": 0,
                 "chordComponent": "1",
                 "duration": 0
             },
             "altoNote": {
                 "pitch": 67,
-                "baseNote": "G",
+                "baseNote": 4,
                 "chordComponent": "5",
                 "duration": 0
             },
             "tenorNote": {
                 "pitch": 64,
-                "baseNote": "E",
+                "baseNote": 2,
                 "chordComponent": "3",
                 "duration": 0
             },
             "bassNote": {
                 "pitch": 48,
-                "baseNote": "C",
+                "baseNote": 0,
                 "chordComponent": "1",
                 "duration": 0
             },
@@ -40,25 +40,25 @@ class ValidatorEndpointTest extends EndpointTest("harmonytools/validator", HttpM
         {
             "sopranoNote": {
                 "pitch": 71,
-                "baseNote": "B",
+                "baseNote": 6,
                 "chordComponent": "3",
                 "duration": 0
             },
             "altoNote": {
                 "pitch": 67,
-                "baseNote": "G",
+                "baseNote": 4,
                 "chordComponent": "1",
                 "duration": 0
             },
             "tenorNote": {
                 "pitch": 62,
-                "baseNote": "D",
+                "baseNote": 1,
                 "chordComponent": "5",
                 "duration": 0
             },
             "bassNote": {
                 "pitch": 43,
-                "baseNote": "G",
+                "baseNote": 4,
                 "chordComponent": "1",
                 "duration": 0
             },
@@ -70,25 +70,25 @@ class ValidatorEndpointTest extends EndpointTest("harmonytools/validator", HttpM
         {
             "sopranoNote": {
                 "pitch": 72,
-                "baseNote": "C",
+                "baseNote": 0,
                 "chordComponent": "1",
                 "duration": 0
             },
             "altoNote": {
                 "pitch": 67,
-                "baseNote": "G",
+                "baseNote": 4,
                 "chordComponent": "5",
                 "duration": 0
             },
             "tenorNote": {
                 "pitch": 64,
-                "baseNote": "E",
+                "baseNote": 2,
                 "chordComponent": "3",
                 "duration": 0
             },
             "bassNote": {
                 "pitch": 48,
-                "baseNote": "C",
+                "baseNote":0,
                 "chordComponent": "1",
                 "duration": 0
             },

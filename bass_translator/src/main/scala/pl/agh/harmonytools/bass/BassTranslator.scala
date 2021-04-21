@@ -739,10 +739,23 @@ object BassTranslator {
     val bassLine                     = figuredBassExercise.elements.map(_.bassNote)
     val (harmonicFunctionsAfterSplit, bassLineAfterSplit, chordElementsAfterSplit) = split33Delays(harmonicFunctions, bassLine, chordElements)
     val newFunctions                 = handleDeflections(harmonicFunctionsAfterSplit, key, chordElementsAfterSplit)
+    val measureDuration = figuredBassExercise.meter.asDouble
+    var counter = 0.0
+    var measures = List.empty[Measure]
+    var measureHfs = List.empty[BassHarmonicFunctionBuilder]
+    for (i <- bassLine.indices) {
+      measureHfs = measureHfs :+ newFunctions(i)
+      counter += bassLine(i).duration
+      if (counter >= measureDuration) {
+        measures = measures :+ Measure(measureHfs.map(_.getHarmonicFunction))
+        counter = 0
+        measureHfs = List.empty[BassHarmonicFunctionBuilder]
+      }
+    }
     HarmonicsExercise(
       key,
       figuredBassExercise.meter,
-      List(Measure(newFunctions.map(_.getHarmonicFunction))),
+      measures,
       Some(bassLineAfterSplit.map(_.getResult))
     )
   }

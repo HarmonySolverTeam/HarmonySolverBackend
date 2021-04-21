@@ -9,23 +9,23 @@ class SopranoExerciseEndpointTest extends EndpointTest("harmonytools/soprano", H
   private val exerciseJson = Json.parse("""{
     "exercise": {
         "key": "C",
-        "meter": "4/4",
+        "meter": [4, 4],
         "measures": [
             {
                 "elements": [
                     {
                         "pitch": 72,
-                        "baseNote": "C",
+                        "baseNote": 0,
                         "duration": 0.25
                     },
                     {
                     "pitch": 71,
-                    "baseNote": "B",
+                    "baseNote": 6,
                     "duration": 0.25
                     },
                     {
                         "pitch": 72,
-                        "baseNote": "C",
+                        "baseNote": 0,
                         "duration": 0.5
                     }
                 ]
@@ -50,23 +50,23 @@ class SopranoExerciseEndpointTest extends EndpointTest("harmonytools/soprano", H
     """{
       |    "exercise": {
       |        "key": "C",
-      |        "meter": "4/4",
+      |        "meter": [4, 4],
       |        "measures": [
       |            {
       |                "elements": [
       |                    {
       |                        "pitch": 72,
-      |                        "baseNote": "C",
+      |                        "baseNote": 0,
       |                        "duration": 0.25
       |                    },
       |                    {
       |                        "pitch": 71,
-      |                        "baseNote": "B",
+      |                        "baseNote": 6,
       |                        "duration": 0.25
       |                    },
       |                    {
       |                        "pitch": 72,
-      |                        "baseNote": "C",
+      |                        "baseNote": 0,
       |                        "duration": 0.5
       |                    }
       |                ]
@@ -104,25 +104,25 @@ class SopranoExerciseEndpointTest extends EndpointTest("harmonytools/soprano", H
       |        {
       |            "sopranoNote": {
       |                "pitch": 72,
-      |                "baseNote": "C",
+      |                "baseNote": 0,
       |                "chordComponent": "1",
       |                "duration": 0
       |            },
       |            "altoNote": {
       |                "pitch": 67,
-      |                "baseNote": "G",
+      |                "baseNote": 4,
       |                "chordComponent": "5",
       |                "duration": 0
       |            },
       |            "tenorNote": {
       |                "pitch": 64,
-      |                "baseNote": "E",
+      |                "baseNote": 2,
       |                "chordComponent": "3",
       |                "duration": 0
       |            },
       |            "bassNote": {
       |                "pitch": 48,
-      |                "baseNote": "C",
+      |                "baseNote": 0,
       |                "chordComponent": "1",
       |                "duration": 0
       |            },
@@ -144,25 +144,25 @@ class SopranoExerciseEndpointTest extends EndpointTest("harmonytools/soprano", H
       |        {
       |            "sopranoNote": {
       |                "pitch": 71,
-      |                "baseNote": "B",
+      |                "baseNote": 6,
       |                "chordComponent": "3",
       |                "duration": 0
       |            },
       |            "altoNote": {
       |                "pitch": 67,
-      |                "baseNote": "G",
+      |                "baseNote": 4,
       |                "chordComponent": "1",
       |                "duration": 0
       |            },
       |            "tenorNote": {
       |                "pitch": 62,
-      |                "baseNote": "D",
+      |                "baseNote": 1,
       |                "chordComponent": "5",
       |                "duration": 0
       |            },
       |            "bassNote": {
       |                "pitch": 43,
-      |                "baseNote": "G",
+      |                "baseNote": 4,
       |                "chordComponent": "1",
       |                "duration": 0
       |            },
@@ -184,25 +184,25 @@ class SopranoExerciseEndpointTest extends EndpointTest("harmonytools/soprano", H
       |        {
       |            "sopranoNote": {
       |                "pitch": 72,
-      |                "baseNote": "C",
+      |                "baseNote": 0,
       |                "chordComponent": "1",
       |                "duration": 0
       |            },
       |            "altoNote": {
       |                "pitch": 67,
-      |                "baseNote": "G",
+      |                "baseNote": 4,
       |                "chordComponent": "5",
       |                "duration": 0
       |            },
       |            "tenorNote": {
       |                "pitch": 64,
-      |                "baseNote": "E",
+      |                "baseNote": 2,
       |                "chordComponent": "3",
       |                "duration": 0
       |            },
       |            "bassNote": {
       |                "pitch": 48,
-      |                "baseNote": "C",
+      |                "baseNote": 0,
       |                "chordComponent": "1",
       |                "duration": 0
       |            },

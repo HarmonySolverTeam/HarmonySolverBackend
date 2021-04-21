@@ -80,28 +80,28 @@ class SopranoExerciseSolutionMapperTest
     SopranoExerciseSolutionDto(
       SopranoExerciseDto(
         "C",
-        "4/4",
+        List(4, 4),
         List(
-          SopranoMeasureDto(List(NoteDto(71, NoteDto.BaseNote.B, None, Some(1.0)))),
-          SopranoMeasureDto(List(NoteDto(72, NoteDto.BaseNote.C, None, Some(1.0))))
+          SopranoMeasureDto(List(NoteDto(71, 6, None, Some(1.0)))),
+          SopranoMeasureDto(List(NoteDto(72, 0, None, Some(1.0))))
         ),
         List(tonicDTO, dominantDTO)
       ),
       1.0,
       List(
         ChordDto(
-          NoteDto(71, NoteDto.BaseNote.B, Some(third.chordComponentString), Some(1.0)),
-          NoteDto(67, NoteDto.BaseNote.G, Some(prime.chordComponentString), Some(1.0)),
-          NoteDto(62, NoteDto.BaseNote.D, Some(fifth.chordComponentString), Some(1.0)),
-          NoteDto(55, NoteDto.BaseNote.G, Some(prime.chordComponentString), Some(1.0)),
+          NoteDto(71, 6, Some(third.chordComponentString), Some(1.0)),
+          NoteDto(67, 4, Some(prime.chordComponentString), Some(1.0)),
+          NoteDto(62, 1, Some(fifth.chordComponentString), Some(1.0)),
+          NoteDto(55, 4, Some(prime.chordComponentString), Some(1.0)),
           dominantDTO,
           0.5
         ),
         ChordDto(
-          NoteDto(72, NoteDto.BaseNote.C, Some(prime.chordComponentString), Some(1.0)),
-          NoteDto(67, NoteDto.BaseNote.G, Some(fifth.chordComponentString), Some(1.0)),
-          NoteDto(64, NoteDto.BaseNote.E, Some(third.chordComponentString), Some(1.0)),
-          NoteDto(60, NoteDto.BaseNote.C, Some(prime.chordComponentString), Some(1.0)),
+          NoteDto(72, 0, Some(prime.chordComponentString), Some(1.0)),
+          NoteDto(67, 4, Some(fifth.chordComponentString), Some(1.0)),
+          NoteDto(64, 2, Some(third.chordComponentString), Some(1.0)),
+          NoteDto(60, 0, Some(prime.chordComponentString), Some(1.0)),
           tonicDTO,
           0.5
         )

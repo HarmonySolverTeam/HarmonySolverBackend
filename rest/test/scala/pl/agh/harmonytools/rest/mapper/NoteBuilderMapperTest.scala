@@ -12,7 +12,7 @@ class NoteBuilderMapperTest extends MapperTest[NoteBuilder, NoteDto](NoteBuilder
     NoteBuilder(70, BaseNote.C)
   )
   override protected val dtos: List[NoteDto] = List(
-    NoteDto(70, NoteDto.BaseNote.C, Some("1"), Some(1.0)),
-    NoteDto(70, NoteDto.BaseNote.C, None, Some(0.0))
+    NoteDto(70, 0, Some("1"), Some(1.0)),
+    NoteDto(70, 0, None, Some(0.0))
   )
 }

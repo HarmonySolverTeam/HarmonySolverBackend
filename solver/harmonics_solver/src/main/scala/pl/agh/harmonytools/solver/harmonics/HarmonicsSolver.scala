@@ -44,8 +44,9 @@ case class HarmonicsSolver(
           for (hf <- measure.harmonicFunctions) {
             val delay = hf.delay
             if (delay.nonEmpty) {
-              val newNote = Note(bl(i).pitch, bl(i).baseNote, bl(i).chordComponent)
-              newBassLine = newBassLine.take(i + addedNotes) ++ List(newNote) ++ newBassLine.drop(i + addedNotes)
+              val durations = bl(i).getDurationDivision
+              val newNote = Note(bl(i).pitch, bl(i).baseNote, bl(i).chordComponent, duration = durations._2)
+              newBassLine = newBassLine.take(i + addedNotes) ++ List(bl(i).copy(duration = durations._1), newNote) ++ newBassLine.drop(i + addedNotes + 1)
               addedNotes += 1
             }
             i += 1

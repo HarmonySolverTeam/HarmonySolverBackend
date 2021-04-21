@@ -11,13 +11,13 @@ class SopranoMeasureMapperTest extends MapperTest[List[NoteWithoutChordContext],
   override protected val dtos: List[SopranoMeasureDto] = List(
     SopranoMeasureDto(
       List(
-        NoteDto(70, NoteDto.BaseNote.B, None, Some(1.0)),
-        NoteDto(72, NoteDto.BaseNote.C, None, Some(2.0))
+        NoteDto(70, 6, None, Some(1.0)),
+        NoteDto(72, 0, None, Some(2.0))
       )
     ),
     SopranoMeasureDto(
       List(
-        NoteDto(73, NoteDto.BaseNote.D, None, Some(0.5))
+        NoteDto(73, 1, None, Some(0.5))
       )
     )
   )

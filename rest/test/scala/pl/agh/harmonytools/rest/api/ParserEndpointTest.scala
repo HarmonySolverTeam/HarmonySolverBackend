@@ -17,7 +17,7 @@ class ParserEndpointTest extends EndpointTest("harmonytools/parser", HttpMethod.
   private val expectedJsonResponse = Json.parse(
     """{
       |"key":"C",
-      |"meter":"4/4",
+      |"meter":[4, 4],
       |"measures":[
       |   {
       |   "elements":

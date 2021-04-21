@@ -25,10 +25,10 @@ class SopranoExerciseMapperTest
   override protected val dtos: List[SopranoExerciseDto] = List(
     SopranoExerciseDto(
       "C",
-      "4/4",
+      List(4, 4),
       List(
-        SopranoMeasureDto(List(NoteDto(71, NoteDto.BaseNote.B, None, Some(1.0)))),
-        SopranoMeasureDto(List(NoteDto(72, NoteDto.BaseNote.C, None, Some(1.0))))
+        SopranoMeasureDto(List(NoteDto(71, 6, None, Some(1.0)))),
+        SopranoMeasureDto(List(NoteDto(72, 0, None, Some(1.0))))
       ),
       List(
         HarmonicFunctionDto(

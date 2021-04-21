@@ -9,6 +9,6 @@ class NoteMapperTest extends MapperTest[Note, NoteDto](NoteMapper) {
     Note(70, BaseNote.C, "1", 1.0)
   )
   override protected val dtos: List[NoteDto] = List(
-    NoteDto(70, NoteDto.BaseNote.C, Some("1"), Some(1.0))
+    NoteDto(70, 0, Some("1"), Some(1.0))
   )
 }
