@@ -10,15 +10,15 @@ lazy val settings = Seq(
 )
 
 lazy val testDependencies = Seq(
-  "org.scalatest" %% "scalatest" % "3.0.8" % Test
+  "org.scalatest" %% "scalatest" % "3.0.4" % Test
 )
 
 lazy val playDependencies = Seq(
   guice,
   ws,
-  "org.webjars" % "swagger-ui" % "3.1.5",
-  "javax.annotation" % "javax.annotation-api" % "1.3.2" % "compile",
-  "org.scalatestplus.play" %% "scalatestplus-play" % "5.1.0" % Test
+  "org.webjars"             % "swagger-ui"           % "3.1.5",
+  "javax.annotation"        % "javax.annotation-api" % "1.3.2" % "compile",
+  "org.scalatestplus.play" %% "scalatestplus-play"   % "3.1.2" % Test
 )
 
 /** projects */

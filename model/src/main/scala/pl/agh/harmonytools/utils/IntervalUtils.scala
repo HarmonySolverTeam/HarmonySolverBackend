@@ -1,5 +1,6 @@
 package pl.agh.harmonytools.utils
 
+import pl.agh.harmonytools.error.UnexpectedInternalError
 import pl.agh.harmonytools.model.chord.ChordComponent
 import pl.agh.harmonytools.model.harmonicfunction.HarmonicFunction
 import pl.agh.harmonytools.model.key.{Key, Mode}
@@ -13,8 +14,8 @@ import pl.agh.harmonytools.utils.Extensions.ExtendedInt
 import scala.math.abs
 
 object IntervalUtils {
-  def getThirdMode(key: Key, degree: Degree): BaseMode = {
-    val pitches = key.mode match {
+  def getThirdMode(mode: BaseMode, degree: Degree): BaseMode = {
+    val pitches = mode match {
       case Mode.MAJOR => MajorScale.pitches
       case Mode.MINOR => MinorScale.pitches
     }
@@ -22,6 +23,22 @@ object IntervalUtils {
     val difference = Math.abs(pitches((baseValue + 2) %% 7) - pitches(baseValue))
     if (difference == 4 || difference == 8) MAJOR
     else MINOR
+  }
+
+  def getThirdMode(key: Key, degree: Degree): BaseMode = {
+    getThirdMode(key.mode, degree)
+  }
+
+  def isFifthDiminished(mode: BaseMode, degree: Degree): Boolean = {
+    val pitches = mode match {
+      case Mode.MAJOR => MajorScale.pitches
+      case Mode.MINOR => MinorScale.pitches
+    }
+    val baseValue  = degree.root - 1
+    val difference = Math.abs(pitches((baseValue + 4) %% 7) - pitches(baseValue))
+    if (difference == 7 || difference == 5) false
+    else if (difference == 8 || difference == 6) true
+    else throw UnexpectedInternalError(s"Unexpected fifth of harmonic function calculation with semitone difference: ${difference}.")
   }
 
   def pitchOffsetBetween(note1: Note, note2: Note): Int =
