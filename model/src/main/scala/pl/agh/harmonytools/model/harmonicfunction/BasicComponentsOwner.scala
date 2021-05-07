@@ -8,6 +8,7 @@ import pl.agh.harmonytools.model.scale.ScaleDegree.VI
 import pl.agh.harmonytools.model.scale.{MajorScale, MinorScale, ScaleDegree}
 import pl.agh.harmonytools.model.util.ChordComponentManager
 import pl.agh.harmonytools.utils.Extensions.ExtendedInt
+import pl.agh.harmonytools.utils.IntervalUtils
 
 trait BasicComponentsOwner {
 
@@ -22,36 +23,39 @@ trait BasicComponentsOwner {
   def getRevolution: ChordComponent
 
   def isInDominantRelation(next: BasicComponentsOwner): Boolean = {
-    if(getIsDown != next.getIsDown && getKey == next.getKey && !(getBaseFunction == TONIC
-      && getDegree == VI
-      && getMode == MINOR && next.getIsDown)) {
+    if (
+      getIsDown != next.getIsDown && getKey == next.getKey && !(getBaseFunction == TONIC
+        && getDegree == VI
+        && getMode == MINOR && next.getIsDown)
+    )
       false
-    } else if (getKey != next.getKey && getKey.isDefined) {
-      List(4,-3).contains(getDegree.root)
-    } else if(getKey == next.getKey) {
-      List(4,-3).contains(getDegree.root - next.getDegree.root)
-    } else {
+    else if (getKey != next.getKey && getKey.isDefined)
+      List(4, -3).contains(getDegree.root)
+    else if (getKey == next.getKey)
+      List(4, -3).contains(getDegree.root - next.getDegree.root)
+    else
       false
-    }
   }
 
   def getPrime: ChordComponent = ChordComponentManager.chordComponentFromString("1", getIsDown)
+
   def getThird: ChordComponent = {
-    if (getIsDown) ChordComponentManager.chordComponentFromString("3", isDown = true)
-    else {
-      val pitches = if (getMode == MAJOR) MajorScale.pitches else MinorScale.pitches
-      val thirdPitch = (pitches((getDegree.root + 1) %% 7) - pitches((getDegree.root - 1) %% 7)) %% 12
-      ChordComponentManager.basicChordComponentFromPitch(thirdPitch, isDown = false)
+    if (IntervalUtils.getThirdMode(getMode, getDegree) == MAJOR || getIsDown) {
+      ChordComponentManager.chordComponentFromString("3", isDown = getIsDown)
+    } else {
+      ChordComponentManager.chordComponentFromString("3>", isDown = getIsDown)
     }
   }
+
   def getFifth: ChordComponent = {
-    if (getIsDown) ChordComponentManager.chordComponentFromString("5", isDown = true)
-    else {
-      val pitches = if (getMode == MAJOR) MajorScale.pitches else MinorScale.pitches
-      val fifthPitch = (pitches((getDegree.root + 3) %% 7) - pitches((getDegree.root - 1) %% 7)) %% 12
-      ChordComponentManager.basicChordComponentFromPitch(fifthPitch, isDown = false)
+    // todo czy nie powinno się tutaj uwzględniać extra już?
+    if (!IntervalUtils.isFifthDiminished(getMode, getDegree) || getIsDown) {
+      ChordComponentManager.chordComponentFromString("5", isDown = getIsDown)
+    } else {
+      ChordComponentManager.chordComponentFromString("5>", isDown = getIsDown)
     }
   }
+
   def getBasicChordComponents: List[ChordComponent] = List(getPrime, getThird, getFifth)
 
   def countChordComponents: Int = {

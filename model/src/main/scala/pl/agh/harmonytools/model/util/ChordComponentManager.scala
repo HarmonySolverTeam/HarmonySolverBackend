@@ -23,17 +23,4 @@ object ChordComponentManager {
   def chordComponentWithIsDown(chordComponent: ChordComponent): ChordComponent = {
     chordComponentFromString(chordComponent.chordComponentString, isDown = true)
   }
-
-  @deprecated
-  def basicChordComponentFromPitch(pitch: Int, isDown: Boolean): ChordComponent = {
-    pitch match {
-      case 3 => chordComponentFromString("3>", isDown)
-      case 4 => chordComponentFromString("3", isDown)
-      case 5 => chordComponentFromString("3<", isDown)
-      case 6 => chordComponentFromString("5>", isDown)
-      case 7 => chordComponentFromString("5", isDown)
-      case 8 => chordComponentFromString("5<", isDown)
-    }
-  }
-
 }

@@ -1,9 +1,8 @@
 package pl.agh.harmonytools.rest.mapper
 
-import org.scalatest.funsuite.AnyFunSuite
-import org.scalatest.matchers.should.Matchers
+import org.scalatest.{FunSuite, Matchers}
 
-abstract class MapperTest[M, DTO](mapper: Mapper[M, DTO]) extends AnyFunSuite with Matchers {
+abstract class MapperTest[M, DTO](mapper: Mapper[M, DTO]) extends FunSuite with Matchers {
   protected val models: List[M]
   protected val dtos: List[DTO]
 
