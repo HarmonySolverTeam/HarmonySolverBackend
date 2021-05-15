@@ -1,6 +1,13 @@
 package pl.agh.harmonytools.rest.mapper
 
-import pl.agh.harmonytools.bass.{AlterationType, BassDelay, BassSymbol, FiguredBassElement, FiguredBassExercise, NoteBuilder}
+import pl.agh.harmonytools.bass.{
+  AlterationType,
+  BassDelay,
+  BassSymbol,
+  FiguredBassElement,
+  FiguredBassExercise,
+  NoteBuilder
+}
 import pl.agh.harmonytools.model.measure.Meter
 import pl.agh.harmonytools.model.note.BaseNote
 import pl.agh.harmonytools.rest.dto.{BassElementDto, BassExerciseDto, BassSymbolDto, NoteDto}

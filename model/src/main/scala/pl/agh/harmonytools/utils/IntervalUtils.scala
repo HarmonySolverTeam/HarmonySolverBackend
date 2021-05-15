@@ -25,9 +25,8 @@ object IntervalUtils {
     else MINOR
   }
 
-  def getThirdMode(key: Key, degree: Degree): BaseMode = {
+  def getThirdMode(key: Key, degree: Degree): BaseMode =
     getThirdMode(key.mode, degree)
-  }
 
   def isFifthDiminished(mode: BaseMode, degree: Degree): Boolean = {
     val pitches = mode match {
@@ -38,7 +37,10 @@ object IntervalUtils {
     val difference = Math.abs(pitches((baseValue + 4) %% 7) - pitches(baseValue))
     if (difference == 7 || difference == 5) false
     else if (difference == 8 || difference == 6) true
-    else throw UnexpectedInternalError(s"Unexpected fifth of harmonic function calculation with semitone difference: ${difference}.")
+    else
+      throw UnexpectedInternalError(
+        s"Unexpected fifth of harmonic function calculation with semitone difference: ${difference}."
+      )
   }
 
   def pitchOffsetBetween(note1: Note, note2: Note): Int =

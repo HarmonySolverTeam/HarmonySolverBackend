@@ -17,9 +17,9 @@ class DoubleLevelGraph[T <: NodeContent, S <: NodeContent, Q, R <: GeneratorInpu
 
   final override def getNodes: List[LeafNode[S]] =
     List(nestedFirst) ++
-    doubleLevelLayers
-      .map(_.getNodeList.map(_.getNestedLayer.getNodeList).reduce(_ ++ _))
-      .reduce(_ ++ _) ++
+      doubleLevelLayers
+        .map(_.getNodeList.map(_.getNestedLayer.getNodeList).reduce(_ ++ _))
+        .reduce(_ ++ _) ++
       List(nestedLast)
 
   final def reduceToSingleLevelGraphBuilder(): SingleLevelGraphBuilder[S, R, EmptyContent] = {
@@ -31,7 +31,7 @@ class DoubleLevelGraph[T <: NodeContent, S <: NodeContent, Q, R <: GeneratorInpu
 
     while (stack.length != 1 || stack.head != getFirst) {
       var edges: List[(LeafNode[S], LeafNode[S])] = List.empty
-      var newStack: List[LeafNode[S]]            = List.empty
+      var newStack: List[LeafNode[S]]             = List.empty
       for (currentNode <- stack) {
         for (prevNode <- currentNode.getPrevsInShortestPath) {
           edges = edges :+ (prevNode, currentNode)
@@ -51,9 +51,8 @@ class DoubleLevelGraph[T <: NodeContent, S <: NodeContent, Q, R <: GeneratorInpu
     getFirst.getNextNeighbours.foreach(_.setWeight(0))
     for (currentNode <- getLast.getPrevNeighbours) {
       for (nextNeigh <- currentNode.node.getNextNeighbours) {
-        if (nextNeigh.node == getLast) {
+        if (nextNeigh.node == getLast)
           currentNode.setWeight(0.0)
-        }
       }
     }
 
@@ -62,7 +61,11 @@ class DoubleLevelGraph[T <: NodeContent, S <: NodeContent, Q, R <: GeneratorInpu
     builder
   }
 
-  def printInfoSingleNode[A <: NodeContent, B <: NodeContent](node: Node[A, B], neighbourNode: NeighbourNode[A, B], layerId: Int): Unit =
+  def printInfoSingleNode[A <: NodeContent, B <: NodeContent](
+    node: Node[A, B],
+    neighbourNode: NeighbourNode[A, B],
+    layerId: Int
+  ): Unit =
     println(Seq(node.getId, neighbourNode.node.getId, layerId + 1, neighbourNode.weight).mkString(","))
 
   final override def printEdges(): Unit = {

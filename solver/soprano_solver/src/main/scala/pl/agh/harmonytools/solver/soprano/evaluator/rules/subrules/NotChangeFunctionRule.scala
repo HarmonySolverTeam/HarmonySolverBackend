@@ -6,8 +6,8 @@ import pl.agh.harmonytools.solver.soprano.evaluator.rules.{satisfied, totallyBro
 
 case class NotChangeFunctionRule() extends HardRule[HarmonicFunctionWithSopranoInfo] {
   override def evaluate(connection: Connection[HarmonicFunctionWithSopranoInfo]): Double = {
-    if (connection.current.harmonicFunction.baseFunction == connection.prev.harmonicFunction.baseFunction) {
+    if (connection.current.harmonicFunction.baseFunction == connection.prev.harmonicFunction.baseFunction)
       satisfied
-    } else totallyBroken
+    else totallyBroken
   }
 }

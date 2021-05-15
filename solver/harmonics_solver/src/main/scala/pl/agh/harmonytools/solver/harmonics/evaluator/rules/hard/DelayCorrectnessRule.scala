@@ -22,10 +22,9 @@ case class DelayCorrectnessRule() extends HardRule[Chord] {
         }
       }
       for (i <- voicesIndexes) {
-        if (!delayedVoices.contains(i)) {
+        if (!delayedVoices.contains(i))
           if (!prevChord.notes(i).equalPitches(currentChord.notes(i)) && i != 3)
             return totallyBroken
-        }
       }
     }
     satisfied

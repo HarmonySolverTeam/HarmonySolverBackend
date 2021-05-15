@@ -18,7 +18,10 @@ trait SoftRule[T <: NodeContent] extends IRule[T]
 trait HardRule[T <: NodeContent] extends IRule[T]
 
 abstract class AnyRule[T <: NodeContent](evaluationRatio: Double) extends HardRule[T] with SoftRule[T] {
-  RequirementChecker.isRequired(evaluationRatio <= 1.0 && evaluationRatio >= 0.0, UnexpectedInternalError("Evaluation ratio not in [0,1]"))
+  RequirementChecker.isRequired(
+    evaluationRatio <= 1.0 && evaluationRatio >= 0.0,
+    UnexpectedInternalError("Evaluation ratio not in [0,1]")
+  )
 }
 
 trait SubRule[T <: NodeContent] extends IRule[T] {

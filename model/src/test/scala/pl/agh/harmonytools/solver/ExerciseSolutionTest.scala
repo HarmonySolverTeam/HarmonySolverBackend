@@ -48,7 +48,8 @@ class ExerciseSolutionTest extends FunSuite with Matchers with TestUtils {
       )
     )
     exerciseSolution.setDurations()
-    exerciseSolution.chords.map(_.duration) shouldBe List(0.25, 0.125, 0.125, 0.125, 0.125, 0.0625, 0.03125, 0.03125, 0.125)
+    exerciseSolution.chords.map(_.duration) shouldBe List(0.25, 0.125, 0.125, 0.125, 0.125, 0.0625, 0.03125, 0.03125,
+      0.125)
   }
 
   test("Exact divide for hfs 4") {

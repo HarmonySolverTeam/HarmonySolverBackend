@@ -18,9 +18,12 @@ class HarmonicsExerciseParserBuilder(
 
   def getHarmonicsExercise: HarmonicsExercise = {
 
-    implicit val exKey: Key = key.getOrElse(throw UnexpectedInternalError("Key should be declared to initialize HarmonicsExercise"))
-    val exMeter             = meter.getOrElse(throw UnexpectedInternalError("Meter should be declared to initialize HarmonicsExercise"))
-    val exMeasures          = measures.getOrElse(throw UnexpectedInternalError("Measures should be declared to initialize HarmonicsExercise"))
+    implicit val exKey: Key =
+      key.getOrElse(throw UnexpectedInternalError("Key should be declared to initialize HarmonicsExercise"))
+    val exMeter =
+      meter.getOrElse(throw UnexpectedInternalError("Meter should be declared to initialize HarmonicsExercise"))
+    val exMeasures =
+      measures.getOrElse(throw UnexpectedInternalError("Measures should be declared to initialize HarmonicsExercise"))
 
     DeflectionsHandler.handle(exMeasures.flatMap(_.getHarmonicFunctions))
 

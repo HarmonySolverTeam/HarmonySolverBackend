@@ -20,7 +20,6 @@ object ChordComponentManager {
     }
   }
 
-  def chordComponentWithIsDown(chordComponent: ChordComponent): ChordComponent = {
+  def chordComponentWithIsDown(chordComponent: ChordComponent): ChordComponent =
     chordComponentFromString(chordComponent.chordComponentString, isDown = true)
-  }
 }

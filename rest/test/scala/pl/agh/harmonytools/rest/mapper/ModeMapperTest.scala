@@ -6,5 +6,5 @@ import pl.agh.harmonytools.rest.dto.HarmonicFunctionDto.Mode.Mode
 
 class ModeMapperTest extends MapperTest[BaseMode, Mode](ModeMapper) {
   override protected val models: List[BaseMode] = pl.agh.harmonytools.model.key.Mode.values
-  override protected val dtos: List[Mode] = HarmonicFunctionDto.Mode.values.toList
+  override protected val dtos: List[Mode]       = HarmonicFunctionDto.Mode.values.toList
 }

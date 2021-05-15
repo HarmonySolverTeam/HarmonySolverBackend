@@ -15,7 +15,8 @@ import pl.agh.harmonytools.model.note.{BaseNote, Note}
 
 object JSONBassExerciseParser extends DefaultJsonProtocol {
 
-  private implicit def stringToAlterationType(s: String): AlterationType.FiguredBassType = AlterationType.fromStringToBass(s)
+  private implicit def stringToAlterationType(s: String): AlterationType.FiguredBassType =
+    AlterationType.fromStringToBass(s)
 
   implicit object BassExerciseJsonFormat extends RootJsonFormat[FiguredBassExercise] {
 
@@ -29,9 +30,8 @@ object JSONBassExerciseParser extends DefaultJsonProtocol {
     def createBassSymbol(s: String): BassSymbol = {
       if (s.length == 1 && s.head.isDigit) BassSymbol(s.toInt)
       else if (s.length == 1 && !s.head.isDigit) BassSymbol(alteration = stringToAlterationType(s))
-      else {
+      else
         BassSymbol(s.head.toString.toInt, stringToAlterationType(s.tail))
-      }
     }
 
     override def read(json: JsValue): FiguredBassExercise = {
@@ -63,7 +63,10 @@ object JSONBassExerciseParser extends DefaultJsonProtocol {
                                 case JsArray(elements) =>
                                   elements foreach { delay =>
                                     val delayAsList = delay.convertTo[List[String]]
-                                    elementBuilder.addDelay(createBassSymbol(delayAsList.head), createBassSymbol(delayAsList.last))
+                                    elementBuilder.addDelay(
+                                      createBassSymbol(delayAsList.head),
+                                      createBassSymbol(delayAsList.last)
+                                    )
                                   }
                                 case _ =>
                               }
@@ -87,7 +90,7 @@ object JSONBassExerciseParser extends DefaultJsonProtocol {
                     exerciseBuilder.withElements(mappedElements.toList)
                   case _ =>
                 }
-              case _          =>
+              case _ =>
             }
           }
           exerciseBuilder.getResult
@@ -107,7 +110,7 @@ class FiguredBassExerciseBuilder {
   def withKey(k: String): Unit                          = key = Some(Key(k))
   def withMeter(nominator: Int, denominator: Int): Unit = meter = Some(Meter(nominator, denominator))
   def addElement(element: FiguredBassElement): Unit     = elements = elements :+ element
-  def withElements(els: List[FiguredBassElement]) = elements = els
+  def withElements(els: List[FiguredBassElement])       = elements = els
 
   def getResult: FiguredBassExercise = {
     FiguredBassExercise(
@@ -123,7 +126,8 @@ class FiguredBassElementBuilder {
   private var symbols: List[BassSymbol]     = List.empty
   private var delays: List[BassDelay]       = List.empty
 
-  def withBassNote(pitch: Int, baseNote: Int): Unit         = bassNote = Some(NoteBuilder(pitch, BaseNote.fromInt(baseNote), 1.0 /*no matters in test*/))
+  def withBassNote(pitch: Int, baseNote: Int): Unit =
+    bassNote = Some(NoteBuilder(pitch, BaseNote.fromInt(baseNote), 1.0 /*no matters in test*/ ))
   def addSymbol(bassSymbol: BassSymbol): Unit               = symbols = symbols :+ bassSymbol
   def addDelay(first: BassSymbol, second: BassSymbol): Unit = delays = delays :+ BassDelay(first, second)
 

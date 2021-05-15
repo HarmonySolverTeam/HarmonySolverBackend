@@ -6,8 +6,7 @@ import pl.agh.harmonytools.solver.harmonics.evaluator.rules.{satisfied, totallyB
 import pl.agh.harmonytools.solver.soprano.evaluator.HarmonicFunctionWithSopranoInfo
 
 case class SameFunctionRule() extends SubRule[HarmonicFunctionWithSopranoInfo] {
-  override def evaluate(connection: Connection[HarmonicFunctionWithSopranoInfo]): Double = {
+  override def evaluate(connection: Connection[HarmonicFunctionWithSopranoInfo]): Double =
     if (connection.prev.harmonicFunction.hasSameFunctionInKey(connection.current.harmonicFunction)) satisfied
     else totallyBroken
-  }
 }

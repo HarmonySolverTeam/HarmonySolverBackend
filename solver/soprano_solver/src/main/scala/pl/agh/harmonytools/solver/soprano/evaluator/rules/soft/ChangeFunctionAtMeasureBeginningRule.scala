@@ -7,8 +7,8 @@ import pl.agh.harmonytools.solver.soprano.evaluator.rules.{notChangeFunctionRule
 
 case class ChangeFunctionAtMeasureBeginningRule() extends SoftRule[HarmonicFunctionWithSopranoInfo] {
   override def evaluate(connection: Connection[HarmonicFunctionWithSopranoInfo]): Double = {
-    if (notChangeFunctionRule.isNotBroken(connection) && connection.current.measurePlace == MeasurePlace.BEGINNING)  {
+    if (notChangeFunctionRule.isNotBroken(connection) && connection.current.measurePlace == MeasurePlace.BEGINNING)
       50
-    } else satisfied
+    else satisfied
   }
 }

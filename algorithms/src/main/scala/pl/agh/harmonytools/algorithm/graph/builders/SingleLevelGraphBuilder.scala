@@ -7,18 +7,21 @@ import pl.agh.harmonytools.algorithm.graph.SingleLevelGraph
 import pl.agh.harmonytools.algorithm.graph.node.{Layer, NeighbourNode, Node, NodeContent}
 import pl.agh.harmonytools.error.UnexpectedInternalError
 
-class SingleLevelGraphBuilder[T <: NodeContent, GenInput <: GeneratorInput, S <: NodeContent](first: Node[T, S], last: Node[T, S]) {
+class SingleLevelGraphBuilder[T <: NodeContent, GenInput <: GeneratorInput, S <: NodeContent](
+  first: Node[T, S],
+  last: Node[T, S]
+) {
 
   def this(firstContent: T, lastContent: T) = {
     this(new Node[T, S](firstContent), new Node[T, S](lastContent))
   }
 
-  private var evaluator: Option[ConnectionEvaluator[T]]            = None
-  private var generator: Option[LayerGenerator[T, GenInput]]              = None
-  private var generatorInputs: Option[List[GenInput]]                     = None
-  private var connectedLayers: Option[List[Layer[T, S]]]              = None
+  private var evaluator: Option[ConnectionEvaluator[T]]                      = None
+  private var generator: Option[LayerGenerator[T, GenInput]]                 = None
+  private var generatorInputs: Option[List[GenInput]]                        = None
+  private var connectedLayers: Option[List[Layer[T, S]]]                     = None
   private var graphTemplate: Option[SingleLevelGraphBuilder[T, GenInput, S]] = None
-  protected var layers: Option[List[Layer[T, S]]]                     = None
+  protected var layers: Option[List[Layer[T, S]]]                            = None
 
   def withEvaluator(evaluator: ConnectionEvaluator[T]): Unit = this.evaluator = Some(evaluator)
 
@@ -28,11 +31,13 @@ class SingleLevelGraphBuilder[T <: NodeContent, GenInput <: GeneratorInput, S <:
 
   def withConnectedLayers(connectedLayers: List[Layer[T, S]]): Unit = this.connectedLayers = Some(connectedLayers)
 
-  def withGraphTemplate(graphTemplate: SingleLevelGraphBuilder[T, GenInput, S]): Unit = this.graphTemplate = Some(graphTemplate)
+  def withGraphTemplate(graphTemplate: SingleLevelGraphBuilder[T, GenInput, S]): Unit =
+    this.graphTemplate = Some(graphTemplate)
 
   def withLayers(layers: List[Layer[T, S]]): Unit = this.layers = Some(layers)
 
-  protected[builders] def getLayers: List[Layer[T, S]] = layers.getOrElse(throw UnexpectedInternalError("Connected layers not defined"))
+  protected[builders] def getLayers: List[Layer[T, S]] =
+    layers.getOrElse(throw UnexpectedInternalError("Connected layers not defined"))
 
   protected def pushLayer(LeafLayer: Layer[T, S]*): Unit =
     layers match {
@@ -40,11 +45,14 @@ class SingleLevelGraphBuilder[T <: NodeContent, GenInput <: GeneratorInput, S <:
       case None            => throw UnexpectedInternalError("Connected layers not defined")
     }
 
-  private def getEvaluator: ConnectionEvaluator[T] = evaluator.getOrElse(throw UnexpectedInternalError("Evaluator not defined"))
+  private def getEvaluator: ConnectionEvaluator[T] =
+    evaluator.getOrElse(throw UnexpectedInternalError("Evaluator not defined"))
 
-  protected def getInputs: List[GenInput] = generatorInputs.getOrElse(throw UnexpectedInternalError("Inputs not defined"))
+  protected def getInputs: List[GenInput] =
+    generatorInputs.getOrElse(throw UnexpectedInternalError("Inputs not defined"))
 
-  protected def getGenerator: LayerGenerator[T, GenInput] = generator.getOrElse(throw UnexpectedInternalError("Generator not defined"))
+  protected def getGenerator: LayerGenerator[T, GenInput] =
+    generator.getOrElse(throw UnexpectedInternalError("Generator not defined"))
 
   protected[builders] def getFirst: Node[T, S] = first
 
@@ -100,7 +108,7 @@ class SingleLevelGraphBuilder[T <: NodeContent, GenInput <: GeneratorInput, S <:
           prevNeighbours.head.node.addNextNeighbour(new NeighbourNode[T, S](currentNode))
           for (i <- 1 to duplicates.length) {
             prevNeighbours(i).node.addNextNeighbour(new NeighbourNode[T, S](duplicates(i - 1)))
-              layer.addNode(duplicates(i - 1))
+            layer.addNode(duplicates(i - 1))
           }
         }
       }

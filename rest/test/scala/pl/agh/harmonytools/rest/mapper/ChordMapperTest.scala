@@ -39,7 +39,7 @@ class ChordMapperTest extends MapperTest[Chord, ChordDto](ChordMapper) with Test
         extra = Some(List(seventh.chordComponentString, fifthAltUp.chordComponentString)),
         omit = Some(List(fifth.chordComponentString)),
         delays = Some(List(DelayDto(fourth.chordComponentString, third.chordComponentString))),
-        revolution = Some(prime.chordComponentString),
+        inversion = Some(prime.chordComponentString),
         mode = Some(HarmonicFunctionDto.Mode.Major),
         isRelatedBackwards = Some(false),
         isDown = Some(false),

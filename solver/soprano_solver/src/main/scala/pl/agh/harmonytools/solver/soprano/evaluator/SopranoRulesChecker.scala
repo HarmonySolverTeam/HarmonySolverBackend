@@ -5,8 +5,26 @@ import pl.agh.harmonytools.model.key.Key
 import pl.agh.harmonytools.solver.harmonics.evaluator.rules.ChordRules
 import pl.agh.harmonytools.solver.harmonics.evaluator.{AdaptiveRulesChecker, ChordRulesChecker}
 import pl.agh.harmonytools.solver.harmonics.generator.ChordGenerator
-import pl.agh.harmonytools.solver.soprano.evaluator.rules.hard.{DegreeRule, DownAndNotDownRule, ExistsSolutionRule, ForbiddenDSConnectionRule, KeepBasicChordsInSecondRelationRule, Revolution5Rule, SecondaryDominantConnectionRule}
-import pl.agh.harmonytools.solver.soprano.evaluator.rules.soft.{ChangeFunctionAtMeasureBeginningRule, ChangeFunctionConnectionRule, ChangeFunctionOnDownBeatRule, FourthChordsRule, HarmonicFunctionRelationRule, JumpRule, PreferNeapolitanRule, PreferTriadRule, SopranoShouldBeDoubledRule}
+import pl.agh.harmonytools.solver.soprano.evaluator.rules.hard.{
+  DegreeRule,
+  DownAndNotDownRule,
+  ExistsSolutionRule,
+  ForbiddenDSConnectionRule,
+  Inversion5Rule,
+  KeepBasicChordsInSecondRelationRule,
+  SecondaryDominantConnectionRule
+}
+import pl.agh.harmonytools.solver.soprano.evaluator.rules.soft.{
+  ChangeFunctionAtMeasureBeginningRule,
+  ChangeFunctionConnectionRule,
+  ChangeFunctionOnDownBeatRule,
+  FourthChordsRule,
+  HarmonicFunctionRelationRule,
+  JumpRule,
+  PreferNeapolitanRule,
+  PreferTriadRule,
+  SopranoShouldBeDoubledRule
+}
 
 case class SopranoRulesChecker(
   key: Key,
@@ -23,19 +41,18 @@ case class SopranoRulesChecker(
     PreferNeapolitanRule(),
     SopranoShouldBeDoubledRule(),
     PreferTriadRule()
-
   )
   override protected val hardRules: List[HardRule[HarmonicFunctionWithSopranoInfo]] = List(
     ForbiddenDSConnectionRule(),
     ExistsSolutionRule(
       punishmentRatios match {
         case Some(value) => AdaptiveRulesChecker(value)
-        case None => ChordRulesChecker(isFixedSoprano = true)
+        case None        => ChordRulesChecker(isFixedSoprano = true)
       },
       ChordGenerator(key)
     ),
     SecondaryDominantConnectionRule(key),
-    Revolution5Rule(),
+    Inversion5Rule(),
     DownAndNotDownRule(),
     DegreeRule(),
     KeepBasicChordsInSecondRelationRule()

@@ -13,10 +13,16 @@ object HarmonicFunctionMapper extends Mapper[HarmonicFunction, HarmonicFunctionD
       FunctionNameMapper.mapToModel(dto.functionName),
       dto.degree.map(DegreeMapper.mapToModel),
       dto.position.map(ChordComponentManager.chordComponentFromString(_, isDown = isDown)),
-      dto.revolution.map(ChordComponentManager.chordComponentFromString(_, isDown = isDown)),
+      dto.inversion.map(ChordComponentManager.chordComponentFromString(_, isDown = isDown)),
       dto.delays.map(delays => delays.map(d => DelayMapper(isDown).mapToModel(d))).getOrElse(List.empty).toSet,
-      dto.extra.map(e => e.map(ChordComponentManager.chordComponentFromString(_, isDown = isDown))).getOrElse(List.empty).toSet,
-      dto.omit.map(o => o.map(ChordComponentManager.chordComponentFromString(_, isDown = isDown))).getOrElse(List.empty).toSet,
+      dto.extra
+        .map(e => e.map(ChordComponentManager.chordComponentFromString(_, isDown = isDown)))
+        .getOrElse(List.empty)
+        .toSet,
+      dto.omit
+        .map(o => o.map(ChordComponentManager.chordComponentFromString(_, isDown = isDown)))
+        .getOrElse(List.empty)
+        .toSet,
       isDown,
       dto.system.map(SystemMapper.mapToModel).getOrElse(UNDEFINED),
       dto.mode.map(ModeMapper.mapToModel).getOrElse(Mode.MAJOR),
@@ -30,7 +36,7 @@ object HarmonicFunctionMapper extends Mapper[HarmonicFunction, HarmonicFunctionD
       FunctionNameMapper.mapToDTO(model.baseFunction),
       Some(DegreeMapper.mapToDTO(model.degree)),
       model.position.map(_.toString),
-      Some(model.revolution.toString),
+      Some(model.inversion.toString),
       Some(model.delay.toList.map(d => DelayMapper(model.isDown).mapToDTO(d))),
       Some(model.extra.toList.map(e => e.toString)),
       Some(model.omit.toList.map(o => o.toString)),

@@ -18,9 +18,9 @@ class ConnectionRuleTranslationTest extends FunSuite with Matchers with Connecti
   import Keys._
 
   test("Translating classic deflection test") {
-    val hf1 = HarmonicFunction(DOMINANT, key = Some(Key("G")))
-    val ch1 = Chord(anyNote, anyNote, anyNote, anyNote, hf1)
-    val ch2 = Chord(anyNote, anyNote, anyNote, anyNote, subdominant)
+    val hf1           = HarmonicFunction(DOMINANT, key = Some(Key("G")))
+    val ch1           = Chord(anyNote, anyNote, anyNote, anyNote, hf1)
+    val ch2           = Chord(anyNote, anyNote, anyNote, anyNote, subdominant)
     val connectionOpt = translateConnectionIncludingDeflections(Connection(ch2, ch1))
     connectionOpt.isDefined shouldBe true
     val connection = connectionOpt.get
@@ -31,9 +31,9 @@ class ConnectionRuleTranslationTest extends FunSuite with Matchers with Connecti
   }
 
   test("Translating backward deflections test") {
-    val hf1 = HarmonicFunction(SUBDOMINANT, key = Some(keyG), isRelatedBackwards = true)
-    val ch1 = Chord(anyNote, anyNote, anyNote, anyNote, dominant)
-    val ch2 = Chord(anyNote, anyNote, anyNote, anyNote, hf1)
+    val hf1           = HarmonicFunction(SUBDOMINANT, key = Some(keyG), isRelatedBackwards = true)
+    val ch1           = Chord(anyNote, anyNote, anyNote, anyNote, dominant)
+    val ch2           = Chord(anyNote, anyNote, anyNote, anyNote, hf1)
     val connectionOpt = translateConnectionIncludingDeflections(Connection(ch2, ch1))
     connectionOpt.isDefined shouldBe true
     val connection = connectionOpt.get
@@ -71,9 +71,9 @@ class ConnectionRuleTranslationTest extends FunSuite with Matchers with Connecti
   }
 
   test("Translating chords on deflection beginning test") {
-    val hf1 = HarmonicFunction(DOMINANT, key = Some(keyG))
-    val ch1 = Chord(anyNote, anyNote, anyNote, anyNote, subdominant)
-    val ch2 = Chord(anyNote, anyNote, anyNote, anyNote, hf1)
+    val hf1           = HarmonicFunction(DOMINANT, key = Some(keyG))
+    val ch1           = Chord(anyNote, anyNote, anyNote, anyNote, subdominant)
+    val ch2           = Chord(anyNote, anyNote, anyNote, anyNote, hf1)
     val connectionOpt = translateConnectionIncludingDeflections(Connection(ch2, ch1))
     connectionOpt.isEmpty shouldBe true
   }

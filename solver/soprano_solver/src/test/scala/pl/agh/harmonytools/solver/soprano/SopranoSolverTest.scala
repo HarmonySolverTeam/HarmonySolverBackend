@@ -97,11 +97,11 @@ class SopranoSolverTest extends FunSuite with Matchers with TestUtils {
         new_combination = new_combination :+ hf
 
         if (use_rev3) {
-          val hf_copy = hf.copy(revolution = hf.getThird)
+          val hf_copy = hf.copy(inversion = hf.getThird)
           new_combination = new_combination :+ hf_copy
         }
         if (use_rev5) {
-          val hf_copy = hf.copy(revolution = hf.getFifth)
+          val hf_copy = hf.copy(inversion = hf.getFifth)
           new_combination = new_combination :+ hf_copy
         }
       }

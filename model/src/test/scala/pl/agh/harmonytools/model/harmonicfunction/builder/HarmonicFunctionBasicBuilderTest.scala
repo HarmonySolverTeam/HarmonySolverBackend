@@ -8,12 +8,12 @@ import pl.agh.harmonytools.model.util.ChordComponentManager
 
 class HarmonicFunctionBasicBuilderTest extends FunSuite with Matchers {
 
-  private def constructNinthChordBuilder(position: String, revolution: String): HarmonicFunctionBasicBuilder = {
+  private def constructNinthChordBuilder(position: String, inversion: String): HarmonicFunctionBasicBuilder = {
     val builder = new HarmonicFunctionBasicBuilder
     builder.withBaseFunction(DOMINANT)
     builder.withExtra(Set(ChordComponentManager.chordComponentFromString("9")))
     builder.withPosition(ChordComponentManager.chordComponentFromString(position))
-    builder.withRevolution(ChordComponentManager.chordComponentFromString(revolution))
+    builder.withInversion(ChordComponentManager.chordComponentFromString(inversion))
     builder
   }
 

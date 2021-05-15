@@ -13,15 +13,13 @@ class PreCheckerTest extends FunSuite with Matchers with TestUtils {
     val hf1 = HarmonicFunction(DOMINANT, position = Some(fifth))
     val hf2 = HarmonicFunction(TONIC, position = Some(fifth))
 
-    for (key <- Key.possibleMajorKeys) {
+    for (key <- Key.possibleMajorKeys)
       assertThrows[PreCheckerError](PreChecker.run(List(hf1, hf2), ChordGenerator(key)))
-    }
   }
 
   test("Not generable chord") {
     val hf1 = HarmonicFunction(DOMINANT, extra = Set(sixth, seventh))
-    for (key <- Key.possibleMajorKeys) {
+    for (key <- Key.possibleMajorKeys)
       assertThrows[PreCheckerError](PreChecker.run(List(hf1), ChordGenerator(key)))
-    }
   }
 }

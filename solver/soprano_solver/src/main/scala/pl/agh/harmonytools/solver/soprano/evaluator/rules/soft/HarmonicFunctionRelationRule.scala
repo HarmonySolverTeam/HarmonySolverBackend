@@ -14,16 +14,14 @@ case class HarmonicFunctionRelationRule() extends SoftRule[HarmonicFunctionWithS
   )
 
   override def evaluate(connection: Connection[HarmonicFunctionWithSopranoInfo]): Double = {
-    if (connection.current.harmonicFunction.hasSameFunctionInKey(connection.prev.harmonicFunction)) {
+    if (connection.current.harmonicFunction.hasSameFunctionInKey(connection.prev.harmonicFunction))
       return 5
-    }
     allSubRulesBroken = true
     val evaluationResult = evaluateSubRules(connection)
-    if (allSubRulesBroken) {
+    if (allSubRulesBroken)
       70
-    } else {
+    else
       evaluationResult
-    }
   }
 
   private def evaluateSubRules(connection: Connection[HarmonicFunctionWithSopranoInfo]): Double = {
@@ -43,15 +41,13 @@ case class HarmonicFunctionRelationRule() extends SoftRule[HarmonicFunctionWithS
 object DominantRelationRule extends IRule[HarmonicFunctionWithSopranoInfo] {
   override def evaluate(connection: Connection[HarmonicFunctionWithSopranoInfo]): Double = {
     if (connection.prev.harmonicFunction.isInDominantRelation(connection.current.harmonicFunction)) {
-      if (connection.prev.harmonicFunction.key != connection.current.harmonicFunction.key) {
+      if (connection.prev.harmonicFunction.key != connection.current.harmonicFunction.key)
         return 2
-      } else {
+      else
         return 0
-      }
     }
-    if (connection.current.harmonicFunction.degree == I) {
+    if (connection.current.harmonicFunction.degree == I)
       return 50
-    }
     15
   }
 }
@@ -59,27 +55,26 @@ object DominantRelationRule extends IRule[HarmonicFunctionWithSopranoInfo] {
 object SecondRelationRule extends IRule[HarmonicFunctionWithSopranoInfo] {
   override def evaluate(connection: Connection[HarmonicFunctionWithSopranoInfo]): Double = {
     if (connection.prev.harmonicFunction.isInSecondRelation(connection.current.harmonicFunction)) {
-      if (connection.prev.harmonicFunction.extra.exists(_.chordComponentString == "7") || connection.prev.harmonicFunction.degree == V) {
+      if (
+        connection.prev.harmonicFunction.extra.exists(
+          _.chordComponentString == "7"
+        ) || connection.prev.harmonicFunction.degree == V
+      )
         satisfied
-      }
-      else {
+      else
         3
-      }
-    }
-    else 7
+    } else 7
   }
 }
 
 object SubdominantRelationRule extends IRule[HarmonicFunctionWithSopranoInfo] {
   override def evaluate(connection: Connection[HarmonicFunctionWithSopranoInfo]): Double = {
     if (connection.prev.harmonicFunction.isInSubdominantRelation(connection.current.harmonicFunction)) {
-      if (connection.prev.harmonicFunction.key != connection.current.harmonicFunction.key) {
+      if (connection.prev.harmonicFunction.key != connection.current.harmonicFunction.key)
         2
-      } else {
+      else
         satisfied
-      }
-    } else {
+    } else
       4
-    }
   }
 }

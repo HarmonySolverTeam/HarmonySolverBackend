@@ -18,11 +18,11 @@ class HarmonicFunctionBasicBuilder extends HarmonicFunctionBuilder(false) {
       case Some(p) if !extra.contains(p) && !getBasicChordComponents.contains(p) => withExtra(extra + p)
       case _                                                                     =>
     }
-    if (!extra.contains(getRevolution) && !getBasicChordComponents.contains(getRevolution))
-      withExtra(extra + getRevolution)
+    if (!extra.contains(getInversion) && !getBasicChordComponents.contains(getInversion))
+      withExtra(extra + getInversion)
     if ((extra.contains(getCC("5<")) || extra.contains(getCC("5>"))) && !omit.contains(getCC("5")))
       withOmit(omit + getCC("5"))
-    if (omit.contains(getCC("1")) && getRevolution == getCC("1")) withRevolution(getThird)
+    if (omit.contains(getCC("1")) && getInversion == getCC("1")) withInversion(getThird)
     if (omit.contains(getCC("5"))) {
       val fifth = getCC("5")
       if (fifth != getFifth) {
@@ -37,25 +37,27 @@ class HarmonicFunctionBasicBuilder extends HarmonicFunctionBuilder(false) {
         withOmit(omit + getThird)
       }
     }
-    if (getRevolution == getCC("5")) withRevolution(getFifth)
+    if (getInversion == getCC("5")) withInversion(getFifth)
     if (position.contains(getCC("5"))) withPosition(getFifth)
 
     if (extra.exists(_.baseComponent == 9) || delay.exists(_.first.baseComponent == 9)) {
       if (countChordComponents > 4) {
         val prime = getPrime
         val fifth = getFifth
-        if (position.isDefined && position.get == getRevolution)
-          throw HarmonicFunctionValidationError("Ninth chord could not have same position as revolution")
-        if (position.isDefined && List(prime, fifth).contains(position.get) && List(prime, fifth).contains(getRevolution))
+        if (position.isDefined && position.get == getInversion)
+          throw HarmonicFunctionValidationError("Ninth chord could not have same position as inversion")
+        if (
+          position.isDefined && List(prime, fifth).contains(position.get) && List(prime, fifth).contains(getInversion)
+        )
           throw HarmonicFunctionValidationError(
-            "Ninth chord could not have both prime or fifth in position or revolution"
+            "Ninth chord could not have both prime or fifth in position or inversion"
           )
-        if (!omit.contains(fifth) && !position.contains(fifth) && getRevolution != fifth)
+        if (!omit.contains(fifth) && !position.contains(fifth) && getInversion != fifth)
           withOmit(omit + fifth)
         else if (!omit.contains(prime)) {
           withOmit(omit + prime)
-          if (getRevolution == prime)
-            withRevolution(getThird)
+          if (getInversion == prime)
+            withInversion(getThird)
         }
       }
     }

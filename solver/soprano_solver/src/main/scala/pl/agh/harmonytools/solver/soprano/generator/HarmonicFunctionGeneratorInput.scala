@@ -8,5 +8,5 @@ case class HarmonicFunctionGeneratorInput(
   sopranoNote: NoteWithoutChordContext,
   measurePlace: MeasurePlace,
   isFirst: Boolean = false,
-  isLast: Boolean = false,
+  isLast: Boolean = false
 ) extends GeneratorInput

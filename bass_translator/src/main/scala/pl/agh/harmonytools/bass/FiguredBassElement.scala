@@ -3,7 +3,11 @@ package pl.agh.harmonytools.bass
 import pl.agh.harmonytools.model.measure.MeasureContent
 import pl.agh.harmonytools.model.note.{BaseNote, Note}
 
-case class FiguredBassElement(bassNote: NoteBuilder, var symbols: List[BassSymbol] = List.empty, delays: List[BassDelay] = List.empty) extends MeasureContent {
+case class FiguredBassElement(
+  bassNote: NoteBuilder,
+  var symbols: List[BassSymbol] = List.empty,
+  delays: List[BassDelay] = List.empty
+) extends MeasureContent {
   def complete(): Unit = {
     var bassNumbers = List.empty[Int]
     for (s <- symbols)
@@ -27,8 +31,13 @@ case class FiguredBassElement(bassNote: NoteBuilder, var symbols: List[BassSymbo
     )
 }
 
-case class NoteBuilder(pitch: Int, baseNote: BaseNote.BaseNoteType, duration: Double = 0.0, private var chordComponentString: Option[String] = None) {
+case class NoteBuilder(
+  pitch: Int,
+  baseNote: BaseNote.BaseNoteType,
+  duration: Double = 0.0,
+  private var chordComponentString: Option[String] = None
+) {
   def withChordComponentString(cc: String): Unit = chordComponentString = Some(cc)
-  def getChordComponentString: Option[String] = chordComponentString
-  def getResult: Note = Note(pitch, baseNote, chordComponentString.getOrElse("1" /*todo*/), duration)
+  def getChordComponentString: Option[String]    = chordComponentString
+  def getResult: Note                            = Note(pitch, baseNote, chordComponentString.getOrElse("1" /*todo*/ ), duration)
 }

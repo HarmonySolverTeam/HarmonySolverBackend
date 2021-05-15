@@ -5,7 +5,14 @@ import pl.agh.harmonytools.model.chord.Chord
 import pl.agh.harmonytools.model.measure.Meter
 import pl.agh.harmonytools.model.note.{BaseNote, Note, NoteWithoutChordContext}
 import pl.agh.harmonytools.rest.dto.HarmonicFunctionDto.{Degree, FunctionName, Mode}
-import pl.agh.harmonytools.rest.dto.{ChordDto, HarmonicFunctionDto, NoteDto, SopranoExerciseDto, SopranoExerciseSolutionDto, SopranoMeasureDto}
+import pl.agh.harmonytools.rest.dto.{
+  ChordDto,
+  HarmonicFunctionDto,
+  NoteDto,
+  SopranoExerciseDto,
+  SopranoExerciseSolutionDto,
+  SopranoMeasureDto
+}
 import pl.agh.harmonytools.solver.ExerciseSolution
 import pl.agh.harmonytools.utils.TestUtils
 

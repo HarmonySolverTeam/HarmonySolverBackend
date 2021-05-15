@@ -15,7 +15,7 @@ case class BassHarmonicFunctionBuilder() extends HarmonicFunctionBasicBuilder {
     builder.withDelay(delay)
     baseFunction match {
       case Some(value) => builder.withBaseFunction(value)
-      case None =>
+      case None        =>
     }
     builder.withOmit(omit)
     builder.withExtra(extra)
@@ -23,21 +23,20 @@ case class BassHarmonicFunctionBuilder() extends HarmonicFunctionBasicBuilder {
     builder.withSystem(system)
     builder.withMode(mode)
     builder.withIsRelatedBackwards(false)
-    builder.withRevolution(getRevolution)
+    builder.withInversion(getInversion)
     position match {
       case Some(value) => builder.withPosition(value)
-      case None =>
+      case None        =>
     }
     key match {
       case Some(value) => builder.withKey(value)
-      case None =>
+      case None        =>
     }
     builder
   }
 
-  def removeRevolutionFromExtra(revolution: Int): Unit = {
-    withExtra(getExtra.filter(_.baseComponent != revolution))
-  }
+  def removeInversionFromExtra(inversion: Int): Unit =
+    withExtra(getExtra.filter(_.baseComponent != inversion))
 
   def handleDownChord(): Unit = {
     if (extra.exists(_.chordComponentString == "1>")) {
@@ -46,45 +45,48 @@ case class BassHarmonicFunctionBuilder() extends HarmonicFunctionBasicBuilder {
       withIsDown(true)
       var extra = Set.empty[ChordComponent]
       for (e <- getExtra) {
-        if (e.baseComponent > 5) {
+        if (e.baseComponent > 5)
           extra = extra + e.getIncreasedByHalfTone
-        }
       }
       withExtra(extra.map(e => ChordComponentManager.chordComponentWithIsDown(e)))
       position match {
         case Some(value) => withPosition(ChordComponentManager.chordComponentWithIsDown(value.getIncreasedByHalfTone))
-        case None =>
+        case None        =>
       }
-      withRevolution(ChordComponentManager.chordComponentWithIsDown(getRevolution.getIncreasedByHalfTone))
-      withDelay(getDelay.map(d => Delay(
-        ChordComponentManager.chordComponentWithIsDown(d.first.getIncreasedByHalfTone),
-        ChordComponentManager.chordComponentWithIsDown(d.second.getIncreasedByHalfTone)
-      )))
+      withInversion(ChordComponentManager.chordComponentWithIsDown(getInversion.getIncreasedByHalfTone))
+      withDelay(
+        getDelay.map(d =>
+          Delay(
+            ChordComponentManager.chordComponentWithIsDown(d.first.getIncreasedByHalfTone),
+            ChordComponentManager.chordComponentWithIsDown(d.second.getIncreasedByHalfTone)
+          )
+        )
+      )
     }
   }
 
   def fixExtraAfterModeChange(): Unit = {
-    if (mode == MAJOR && extra.exists(_.chordComponentString == "3") && !List(II, III, VI).contains(getDegree)) {
+    if (mode == MAJOR && extra.exists(_.chordComponentString == "3") && !List(II, III, VI).contains(getDegree))
       withExtra(extra.filterNot(_.chordComponentString == "3"))
-    }
-    if (mode == MINOR && extra.exists(_.chordComponentString == "3>") && !List(II, III, VI).contains(getDegree)) {
+    if (mode == MINOR && extra.exists(_.chordComponentString == "3>") && !List(II, III, VI).contains(getDegree))
       withExtra(extra.filterNot(_.chordComponentString == "3>"))
-    }
   }
 
   def addOmit3ForS2IfNecessary(): Unit = {
-    if (getDegree == II && getMode == MINOR && getRevolution.chordComponentString == "3" && getOmit.exists(_.chordComponentString == "3>")) {
+    if (
+      getDegree == II && getMode == MINOR && getInversion.chordComponentString == "3" && getOmit.exists(
+        _.chordComponentString == "3>"
+      )
+    )
       withOmit(getOmit + getCC("3>"))
-    }
   }
 
   def testThird: Boolean = {
     val test3 = getThird.chordComponentString == "3"
-    if (isDown) {
+    if (isDown)
       test3 && (getThird.semitonesNumber == 3)
-    } else {
+    else
       test3 && (getThird.semitonesNumber == 4)
-    }
   }
 
   private def handleThirdAlterationIn236Chords(): Unit = {
@@ -97,8 +99,10 @@ case class BassHarmonicFunctionBuilder() extends HarmonicFunctionBasicBuilder {
   }
 
   private def handleFifthAlterationIn236Chords(): Unit = {
-    if (getMode == MINOR && getDegree == II
-      && extra.exists(_.chordComponentString == "5<")) {
+    if (
+      getMode == MINOR && getDegree == II
+      && extra.exists(_.chordComponentString == "5<")
+    ) {
       if (omit.exists(_.chordComponentString == "5"))
         omit = omit.filterNot(_.chordComponentString == "5")
       if (!omit.exists(_.chordComponentString == "5>"))
@@ -113,19 +117,21 @@ case class BassHarmonicFunctionBuilder() extends HarmonicFunctionBasicBuilder {
   }
 
   override def initializeHarmonicFunction(): HarmonicFunction = {
-      HarmonicFunction(
-        baseFunction.getOrElse(throw UnexpectedInternalError("Base function has to be defined when initializing HarmonicFunction")),
-        degree,
-        position,
-        revolution,
-        delay,
-        extra,
-        omit,
-        isDown,
-        system,
-        mode,
-        key,
-        isRelatedBackwards
-      )
+    HarmonicFunction(
+      baseFunction.getOrElse(
+        throw UnexpectedInternalError("Base function has to be defined when initializing HarmonicFunction")
+      ),
+      degree,
+      position,
+      inversion,
+      delay,
+      extra,
+      omit,
+      isDown,
+      system,
+      mode,
+      key,
+      isRelatedBackwards
+    )
   }
 }

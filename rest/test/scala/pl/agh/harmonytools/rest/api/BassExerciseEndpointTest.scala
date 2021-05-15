@@ -22,8 +22,7 @@ class BassExerciseEndpointTest extends EndpointTest("harmonytools/bass", HttpMet
     }
 }""".stripMargin)
 
-  private val expectedJsonResponse = Json.parse(
-    """{
+  private val expectedJsonResponse = Json.parse("""{
       |    "exercise": {
       |        "key": "c",
       |        "meter": [4, 4],
@@ -33,7 +32,7 @@ class BassExerciseEndpointTest extends EndpointTest("harmonytools/bass", HttpMet
       |                    {
       |                        "functionName": "T",
       |                        "degree": "I",
-      |                        "revolution": "1",
+      |                        "inversion": "1",
       |                        "delays": [],
       |                        "extra": [],
       |                        "omit": [],
@@ -76,7 +75,7 @@ class BassExerciseEndpointTest extends EndpointTest("harmonytools/bass", HttpMet
       |            "harmonicFunction": {
       |                "functionName": "T",
       |                "degree": "I",
-      |                "revolution": "1",
+      |                "inversion": "1",
       |                "delays": [],
       |                "extra": [],
       |                "omit": [],

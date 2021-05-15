@@ -55,11 +55,11 @@ class ExerciseCorrectorTest extends FunSuite with Matchers with TestUtils {
     hfs(18).omit.contains(fifth) shouldBe false
   }
 
-  test("Handle dominant connections with 7 as revolution") {
-    val hfdMajor = HarmonicFunction(DOMINANT, revolution = Some(seventh), key = Some(keyA))
-    val hfdMinor = HarmonicFunction(DOMINANT, revolution = Some(seventh), key = Some(keya))
-    val hfdiii = HarmonicFunction(DOMINANT, degree = Some(III), revolution = Some(seventh), key = Some(keyA))
-    val hfd = HarmonicFunction(DOMINANT, key = Some(keyA))
+  test("Handle dominant connections with 7 as inversion") {
+    val hfdMajor = HarmonicFunction(DOMINANT, inversion = Some(seventh), key = Some(keyA))
+    val hfdMinor = HarmonicFunction(DOMINANT, inversion = Some(seventh), key = Some(keya))
+    val hfdiii   = HarmonicFunction(DOMINANT, degree = Some(III), inversion = Some(seventh), key = Some(keyA))
+    val hfd      = HarmonicFunction(DOMINANT, key = Some(keyA))
 
     val hft = HarmonicFunction(TONIC, key = Some(keyA))
     val hfs = HarmonicFunction(SUBDOMINANT, key = Some(keyA))
@@ -68,10 +68,10 @@ class ExerciseCorrectorTest extends FunSuite with Matchers with TestUtils {
     val hf2 = HarmonicFunction(TONIC, degree = Some(VI), key = Some(keyA))
     val hf3 = HarmonicFunction(TONIC, key = Some(keya))
 
-    ExerciseCorrector(keyC, List(hfdMajor, hf1)).run()(1).revolution shouldBe third
-    ExerciseCorrector(keyC, List(hfdMinor, hf3)).run()(1).revolution shouldBe thirdDim
-    ExerciseCorrector(keyC, List(hfdiii, hf2)).run()(1).revolution shouldBe thirdDim
-    ExerciseCorrector(keyC, List(hfd, hft)).run()(1).revolution shouldBe prime
-    ExerciseCorrector(keyC, List(hfd, hfs)).run()(1).revolution shouldBe prime
+    ExerciseCorrector(keyC, List(hfdMajor, hf1)).run()(1).inversion shouldBe third
+    ExerciseCorrector(keyC, List(hfdMinor, hf3)).run()(1).inversion shouldBe thirdDim
+    ExerciseCorrector(keyC, List(hfdiii, hf2)).run()(1).inversion shouldBe thirdDim
+    ExerciseCorrector(keyC, List(hfd, hft)).run()(1).inversion shouldBe prime
+    ExerciseCorrector(keyC, List(hfd, hfs)).run()(1).inversion shouldBe prime
   }
 }

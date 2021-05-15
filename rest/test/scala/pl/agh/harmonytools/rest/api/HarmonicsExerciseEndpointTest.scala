@@ -25,8 +25,7 @@ class HarmonicsExerciseEndpointTest extends EndpointTest("harmonytools/harmonics
     }
 }""".stripMargin)
 
-  private val expectedJsonResponse = Json.parse(
-    """{
+  private val expectedJsonResponse = Json.parse("""{
       |    "exercise": {
       |        "key": "C",
       |        "meter": [4, 4],
@@ -36,7 +35,7 @@ class HarmonicsExerciseEndpointTest extends EndpointTest("harmonytools/harmonics
       |                    {
       |                        "functionName": "D",
       |                        "degree": "V",
-      |                        "revolution": "1",
+      |                        "inversion": "1",
       |                        "delays": [],
       |                        "extra": [],
       |                        "omit": [],
@@ -48,7 +47,7 @@ class HarmonicsExerciseEndpointTest extends EndpointTest("harmonytools/harmonics
       |                    {
       |                        "functionName": "T",
       |                        "degree": "I",
-      |                        "revolution": "1",
+      |                        "inversion": "1",
       |                        "delays": [],
       |                        "extra": [],
       |                        "omit": [],
@@ -91,7 +90,7 @@ class HarmonicsExerciseEndpointTest extends EndpointTest("harmonytools/harmonics
       |            "harmonicFunction": {
       |                "functionName": "D",
       |                "degree": "V",
-      |                "revolution": "1",
+      |                "inversion": "1",
       |                "delays": [],
       |                "extra": [],
       |                "omit": [],
@@ -130,7 +129,7 @@ class HarmonicsExerciseEndpointTest extends EndpointTest("harmonytools/harmonics
       |            "harmonicFunction": {
       |                "functionName": "T",
       |                "degree": "I",
-      |                "revolution": "1",
+      |                "inversion": "1",
       |                "delays": [],
       |                "extra": [],
       |                "omit": [],

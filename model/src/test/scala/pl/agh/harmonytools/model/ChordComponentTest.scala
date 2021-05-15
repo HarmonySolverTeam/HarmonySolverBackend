@@ -11,12 +11,12 @@ class ChordComponentTest extends FunSuite with Matchers {
     }
 
     val testCases = Seq(
-      "3" -> 3,
-      "13" -> 13,
+      "3"   -> 3,
+      "13"  -> 13,
       "13>" -> 13,
-      "7>" -> 7,
+      "7>"  -> 7,
       "7>>" -> 7,
-      "7<" -> 7,
+      "7<"  -> 7,
       "7<<" -> 7
     )
 
@@ -30,11 +30,11 @@ class ChordComponentTest extends FunSuite with Matchers {
     }
 
     val testCases = Seq(
-      "1" -> 0,
-      "1<" -> 1,
-      "2" -> 2,
-      "2>" -> 1,
-      "2<" -> 3,
+      "1"   -> 0,
+      "1<"  -> 1,
+      "2"   -> 2,
+      "2>"  -> 1,
+      "2<"  -> 3,
       "2>>" -> 0,
       "2<<" -> 4
     )

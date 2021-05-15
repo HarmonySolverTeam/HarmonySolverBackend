@@ -6,9 +6,8 @@ import pl.agh.harmonytools.utils.Extensions._
 
 class HarmonicFunctionMap {
   private def initializeForPitch(pitch: Int, baseNotes: List[BaseNoteType]): Unit = {
-    for (baseNote <- baseNotes) {
+    for (baseNote <- baseNotes)
       map = map + ((pitch, baseNote) -> Set.empty)
-    }
   }
   private var map: Map[(Int, BaseNoteType), Set[HarmonicFunction]] = Map.empty
 
@@ -31,8 +30,7 @@ class HarmonicFunctionMap {
   }
 
   def pushToValues(pitch: Int, baseNoteType: BaseNoteType, harmonicFunction: HarmonicFunction): Unit = {
-    if (pitch >= 60 && pitch < 72 && !map(pitch, baseNoteType).contains(harmonicFunction)) {
+    if (pitch >= 60 && pitch < 72 && !map(pitch, baseNoteType).contains(harmonicFunction))
       map = map.updated((pitch, baseNoteType), map(pitch, baseNoteType) + harmonicFunction)
-    }
   }
 }

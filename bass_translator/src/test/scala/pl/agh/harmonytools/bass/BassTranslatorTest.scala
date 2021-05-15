@@ -7,7 +7,7 @@ import pl.agh.harmonytools.model.note.BaseNote.A
 
 class BassTranslatorTest extends FunSuite with Matchers {
 
-  private val noteBuilder = FiguredBassElement(NoteBuilder(0,A,0), List.empty, List.empty)
+  private val noteBuilder = FiguredBassElement(NoteBuilder(0, A, 0), List.empty, List.empty)
 
   test("Complete figured bass numbers") {
     def completeFiguredBassNumbersTest(symbols: List[Int], expectedCompletedSymbols: List[Int]) {
@@ -48,22 +48,20 @@ class BassTranslatorTest extends FunSuite with Matchers {
       }
     }))
     actual.length shouldBe functions.length
-    for (i <- actual.dropRight(1).indices) {
-      (actual(i), actual(i+1)) shouldNot be (DOMINANT, SUBDOMINANT)
-    }
+    for (i <- actual.dropRight(1).indices)
+      (actual(i), actual(i + 1)) shouldNot be(DOMINANT, SUBDOMINANT)
   }
 
   test("Has two next thirds") {
-    def hasTwoNext3(notesNumbers: List[Int], expected: Boolean) = {
+    def hasTwoNext3(notesNumbers: List[Int], expected: Boolean) =
       ChordElement(notesNumbers, List.empty, noteBuilder).hasTwoNextThirds shouldBe expected
-    }
     hasTwoNext3(List.empty[Int], expected = false)
     hasTwoNext3(List(3), expected = false)
-    hasTwoNext3(List(1,2), expected = false)
-    hasTwoNext3(List(0,1,2), expected = false)
-    hasTwoNext3(List(0,2,3), expected = false)
-    hasTwoNext3(List(0,2,4), expected = true)
-    hasTwoNext3(List(1,3,6), expected = true)
+    hasTwoNext3(List(1, 2), expected = false)
+    hasTwoNext3(List(0, 1, 2), expected = false)
+    hasTwoNext3(List(0, 2, 3), expected = false)
+    hasTwoNext3(List(0, 2, 4), expected = true)
+    hasTwoNext3(List(1, 3, 6), expected = true)
   }
 
   test("Add next note") {
@@ -72,10 +70,10 @@ class BassTranslatorTest extends FunSuite with Matchers {
       chordElement.addNextNote()
       chordElement.notesNumbers shouldBe expectedNotesNumbers
     }
-    addNextNote(List(0,2), List(0,2,4))
-    addNextNote(List(0,4), List(0,2,4))
-    addNextNote(List(0,5), List(0,2,5))
-    addNextNote(List(0,3), List(0,3,5))
+    addNextNote(List(0, 2), List(0, 2, 4))
+    addNextNote(List(0, 4), List(0, 2, 4))
+    addNextNote(List(0, 5), List(0, 2, 5))
+    addNextNote(List(0, 3), List(0, 3, 5))
   }
 
   test("Complete until two next thirds") {
@@ -84,9 +82,9 @@ class BassTranslatorTest extends FunSuite with Matchers {
       chordElement.completeUntilTwoNextThirds()
       chordElement.notesNumbers shouldBe expectedNotesNumbers
     }
-    complete(List(0,2,4), List(0,2,4))
-    complete(List(0), List(0,2,4))
-    complete(List(0,2,10), List(0,2,4,10))
+    complete(List(0, 2, 4), List(0, 2, 4))
+    complete(List(0), List(0, 2, 4))
+    complete(List(0, 2, 10), List(0, 2, 4, 10))
   }
 
   test("Get valid functions") {

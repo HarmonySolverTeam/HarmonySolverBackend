@@ -1,7 +1,7 @@
 package pl.agh.harmonytools.solver.harmonics.evaluator.rules.hard
 
 import pl.agh.harmonytools.algorithm.evaluator.{AnyRule, Connection}
-import pl.agh.harmonytools.solver.harmonics.evaluator.rules.{ConnectionRule, sameFunctionRule, satisfied}
+import pl.agh.harmonytools.solver.harmonics.evaluator.rules.{sameFunctionRule, satisfied, ConnectionRule}
 import pl.agh.harmonytools.model.chord.Chord
 import pl.agh.harmonytools.solver.harmonics.evaluator.rules.ConnectionRule
 

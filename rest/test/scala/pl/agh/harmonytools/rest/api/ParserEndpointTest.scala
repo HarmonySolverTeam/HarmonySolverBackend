@@ -7,24 +7,22 @@ import play.api.test.Helpers.contentAsString
 import play.api.test.{FakeRequest, Helpers}
 import play.shaded.ahc.io.netty.handler.codec.http.HttpMethod
 
-
 class ParserEndpointTest extends EndpointTest("harmonytools/parser", HttpMethod.POST.name()) {
 
   private val exerciseJson = Json.parse("""{
-    "exercise": "C\n4/4\n(D{})D{}To{position:3/revolution:1/delay:4-3,6-5/extra:7/omit:1/degree:3/system:close/down/isRelatedBackwards}"
+    "exercise": "C\n4/4\n(D{})D{}To{position:3/inversion:1/delay:4-3,6-5/extra:7/omit:1/degree:3/system:close/down/isRelatedBackwards}"
   }""".stripMargin)
 
-  private val expectedJsonResponse = Json.parse(
-    """{
+  private val expectedJsonResponse = Json.parse("""{
       |"key":"C",
       |"meter":[4, 4],
       |"measures":[
       |   {
       |   "elements":
       |     [
-      |       {"functionName":"D","degree":"V","revolution":"1","delays":[],"extra":[],"omit":[],"isDown":false,"system":"undefined","mode":"major","key":"G","isRelatedBackwards":false},
-      |       {"functionName":"D","degree":"V","revolution":"1","delays":[],"extra":[],"omit":[],"isDown":false,"system":"undefined","mode":"major","isRelatedBackwards":false},
-      |       {"functionName":"T","degree":"III","position":"3","revolution":"3","delays":[{"first":"4","second":"3"},{"first":"6","second":"5"}],"extra":["7"],"omit":["1"],"isDown":true,"system":"close","mode":"minor","isRelatedBackwards":true}
+      |       {"functionName":"D","degree":"V","inversion":"1","delays":[],"extra":[],"omit":[],"isDown":false,"system":"undefined","mode":"major","key":"G","isRelatedBackwards":false},
+      |       {"functionName":"D","degree":"V","inversion":"1","delays":[],"extra":[],"omit":[],"isDown":false,"system":"undefined","mode":"major","isRelatedBackwards":false},
+      |       {"functionName":"T","degree":"III","position":"3","inversion":"3","delays":[{"first":"4","second":"3"},{"first":"6","second":"5"}],"extra":["7"],"omit":["1"],"isDown":true,"system":"close","mode":"minor","isRelatedBackwards":true}
       |     ]
       |    }
       |]

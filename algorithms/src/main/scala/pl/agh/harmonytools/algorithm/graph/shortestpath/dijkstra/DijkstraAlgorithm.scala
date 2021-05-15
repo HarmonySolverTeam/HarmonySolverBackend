@@ -2,7 +2,11 @@ package pl.agh.harmonytools.algorithm.graph.shortestpath.dijkstra
 
 import pl.agh.harmonytools.algorithm.graph.ScoreGraph
 import pl.agh.harmonytools.algorithm.graph.node.{Node, NodeContent}
-import pl.agh.harmonytools.algorithm.graph.shortestpath.{ShortestPathAlgorithm, ShortestPathAlgorithmCompanion, ShortestPathNode}
+import pl.agh.harmonytools.algorithm.graph.shortestpath.{
+  ShortestPathAlgorithm,
+  ShortestPathAlgorithmCompanion,
+  ShortestPathNode
+}
 
 case class DijkstraAlgorithm[T <: NodeContent, S <: NodeContent](graph: ScoreGraph[T, S])
   extends ShortestPathAlgorithm[T, S](graph) {
@@ -34,5 +38,6 @@ case class DijkstraAlgorithm[T <: NodeContent, S <: NodeContent](graph: ScoreGra
 }
 
 object DijkstraAlgorithm extends ShortestPathAlgorithmCompanion {
-  override def apply[T <: NodeContent, S <: NodeContent](graph: ScoreGraph[T, S]): ShortestPathAlgorithm[T, S] = new DijkstraAlgorithm(graph)
+  override def apply[T <: NodeContent, S <: NodeContent](graph: ScoreGraph[T, S]): ShortestPathAlgorithm[T, S] =
+    new DijkstraAlgorithm(graph)
 }

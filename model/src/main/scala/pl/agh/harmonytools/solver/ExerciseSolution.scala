@@ -7,24 +7,25 @@ import pl.agh.harmonytools.model.measure.Measure
 import scala.annotation.tailrec
 
 case class ExerciseSolution(exercise: Exercise, rating: Double, chords: List[Chord], success: Boolean = true) {
-  if (!success) {
-    throw SolverError("Cannot find solution for given harmonic functions\n" +
-      "If you want know more details please turn on prechecker in Settings and solve again")
-  }
+  if (!success)
+    throw SolverError(
+      "Cannot find solution for given harmonic functions\n" +
+        "If you want know more details please turn on prechecker in Settings and solve again"
+    )
 
   @tailrec
   private def defaultDivide(number: Int, result: List[Double]): List[Double] = {
     if (result.length == number) return result
-    var allEqual = true
+    var allEqual   = true
     var resultCopy = result
     for (i <- 0 until resultCopy.length - 1; if allEqual) {
-      if (resultCopy(i) > resultCopy(i+1)) {
+      if (resultCopy(i) > resultCopy(i + 1)) {
         if (resultCopy(i) <= 1) {
-          resultCopy = resultCopy.updated(i, resultCopy(i)/2)
+          resultCopy = resultCopy.updated(i, resultCopy(i) / 2)
           resultCopy = resultCopy.take(i) ++ List(result(i)) ++ resultCopy.drop(i)
         } else {
           val newElement = Math.ceil(resultCopy(i) / 2)
-          resultCopy = resultCopy.updated(i, Math.floor(resultCopy(i)/2))
+          resultCopy = resultCopy.updated(i, Math.floor(resultCopy(i) / 2))
           resultCopy = resultCopy.take(i) ++ List(newElement) ++ resultCopy.drop(i)
         }
         allEqual = false
@@ -44,11 +45,11 @@ case class ExerciseSolution(exercise: Exercise, rating: Double, chords: List[Cho
   }
 
   private def findDivisionPoint(list: List[(Int, Int)]): Int = {
-    var front = 0
-    var back = list.length - 1
+    var front    = 0
+    var back     = list.length - 1
     var frontSum = list(front)._1
-    var backSum = list(back)._1
-    var last = -1
+    var backSum  = list(back)._1
+    var last     = -1
     while (front < back) {
       if (frontSum > backSum) {
         back -= 1
@@ -60,21 +61,24 @@ case class ExerciseSolution(exercise: Exercise, rating: Double, chords: List[Cho
         last = 1
       }
     }
-    if (front == 0) {
+    if (front == 0)
       1
-    } else {
+    else
       front
-    }
   }
 
   private def divideFunChanged(measure: Measure): List[(Int, Int)] = {
-    var funList = List.empty[(Int, Int)]
+    var funList        = List.empty[(Int, Int)]
     var changesCounter = 0
-    if (measure.contentCount == 1) return List((1,0))
+    if (measure.contentCount == 1) return List((1, 0))
     var i = 0
     while (i < measure.contentCount) {
       var oneFunCounter = 0
-      while (i < measure.contentCount - 1 && measure.harmonicFunctions(i).hasSameFunctionInKey(measure.harmonicFunctions(i+1))) {
+      while (
+        i < measure.contentCount - 1 && measure
+          .harmonicFunctions(i)
+          .hasSameFunctionInKey(measure.harmonicFunctions(i + 1))
+      ) {
         oneFunCounter += 1
         i += 1
       }
@@ -87,17 +91,17 @@ case class ExerciseSolution(exercise: Exercise, rating: Double, chords: List[Cho
 
   private def sumOf(list: List[(Int, Int)]): Int = {
     list match {
-      case head::tail => head._1 + sumOf(tail)
-      case Nil => 0
+      case head :: tail => head._1 + sumOf(tail)
+      case Nil          => 0
     }
   }
 
   def setDurations(): Unit = {
     val measures = exercise.getMeasures
-    var offset = 0
+    var offset   = 0
     for (measure <- measures) {
       val funList: List[(Int, Int)] = divideFunChanged(measure)
-      var durations: List[Double] = funList.map(_ => 0.0)
+      var durations: List[Double]   = funList.map(_ => 0.0)
       def addTimeToFun(list: List[(Int, Int)], value: Double): Unit = {
         if (list.length == 1) {
           durations = durations.updated(list(0)._2, value)
@@ -107,7 +111,7 @@ case class ExerciseSolution(exercise: Exercise, rating: Double, chords: List[Cho
         val list1 = list.take(index)
         val list2 = list.drop(index)
         if (value > 1) {
-          val ceil = Math.ceil(value / 2)
+          val ceil  = Math.ceil(value / 2)
           val floor = Math.floor(value / 2)
           if (sumOf(list1) >= sumOf(list2)) {
             addTimeToFun(list1, ceil)
@@ -123,16 +127,15 @@ case class ExerciseSolution(exercise: Exercise, rating: Double, chords: List[Cho
       }
       addTimeToFun(funList, exercise.getMeter.nominator)
       var counterMeasure = 0
-      var counterFun = 0
+      var counterFun     = 0
       while (counterMeasure < measure.contentCount) {
         for (funId <- funList.indices) {
           val lenList = defaultDivide(funList(funId)._1, List(durations(funId)))
           for (len <- lenList) {
-            if (len >= 1) {
+            if (len >= 1)
               chords(counterMeasure + offset).setDuration(len.toDouble / exercise.getMeter.denominator)
-            } else {
+            else
               chords(counterMeasure + offset).setDuration(1.0 / (exercise.getMeter.denominator * (1.0 / len)))
-            }
             counterMeasure += 1
           }
         }

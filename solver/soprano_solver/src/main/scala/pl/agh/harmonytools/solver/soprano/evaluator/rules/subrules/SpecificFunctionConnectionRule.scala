@@ -7,8 +7,11 @@ import pl.agh.harmonytools.model.scale.ScaleDegree.I
 import pl.agh.harmonytools.solver.harmonics.evaluator.rules.{satisfied, totallyBroken}
 import pl.agh.harmonytools.solver.soprano.evaluator.HarmonicFunctionWithSopranoInfo
 
-case class SpecificFunctionConnectionRule(prevBaseName: BaseFunction, currentBaseName: BaseFunction, punishment: Double = 10.0)
-  extends IRule[HarmonicFunctionWithSopranoInfo] {
+case class SpecificFunctionConnectionRule(
+  prevBaseName: BaseFunction,
+  currentBaseName: BaseFunction,
+  punishment: Double = 10.0
+) extends IRule[HarmonicFunctionWithSopranoInfo] {
   override def evaluate(connection: Connection[HarmonicFunctionWithSopranoInfo]): Double = {
     val newConnection = translateConnectionIncludingDeflections(connection)
     newConnection match {
@@ -26,8 +29,8 @@ case class SpecificFunctionConnectionRule(prevBaseName: BaseFunction, currentBas
   protected final def translateConnectionIncludingDeflections(
     connection: Connection[HarmonicFunctionWithSopranoInfo]
   ): Option[Connection[HarmonicFunctionWithSopranoInfo]] = {
-    val current             = connection.current
-    val prev                 = connection.prev
+    val current                   = connection.current
+    val prev                      = connection.prev
     var currentFunctionTranslated = current.harmonicFunction
     var prevFunctionTranslated    = prev.harmonicFunction
     if (prev.harmonicFunction.key != current.harmonicFunction.key) {

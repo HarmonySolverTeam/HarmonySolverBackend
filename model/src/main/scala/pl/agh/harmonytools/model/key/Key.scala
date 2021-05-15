@@ -12,12 +12,14 @@ case class Key(
   baseNote: BaseNote.BaseNoteType
 ) {
   override def toString: String = {
-    val keyLower = Key.pitchKeyStr(tonicPitch).find(_.head.toUpper == baseNote.name).getOrElse(throw UnexpectedInternalError("Internal error in key to string"))
-    if (mode == MAJOR) {
+    val keyLower = Key
+      .pitchKeyStr(tonicPitch)
+      .find(_.head.toUpper == baseNote.name)
+      .getOrElse(throw UnexpectedInternalError("Internal error in key to string"))
+    if (mode == MAJOR)
       keyLower.head.toUpper + keyLower.tail
-    } else {
+    else
       keyLower
-    }
   }
 }
 

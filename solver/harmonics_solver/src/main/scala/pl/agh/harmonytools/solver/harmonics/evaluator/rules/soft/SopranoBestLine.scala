@@ -8,7 +8,7 @@ import pl.agh.harmonytools.utils.IntervalUtils.pitchOffsetBetween
 case class SopranoBestLine() extends SoftRule[Chord] {
   override def evaluate(connection: Connection[Chord]): Double = {
     val currentChord = connection.current
-    val prevChord = connection.prev
+    val prevChord    = connection.prev
     if (pitchOffsetBetween(prevChord.sopranoNote, currentChord.sopranoNote) > 4) 3
     else satisfied
   }

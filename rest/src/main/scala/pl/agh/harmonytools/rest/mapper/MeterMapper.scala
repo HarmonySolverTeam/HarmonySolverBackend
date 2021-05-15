@@ -5,7 +5,10 @@ import pl.agh.harmonytools.model.measure.Meter
 
 object MeterMapper extends Mapper[Meter, List[Int]] {
   override def mapToModel(dto: List[Int]): Meter = {
-    RequirementChecker.isRequired(dto.length == 2, MeterParseError(s"Given meter array must have length of 2. Found: $dto"))
+    RequirementChecker.isRequired(
+      dto.length == 2,
+      MeterParseError(s"Given meter array must have length of 2. Found: $dto")
+    )
     Meter(dto(0), dto(1))
   }
 

@@ -20,7 +20,7 @@ trait BasicComponentsOwner {
   def getDegree: ScaleDegree.Degree
   def getKey: Option[Key]
   def getBaseFunction: BaseFunction
-  def getRevolution: ChordComponent
+  def getInversion: ChordComponent
 
   def isInDominantRelation(next: BasicComponentsOwner): Boolean = {
     if (
@@ -40,20 +40,18 @@ trait BasicComponentsOwner {
   def getPrime: ChordComponent = ChordComponentManager.chordComponentFromString("1", getIsDown)
 
   def getThird: ChordComponent = {
-    if (IntervalUtils.getThirdMode(getMode, getDegree) == MAJOR || getIsDown) {
+    if (IntervalUtils.getThirdMode(getMode, getDegree) == MAJOR || getIsDown)
       ChordComponentManager.chordComponentFromString("3", isDown = getIsDown)
-    } else {
+    else
       ChordComponentManager.chordComponentFromString("3>", isDown = getIsDown)
-    }
   }
 
   def getFifth: ChordComponent = {
     // todo czy nie powinno się tutaj uwzględniać extra już?
-    if (!IntervalUtils.isFifthDiminished(getMode, getDegree) || getIsDown) {
+    if (!IntervalUtils.isFifthDiminished(getMode, getDegree) || getIsDown)
       ChordComponentManager.chordComponentFromString("5", isDown = getIsDown)
-    } else {
+    else
       ChordComponentManager.chordComponentFromString("5>", isDown = getIsDown)
-    }
   }
 
   def getBasicChordComponents: List[ChordComponent] = List(getPrime, getThird, getFifth)

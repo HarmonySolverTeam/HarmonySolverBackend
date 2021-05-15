@@ -16,7 +16,10 @@ case class Meter(nominator: Int, denominator: Int) {
 
 object Meter {
   def apply(str: String): Meter = {
-    RequirementChecker.isRequired(str.matches("\\d/\\d"), MeterParseError(s"Incorrect form of meter: $str. Should be: A/B."))
+    RequirementChecker.isRequired(
+      str.matches("\\d/\\d"),
+      MeterParseError(s"Incorrect form of meter: $str. Should be: A/B.")
+    )
     val split       = str.split('/')
     val nominator   = split.headOption.getOrElse(throw MeterParseError(s"Incorrect meter $str"))
     val denominator = split.lastOption.getOrElse(throw MeterParseError(s"Incorrect meter $str"))
