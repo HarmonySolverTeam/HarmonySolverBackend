@@ -1,7 +1,17 @@
 package pl.agh.harmonytools.harmonics.parser
 
 import pl.agh.harmonytools.error.{HarmonySolverError, UnexpectedInternalError}
-import pl.agh.harmonytools.harmonics.parser.builders.{BackwardDeflection, BackwardDeflection1, ClassicDeflection, ClassicDeflection1, Deflection, Ellipse, HarmonicFunctionParserBuilder, HarmonicsExerciseParserBuilder, MeasureParserBuilder}
+import pl.agh.harmonytools.harmonics.parser.builders.{
+  BackwardDeflection,
+  BackwardDeflection1,
+  ClassicDeflection,
+  ClassicDeflection1,
+  Deflection,
+  Ellipse,
+  HarmonicFunctionParserBuilder,
+  HarmonicsExerciseParserBuilder,
+  MeasureParserBuilder
+}
 import pl.agh.harmonytools.model.chord.ChordSystem.System
 import pl.agh.harmonytools.model.harmonicfunction.FunctionNames._
 import pl.agh.harmonytools.exercise.harmonics.HarmonicsExercise
@@ -31,7 +41,7 @@ object Tokens {
   final val closeSquareBracket = "]"
   final val eoi                = """\z""".r
   final val degree             = "degree"
-  final val revolution         = "revolution"
+  final val inversion          = "inversion"
   final val system             = "system"
   final val position           = "position"
   final val extra              = "extra"
@@ -52,12 +62,12 @@ object Tokens {
 
 sealed trait ParserModel
 case class Position(string: String)           extends ParserModel
-case class Revolution(string: String)         extends ParserModel
+case class Inversion(string: String)          extends ParserModel
 case class IsRelatedBackwards(value: Boolean) extends ParserModel
 case class IsDown(value: Boolean)             extends ParserModel
 case class Extra(stringSet: Set[String])      extends ParserModel
 case class Omit(stringSet: Set[String])       extends ParserModel
-case class Delays(value: Set[Delay])         extends ParserModel
+case class Delays(value: Set[Delay])          extends ParserModel
 
 class HarmonicsParser extends RegexParsers {
   override val whiteSpace: Regex = """[ \t\r]+""".r
@@ -107,9 +117,10 @@ class HarmonicsParser extends RegexParsers {
 
   //parser
 
-  private def key: Parser[Key]                 = """C#|c#|Cb|Db|d#|Eb|eb|F#|f#|Gb|g#|ab|Ab|a#|Bb|bb|[CcDdEeFfGgAaBb]""".r ^^ { key => Key(key) }
+  private def key: Parser[Key] =
+    """C#|c#|Cb|Db|d#|Eb|eb|F#|f#|Gb|g#|ab|Ab|a#|Bb|bb|[CcDdEeFfGgAaBb]""".r ^^ { key => Key(key) }
   private def number: Parser[Int]              = """[1-9]\d*""".r ^^ { _.toInt }
-  private val separator                = Tokens.eoi | Tokens.newline
+  private val separator                        = Tokens.eoi | Tokens.newline
   private def meter: Parser[Meter]             = number ~ Tokens.meterBar ~ number ^^ { case n1 ~ b ~ n2 => Meter(n1, n2) }
   private def alterationSymbol: Parser[String] = "<" | ">" | "<<" | ">>" ^^ { _.toString }
 
@@ -129,8 +140,8 @@ class HarmonicsParser extends RegexParsers {
   private def positionDef: Parser[Position] =
     Tokens.position ~ Tokens.colon ~> chordComponent ^^ { cc => Position(cc) }
 
-  private def revolutionDef: Parser[Revolution] =
-    Tokens.revolution ~ Tokens.colon ~> chordComponent ^^ { cc => Revolution(cc) }
+  private def inversionDef: Parser[Inversion] =
+    Tokens.inversion ~ Tokens.colon ~> chordComponent ^^ { cc => Inversion(cc) }
 
   private def downDef: Parser[IsDown] =
     Tokens.down ^^ { _ => IsDown(true) }
@@ -167,7 +178,7 @@ class HarmonicsParser extends RegexParsers {
   private def modeDef: Parser[BaseMode] = Tokens.minorMode ^^ (_ => Mode.MINOR)
 
   private def harmonicFunctionContent: Parser[Any] =
-    systemDef | delayDef | omitDef | extraDef | isRelatedBackwardsDef | downDef | revolutionDef | positionDef | degreeDef ^^ {
+    systemDef | delayDef | omitDef | extraDef | isRelatedBackwardsDef | downDef | inversionDef | positionDef | degreeDef ^^ {
       s => s
     }
 
@@ -193,7 +204,7 @@ class HarmonicsParser extends RegexParsers {
                 case e: Extra               => builder.withExtra(e.stringSet)
                 case rb: IsRelatedBackwards => builder.withIsRelatedBackwards(rb.value)
                 case d: IsDown              => builder.withIsDown(d.value)
-                case r: Revolution          => builder.withRevolution(r.string)
+                case r: Inversion           => builder.withInversion(r.string)
                 case p: Position            => builder.withPosition(p.string)
                 case d: Degree              => builder.withDegree(d)
               }
@@ -271,9 +282,10 @@ class HarmonicsParser extends RegexParsers {
         new HarmonicsExerciseParserBuilder(Some(key), Some(meter), Some(measures)).getHarmonicsExercise
     }
 
-  def parse(exerciseNotation: String): HarmonicsExercise = {
-    parse(harmonicsExerciseDef, exerciseNotation).getOrElse(throw HarmonicsParserException("Error during parsing exercise"))
-  }
+  def parse(exerciseNotation: String): HarmonicsExercise =
+    parse(harmonicsExerciseDef, exerciseNotation).getOrElse(
+      throw HarmonicsParserException("Error during parsing exercise")
+    )
 
 }
 

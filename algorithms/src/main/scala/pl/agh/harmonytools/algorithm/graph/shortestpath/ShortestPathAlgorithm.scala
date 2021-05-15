@@ -5,6 +5,7 @@ import pl.agh.harmonytools.algorithm.graph.node.{Node, NodeContent}
 import pl.agh.harmonytools.error.UnexpectedInternalError
 
 abstract class ShortestPathAlgorithm[T <: NodeContent, S <: NodeContent](graph: ScoreGraph[T, S]) {
+
   /**
    * Sets prevsInShortestPath for each node.
    */

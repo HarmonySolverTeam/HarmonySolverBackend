@@ -52,16 +52,16 @@ class HarmonicsSolverDelaysTest extends FunSuite with Matchers {
     )
   }
 
-  test("Transformation with delay and fixed revolution") {
+  test("Transformation with delay and fixed inversion") {
     val exercise = getParserOutputWithHandledDelays("""C
                                      |3/4
-                                     |T{delay:4-3/revolution:3}
+                                     |T{delay:4-3/inversion:3}
                                      |""".stripMargin)
 
-    exercise.measures.head.harmonicFunctions.head.revolution shouldBe ChordComponentManager.chordComponentFromString(
+    exercise.measures.head.harmonicFunctions.head.inversion shouldBe ChordComponentManager.chordComponentFromString(
       "4"
     )
-    exercise.measures.head.harmonicFunctions(1).revolution shouldBe ChordComponentManager.chordComponentFromString("3")
+    exercise.measures.head.harmonicFunctions(1).inversion shouldBe ChordComponentManager.chordComponentFromString("3")
   }
 
   test("More measures with delayed functions") {

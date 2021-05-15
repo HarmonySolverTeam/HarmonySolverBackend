@@ -13,7 +13,7 @@ abstract class HarmonicFunctionBuilder(withValidation: Boolean = true) extends B
   protected var baseFunction: Option[FunctionNames.BaseFunction] = None
   protected var degree: Option[ScaleDegree.Degree]               = None
   protected var position: Option[ChordComponent]                 = None
-  protected var revolution: Option[ChordComponent]               = None
+  protected var inversion: Option[ChordComponent]                = None
   protected var delay: Set[Delay]                                = Set.empty
   protected var extra: Set[ChordComponent]                       = Set.empty
   protected var omit: Set[ChordComponent]                        = Set.empty
@@ -33,11 +33,12 @@ abstract class HarmonicFunctionBuilder(withValidation: Boolean = true) extends B
   override def getExtra: Set[ChordComponent] = extra
   override def getOmit: Set[ChordComponent]  = omit
   override def getDelay: Set[Delay]          = delay
-  override def getBaseFunction: BaseFunction = baseFunction.getOrElse(throw UnexpectedInternalError("Base function not defined"))
-  override def getKey: Option[Key]           = key
-  def getPosition: Option[ChordComponent]    = position
-  override def getRevolution: ChordComponent = {
-    revolution match {
+  override def getBaseFunction: BaseFunction =
+    baseFunction.getOrElse(throw UnexpectedInternalError("Base function not defined"))
+  override def getKey: Option[Key]        = key
+  def getPosition: Option[ChordComponent] = position
+  override def getInversion: ChordComponent = {
+    inversion match {
       case Some(value) => value
       case None        => ChordComponentManager.getRoot(isDown)
     }
@@ -46,7 +47,7 @@ abstract class HarmonicFunctionBuilder(withValidation: Boolean = true) extends B
   def withBaseFunction(bf: BaseFunction): Unit  = baseFunction = Some(bf)
   def withDegree(d: ScaleDegree.Degree): Unit   = degree = Some(d)
   def withPosition(p: ChordComponent): Unit     = position = Some(p)
-  def withRevolution(r: ChordComponent): Unit   = revolution = Some(r)
+  def withInversion(r: ChordComponent): Unit    = inversion = Some(r)
   def withDelay(d: Set[Delay]): Unit            = delay = d
   def withExtra(e: Set[ChordComponent]): Unit   = extra = e
   def withOmit(o: Set[ChordComponent]): Unit    = omit = o
@@ -60,10 +61,12 @@ abstract class HarmonicFunctionBuilder(withValidation: Boolean = true) extends B
 
   protected def initializeHarmonicFunction(): HarmonicFunction = {
     HarmonicFunction(
-      baseFunction.getOrElse(throw UnexpectedInternalError("Base function has to be defined when initializing HarmonicFunction")),
+      baseFunction.getOrElse(
+        throw UnexpectedInternalError("Base function has to be defined when initializing HarmonicFunction")
+      ),
       getDegree,
       position,
-      getRevolution,
+      getInversion,
       delay,
       extra,
       omit,
@@ -86,7 +89,7 @@ abstract class HarmonicFunctionBuilder(withValidation: Boolean = true) extends B
       baseFunction.getOrElse("undefined"),
       degree,
       position,
-      revolution,
+      inversion,
       delay,
       extra,
       omit,

@@ -6,14 +6,14 @@ import pl.agh.harmonytools.solver.harmonics.evaluator.rules.ChordRules
 object PunishmentRatiosMapper extends Mapper[Map[ChordRules.Rule, Double], PunishmentRatiosDto] {
   override def mapToModel(dto: PunishmentRatiosDto): Map[ChordRules.Rule, Double] = {
     Map(
-      ChordRules.ParallelOctaves -> dto.concurrentOctaves.getOrElse(1.0),
-      ChordRules.ParallelFifths -> dto.concurrentFifths.getOrElse(1.0),
-      ChordRules.CrossingVoices -> dto.crossingVoices.getOrElse(1.0),
-      ChordRules.FalseRelation -> dto.falseRelation.getOrElse(1.0),
-      ChordRules.ForbiddenJump -> dto.forbiddenJump.getOrElse(1.0),
-      ChordRules.HiddenOctaves -> dto.hiddenOctaves.getOrElse(1.0),
-      ChordRules.IllegalDoubledThird -> dto.illegalDoubledThird.getOrElse(1.0),
-      ChordRules.OneDirection -> dto.oneDirection.getOrElse(1.0),
+      ChordRules.ParallelOctaves             -> dto.concurrentOctaves.getOrElse(1.0),
+      ChordRules.ParallelFifths              -> dto.concurrentFifths.getOrElse(1.0),
+      ChordRules.CrossingVoices              -> dto.crossingVoices.getOrElse(1.0),
+      ChordRules.FalseRelation               -> dto.falseRelation.getOrElse(1.0),
+      ChordRules.ForbiddenJump               -> dto.forbiddenJump.getOrElse(1.0),
+      ChordRules.HiddenOctaves               -> dto.hiddenOctaves.getOrElse(1.0),
+      ChordRules.IllegalDoubledThird         -> dto.illegalDoubledThird.getOrElse(1.0),
+      ChordRules.OneDirection                -> dto.oneDirection.getOrElse(1.0),
       ChordRules.SameFunctionCheckConnection -> dto.sameFunctionCheckConnection.getOrElse(1.0)
     )
   }

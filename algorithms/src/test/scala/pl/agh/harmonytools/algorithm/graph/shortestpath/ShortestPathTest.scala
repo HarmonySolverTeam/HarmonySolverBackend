@@ -71,7 +71,7 @@ class ShortestPathTest extends FunSuite with Matchers {
   }
 
   test("Topological sort with only one shortest path") {
-    val topo          = new TopologicalSortAlgorithm[Content, EmptyContent](getGraph)
+    val topo              = new TopologicalSortAlgorithm[Content, EmptyContent](getGraph)
     val shortestPathNodes = topo.getShortestPathToLastNode
     shortestPathNodes.map(_.getContent) shouldBe List(Content("C"), Content("E"), Content("F"))
   }

@@ -13,7 +13,7 @@ class SingleLevelGraphBuilderTest extends FunSuite with Matchers {
   }
 
   object MockEvaluator extends ConnectionEvaluator[Content] {
-    override protected val connectionSize: Int             = 2
+    override protected val connectionSize: Int                = 2
     override protected val softRules: List[SoftRule[Content]] = List.empty
     override protected val hardRules: List[HardRule[Content]] = List.empty
 

@@ -5,7 +5,7 @@ import pl.agh.harmonytools.bass.FiguredBassExercise
 import pl.agh.harmonytools.solver.ExerciseSolution
 import pl.agh.harmonytools.utils.{ResourcesHelper, TestUtils}
 import pl.agh.harmonytools.solver.bass.JSONBassExerciseParser._
-import spray.json.{JsonParser, enrichAny}
+import spray.json.{enrichAny, JsonParser}
 
 class BassSolverTest extends FunSuite with Matchers with TestUtils with ResourcesHelper {
 

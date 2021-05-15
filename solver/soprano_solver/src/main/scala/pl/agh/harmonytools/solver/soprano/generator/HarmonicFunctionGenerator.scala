@@ -18,24 +18,23 @@ case class HarmonicFunctionGenerator(
 
   for (hf <- allowedHarmonicFunctions) {
     val possibleNotesToHarmonize = chordGenerator.generatePossibleSopranoNotesFor(hf)
-    for (note <- possibleNotesToHarmonize) {
+    for (note <- possibleNotesToHarmonize)
       map.pushToValues(note.pitch %% 12 + 60, note.baseNote, hf.copy(position = Some(note.chordComponent)))
-    }
   }
 
   override def generate(input: HarmonicFunctionGeneratorInput): List[HarmonicFunctionWithSopranoInfo] = {
     val resultList: Set[HarmonicFunction] =
       if (input.isFirst || input.isLast) {
-        map.getValues(input.sopranoNote.pitch, input.sopranoNote.baseNote)
-          .filter( hf =>
+        map
+          .getValues(input.sopranoNote.pitch, input.sopranoNote.baseNote)
+          .filter(hf =>
             hf.baseFunction == TONIC &&
               hf.degree == I &&
               hf.key.isEmpty &&
-              hf.revolution == hf.getPrime
-        )
-      } else {
+              hf.inversion == hf.getPrime
+          )
+      } else
         map.getValues(input.sopranoNote.pitch, input.sopranoNote.baseNote)
-      }
     resultList.map(HarmonicFunctionWithSopranoInfo(_, input.measurePlace, input.sopranoNote)).toList
   }
 }

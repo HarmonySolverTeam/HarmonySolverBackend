@@ -6,7 +6,9 @@ import pl.agh.harmonytools.model.scale.ScaleDegree
 import pl.agh.harmonytools.rest.dto.{DelayDto, HarmonicFunctionDto}
 import pl.agh.harmonytools.utils.TestUtils
 
-class HarmonicFunctionMapperTest extends MapperTest[HarmonicFunction, HarmonicFunctionDto](HarmonicFunctionMapper) with TestUtils {
+class HarmonicFunctionMapperTest
+  extends MapperTest[HarmonicFunction, HarmonicFunctionDto](HarmonicFunctionMapper)
+  with TestUtils {
   import Keys._
   import ChordComponents._
 
@@ -30,7 +32,7 @@ class HarmonicFunctionMapperTest extends MapperTest[HarmonicFunction, HarmonicFu
       extra = Some(List(seventh.chordComponentString, fifthAltUp.chordComponentString)),
       omit = Some(List(fifth.chordComponentString)),
       delays = Some(List(DelayDto(fourth.chordComponentString, third.chordComponentString))),
-      revolution = Some(prime.chordComponentString),
+      inversion = Some(prime.chordComponentString),
       mode = Some(HarmonicFunctionDto.Mode.Major),
       isRelatedBackwards = Some(true),
       isDown = Some(true),

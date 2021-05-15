@@ -23,10 +23,9 @@ object MeasurePlace extends Enumeration {
     val nominator = meter.nominator
 
     if (nominator.isPowerOf2) {
-      for (i <- Range(2, nominator, 2)) {
+      for (i <- Range(2, nominator, 2))
         if (count == i)
           return DOWNBEAT
-      }
       return UPBEAT
     }
 

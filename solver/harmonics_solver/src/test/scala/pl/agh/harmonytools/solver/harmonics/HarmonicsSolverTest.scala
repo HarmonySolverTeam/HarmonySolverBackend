@@ -16,7 +16,7 @@ class HarmonicsSolverTest extends FunSuite with Matchers with TestUtils with Bef
 
   private def harmonicsEndToEndTest(filePath: String): Assertion = {
     val harmonicsExercise = getParserOutput(getFileContent(filePath)).get
-    val solution = HarmonicsSolver(harmonicsExercise).solve()
+    val solution          = HarmonicsSolver(harmonicsExercise).solve()
     solution.success shouldBe true
   }
 
@@ -116,8 +116,8 @@ class HarmonicsSolverTest extends FunSuite with Matchers with TestUtils with Bef
     harmonicsEndToEndTest("/major/chained_deflection_basic.txt")
   }
 
-  test("d_with_7_revolution") {
-    harmonicsEndToEndTest("/major/d_with_7_revolution.txt")
+  test("d_with_7_inversion") {
+    harmonicsEndToEndTest("/major/d_with_7_inversion.txt")
   }
 
   test("d9_without_omits") {
@@ -211,4 +211,3 @@ object HarmonicsSolverTest extends HarmonicsParser {
   private[harmonics] def parseInput(input: String): ParseResult[HarmonicsExercise] =
     parse(harmonicsExerciseDef, input)
 }
-

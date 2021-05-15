@@ -19,8 +19,6 @@ object BassSymbolStringMapper extends Mapper[BassSymbol, String] {
     )
   }
 
-  override def mapToDTO(model: BassSymbol): String = {
+  override def mapToDTO(model: BassSymbol): String =
     model.toString
-  }
 }
-

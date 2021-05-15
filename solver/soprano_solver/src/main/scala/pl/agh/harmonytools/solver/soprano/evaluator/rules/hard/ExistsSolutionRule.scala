@@ -9,18 +9,19 @@ import pl.agh.harmonytools.solver.soprano.evaluator.rules.{satisfied, totallyBro
 case class ExistsSolutionRule(chordRulesChecker: BasicChordRulesChecker, chordGenerator: ChordGenerator)
   extends HardRule[HarmonicFunctionWithSopranoInfo] {
   override def evaluate(connection: Connection[HarmonicFunctionWithSopranoInfo]): Double = {
-    val prevFunction = connection.prev.harmonicFunction
-    val currentFunction = connection.current.harmonicFunction
-    val prevSopranoNote = connection.prev.sopranoNote
+    val prevFunction       = connection.prev.harmonicFunction
+    val currentFunction    = connection.current.harmonicFunction
+    val prevSopranoNote    = connection.prev.sopranoNote
     val currentSopranoNote = connection.current.sopranoNote
 
-    val prevPossibleChords = chordGenerator.generate(ChordGeneratorInput(prevFunction, allowDoubleThird = true, Some(prevSopranoNote)))
-    val currentPossibleChords = chordGenerator.generate(ChordGeneratorInput(currentFunction, allowDoubleThird = true, Some(currentSopranoNote)))
+    val prevPossibleChords =
+      chordGenerator.generate(ChordGeneratorInput(prevFunction, allowDoubleThird = true, Some(prevSopranoNote)))
+    val currentPossibleChords =
+      chordGenerator.generate(ChordGeneratorInput(currentFunction, allowDoubleThird = true, Some(currentSopranoNote)))
     for (prevChord <- prevPossibleChords) {
       for (currentChord <- currentPossibleChords) {
-        if (chordRulesChecker.evaluateHardRules(Connection(currentChord, prevChord))) {
+        if (chordRulesChecker.evaluateHardRules(Connection(currentChord, prevChord)))
           return satisfied
-        }
       }
     }
     totallyBroken

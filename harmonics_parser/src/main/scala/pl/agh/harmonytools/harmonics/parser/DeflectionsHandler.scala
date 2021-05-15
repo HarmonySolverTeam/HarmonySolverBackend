@@ -1,7 +1,13 @@
 package pl.agh.harmonytools.harmonics.parser
 
 import pl.agh.harmonytools.error.UnexpectedInternalError
-import pl.agh.harmonytools.harmonics.parser.builders.{BackwardDeflection, ClassicDeflection, EllipseDeflection, HarmonicFunctionParserBuilder, HarmonicsElementType}
+import pl.agh.harmonytools.harmonics.parser.builders.{
+  BackwardDeflection,
+  ClassicDeflection,
+  EllipseDeflection,
+  HarmonicFunctionParserBuilder,
+  HarmonicsElementType
+}
 import pl.agh.harmonytools.model.harmonicfunction.BasicComponentsOwner
 import pl.agh.harmonytools.model.harmonicfunction.FunctionNames.TONIC
 import pl.agh.harmonytools.model.harmonicfunction.builder.HarmonicFunctionBuilder

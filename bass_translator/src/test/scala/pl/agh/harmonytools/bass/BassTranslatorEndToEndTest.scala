@@ -16,7 +16,7 @@ class BassTranslatorEndToEndTest extends FunSuite with Matchers with TestUtils {
     val ex = BassTranslator.createExerciseFromFiguredBass(
       FiguredBassExercise(Key("C"), Meter(4, 4), List(FiguredBassElement(NoteBuilder(48, C, 1))))
     )
-    ex.measures.head.harmonicFunctions.head.revolution.chordComponentString shouldBe "1"
+    ex.measures.head.harmonicFunctions.head.inversion.chordComponentString shouldBe "1"
     ex.measures.head.harmonicFunctions.head.countChordComponents shouldBe 3
     ex.measures.head.harmonicFunctions.head.extra shouldBe Set.empty
     ex.measures.head.harmonicFunctions.head.omit shouldBe Set.empty
@@ -30,7 +30,7 @@ class BassTranslatorEndToEndTest extends FunSuite with Matchers with TestUtils {
         List(FiguredBassElement(NoteBuilder(52, E, 1), symbols = List(BassSymbol(6))))
       )
     )
-    ex.measures.head.harmonicFunctions.head.revolution.chordComponentString shouldBe "3"
+    ex.measures.head.harmonicFunctions.head.inversion.chordComponentString shouldBe "3"
     ex.measures.head.harmonicFunctions.head.countChordComponents shouldBe 3
     ex.measures.head.harmonicFunctions.head.extra shouldBe Set.empty
     ex.measures.head.harmonicFunctions.head.omit shouldBe Set.empty
@@ -44,7 +44,7 @@ class BassTranslatorEndToEndTest extends FunSuite with Matchers with TestUtils {
         List(FiguredBassElement(NoteBuilder(55, G, 1), symbols = List(BassSymbol(6), BassSymbol(4))))
       )
     )
-    ex.measures.head.harmonicFunctions.head.revolution.chordComponentString shouldBe "5"
+    ex.measures.head.harmonicFunctions.head.inversion.chordComponentString shouldBe "5"
     ex.measures.head.harmonicFunctions.head.countChordComponents shouldBe 3
     ex.measures.head.harmonicFunctions.head.extra shouldBe Set.empty
     ex.measures.head.harmonicFunctions.head.omit shouldBe Set.empty
@@ -54,7 +54,7 @@ class BassTranslatorEndToEndTest extends FunSuite with Matchers with TestUtils {
     val ex = BassTranslator.createExerciseFromFiguredBass(
       FiguredBassExercise(Key("c"), Meter(4, 4), List(FiguredBassElement(NoteBuilder(48, C, 1))))
     )
-    ex.measures.head.harmonicFunctions.head.revolution.chordComponentString shouldBe "1"
+    ex.measures.head.harmonicFunctions.head.inversion.chordComponentString shouldBe "1"
     ex.measures.head.harmonicFunctions.head.getThird.chordComponentString shouldBe "3>"
     ex.measures.head.harmonicFunctions.head.countChordComponents shouldBe 3
     ex.measures.head.harmonicFunctions.head.extra shouldBe Set.empty
@@ -69,7 +69,7 @@ class BassTranslatorEndToEndTest extends FunSuite with Matchers with TestUtils {
         List(FiguredBassElement(NoteBuilder(51, E, 1), symbols = List(BassSymbol(6))))
       )
     )
-    ex.measures.head.harmonicFunctions.head.revolution.chordComponentString shouldBe "3>"
+    ex.measures.head.harmonicFunctions.head.inversion.chordComponentString shouldBe "3>"
     ex.measures.head.harmonicFunctions.head.countChordComponents shouldBe 3
     ex.measures.head.harmonicFunctions.head.extra shouldBe Set.empty
     ex.measures.head.harmonicFunctions.head.omit shouldBe Set.empty
@@ -83,7 +83,7 @@ class BassTranslatorEndToEndTest extends FunSuite with Matchers with TestUtils {
         List(FiguredBassElement(NoteBuilder(55, G, 1), symbols = List(BassSymbol(6), BassSymbol(4))))
       )
     )
-    ex.measures.head.harmonicFunctions.head.revolution.chordComponentString shouldBe "5"
+    ex.measures.head.harmonicFunctions.head.inversion.chordComponentString shouldBe "5"
     ex.measures.head.harmonicFunctions.head.countChordComponents shouldBe 3
     ex.measures.head.harmonicFunctions.head.extra shouldBe Set.empty
     ex.measures.head.harmonicFunctions.head.omit shouldBe Set.empty
@@ -97,7 +97,7 @@ class BassTranslatorEndToEndTest extends FunSuite with Matchers with TestUtils {
         List(FiguredBassElement(NoteBuilder(48, C, 1), symbols = List(BassSymbol(3, AlterationType.NATURAL))))
       )
     )
-    ex.measures.head.harmonicFunctions.head.revolution.chordComponentString shouldBe "1"
+    ex.measures.head.harmonicFunctions.head.inversion.chordComponentString shouldBe "1"
     ex.measures.head.harmonicFunctions.head.getThird.chordComponentString shouldBe "3"
     ex.measures.head.harmonicFunctions.head.countChordComponents shouldBe 3
     ex.measures.head.harmonicFunctions.head.extra shouldBe Set.empty
@@ -112,7 +112,7 @@ class BassTranslatorEndToEndTest extends FunSuite with Matchers with TestUtils {
         List(FiguredBassElement(NoteBuilder(55, G, 1), symbols = List(BassSymbol(7))))
       )
     )
-    ex.measures.head.harmonicFunctions.head.revolution.chordComponentString shouldBe "1"
+    ex.measures.head.harmonicFunctions.head.inversion.chordComponentString shouldBe "1"
     ex.measures.head.harmonicFunctions.head.countChordComponents shouldBe 4
     ex.measures.head.harmonicFunctions.head.extra.map(_.chordComponentString) shouldBe Set("7")
     ex.measures.head.harmonicFunctions.head.omit.map(_.chordComponentString) shouldBe Set.empty
@@ -126,7 +126,7 @@ class BassTranslatorEndToEndTest extends FunSuite with Matchers with TestUtils {
         List(FiguredBassElement(NoteBuilder(59, B, 1), symbols = List(BassSymbol(6), BassSymbol(5))))
       )
     )
-    ex.measures.head.harmonicFunctions.head.revolution.chordComponentString shouldBe "3"
+    ex.measures.head.harmonicFunctions.head.inversion.chordComponentString shouldBe "3"
     ex.measures.head.harmonicFunctions.head.countChordComponents shouldBe 4
     ex.measures.head.harmonicFunctions.head.extra.map(_.chordComponentString) shouldBe Set("7")
     ex.measures.head.harmonicFunctions.head.omit.map(_.chordComponentString) shouldBe Set.empty
@@ -140,7 +140,7 @@ class BassTranslatorEndToEndTest extends FunSuite with Matchers with TestUtils {
         List(FiguredBassElement(NoteBuilder(50, D, 1), symbols = List(BassSymbol(4), BassSymbol(3))))
       )
     )
-    ex.measures.head.harmonicFunctions.head.revolution.chordComponentString shouldBe "5"
+    ex.measures.head.harmonicFunctions.head.inversion.chordComponentString shouldBe "5"
     ex.measures.head.harmonicFunctions.head.countChordComponents shouldBe 4
     ex.measures.head.harmonicFunctions.head.extra.map(_.chordComponentString) shouldBe Set("7")
     ex.measures.head.harmonicFunctions.head.omit.map(_.chordComponentString) shouldBe Set.empty
@@ -154,7 +154,7 @@ class BassTranslatorEndToEndTest extends FunSuite with Matchers with TestUtils {
         List(FiguredBassElement(NoteBuilder(53, F, 1), symbols = List(BassSymbol(2))))
       )
     )
-    ex.measures.head.harmonicFunctions.head.revolution.chordComponentString shouldBe "7"
+    ex.measures.head.harmonicFunctions.head.inversion.chordComponentString shouldBe "7"
     ex.measures.head.harmonicFunctions.head.countChordComponents shouldBe 4
     ex.measures.head.harmonicFunctions.head.extra.map(_.chordComponentString) shouldBe Set("7")
     ex.measures.head.harmonicFunctions.head.omit.map(_.chordComponentString) shouldBe Set.empty
@@ -173,7 +173,7 @@ class BassTranslatorEndToEndTest extends FunSuite with Matchers with TestUtils {
         )
       )
     )
-    ex.measures.head.harmonicFunctions.head.revolution.chordComponentString shouldBe "1"
+    ex.measures.head.harmonicFunctions.head.inversion.chordComponentString shouldBe "1"
     ex.measures.head.harmonicFunctions.head.getThird.chordComponentString shouldBe "3"
     ex.measures.head.harmonicFunctions.head.countChordComponents shouldBe 4
     ex.measures.head.harmonicFunctions.head.extra.map(_.chordComponentString) shouldBe Set("7")
@@ -188,7 +188,7 @@ class BassTranslatorEndToEndTest extends FunSuite with Matchers with TestUtils {
         List(FiguredBassElement(NoteBuilder(59, B, 1), symbols = List(BassSymbol(6), BassSymbol(5))))
       )
     )
-    ex.measures.head.harmonicFunctions.head.revolution.chordComponentString shouldBe "3"
+    ex.measures.head.harmonicFunctions.head.inversion.chordComponentString shouldBe "3"
     ex.measures.head.harmonicFunctions.head.getThird.chordComponentString shouldBe "3"
     ex.measures.head.harmonicFunctions.head.countChordComponents shouldBe 4
     ex.measures.head.harmonicFunctions.head.extra.map(_.chordComponentString) shouldBe Set("7")
@@ -208,7 +208,7 @@ class BassTranslatorEndToEndTest extends FunSuite with Matchers with TestUtils {
         )
       )
     )
-    ex.measures.head.harmonicFunctions.head.revolution.chordComponentString shouldBe "5"
+    ex.measures.head.harmonicFunctions.head.inversion.chordComponentString shouldBe "5"
     ex.measures.head.harmonicFunctions.head.getThird.chordComponentString shouldBe "3"
     ex.measures.head.harmonicFunctions.head.countChordComponents shouldBe 4
     ex.measures.head.harmonicFunctions.head.extra.map(_.chordComponentString) shouldBe Set("7")
@@ -228,7 +228,7 @@ class BassTranslatorEndToEndTest extends FunSuite with Matchers with TestUtils {
         )
       )
     )
-    ex.measures.head.harmonicFunctions.head.revolution.chordComponentString shouldBe "7"
+    ex.measures.head.harmonicFunctions.head.inversion.chordComponentString shouldBe "7"
     ex.measures.head.harmonicFunctions.head.countChordComponents shouldBe 4
     ex.measures.head.harmonicFunctions.head.extra.map(_.chordComponentString) shouldBe Set("7")
     ex.measures.head.harmonicFunctions.head.omit.map(_.chordComponentString) shouldBe Set.empty
@@ -242,7 +242,7 @@ class BassTranslatorEndToEndTest extends FunSuite with Matchers with TestUtils {
         List(FiguredBassElement(NoteBuilder(55, G, 1), symbols = List(BassSymbol(7))))
       )
     )
-    ex.measures.head.harmonicFunctions.head.revolution.chordComponentString shouldBe "1"
+    ex.measures.head.harmonicFunctions.head.inversion.chordComponentString shouldBe "1"
     ex.measures.head.harmonicFunctions.head.getThird.chordComponentString shouldBe "3>"
     ex.measures.head.harmonicFunctions.head.countChordComponents shouldBe 4
     ex.measures.head.harmonicFunctions.head.extra.map(_.chordComponentString) shouldBe Set("7")
@@ -257,7 +257,7 @@ class BassTranslatorEndToEndTest extends FunSuite with Matchers with TestUtils {
         List(FiguredBassElement(NoteBuilder(58, B, 1), symbols = List(BassSymbol(6), BassSymbol(5))))
       )
     )
-    ex.measures.head.harmonicFunctions.head.revolution.chordComponentString shouldBe "3>"
+    ex.measures.head.harmonicFunctions.head.inversion.chordComponentString shouldBe "3>"
     ex.measures.head.harmonicFunctions.head.getThird.chordComponentString shouldBe "3>"
     ex.measures.head.harmonicFunctions.head.countChordComponents shouldBe 4
     ex.measures.head.harmonicFunctions.head.extra.map(_.chordComponentString) shouldBe Set("7")
@@ -272,7 +272,7 @@ class BassTranslatorEndToEndTest extends FunSuite with Matchers with TestUtils {
         List(FiguredBassElement(NoteBuilder(50, D, 1), symbols = List(BassSymbol(4), BassSymbol(3))))
       )
     )
-    ex.measures.head.harmonicFunctions.head.revolution.chordComponentString shouldBe "5"
+    ex.measures.head.harmonicFunctions.head.inversion.chordComponentString shouldBe "5"
     ex.measures.head.harmonicFunctions.head.getThird.chordComponentString shouldBe "3>"
     ex.measures.head.harmonicFunctions.head.countChordComponents shouldBe 4
     ex.measures.head.harmonicFunctions.head.extra.map(_.chordComponentString) shouldBe Set("7")
@@ -287,7 +287,7 @@ class BassTranslatorEndToEndTest extends FunSuite with Matchers with TestUtils {
         List(FiguredBassElement(NoteBuilder(53, F, 1), symbols = List(BassSymbol(2))))
       )
     )
-    ex.measures.head.harmonicFunctions.head.revolution.chordComponentString shouldBe "7"
+    ex.measures.head.harmonicFunctions.head.inversion.chordComponentString shouldBe "7"
     ex.measures.head.harmonicFunctions.head.getThird.chordComponentString shouldBe "3>"
     ex.measures.head.harmonicFunctions.head.countChordComponents shouldBe 4
     ex.measures.head.harmonicFunctions.head.extra.map(_.chordComponentString) shouldBe Set("7")
@@ -341,7 +341,9 @@ class BassTranslatorEndToEndTest extends FunSuite with Matchers with TestUtils {
       )
     )
     ex.measures.head.harmonicFunctions.length shouldBe 1
-    ex.measures.head.harmonicFunctions.head.delay.map(d => d.first.chordComponentString + "-" + d.second.chordComponentString) shouldBe Set("6-5", "4-3")
+    ex.measures.head.harmonicFunctions.head.delay.map(d =>
+      d.first.chordComponentString + "-" + d.second.chordComponentString
+    ) shouldBe Set("6-5", "4-3")
   }
 
   test("altered VI") {
@@ -359,7 +361,7 @@ class BassTranslatorEndToEndTest extends FunSuite with Matchers with TestUtils {
 
     ex.measures.head.harmonicFunctions.length shouldBe 1
     val hf = ex.measures.head.harmonicFunctions.head
-    hf.revolution.chordComponentString shouldBe "1<"
+    hf.inversion.chordComponentString shouldBe "1<"
     hf.extra.map(_.chordComponentString) shouldBe Set("1<")
     hf.omit.map(_.chordComponentString) shouldBe Set("1")
   }
@@ -385,7 +387,7 @@ class BassTranslatorEndToEndTest extends FunSuite with Matchers with TestUtils {
     ex.measures.head.harmonicFunctions.length shouldBe 1
     val hf = ex.measures.head.harmonicFunctions.head
     hf.degree shouldBe V
-    hf.revolution shouldBe seventh
+    hf.inversion shouldBe seventh
     hf.extra shouldBe Set(seventh, ninthDim)
     hf.omit shouldBe Set(fifth)
   }
@@ -431,7 +433,7 @@ class BassTranslatorEndToEndTest extends FunSuite with Matchers with TestUtils {
     )
     ex.measures.head.harmonicFunctions.length shouldBe 1
     val hf = ex.measures.head.harmonicFunctions.head
-    hf.revolution shouldBe thirdDim
+    hf.inversion shouldBe thirdDim
     hf.omit shouldBe Set()
     hf.extra shouldBe Set()
     hf.countChordComponents shouldBe 3

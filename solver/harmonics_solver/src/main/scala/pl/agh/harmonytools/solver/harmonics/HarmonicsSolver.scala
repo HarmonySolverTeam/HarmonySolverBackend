@@ -27,9 +27,8 @@ case class HarmonicsSolver(
   override val shortestPathCompanion: ShortestPathAlgorithmCompanion = TopologicalSortAlgorithm
 ) extends Solver {
 
-  if (exercise.measures.isEmpty) {
+  if (exercise.measures.isEmpty)
     throw new SolverError("Measures could not be empty")
-  }
 
   private val bassLine: Option[List[Note]]                       = handleDelaysInBassLine()
   private val sopranoLine: Option[List[NoteWithoutChordContext]] = exercise.sopranoLine
@@ -45,8 +44,10 @@ case class HarmonicsSolver(
             val delay = hf.delay
             if (delay.nonEmpty) {
               val durations = bl(i).getDurationDivision
-              val newNote = Note(bl(i).pitch, bl(i).baseNote, bl(i).chordComponent, duration = durations._2)
-              newBassLine = newBassLine.take(i + addedNotes) ++ List(bl(i).copy(duration = durations._1), newNote) ++ newBassLine.drop(i + addedNotes + 1)
+              val newNote   = Note(bl(i).pitch, bl(i).baseNote, bl(i).chordComponent, duration = durations._2)
+              newBassLine =
+                newBassLine.take(i + addedNotes) ++ List(bl(i).copy(duration = durations._1), newNote) ++ newBassLine
+                  .drop(i + addedNotes + 1)
               addedNotes += 1
             }
             i += 1
@@ -105,20 +106,25 @@ case class HarmonicsSolver(
   override def solve(): ExerciseSolution = {
     if (!precheckDisabled)
       PreChecker.run(harmonicFunctions, chordGenerator, bassLine, sopranoLine)
-    val graph         = prepareGraph()
-    if (graph.getNodes.size == 2) {
+    val graph = prepareGraph()
+    if (graph.getNodes.size == 2)
       throw SolverError("Could not generate any chord sequence. For more informations turn on prechecker.")
-    }
     val shortestPathAlgorithm = shortestPathCompanion(graph)
-    val solutionNodes = shortestPathAlgorithm.getShortestPathToLastNode
+    val solutionNodes         = shortestPathAlgorithm.getShortestPathToLastNode
     if (solutionNodes.length != graph.getLayers.length)
       return ExerciseSolution(exercise, -1, List.empty, success = false)
     val solutionChords = {
       bassLine match {
-        case Some(bassLine) => solutionNodes.map(_.getContent.copy()).zip(bassLine).map{case (chord, note) => chord.copy(duration = note.duration)}
+        case Some(bassLine) =>
+          solutionNodes.map(_.getContent.copy()).zip(bassLine).map {
+            case (chord, note) => chord.copy(duration = note.duration)
+          }
         case None =>
           sopranoLine match {
-            case Some(sopranoLine) => solutionNodes.map(_.getContent.copy()).zip(sopranoLine).map{case (chord, note) => chord.copy(duration = note.duration)}
+            case Some(sopranoLine) =>
+              solutionNodes.map(_.getContent.copy()).zip(sopranoLine).map {
+                case (chord, note) => chord.copy(duration = note.duration)
+              }
             case None => solutionNodes.map(_.getContent)
           }
       }

@@ -161,8 +161,7 @@ class HarmonicsParserTest extends FunSuite with Matchers with BeforeAndAfterEach
   }
 
   test("Exercise with empty lines") {
-    testForSuccess(
-      """
+    testForSuccess("""
         |
         |
         |C

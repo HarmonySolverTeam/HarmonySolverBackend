@@ -13,22 +13,24 @@ case class ForbiddenJumpRule(
 ) extends AnyRule[Chord](evaluationRatio) {
   override def evaluate(connection: Connection[Chord]): Double = {
     val currentChord = connection.current
-    val prevChord = connection.prev
+    val prevChord    = connection.prev
     for (i <- voicesIndexes) {
-      if (pitchOffsetBetween(currentChord.notes(i), prevChord.notes(i)) > 9 && !(notNeighbourChords && i == 0) &&
-        !(i == 3 && pitchOffsetBetween(currentChord.notes(i), prevChord.notes(i)) == 12) && !skipCheckingVoiceIncorrectJump(i)) {
+      if (
+        pitchOffsetBetween(currentChord.notes(i), prevChord.notes(i)) > 9 && !(notNeighbourChords && i == 0) &&
+        !(i == 3 && pitchOffsetBetween(
+          currentChord.notes(i),
+          prevChord.notes(i)
+        ) == 12) && !skipCheckingVoiceIncorrectJump(i)
+      )
         return evaluationRatio * 40
-      }
-      if (isAlteredInterval(prevChord.notes(i), currentChord.notes(i))) {
+      if (isAlteredInterval(prevChord.notes(i), currentChord.notes(i)))
         return evaluationRatio * 35
-      }
     }
     satisfied
   }
 
-  private def skipCheckingVoiceIncorrectJump(voiceNumber: Int): Boolean = {
+  private def skipCheckingVoiceIncorrectJump(voiceNumber: Int): Boolean =
     (voiceNumber == 0 && isFixedSoprano) || (voiceNumber == 3 && isFixedBass)
-  }
 
   override def caption: String = "Forbidden Jump"
 }

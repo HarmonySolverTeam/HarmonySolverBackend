@@ -20,8 +20,8 @@ abstract class DoubleLevelGraphBuilder[T <: NodeContent, S <: NodeContent, Q <: 
   private var outerGenerator: Option[LayerGenerator[T, Q]]   = None
   private var innerGenerator: Option[LayerGenerator[S, R]]   = None
   private var outerGeneratorInputs: Option[List[Q]]          = None
-  private val nestedFirst: LeafNode[S]                           = new LeafNode[S](nestedFirstContent)
-  private val nestedLast: LeafNode[S]                            = new LeafNode[S](nestedLastContent)
+  private val nestedFirst: LeafNode[S]                       = new LeafNode[S](nestedFirstContent)
+  private val nestedLast: LeafNode[S]                        = new LeafNode[S](nestedLastContent)
 
   def withOuterEvaluator(outerEvaluator: ConnectionEvaluator[T]): Unit = this.outerEvaluator = Some(outerEvaluator)
   def withInnerEvaluator(innerEvaluator: ConnectionEvaluator[S]): Unit = this.innerEvaluator = Some(innerEvaluator)
@@ -41,13 +41,16 @@ abstract class DoubleLevelGraphBuilder[T <: NodeContent, S <: NodeContent, Q <: 
   private def getInnerGenerator: LayerGenerator[S, R] =
     innerGenerator.getOrElse(throw UnexpectedInternalError("InnerGenerator not defined"))
 
-  private val templateSingleGraphBuilder = new SingleLevelGraphBuilder[T, Q, S](new Node[T, S](firstContent), new Node[T, S](lastContent))
+  private val templateSingleGraphBuilder =
+    new SingleLevelGraphBuilder[T, Q, S](new Node[T, S](firstContent), new Node[T, S](lastContent))
 
   private def generateNestedLayers(): Unit = {
     for (layerId <- templateSingleGraphBuilder.getLayers.indices) {
       for (currentNode <- templateSingleGraphBuilder.getLayers(layerId).getNodeList) {
         val innerGeneratorInput: R = prepareInnerGeneratorInput(currentNode, getOuterGeneratorInputs(layerId), layerId)
-        currentNode.setNestedLayer(new LeafLayer[S](getInnerGenerator.generate(innerGeneratorInput).map(new LeafNode[S](_))))
+        currentNode.setNestedLayer(
+          new LeafLayer[S](getInnerGenerator.generate(innerGeneratorInput).map(new LeafNode[S](_)))
+        )
       }
     }
   }
@@ -97,9 +100,8 @@ abstract class DoubleLevelGraphBuilder[T <: NodeContent, S <: NodeContent, Q <: 
   ): Unit = {
     for (nestedNode <- node.getNestedLayer.getNodeList) {
       for (nestedNeighbour <- nestedNode.getNextNeighbours) {
-        if (nextNodeContent.isRelatedTo(nestedNeighbour.node.getContent)) {
+        if (nextNodeContent.isRelatedTo(nestedNeighbour.node.getContent))
           nestedNeighbour.setWeight(weight)
-        }
       }
     }
   }

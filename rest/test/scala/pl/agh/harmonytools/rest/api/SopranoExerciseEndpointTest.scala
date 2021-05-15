@@ -46,8 +46,7 @@ class SopranoExerciseEndpointTest extends EndpointTest("harmonytools/soprano", H
     }
 }""".stripMargin)
 
-  private val expectedJsonResponse = Json.parse(
-    """{
+  private val expectedJsonResponse = Json.parse("""{
       |    "exercise": {
       |        "key": "C",
       |        "meter": [4, 4],
@@ -76,7 +75,7 @@ class SopranoExerciseEndpointTest extends EndpointTest("harmonytools/soprano", H
       |            {
       |                "functionName": "T",
       |                "degree": "I",
-      |                "revolution": "1",
+      |                "inversion": "1",
       |                "delays": [],
       |                "extra": [],
       |                "omit": [],
@@ -88,7 +87,7 @@ class SopranoExerciseEndpointTest extends EndpointTest("harmonytools/soprano", H
       |            {
       |                "functionName": "D",
       |                "degree": "V",
-      |                "revolution": "1",
+      |                "inversion": "1",
       |                "delays": [],
       |                "extra": [],
       |                "omit": [],
@@ -130,7 +129,7 @@ class SopranoExerciseEndpointTest extends EndpointTest("harmonytools/soprano", H
       |                "functionName": "T",
       |                "degree": "I",
       |                "position": "1",
-      |                "revolution": "1",
+      |                "inversion": "1",
       |                "delays": [],
       |                "extra": [],
       |                "omit": [],
@@ -170,7 +169,7 @@ class SopranoExerciseEndpointTest extends EndpointTest("harmonytools/soprano", H
       |                "functionName": "D",
       |                "degree": "V",
       |                "position": "3",
-      |                "revolution": "1",
+      |                "inversion": "1",
       |                "delays": [],
       |                "extra": [],
       |                "omit": [],
@@ -210,7 +209,7 @@ class SopranoExerciseEndpointTest extends EndpointTest("harmonytools/soprano", H
       |                "functionName": "T",
       |                "degree": "I",
       |                "position": "1",
-      |                "revolution": "1",
+      |                "inversion": "1",
       |                "delays": [],
       |                "extra": [],
       |                "omit": [],

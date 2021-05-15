@@ -12,14 +12,14 @@ case class DoublePrimeOrFifthRule() extends SoftRule[Chord] {
 
     //double soprano component
     if (
-      currentChord.harmonicFunction.revolution.chordComponentString == "1" &&
+      currentChord.harmonicFunction.inversion.chordComponentString == "1" &&
       currentChord.countBaseComponents(currentChord.sopranoNote.chordComponent.baseComponent) == 1
     )
       return 2
 
-    //double fifth if revolution === fifth
+    //double fifth if inversion === fifth
     if (
-      currentChord.harmonicFunction.revolution == currentChord.harmonicFunction.getFifth && currentChord
+      currentChord.harmonicFunction.inversion == currentChord.harmonicFunction.getFifth && currentChord
         .countBaseComponents(currentChord.harmonicFunction.getFifth.baseComponent) == 1
     )
       return 2

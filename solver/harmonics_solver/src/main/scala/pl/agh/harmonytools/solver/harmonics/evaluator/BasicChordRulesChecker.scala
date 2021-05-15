@@ -2,7 +2,16 @@ package pl.agh.harmonytools.solver.harmonics.evaluator
 
 import pl.agh.harmonytools.algorithm.evaluator.{ConnectionEvaluator, SoftRule}
 import pl.agh.harmonytools.model.chord.Chord
-import pl.agh.harmonytools.solver.harmonics.evaluator.rules.soft.{ClosestMoveInBassRule, ClosestMoveRule, DominantRelationConnectionRule, DominantSecondRelationConnectionRule, DoublePrimeOrFifthRule, ForbiddenSumJumpRule, SopranoBestLine, SubdominantDominantConnectionRule}
+import pl.agh.harmonytools.solver.harmonics.evaluator.rules.soft.{
+  ClosestMoveInBassRule,
+  ClosestMoveRule,
+  DominantRelationConnectionRule,
+  DominantSecondRelationConnectionRule,
+  DoublePrimeOrFifthRule,
+  ForbiddenSumJumpRule,
+  SopranoBestLine,
+  SubdominantDominantConnectionRule
+}
 
 abstract class BasicChordRulesChecker(isFixedSoprano: Boolean) extends ConnectionEvaluator[Chord] {
   override protected val connectionSize: Int = 3

@@ -46,13 +46,13 @@ class SopranoGeneratorTest extends FunSuite with Matchers with TestUtils {
 
   test("Harmonic function generate in D from soprano note with pitch 71") {
     val generator = HarmonicFunctionGenerator(List(tonic, subdominant, dominant), keyD)
-    val input = HarmonicFunctionGeneratorInput(NoteWithoutChordContext(71, B), MeasurePlace.BEGINNING)
+    val input     = HarmonicFunctionGeneratorInput(NoteWithoutChordContext(71, B), MeasurePlace.BEGINNING)
     generator.generate(input).length shouldBe 1
   }
 
   test("Harmonic function generate in D from soprano note with pitch 74") {
     val generator = HarmonicFunctionGenerator(List(tonic, subdominant, dominant), keyD)
-    val input = HarmonicFunctionGeneratorInput(NoteWithoutChordContext(74, D), MeasurePlace.BEGINNING)
+    val input     = HarmonicFunctionGeneratorInput(NoteWithoutChordContext(74, D), MeasurePlace.BEGINNING)
     generator.generate(input).length shouldBe 2
   }
 }

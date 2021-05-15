@@ -22,11 +22,11 @@ import pl.agh.harmonytools.utils.IntervalUtils
 
 object BassTranslator {
 
-  private def createChordComponent(cc: String, isDown: Boolean = false): ChordComponent = {
+  private def createChordComponent(cc: String, isDown: Boolean = false): ChordComponent =
     ChordComponentManager.chordComponentFromString(cc, isDown)
-  }
 
-  /***
+  /**
+   * *
    *
    * @param functions list of lists of BassHarmonicFunctionBuilder
    * @return functions mapped to list of BassHarmonicFunctionBuilder - chooses only one
@@ -51,7 +51,11 @@ object BassTranslator {
               resultList = resultList :+ f2
             else
               resultList = resultList :+ f1
-          } else if (i < functions.length - 1 && functions(i + 1).length == 1 && functions(i + 1).head.getBaseFunction == SUBDOMINANT) {
+          } else if (
+            i < functions.length - 1 && functions(i + 1).length == 1 && functions(
+              i + 1
+            ).head.getBaseFunction == SUBDOMINANT
+          ) {
             if (f1.getBaseFunction == DOMINANT)
               resultList = resultList :+ f2
             else
@@ -64,7 +68,8 @@ object BassTranslator {
     resultList
   }
 
-  /***
+  /**
+   * *
    *
    * @param bassNumbers list of numbers from figured bass symbol
    * @return completed list of numbers from figured bass symbol
@@ -116,7 +121,8 @@ object BassTranslator {
     }
   }
 
-  /***
+  /**
+   * *
    *
    * @param chordElement
    * @param key
@@ -137,7 +143,6 @@ object BassTranslator {
   }
 
   /**
-   *
    * @param chordElement
    * @param mode
    * @param key
@@ -152,46 +157,49 @@ object BassTranslator {
   }
 
   /**
-   *
    * @param chordElement
    * @param degree
    * @param key
-   * @return valid revolution for given chordElement in given key and egree
+   * @return valid inversion for given chordElement in given key and egree
    */
-  def getValidRevolution(
+  def getValidInversion(
     chordElement: ChordElement,
     degree: Degree,
     key: Key
   ): String = {
-    var revolutionInt = 1
-    val prime         = chordElement.getPrimeNote
-    var bass          = chordElement.bassElement.bassNote.baseNote.value
+    var inversionInt = 1
+    val prime        = chordElement.getPrimeNote
+    var bass         = chordElement.bassElement.bassNote.baseNote.value
 
     while (bass != prime) {
       bass = (bass - 1) %% 7
-      revolutionInt += 1
+      inversionInt += 1
     }
 
     var isLowered = false
 
-    if (revolutionInt == 3) {
+    if (inversionInt == 3) {
       val d = if (degree == ScaleDegree.VII) ScaleDegree.V else degree
       if (IntervalUtils.getThirdMode(key, d) == MINOR)
         isLowered = true
     }
 
-    revolutionInt.toString + (if (isLowered) ">" else "")
+    inversionInt.toString + (if (isLowered) ">" else "")
   }
 
   /**
-   *
    * @param mode
    * @param key
    * @param primeNote
    * @param noteNumber
    * @return chord component symbol with correct alteration symbol
    */
-  def calculateChordComponentForSpecificNote(mode: BaseMode, key: Key, primeNote: Int, noteNumber: Int): ChordComponent = {
+  def calculateChordComponentForSpecificNote(
+    mode: BaseMode,
+    key: Key,
+    primeNote: Int,
+    noteNumber: Int
+  ): ChordComponent = {
     val realPrime       = (primeNote - key.baseNote.value) %% 7
     val pitches         = if (mode == MAJOR) MajorScale.pitches else MinorScale.pitches
     val primePitch      = pitches(realPrime)
@@ -209,11 +217,11 @@ object BassTranslator {
 
   def translateDelays(
     delays: List[Delay],
-    revolution: ChordComponent,
+    inversion: ChordComponent,
     mode: BaseMode,
     d: Degree
   ): Set[Delay] = {
-    val revNumber = revolution.baseComponent - 1
+    val revNumber = inversion.baseComponent - 1
     val degree    = d.root - 1
     val baseComponentsSemitonesNumber = Map(
       1 -> 0,
@@ -250,16 +258,15 @@ object BassTranslator {
         else if (baseComponentsSemitonesNumber(secondNumber) < pitchDifference)
           newSecond = createChordComponent(secondNumber.toString + ELEVATED.value)
       }
-      if (newSecond.chordComponentString == "3<" && mode == MINOR) {
+      if (newSecond.chordComponentString == "3<" && mode == MINOR)
         newSecond = createChordComponent(newSecond.baseComponent.toString)
-      }
       Delay(newFirst, newSecond)
     }.toSet
   }
 
   def changeDelaysDuringModeChange(delays: Set[Delay], fromMinorToMajor: Boolean): Set[Delay] = {
     def mapDelayComponent(cc: ChordComponent): ChordComponent = {
-      if (List(6,7).contains(cc.baseComponent) && cc.alteration.isEmpty)
+      if (List(6, 7).contains(cc.baseComponent) && cc.alteration.isEmpty)
         if (fromMinorToMajor) cc.getDecreasedByHalfTone else cc.getIncreasedByHalfTone
       else cc
     }
@@ -271,28 +278,30 @@ object BassTranslator {
     key: Key,
     delays: List[BassDelay]
   ): List[BassHarmonicFunctionBuilder] = {
-    var ret = List.empty[BassHarmonicFunctionBuilder]
+    var ret  = List.empty[BassHarmonicFunctionBuilder]
     val mode = key.mode
 
     val functions = getValidFunctions(chordElement, key)
 
     for (functionName <- functions) {
-      var extra = Set.empty[ChordComponent]
-      var omit  = Set.empty[ChordComponent]
+      var extra  = Set.empty[ChordComponent]
+      var omit   = Set.empty[ChordComponent]
       var degree = ScaleDegree.fromValue((chordElement.getPrimeNote - key.baseNote.value) %% 7 + 1)
       if (functionName == DOMINANT && degree == VII)
         chordElement.setPrimeNote((chordElement.getPrimeNote - 2) %% 7)
-      val position   = getValidPosition(chordElement, mode, key)
-      val revolution = getValidRevolution(chordElement, degree, key)
+      val position  = getValidPosition(chordElement, mode, key)
+      val inversion = getValidInversion(chordElement, degree, key)
       omit = chordElement.omit.map(o => createChordComponent(o.toString)).toSet
-      val down   = false
-      val system = UNDEFINED
+      val down    = false
+      val system  = UNDEFINED
       val symbols = chordElement.getSortedSymbols
 
-      if ((symbols == List(3, 5, 7) || symbols == List(2, 4, 6) || symbols == List(3, 4, 6)
+      if (
+        (symbols == List(3, 5, 7) || symbols == List(2, 4, 6) || symbols == List(3, 4, 6)
         || symbols == List(3, 5, 6) || symbols == List(2, 4, 10) || symbols == List(5, 6, 7)
-        || symbols == List(3, 5, 7, 9)) && !extra.exists(_.baseComponent == 7))
-          extra = extra + calculateChordComponentForSpecificNote(mode, key, chordElement.getPrimeNote, 7)
+        || symbols == List(3, 5, 7, 9)) && !extra.exists(_.baseComponent == 7)
+      )
+        extra = extra + calculateChordComponentForSpecificNote(mode, key, chordElement.getPrimeNote, 7)
 
       if (symbols == List(2, 4, 10) || symbols == List(5, 6, 7) || symbols == List(3, 5, 7, 9)) {
         if (!extra.exists(_.baseComponent == 9))
@@ -308,14 +317,14 @@ object BassTranslator {
           extra = extra + calculateChordComponentForSpecificNote(mode, key, chordElement.getPrimeNote, 7)
         if (
           chordElement
-            .bassSymbolsHasGivenNumber(7) || (revolution.head == '5' && chordElement.bassSymbolsHasGivenNumber(5))
-          || (revolution.head == 7 && chordElement.bassSymbolsHasGivenNumber(3))
+            .bassSymbolsHasGivenNumber(7) || (inversion.head == '5' && chordElement.bassSymbolsHasGivenNumber(5))
+          || (inversion.head == 7 && chordElement.bassSymbolsHasGivenNumber(3))
         )
           if (!extra.exists(_.baseComponent == 9))
             extra = extra + calculateChordComponentForSpecificNote(mode, key, chordElement.getPrimeNote, 9)
         degree = V
       }
-      val revolutionChordComponent = revolution match {
+      val inversionChordComponent = inversion match {
         case "2" => calculateChordComponentForSpecificNote(mode, key, chordElement.getPrimeNote, 9)
         case "5" => calculateChordComponentForSpecificNote(mode, key, chordElement.getPrimeNote, 5)
         case "7" => calculateChordComponentForSpecificNote(mode, key, chordElement.getPrimeNote, 7)
@@ -329,13 +338,13 @@ object BassTranslator {
         } else mode
       }
 
-      val hfDelays = translateDelays(delays.map(_.mapToChordComponentDelay()), revolutionChordComponent, mode, degree)
+      val hfDelays = translateDelays(delays.map(_.mapToChordComponentDelay()), inversionChordComponent, mode, degree)
       val builder  = BassHarmonicFunctionBuilder()
-      builder.withRevolution(revolutionChordComponent)
+      builder.withInversion(inversionChordComponent)
       builder.withExtra(extra)
       position match {
         case Some(value) => builder.withPosition(value)
-        case None =>
+        case None        =>
       }
       builder.withBaseFunction(functionName)
       builder.withDegree(degree)
@@ -362,7 +371,7 @@ object BassTranslator {
       chordElement.completeUntilTwoNextThirds()
       chordElement.findPrime()
       val hf = createHarmonicFunctions(chordElement, figuredBassExercise.key, element.delays)
-      element.bassNote.withChordComponentString(hf.head.getRevolution.baseComponent.toString)
+      element.bassNote.withChordComponentString(hf.head.getInversion.baseComponent.toString)
       harmonicFunctions = harmonicFunctions :+ hf
       chordElements = chordElements :+ chordElement
     }
@@ -378,7 +387,7 @@ object BassTranslator {
     val majorPitches = MajorScale.pitches
 
     for (i <- harmonicFunctions.indices) {
-      val hf = harmonicFunctions(i)
+      val hf     = harmonicFunctions(i)
       var omits  = List.empty[Int]
       var extras = List.empty[String]
       for (symbol <- chordElements(i).bassElement.symbols) {
@@ -414,29 +423,29 @@ object BassTranslator {
         getAlterationSymbolForNote(figuredBassExercise.elements(i).bassNote, figuredBassExercise.key)
 
       if (alterationSymbol != NATURAL) {
-        val revolutionString = hf.getRevolution.chordComponentString
-        val revolution       = hf.getRevolution.baseComponent
-        if (!List(7, 9).contains(revolution))
-          omits = omits :+ revolution
+        val inversionString = hf.getInversion.chordComponentString
+        val inversion       = hf.getInversion.baseComponent
+        if (!List(7, 9).contains(inversion))
+          omits = omits :+ inversion
         if (alterationSymbol == SHARP) {
-          extras = extras :+ (revolution.toString + ELEVATED.value)
-          if (revolutionString.last != LOWERED.value.head)
-            hf.withRevolution(
-              createChordComponent(revolutionString + ELEVATED.value)
+          extras = extras :+ (inversion.toString + ELEVATED.value)
+          if (inversionString.last != LOWERED.value.head)
+            hf.withInversion(
+              createChordComponent(inversionString + ELEVATED.value)
             )
           else
-            hf.withRevolution(createChordComponent(revolution.toString))
+            hf.withInversion(createChordComponent(inversion.toString))
         } else {
-          extras = extras :+ (revolution.toString + LOWERED.value)
-          if (revolutionString.last != ELEVATED.value.head)
-            hf.withRevolution(
-              createChordComponent(revolutionString + LOWERED.value)
+          extras = extras :+ (inversion.toString + LOWERED.value)
+          if (inversionString.last != ELEVATED.value.head)
+            hf.withInversion(
+              createChordComponent(inversionString + LOWERED.value)
             )
           else
-            hf.withRevolution(createChordComponent(revolution.toString))
+            hf.withInversion(createChordComponent(inversion.toString))
         }
 
-        if (revolution == 3) {
+        if (inversion == 3) {
           if (mode == MINOR && extras.contains("3<")) {
             if (!List(II, III, VI).contains(hf.getDegree)) {
               hf.withMode(MAJOR)
@@ -465,7 +474,7 @@ object BassTranslator {
           }
         }
 
-        hf.removeRevolutionFromExtra(revolution)
+        hf.removeInversionFromExtra(inversion)
         hf.handleDownChord()
       }
 
@@ -515,28 +524,32 @@ object BassTranslator {
           val alter   = e.tail
           if (alter == ELEVATED.value) {
             if (hf.getExtra.exists(_.chordComponentString == toAlter.toString + LOWERED.value)) {
-              if (hf.getRevolution.chordComponentString != toAlter.toString + ELEVATED.value) {
+              if (hf.getInversion.chordComponentString != toAlter.toString + ELEVATED.value) {
                 hf.withExtra(
                   hf.getExtra.filterNot(
                     _.chordComponentString == toAlter.toString + LOWERED.value
                   ) + createChordComponent(toAlter.toString)
                 )
                 if (
-                  hf.getOmit.exists(_.chordComponentString == toAlter.toString) && hf.getRevolution.baseComponent != toAlter
+                  hf.getOmit.exists(
+                    _.chordComponentString == toAlter.toString
+                  ) && hf.getInversion.baseComponent != toAlter
                 )
                   hf.withOmit(hf.getOmit.filterNot(_.chordComponentString == toAlter.toString))
               }
               addedSomething = true
               notAdd = true
             } else if (hf.getExtra.exists(_.chordComponentString == toAlter.toString)) {
-              if (hf.getRevolution.chordComponentString == toAlter.toString) {
+              if (hf.getInversion.chordComponentString == toAlter.toString) {
                 hf.withExtra(
                   hf.getExtra.filterNot(
                     _.chordComponentString == toAlter.toString
                   ) + createChordComponent(toAlter.toString + ELEVATED.value)
                 )
-                if (hf.getOmit.exists(_.chordComponentString == toAlter.toString) &&
-                  hf.getRevolution.baseComponent != toAlter) {
+                if (
+                  hf.getOmit.exists(_.chordComponentString == toAlter.toString) &&
+                  hf.getInversion.baseComponent != toAlter
+                ) {
                   hf.withOmit(
                     hf.getOmit.filterNot(_.chordComponentString == toAlter.toString)
                   )
@@ -547,26 +560,32 @@ object BassTranslator {
             }
           } else {
             if (hf.getExtra.exists(_.chordComponentString == toAlter.toString + ELEVATED.value)) {
-              if (hf.getRevolution.chordComponentString != toAlter.toString + ELEVATED.value) {
+              if (hf.getInversion.chordComponentString != toAlter.toString + ELEVATED.value) {
                 hf.withExtra(
                   hf.getExtra.filterNot(
                     _.chordComponentString == toAlter.toString + ELEVATED.value
                   ) + createChordComponent(toAlter.toString)
                 )
-                if (hf.getOmit.exists(_.chordComponentString == toAlter.toString) && hf.getRevolution.baseComponent != toAlter)
+                if (
+                  hf.getOmit.exists(
+                    _.chordComponentString == toAlter.toString
+                  ) && hf.getInversion.baseComponent != toAlter
+                )
                   hf.withOmit(hf.getOmit.filterNot(_.chordComponentString == toAlter.toString))
               }
               addedSomething = true
               notAdd = true
             } else if (hf.getExtra.exists(_.chordComponentString == toAlter.toString)) {
-              if (hf.getRevolution.chordComponentString == toAlter.toString) {
+              if (hf.getInversion.chordComponentString == toAlter.toString) {
                 hf.withExtra(
                   hf.getExtra.filterNot(
                     _.chordComponentString == toAlter.toString
                   ) + createChordComponent(toAlter.toString + LOWERED.value)
                 )
-                if (hf.getOmit.exists(_.chordComponentString == toAlter.toString) &&
-                  hf.getRevolution.baseComponent != toAlter) {
+                if (
+                  hf.getOmit.exists(_.chordComponentString == toAlter.toString) &&
+                  hf.getInversion.baseComponent != toAlter
+                ) {
                   hf.withOmit(
                     hf.getOmit.filterNot(_.chordComponentString == toAlter.toString)
                   )
@@ -589,7 +608,6 @@ object BassTranslator {
       }
     }
   }
-
 
   def getAlterationSymbolForNote(noteBuilder: NoteBuilder, key: Key): AlterationType.FiguredBassType = {
     val scalePitches = if (key.mode == MAJOR) MajorScale.pitches else MinorScale.pitches
@@ -620,15 +638,13 @@ object BassTranslator {
         if (delay.first.baseComponent == 3 && delay.second.baseComponent == 3) {
           val hf1 = hf.copy()
           val hf2 = hf.copy()
-          if (
-            delay.first.chordComponentString == "3" && delay.second.chordComponentString == "3>" && !hf.getIsDown
-          ) {
+          if (delay.first.chordComponentString == "3" && delay.second.chordComponentString == "3>" && !hf.getIsDown) {
             hf1.withDelay(hf.getDelay.filterNot(_ == delay))
             hf2.withDelay(hf.getDelay.filterNot(_ == delay))
             hf1.withMode(MAJOR)
             hf2.withMode(MINOR)
-            if (hf.getRevolution.chordComponentString == "3>")
-              hf1.withRevolution(createChordComponent("3"))
+            if (hf.getInversion.chordComponentString == "3>")
+              hf1.withInversion(createChordComponent("3"))
             newFunctions = newFunctions :+ hf1 :+ hf2
             val dur = bassLine(i).getResult.getDurationDivision
             newBassLine = newBassLine :+ bassLine(i).copy(duration = dur._1) :+ bassLine(i).copy(duration = dur._2)
@@ -641,8 +657,8 @@ object BassTranslator {
             hf2.withDelay(hf.getDelay.filterNot(_ == delay))
             hf1.withMode(MINOR)
             hf2.withMode(MAJOR)
-            if (hf.getRevolution.chordComponentString == "3")
-              hf1.withRevolution(createChordComponent("3>"))
+            if (hf.getInversion.chordComponentString == "3")
+              hf1.withInversion(createChordComponent("3>"))
             newFunctions = newFunctions :+ hf1 :+ hf2
             val dur = bassLine(i).getResult.getDurationDivision
             newBassLine = newBassLine :+ bassLine(i).copy(duration = dur._1) :+ bassLine(i).copy(duration = dur._2)
@@ -671,10 +687,12 @@ object BassTranslator {
       val hf     = harmonicFunctions(i)
       val nextHf = harmonicFunctions(i + 1)
       if (
-        hf.getExtra.exists(_.baseComponent == 7) && (hf.getExtra.exists(_.baseComponent == 3) || hf.testThird || hf.getRevolution.chordComponentString == "3") &&
+        hf.getExtra.exists(_.baseComponent == 7) && (hf.getExtra.exists(
+          _.baseComponent == 3
+        ) || hf.testThird || hf.getInversion.chordComponentString == "3") &&
         hf.isInDominantRelation(nextHf) && DeflectionsHandler.calculateKey(nextHf)(key) != key &&
         chordElements(i).bassElement.bassNote.pitch %% 12 ==
-          (DeflectionsHandler.calculateKey(nextHf)(key).tonicPitch + hf.getRevolution.semitonesNumber + 7 + {
+          (DeflectionsHandler.calculateKey(nextHf)(key).tonicPitch + hf.getInversion.semitonesNumber + 7 + {
             if (hf.getIsDown) 1 else 0
           }) %% 12
       ) {
@@ -705,19 +723,19 @@ object BassTranslator {
                 9
               )
           )
-        if (hf.getRevolution.baseComponent == 7) {
-          hf.withRevolution(
-              calculateChordComponentForSpecificNote(hf.getMode, calculatedKey, chordElements(i).getPrimeNote, 7)
+        if (hf.getInversion.baseComponent == 7) {
+          hf.withInversion(
+            calculateChordComponentForSpecificNote(hf.getMode, calculatedKey, chordElements(i).getPrimeNote, 7)
           )
-        } else if (hf.getRevolution.baseComponent == 9) {
-          hf.withRevolution(
-              calculateChordComponentForSpecificNote(hf.getMode, calculatedKey, chordElements(i).getPrimeNote, 9)
+        } else if (hf.getInversion.baseComponent == 9) {
+          hf.withInversion(
+            calculateChordComponentForSpecificNote(hf.getMode, calculatedKey, chordElements(i).getPrimeNote, 9)
           )
         }
         hf.getPosition match {
           case Some(value) if value.baseComponent == 9 =>
             hf.withPosition(
-                calculateChordComponentForSpecificNote(hf.getMode, calculatedKey, chordElements(i).getPrimeNote, 9)
+              calculateChordComponentForSpecificNote(hf.getMode, calculatedKey, chordElements(i).getPrimeNote, 9)
             )
           case _ =>
         }
@@ -732,19 +750,19 @@ object BassTranslator {
   }
 
   def createExerciseFromFiguredBass(figuredBassExercise: FiguredBassExercise): HarmonicsExercise = {
-    if (figuredBassExercise.elements.isEmpty) {
+    if (figuredBassExercise.elements.isEmpty)
       throw SolverError("Elements of exercise could not be empty.")
-    }
     val (chordElements, harmonicFunctions) = convertToHarmonicFunctions(figuredBassExercise)
-    val key                               = figuredBassExercise.key
+    val key                                = figuredBassExercise.key
     handleAlterations(harmonicFunctions, chordElements, figuredBassExercise)
-    val bassLine                     = figuredBassExercise.elements.map(_.bassNote)
-    val (harmonicFunctionsAfterSplit, bassLineAfterSplit, chordElementsAfterSplit) = split33Delays(harmonicFunctions, bassLine, chordElements)
-    val newFunctions                 = handleDeflections(harmonicFunctionsAfterSplit, key, chordElementsAfterSplit)
+    val bassLine = figuredBassExercise.elements.map(_.bassNote)
+    val (harmonicFunctionsAfterSplit, bassLineAfterSplit, chordElementsAfterSplit) =
+      split33Delays(harmonicFunctions, bassLine, chordElements)
+    val newFunctions    = handleDeflections(harmonicFunctionsAfterSplit, key, chordElementsAfterSplit)
     val measureDuration = figuredBassExercise.meter.asDouble
-    var counter = 0.0
-    var measures = List.empty[Measure]
-    var measureHfs = List.empty[BassHarmonicFunctionBuilder]
+    var counter         = 0.0
+    var measures        = List.empty[Measure]
+    var measureHfs      = List.empty[BassHarmonicFunctionBuilder]
     for (i <- bassLineAfterSplit.indices) {
       measureHfs = measureHfs :+ newFunctions(i)
       counter += bassLineAfterSplit(i).duration

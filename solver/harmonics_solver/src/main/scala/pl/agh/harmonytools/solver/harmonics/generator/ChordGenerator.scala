@@ -25,7 +25,7 @@ case class ChordGenerator(key: Key) extends LayerGenerator[Chord, ChordGenerator
   }
 
   private def getChordTemplate(harmonicFunction: HarmonicFunction): ChordTemplate = {
-    val bass: Option[ChordComponent]    = Some(harmonicFunction.revolution)
+    val bass: Option[ChordComponent]    = Some(harmonicFunction.inversion)
     val tenor: Option[ChordComponent]   = None
     val alto: Option[ChordComponent]    = None
     var soprano: Option[ChordComponent] = None
@@ -38,7 +38,7 @@ case class ChordGenerator(key: Key) extends LayerGenerator[Chord, ChordGenerator
         needToAdd = needToAdd.filterNot(_ == position)
       case None =>
     }
-    needToAdd = needToAdd.filterNot(_ == harmonicFunction.revolution)
+    needToAdd = needToAdd.filterNot(_ == harmonicFunction.inversion)
     ChordTemplate(FourPartChordComponents(soprano, alto, tenor, bass), needToAdd)
   }
 
@@ -367,9 +367,12 @@ case class ChordGenerator(key: Key) extends LayerGenerator[Chord, ChordGenerator
 
   // todo this was not working (always true) in prev project, but it should be checked in Sikorski's book if it is correct
   private def correctNinthChord(chord: Chord): Boolean = {
-    if (!chord.harmonicFunction.extra.exists(_.baseComponent == 9) || chord.harmonicFunction.omit.exists(_.baseComponent == 1))
+    if (
+      !chord.harmonicFunction.extra
+        .exists(_.baseComponent == 9) || chord.harmonicFunction.omit.exists(_.baseComponent == 1)
+    )
       return true
-    if (List(3, 7).contains(chord.harmonicFunction.revolution.baseComponent))
+    if (List(3, 7).contains(chord.harmonicFunction.inversion.baseComponent))
       if (!chord.sopranoNote.baseChordComponentEquals(9) || !chord.tenorNote.baseChordComponentEquals(1))
         return false
     true

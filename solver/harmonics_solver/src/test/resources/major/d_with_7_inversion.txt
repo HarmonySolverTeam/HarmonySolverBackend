@@ -1,0 +1,4 @@
+D
+4/4
+S{degree:2/inversion:7}D{}
+D{inversion:7}T{}

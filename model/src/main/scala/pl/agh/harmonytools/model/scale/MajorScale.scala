@@ -13,4 +13,3 @@ object MajorScale extends ScaleCompanion {
   def apply(baseNote: BaseNote.BaseNoteType, tonicPitch: Int): MajorScale =
     MajorScale(Key(baseNote, tonicPitch))
 }
-

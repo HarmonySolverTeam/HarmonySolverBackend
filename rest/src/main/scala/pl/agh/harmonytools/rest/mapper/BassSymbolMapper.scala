@@ -9,12 +9,12 @@ object BassSymbolMapper extends Mapper[BassSymbol, BassSymbolDto] {
     val altType = dto.alteration match {
       case Some(alt) =>
         alt match {
-        case AlterationType.NATURAL.value => AlterationType.NATURAL
-        case AlterationType.SHARP.value   => AlterationType.SHARP
-        case AlterationType.FLAT.value    => AlterationType.FLAT
-        case AlterationType.EMPTY.value   => AlterationType.EMPTY
-        case unknown                      => throw UnexpectedInternalError(s"Unknown alteration type: $unknown")
-      }
+          case AlterationType.NATURAL.value => AlterationType.NATURAL
+          case AlterationType.SHARP.value   => AlterationType.SHARP
+          case AlterationType.FLAT.value    => AlterationType.FLAT
+          case AlterationType.EMPTY.value   => AlterationType.EMPTY
+          case unknown                      => throw UnexpectedInternalError(s"Unknown alteration type: $unknown")
+        }
       case None => AlterationType.EMPTY
     }
     BassSymbol(
@@ -25,10 +25,10 @@ object BassSymbolMapper extends Mapper[BassSymbol, BassSymbolDto] {
 
   override def mapToDTO(model: BassSymbol): BassSymbolDto = {
     val alterationType = model.alteration match {
-      case AlterationType.SHARP => Some(AlterationType.SHARP.value)
-      case AlterationType.FLAT => Some(AlterationType.FLAT.value)
+      case AlterationType.SHARP   => Some(AlterationType.SHARP.value)
+      case AlterationType.FLAT    => Some(AlterationType.FLAT.value)
       case AlterationType.NATURAL => Some(AlterationType.NATURAL.value)
-      case AlterationType.EMPTY => None
+      case AlterationType.EMPTY   => None
     }
     BassSymbolDto(Some(model.component), alterationType)
   }

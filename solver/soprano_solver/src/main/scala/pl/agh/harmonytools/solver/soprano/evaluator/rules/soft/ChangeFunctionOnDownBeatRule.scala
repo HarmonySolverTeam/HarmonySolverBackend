@@ -7,8 +7,8 @@ import pl.agh.harmonytools.solver.soprano.evaluator.rules.{notChangeFunctionRule
 
 case class ChangeFunctionOnDownBeatRule() extends SoftRule[HarmonicFunctionWithSopranoInfo] {
   override def evaluate(connection: Connection[HarmonicFunctionWithSopranoInfo]): Double = {
-    if (notChangeFunctionRule.isBroken(connection) && connection.current.measurePlace == MeasurePlace.UPBEAT) {
+    if (notChangeFunctionRule.isBroken(connection) && connection.current.measurePlace == MeasurePlace.UPBEAT)
       5
-    } else satisfied
+    else satisfied
   }
 }

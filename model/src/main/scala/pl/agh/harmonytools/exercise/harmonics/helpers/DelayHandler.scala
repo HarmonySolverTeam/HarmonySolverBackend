@@ -3,6 +3,7 @@ package pl.agh.harmonytools.exercise.harmonics.helpers
 import pl.agh.harmonytools.model.harmonicfunction.HarmonicFunction
 
 object DelayHandler {
+
   /**
    * Creates list of HarmonicFunction objects without abstract delays from given one containing abstract delays.
    * For each HarmonicFunction with abstract delays - it transforms this HarmonicFunction
@@ -25,7 +26,7 @@ object DelayHandler {
           currentHf = currentHf.copy(extra = currentHf.extra.filter(_ != d.second))
           if (currentHf.position.isDefined && d.second == currentHf.position.get)
             currentHf = currentHf.copy(position = Some(d.first))
-          if (d.second == currentHf.revolution) currentHf = currentHf.copy(revolution = d.first)
+          if (d.second == currentHf.inversion) currentHf = currentHf.copy(inversion = d.first)
         }
         resultHfs = resultHfs ++ List(currentHf, currentHfCopy)
       } else resultHfs = resultHfs :+ currentHf

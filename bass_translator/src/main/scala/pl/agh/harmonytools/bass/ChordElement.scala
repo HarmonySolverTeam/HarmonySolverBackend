@@ -6,15 +6,15 @@ import Math.abs
 import pl.agh.harmonytools.utils.Extensions.ExtendedInt
 
 case class ChordElement(var notesNumbers: List[Int], var omit: List[Int], bassElement: FiguredBassElement) {
-  private var primeNote: Option[Int] = None
+  private var primeNote: Option[Int]    = None
   def setPrimeNote(baseNote: Int): Unit = primeNote = Some(baseNote)
-  def getPrimeNote: Int = primeNote.getOrElse(throw UnexpectedInternalError("PrimeNote not defined"))
+  def getPrimeNote: Int                 = primeNote.getOrElse(throw UnexpectedInternalError("PrimeNote not defined"))
 
   def hasTwoNextThirds: Boolean = {
     if (notesNumbers.length < 3) false
     else {
       for (i <- notesNumbers.indices) {
-        val n1 = notesNumbers(i) %% 7
+        val n1 = notesNumbers(i)                              %% 7
         val n2 = notesNumbers((i + 1) %% notesNumbers.length) %% 7
         val n3 = notesNumbers((i + 2) %% notesNumbers.length) %% 7
         if ((abs(n2 - n1) == 2 || abs(n2 - n1) == 5) && (abs(n3 - n2) == 2 || abs(n3 - n2) == 5)) return true
@@ -45,9 +45,8 @@ case class ChordElement(var notesNumbers: List[Int], var omit: List[Int], bassEl
   }
 
   def completeUntilTwoNextThirds(): Unit = {
-    while (!hasTwoNextThirds) {
+    while (!hasTwoNextThirds)
       addNextNote()
-    }
   }
 
   def findPrime(): Unit = {
@@ -55,9 +54,8 @@ case class ChordElement(var notesNumbers: List[Int], var omit: List[Int], bassEl
 
     for (i <- scaleNotes.indices) {
       var note = scaleNotes(i)
-      while (scaleNotes.contains((note - 2) %% 7)) {
-        note = (note - 2) %% 7
-      }
+      while (scaleNotes.contains((note - 2) %% 7))
+        note = (note - 2)                   %% 7
       if (scaleNotes.contains((note + 2) %% 7) && scaleNotes.contains((note + 4) %% 7)) {
         setPrimeNote(note)
         return
@@ -66,13 +64,12 @@ case class ChordElement(var notesNumbers: List[Int], var omit: List[Int], bassEl
 
     primeNote match {
       case Some(_) =>
-      case None => setPrimeNote(scaleNotes.head)
+      case None    => setPrimeNote(scaleNotes.head)
     }
   }
 
   def getSortedSymbols: List[Int] = bassElement.symbols.map(_.component).sortWith((s1, s2) => s1 < s2)
 
-  def bassSymbolsHasGivenNumber(number: Int): Boolean = {
+  def bassSymbolsHasGivenNumber(number: Int): Boolean =
     !bassElement.symbols.forall(_.component != number)
-  }
 }

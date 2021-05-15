@@ -31,11 +31,12 @@ trait TestUtils {
       false
     )
 
-    val tonic: HarmonicFunction         = HarmonicFunction(TONIC)
-    val subdominant: HarmonicFunction   = HarmonicFunction(SUBDOMINANT)
-    val dominant: HarmonicFunction      = HarmonicFunction(DOMINANT)
-    val dominant7: HarmonicFunction     = HarmonicFunction(DOMINANT, extra = Set(ChordComponents.seventh))
-    val dominantRev7: HarmonicFunction  = HarmonicFunction(DOMINANT, revolution = Some(ChordComponents.seventh), extra = Set(ChordComponents.seventh))
+    val tonic: HarmonicFunction       = HarmonicFunction(TONIC)
+    val subdominant: HarmonicFunction = HarmonicFunction(SUBDOMINANT)
+    val dominant: HarmonicFunction    = HarmonicFunction(DOMINANT)
+    val dominant7: HarmonicFunction   = HarmonicFunction(DOMINANT, extra = Set(ChordComponents.seventh))
+    val dominantRev7: HarmonicFunction =
+      HarmonicFunction(DOMINANT, inversion = Some(ChordComponents.seventh), extra = Set(ChordComponents.seventh))
     val tonicOmit5: HarmonicFunction    = HarmonicFunction(TONIC, omit = Set(ChordComponents.fifth))
     val tonicVI: HarmonicFunction       = HarmonicFunction(TONIC, degree = Some(VI))
     val tonicVIDown: HarmonicFunction   = HarmonicFunction(TONIC, degree = Some(VI), isDown = true)

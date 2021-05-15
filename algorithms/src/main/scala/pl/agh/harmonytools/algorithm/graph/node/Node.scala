@@ -12,8 +12,7 @@ class Node[T <: NodeContent, S <: NodeContent](
   private var nestedLayer: Option[LeafLayer[S]] = None
   def setNestedLayer(l: LeafLayer[S]): Unit     = nestedLayer = Some(l)
   def getNestedLayer: LeafLayer[S]              = nestedLayer.getOrElse(throw UnexpectedInternalError("Nested layer not defined"))
-  def hasNestedLayer: Boolean               = nestedLayer.isDefined
-
+  def hasNestedLayer: Boolean                   = nestedLayer.isDefined
 
   def getPrevContentIfSingle: T =
     getUniquePrevContents.headOption
@@ -85,14 +84,14 @@ class Node[T <: NodeContent, S <: NodeContent](
     newNode
   }
 
-  private var distanceFromBeginning: Double      = Double.MaxValue
+  private var distanceFromBeginning: Double         = Double.MaxValue
   private var prevsInShortestPath: List[Node[T, S]] = List.empty
 
   override def getDistanceFromBeginning: Double = distanceFromBeginning
 
   override def getPrevsInShortestPath: List[Node[T, S]] = prevsInShortestPath
 
-  def setDistanceFromBeginning(distance: Double): Unit   = distanceFromBeginning = distance
+  def setDistanceFromBeginning(distance: Double): Unit      = distanceFromBeginning = distance
   def setPrevsInShortestPath(prevs: List[Node[T, S]]): Unit = prevsInShortestPath = prevs
   def addPrevsInShortestPath(prevs: Node[T, S]*): Unit      = prevsInShortestPath ++= prevs
 }

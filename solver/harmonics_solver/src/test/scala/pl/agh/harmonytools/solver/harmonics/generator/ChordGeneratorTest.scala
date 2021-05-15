@@ -285,12 +285,14 @@ class ChordGeneratorTest extends FunSuite with Matchers with TestUtils {
       None,
       SIIom5,
       allResultChordsUseNoneOfComponents,
-      List(getCC("5"),
+      List(
+        getCC("5"),
         getCC("5>"),
         getCC("5<"),
         getCC("5", isDown = true),
         getCC("5>", isDown = true),
-        getCC("5<", isDown = true))
+        getCC("5<", isDown = true)
+      )
     )
   }
 
@@ -313,12 +315,14 @@ class ChordGeneratorTest extends FunSuite with Matchers with TestUtils {
       None,
       SIIom5moll,
       allResultChordsUseNoneOfComponents,
-      List(getCC("5"),
+      List(
+        getCC("5"),
         getCC("5>"),
         getCC("5<"),
         getCC("5", isDown = true),
         getCC("5>", isDown = true),
-        getCC("5<", isDown = true))
+        getCC("5<", isDown = true)
+      )
     )
   }
 
@@ -341,12 +345,14 @@ class ChordGeneratorTest extends FunSuite with Matchers with TestUtils {
       None,
       SIIom5molldown,
       allResultChordsUseNoneOfComponents,
-      List(getCC("5"),
+      List(
+        getCC("5"),
         getCC("5>"),
         getCC("5<"),
         getCC("5", isDown = true),
         getCC("5>", isDown = true),
-        getCC("5<", isDown = true))
+        getCC("5<", isDown = true)
+      )
     )
   }
 
@@ -393,12 +399,14 @@ class ChordGeneratorTest extends FunSuite with Matchers with TestUtils {
       MAJOR_GEN,
       DVIIom5,
       allResultChordsUseNoneOfComponents,
-      List(getCC("5"),
-    getCC("5>"),
-    getCC("5<"),
-    getCC("5", isDown = true),
-    getCC("5>", isDown = true),
-    getCC("5<", isDown = true))
+      List(
+        getCC("5"),
+        getCC("5>"),
+        getCC("5<"),
+        getCC("5", isDown = true),
+        getCC("5>", isDown = true),
+        getCC("5<", isDown = true)
+      )
     )
   }
 
@@ -411,7 +419,6 @@ class ChordGeneratorTest extends FunSuite with Matchers with TestUtils {
       getCC("1")
     )
   }
-
 
   test("T with position 3 contains 3 in soprano in all generated chords") {
     val Tpos3 = HarmonicFunction(TONIC, position = Some(getCC("3")))
@@ -433,8 +440,8 @@ class ChordGeneratorTest extends FunSuite with Matchers with TestUtils {
     )
   }
 
-  test("T with revolution 1 contains 1 in bass in all generated chords") {
-    val Trev1 = HarmonicFunction(TONIC, revolution = Some(getCC("1")))
+  test("T with inversion 1 contains 1 in bass in all generated chords") {
+    val Trev1 = HarmonicFunction(TONIC, inversion = Some(getCC("1")))
     generatorTest(
       None,
       Trev1,
@@ -443,8 +450,8 @@ class ChordGeneratorTest extends FunSuite with Matchers with TestUtils {
     )
   }
 
-  test("T with revolution 3 contains 3 in bass in all generated chords") {
-    val Trev1 = HarmonicFunction(TONIC, revolution = Some(getCC("3")))
+  test("T with inversion 3 contains 3 in bass in all generated chords") {
+    val Trev1 = HarmonicFunction(TONIC, inversion = Some(getCC("3")))
     generatorTest(
       None,
       Trev1,
@@ -453,8 +460,8 @@ class ChordGeneratorTest extends FunSuite with Matchers with TestUtils {
     )
   }
 
-  test("T with revolution 5 contains 5 in bass in all generated chords") {
-    val Trev1 = HarmonicFunction(TONIC, revolution = Some(getCC("5")))
+  test("T with inversion 5 contains 5 in bass in all generated chords") {
+    val Trev1 = HarmonicFunction(TONIC, inversion = Some(getCC("5")))
     generatorTest(
       None,
       Trev1,
@@ -463,8 +470,8 @@ class ChordGeneratorTest extends FunSuite with Matchers with TestUtils {
     )
   }
 
-  test("T moll with revolution 1 contains 1 in bass in all generated chords") {
-    val Tmollrev1 = HarmonicFunction(TONIC, revolution = Some(getCC("1")), mode = MINOR)
+  test("T moll with inversion 1 contains 1 in bass in all generated chords") {
+    val Tmollrev1 = HarmonicFunction(TONIC, inversion = Some(getCC("1")), mode = MINOR)
     generatorTest(
       None,
       Tmollrev1,
@@ -473,8 +480,8 @@ class ChordGeneratorTest extends FunSuite with Matchers with TestUtils {
     )
   }
 
-  test("T moll with revolution 3> contains 3> in bass in all generated chords") {
-    val Tmollrev3 = HarmonicFunction(TONIC, revolution = Some(getCC("3>")), mode = MINOR)
+  test("T moll with inversion 3> contains 3> in bass in all generated chords") {
+    val Tmollrev3 = HarmonicFunction(TONIC, inversion = Some(getCC("3>")), mode = MINOR)
     generatorTest(
       None,
       Tmollrev3,
@@ -483,7 +490,12 @@ class ChordGeneratorTest extends FunSuite with Matchers with TestUtils {
     )
   }
 
-  private val Dspec = HarmonicFunction(DOMINANT, position = Some(getCC("3")), extra = Set(getCC("9>"), getCC("7")), omit = Set(getCC("5")))
+  private val Dspec = HarmonicFunction(
+    DOMINANT,
+    position = Some(getCC("3")),
+    extra = Set(getCC("9>"), getCC("7")),
+    omit = Set(getCC("5"))
+  )
 
   test("D spec with position 3 contains 3 in position in all generated chords") {
     generatorTest(
@@ -534,29 +546,28 @@ class ChordGeneratorTest extends FunSuite with Matchers with TestUtils {
     ChordGenerator(Key("C")).generate(ChordGeneratorInput(neapolitan)).length shouldBe 18
   }
 
-  test("Position and revolution equal 1 chord test") {
-    val hf = HarmonicFunction(SUBDOMINANT, position = Some(getCC("1")))
+  test("Position and inversion equal 1 chord test") {
+    val hf  = HarmonicFunction(SUBDOMINANT, position = Some(getCC("1")))
     val res = ChordGenerator(Key("C")).generate(ChordGeneratorInput(hf))
     res.length should not be 0
     for (r <- res) {
       r.sopranoNote.chordComponentEquals("1") shouldBe true
       r.bassNote.chordComponentEquals("1") shouldBe true
       (r.tenorNote.chordComponentEquals("5") && r.altoNote.chordComponentEquals("3")) ||
-        (r.tenorNote.chordComponentEquals("3") && r.altoNote.chordComponentEquals("5")) shouldBe true
+      (r.tenorNote.chordComponentEquals("3") && r.altoNote.chordComponentEquals("5")) shouldBe true
     }
   }
 
   test("Double only 1, 3 or 5") {
-    val hf = HarmonicFunction(DOMINANT, extra = Set(getCC("7")), omit = Set(getCC("5")))
+    val hf  = HarmonicFunction(DOMINANT, extra = Set(getCC("7")), omit = Set(getCC("5")))
     val res = ChordGenerator(Key("C")).generate(ChordGeneratorInput(hf))
     res.length should not be 0
-    for (r <- res) {
+    for (r <- res)
       r.countBaseComponents(7) shouldBe 1
-    }
   }
 
   test("Major chord in minor key generating test") {
-    val hf = HarmonicFunction(DOMINANT, mode = MAJOR)
+    val hf  = HarmonicFunction(DOMINANT, mode = MAJOR)
     val res = ChordGenerator(Key("e")).generate(ChordGeneratorInput(hf))
     res.length should not be 0
   }
@@ -566,14 +577,14 @@ class ChordGeneratorTest extends FunSuite with Matchers with TestUtils {
     val genD = ChordGenerator(Key("D"));
 
     val hf_without_key = HarmonicFunction(TONIC)
-    val hf_with_key = HarmonicFunction(TONIC, key = Some(Key("C")))
+    val hf_with_key    = HarmonicFunction(TONIC, key = Some(Key("C")))
 
     val res1 = genC.generate(ChordGeneratorInput(hf_without_key))
     val res2 = genD.generate(ChordGeneratorInput(hf_with_key))
 
     res1.length shouldBe res2.length
 
-    res1 zip res2 foreach{case (c1, c2) => c1.equalsNotes(c2) shouldBe true}
+    res1 zip res2 foreach { case (c1, c2) => c1.equalsNotes(c2) shouldBe true }
   }
 
   test("Generating harmonic function with given minor key test") {
@@ -581,21 +592,21 @@ class ChordGeneratorTest extends FunSuite with Matchers with TestUtils {
     val genB = ChordGenerator(Key("B"));
 
     val hf_without_key = HarmonicFunction(TONIC, mode = MINOR)
-    val hf_with_key = HarmonicFunction(TONIC, key = Some(Key("f")), mode = MINOR)
+    val hf_with_key    = HarmonicFunction(TONIC, key = Some(Key("f")), mode = MINOR)
 
     val res1 = genf.generate(ChordGeneratorInput(hf_without_key))
     val res2 = genB.generate(ChordGeneratorInput(hf_with_key))
 
     res1.length shouldBe res2.length
 
-    res1 zip res2 foreach{case (c1, c2) => c1.equalsNotes(c2) shouldBe true}
+    res1 zip res2 foreach { case (c1, c2) => c1.equalsNotes(c2) shouldBe true }
   }
 
   test("Generating extra 7 test") {
-    val hf = HarmonicFunction(DOMINANT, extra = Set(getCC("7")))
+    val hf  = HarmonicFunction(DOMINANT, extra = Set(getCC("7")))
     val res = ChordGenerator(Key("C")).generate(ChordGeneratorInput(hf))
 
-    val scale = MajorScale(Key("C"))
+    val scale     = MajorScale(Key("C"))
     val basicNote = scale.key.tonicPitch + MajorScale.pitches(hf.degree.root - 1)
 
     val containsOnlyOne7 = (chord: Chord) => {
@@ -610,10 +621,10 @@ class ChordGeneratorTest extends FunSuite with Matchers with TestUtils {
   }
 
   test("Generating extra 7> test") {
-    val hf = HarmonicFunction(DOMINANT, extra = Set(getCC("7>")))
+    val hf  = HarmonicFunction(DOMINANT, extra = Set(getCC("7>")))
     val res = ChordGenerator(Key("C")).generate(ChordGeneratorInput(hf))
 
-    val scale = MajorScale(Key("C"))
+    val scale     = MajorScale(Key("C"))
     val basicNote = scale.key.tonicPitch + MajorScale.pitches(hf.degree.root - 1)
 
     val containsOnlyOne7 = (chord: Chord) => {
@@ -628,10 +639,10 @@ class ChordGeneratorTest extends FunSuite with Matchers with TestUtils {
   }
 
   test("Generating extra <7 test") {
-    val hf = HarmonicFunction(DOMINANT, extra = Set(getCC("7<")))
+    val hf  = HarmonicFunction(DOMINANT, extra = Set(getCC("7<")))
     val res = ChordGenerator(Key("C")).generate(ChordGeneratorInput(hf))
 
-    val scale = MajorScale(Key("C"))
+    val scale     = MajorScale(Key("C"))
     val basicNote = scale.key.tonicPitch + MajorScale.pitches(hf.degree.root - 1)
 
     val containsOnlyOne7 = (chord: Chord) => {
@@ -644,17 +655,17 @@ class ChordGeneratorTest extends FunSuite with Matchers with TestUtils {
     for (r <- res)
       containsOnlyOne7(r) shouldBe true
   }
-  
+
   test("Generating extra 7 with 7 in soprano test") {
-    val hf = HarmonicFunction(DOMINANT, extra = Set(getCC("7")), position = Some(getCC("7")))
+    val hf  = HarmonicFunction(DOMINANT, extra = Set(getCC("7")), position = Some(getCC("7")))
     val res = ChordGenerator(Key("C")).generate(ChordGeneratorInput(hf))
 
-    val scale = MajorScale(Key("C"))
+    val scale     = MajorScale(Key("C"))
     val basicNote = scale.key.tonicPitch + MajorScale.pitches(hf.degree.root - 1)
 
     val containsOnlyOne7AndInSoprano = (chord: Chord) => {
       val is7inSoprano = (chord.sopranoNote.pitch - (basicNote %% 12) - 1) %% 12 == 9
-      var counter = 0
+      var counter      = 0
       for (n <- chord.notes)
         if ((n.pitch - (basicNote %% 12) - 1) %% 12 === 9) counter += 1
       counter === 1 && is7inSoprano
@@ -665,15 +676,15 @@ class ChordGeneratorTest extends FunSuite with Matchers with TestUtils {
   }
 
   test("Generating extra 7 with 7 in bass test") {
-    val hf = HarmonicFunction(DOMINANT, extra = Set(getCC("7")), revolution = Some(getCC("7")))
+    val hf  = HarmonicFunction(DOMINANT, extra = Set(getCC("7")), inversion = Some(getCC("7")))
     val res = ChordGenerator(Key("C")).generate(ChordGeneratorInput(hf))
 
-    val scale = MajorScale(Key("C"))
+    val scale     = MajorScale(Key("C"))
     val basicNote = scale.key.tonicPitch + MajorScale.pitches(hf.degree.root - 1)
 
     val containsOnlyOne7AndInBass = (chord: Chord) => {
       val is7inBass = (chord.bassNote.pitch - (basicNote %% 12) - 1) %% 12 == 9
-      var counter = 0
+      var counter   = 0
       for (n <- chord.notes)
         if ((n.pitch - (basicNote %% 12) - 1) %% 12 === 9) counter += 1
       counter === 1 && is7inBass
@@ -684,7 +695,7 @@ class ChordGeneratorTest extends FunSuite with Matchers with TestUtils {
   }
 
   test("Generating To 6 degree down test") {
-    val hf = HarmonicFunction(TONIC, degree = Some(VI), mode = MINOR, isDown = true)
+    val hf  = HarmonicFunction(TONIC, degree = Some(VI), mode = MINOR, isDown = true)
     val res = ChordGenerator(Key("C")).generate(ChordGeneratorInput(hf))
 
     res.length should not be 0
@@ -696,7 +707,6 @@ class ChordGeneratorTest extends FunSuite with Matchers with TestUtils {
   test("Generating Chopin chord") {
     val d1 = HarmonicFunction(DOMINANT, extra = Set(sixth, seventh), omit = Set(fifth), key = Some(keyC))
     val d2 = HarmonicFunction(DOMINANT, extra = Set(sixthDim, seventh), omit = Set(fifth), key = Some(keyc))
-
 
     val ch1 = Chord(Note(76, E, sixth), Note(71, B, third), Note(65, F, seventh), Note(55, G, prime), d1)
     val ch2 = Chord(Note(75, F, seventh), Note(71, B, third), Note(64, D, sixth), Note(55, G, prime), d1)

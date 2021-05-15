@@ -12,6 +12,6 @@ case class SopranoExercise(
   measures: List[List[NoteWithoutChordContext]],
   possibleFunctionsList: List[HarmonicFunction]
 ) extends Exercise(key, meter, measures = List.empty) // todo
-{
+  {
   lazy val notes: List[NoteWithoutChordContext] = measures.reduce(_ ++ _)
 }

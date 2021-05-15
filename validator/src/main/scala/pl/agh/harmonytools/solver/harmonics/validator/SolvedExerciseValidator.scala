@@ -9,10 +9,9 @@ object SolvedExerciseValidator {
   private[validator] def checkCorrectness(chords: List[Chord]): List[(Int, List[HardRule[Chord]])] = {
     var brokenRulesWithIdx = List.empty[(Int, List[HardRule[Chord]])]
     for (i <- chords.drop(1).indices) {
-      val brokenRules = rulesChecker.findBrokenHardRules(chords(i), chords(i+1))
-      if (brokenRules.nonEmpty) {
+      val brokenRules = rulesChecker.findBrokenHardRules(chords(i), chords(i + 1))
+      if (brokenRules.nonEmpty)
         brokenRulesWithIdx = brokenRulesWithIdx :+ (i + 1, brokenRules)
-      }
     }
     brokenRulesWithIdx
   }
@@ -20,16 +19,17 @@ object SolvedExerciseValidator {
   def getBrokenRulesReport(chords: List[Chord]): String = {
     val brokenRulesWithIdx = checkCorrectness(chords)
     if (brokenRulesWithIdx.nonEmpty) {
-      "Found some broken rules!\t\t\n\n" + brokenRulesWithIdx.map { case (i, brokenRules) =>
-        val brokenRulesReport = new StringBuilder
-        brokenRulesReport.append(s"Chord $i -> Chord ${i+1}")
-        for (brokenRule <- brokenRules) {
-          brokenRulesReport.append(s"\n\t- ${brokenRule.caption}")
+      "Found some broken rules!\t\t\n\n" + brokenRulesWithIdx
+        .map {
+          case (i, brokenRules) =>
+            val brokenRulesReport = new StringBuilder
+            brokenRulesReport.append(s"Chord $i -> Chord ${i + 1}")
+            for (brokenRule <- brokenRules)
+              brokenRulesReport.append(s"\n\t- ${brokenRule.caption}")
+            brokenRulesReport.result()
         }
-        brokenRulesReport.result()
-      }.mkString("\n")
-    } else {
+        .mkString("\n")
+    } else
       "Correct!\t\t"
-    }
   }
 }

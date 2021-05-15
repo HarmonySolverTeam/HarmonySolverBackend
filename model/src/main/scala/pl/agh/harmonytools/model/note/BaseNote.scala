@@ -3,17 +3,15 @@ package pl.agh.harmonytools.model.note
 import pl.agh.harmonytools.error.{RequirementChecker, UnexpectedInternalError}
 import pl.agh.harmonytools.utils.Extensions.ExtendedInt
 
-object BaseNote  {
+object BaseNote {
   type tpe = BaseNoteType
 
   sealed abstract class BaseNoteType(val value: Int) {
-    def +(x: Int): BaseNoteType = {
+    def +(x: Int): BaseNoteType =
       fromInt((value + x) %% 7)
-    }
 
-    def name: Char = {
+    def name: Char =
       getClass.getSimpleName.head
-    }
   }
 
   case object C extends BaseNoteType(0)

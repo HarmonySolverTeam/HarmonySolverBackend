@@ -11,7 +11,7 @@ class HarmonicFunctionValidator(private val hf: HarmonicFunction) {
     validateOmit()
     checkAllChordComponentNumber()
     checkIfExtraContainsPosition()
-    checkIfExtraContainsRevolution()
+    checkIfExtraContainsInversion()
   }
 
   private def validateDelay(): Unit = {
@@ -42,17 +42,18 @@ class HarmonicFunctionValidator(private val hf: HarmonicFunction) {
       handleValidationFailure("Count of chord components is too large - there are only 4 voices")
 
   private def checkIfExtraContainsPosition(): Unit =
-    if (hf.position.isDefined && !hf.getBasicChordComponents.contains(hf.position.get) && !hf.extra.contains(hf.position.get))
+    if (
+      hf.position.isDefined && !hf.getBasicChordComponents
+        .contains(hf.position.get) && !hf.extra.contains(hf.position.get)
+    )
       handleValidationFailure("Extra does not contain position which is not standard chord component")
 
-  private def checkIfExtraContainsRevolution(): Unit = {
-    if (!hf.getBasicChordComponents.contains(hf.revolution) && !hf.extra.contains(hf.revolution))
-      handleValidationFailure("Extra does not contain revolution which is not standard chord component")
-  }
+  private def checkIfExtraContainsInversion(): Unit =
+    if (!hf.getBasicChordComponents.contains(hf.inversion) && !hf.extra.contains(hf.inversion))
+      handleValidationFailure("Extra does not contain inversion which is not standard chord component")
 
-  private def handleValidationFailure(msg: String): Unit = {
+  private def handleValidationFailure(msg: String): Unit =
     throw HarmonicFunctionValidationError("HarmonicFunction validation error: " + msg)
-  }
 }
 
 case class HarmonicFunctionValidationError(msg: String) extends HarmonySolverError(msg) {

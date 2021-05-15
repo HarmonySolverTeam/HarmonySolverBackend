@@ -5,11 +5,20 @@ import pl.agh.harmonytools.model.chord.Chord
 import pl.agh.harmonytools.model.measure.{Measure, Meter}
 import pl.agh.harmonytools.model.note.{BaseNote, Note}
 import pl.agh.harmonytools.rest.dto.HarmonicFunctionDto.{Degree, FunctionName, Mode}
-import pl.agh.harmonytools.rest.dto.{ChordDto, HarmonicFunctionDto, HarmonicsExerciseDto, HarmonicsExerciseSolutionDto, HarmonicsMeasureDto, NoteDto}
+import pl.agh.harmonytools.rest.dto.{
+  ChordDto,
+  HarmonicFunctionDto,
+  HarmonicsExerciseDto,
+  HarmonicsExerciseSolutionDto,
+  HarmonicsMeasureDto,
+  NoteDto
+}
 import pl.agh.harmonytools.solver.ExerciseSolution
 import pl.agh.harmonytools.utils.TestUtils
 
-class HarmonicsExerciseSolutionMapperTest extends MapperTest[ExerciseSolution, HarmonicsExerciseSolutionDto](HarmonicsExerciseSolutionMapper) with TestUtils {
+class HarmonicsExerciseSolutionMapperTest
+  extends MapperTest[ExerciseSolution, HarmonicsExerciseSolutionDto](HarmonicsExerciseSolutionMapper)
+  with TestUtils {
   import Keys._
   import HarmonicFunctions._
   import ChordComponents._

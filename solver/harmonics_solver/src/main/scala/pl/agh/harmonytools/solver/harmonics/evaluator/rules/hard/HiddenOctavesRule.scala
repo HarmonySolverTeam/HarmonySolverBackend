@@ -11,9 +11,11 @@ case class HiddenOctavesRule(evaluationRatio: Double = 1.0) extends AnyRule[Chor
   override def evaluate(connection: Connection[Chord]): Double = {
     val currentChord = connection.current
     val prevChord    = connection.prev
-    if (prevChord.hasCorrespondingNotesUpperThan(currentChord) &&
-        abs(prevChord.sopranoNote.pitch - currentChord.sopranoNote.pitch) > 2 &&
-        isOctaveOrPrime(currentChord.bassNote, currentChord.sopranoNote))
+    if (
+      prevChord.hasCorrespondingNotesUpperThan(currentChord) &&
+      abs(prevChord.sopranoNote.pitch - currentChord.sopranoNote.pitch) > 2 &&
+      isOctaveOrPrime(currentChord.bassNote, currentChord.sopranoNote)
+    )
       evaluationRatio * 35
     else
       satisfied

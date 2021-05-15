@@ -171,9 +171,9 @@ components:
         position:
           type: string
           description: Position of harmonic function, should be string consists of number and additional characters '>' or '<' representing interval
-        revolution:
+        inversion:
           type: string
-          description: Revolution of harmonic function, should be string consists of number and additional characters '>' or '<' representing interval
+          description: Inversion of harmonic function, should be string consists of number and additional characters '>' or '<' representing interval
         delays:
           type: array
           description: List of delays
