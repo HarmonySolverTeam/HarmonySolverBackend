@@ -767,7 +767,7 @@ object BassTranslator {
       measureHfs = measureHfs :+ newFunctions(i)
       counter += bassLineAfterSplit(i).duration
       if (counter >= measureDuration) {
-        measures = measures :+ Measure(measureHfs.map(_.getHarmonicFunction))
+        measures = measures :+ Measure(figuredBassExercise.meter, measureHfs.map(_.getHarmonicFunction))
         counter = 0
         measureHfs = List.empty[BassHarmonicFunctionBuilder]
       }

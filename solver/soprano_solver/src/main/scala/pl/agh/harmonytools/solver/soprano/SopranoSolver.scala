@@ -108,8 +108,8 @@ object SopranoSolver extends App {
     Key("C"),
     Meter(4, 4),
     measures = List(
-      Measure(List(NoteWithoutChordContext(72, C, 0.5), NoteWithoutChordContext(72, C, 0.5))),
-      Measure(List(NoteWithoutChordContext(74, D, 0.5), NoteWithoutChordContext(76, E, 0.5)))
+      Measure(Meter(4, 4), List(NoteWithoutChordContext(72, C, 0.5), NoteWithoutChordContext(72, C, 0.5))),
+      Measure(Meter(4, 4), List(NoteWithoutChordContext(74, D, 0.5), NoteWithoutChordContext(76, E, 0.5)))
     ),
     possibleFunctionsList = List(
       HarmonicFunction(TONIC),

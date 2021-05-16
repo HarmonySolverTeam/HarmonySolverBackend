@@ -1,12 +1,13 @@
 package pl.agh.harmonytools.rest.mapper
 
 import pl.agh.harmonytools.model.harmonicfunction.HarmonicFunction
-import pl.agh.harmonytools.model.measure.Measure
+import pl.agh.harmonytools.model.measure.{Measure, Meter}
 import pl.agh.harmonytools.rest.dto.HarmonicsMeasureDto
 
-object HarmonicsMeasureMapper extends Mapper[Measure[HarmonicFunction], HarmonicsMeasureDto] {
+case class HarmonicsMeasureMapper(exerciseMeter: Meter) extends Mapper[Measure[HarmonicFunction], HarmonicsMeasureDto] {
   override def mapToModel(dto: HarmonicsMeasureDto): Measure[HarmonicFunction] = {
     Measure(
+      exerciseMeter,
       dto.elements
         .map(HarmonicFunctionMapper.mapToModel)
     )

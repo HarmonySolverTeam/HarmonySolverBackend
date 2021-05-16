@@ -36,7 +36,7 @@ class HarmonicsExerciseSolutionMapperTest
       HarmonicsExercise(
         keyC,
         Meter(4, 4),
-        List(Measure(List(tonic)))
+        List(Measure(Meter(4, 4), List(tonic)))
       ),
       1.0,
       List(

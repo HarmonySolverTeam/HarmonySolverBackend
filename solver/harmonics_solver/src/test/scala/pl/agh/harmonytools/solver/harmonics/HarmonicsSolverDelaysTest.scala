@@ -11,7 +11,7 @@ class HarmonicsSolverDelaysTest extends FunSuite with Matchers {
   private def getParserOutputWithHandledDelays(input: String): HarmonicsExercise = {
     val exercise = HarmonicsSolverTest.parseInput(input).get
     exercise.copy(
-      measures = exercise.measures.map(m => Measure(DelayHandler.handleDelays(m.contents)))
+      measures = exercise.measures.map(m => Measure(m.meter, DelayHandler.handleDelays(m.contents)))
     )
   }
 

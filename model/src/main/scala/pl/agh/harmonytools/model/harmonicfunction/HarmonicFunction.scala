@@ -107,6 +107,8 @@ case class HarmonicFunction(
     baseFunction == other.baseFunction && degree == other.degree && isDown == other.isDown && key == other.key
 
   override def duration: Double = ???
+
+  override def supportsDuration: Boolean = false
 }
 
 object HarmonicFunction {

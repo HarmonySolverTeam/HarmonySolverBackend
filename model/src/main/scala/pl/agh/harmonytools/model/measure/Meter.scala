@@ -5,7 +5,7 @@ import pl.agh.harmonytools.utils.Extensions._
 case class Meter(nominator: Int, denominator: Int) {
   RequirementChecker.isRequired(
     nominator > 0 && denominator > 0 && denominator.isPowerOf2,
-    MeterParseError("Meter denominator should be power of 2")
+    MeterParseError("Meter denominator should be power of 2 non equal 0")
   )
 
   def asDouble: Double = nominator.toDouble / denominator

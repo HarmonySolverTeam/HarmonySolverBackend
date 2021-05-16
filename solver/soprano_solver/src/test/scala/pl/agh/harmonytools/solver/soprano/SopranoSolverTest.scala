@@ -112,9 +112,9 @@ class SopranoSolverTest extends FunSuite with Matchers with TestUtils {
   class TestExercise(
     _key: Key,
     _meter: Meter,
-    _noteWithoutChordContexts: List[NoteWithoutChordContext],
+    _measures: List[Measure[NoteWithoutChordContext]],
     val name: String = ""
-  ) extends SopranoExercise(_key, _meter, List(Measure(_noteWithoutChordContexts)), List.empty)
+  ) extends SopranoExercise(_key, _meter, _measures, List.empty)
 
   test("Combinations Test") {
     val ex = new TestExercise(keyC, Meter(4, 4), List.empty)
@@ -125,30 +125,70 @@ class SopranoSolverTest extends FunSuite with Matchers with TestUtils {
     keyD,
     Meter(4, 4),
     List(
-      NoteWithoutChordContext(74, D, 0.5),
-      NoteWithoutChordContext(69, A, 0.25),
-      NoteWithoutChordContext(71, B, 0.25),
-      NoteWithoutChordContext(69, A, 0.25),
-      NoteWithoutChordContext(64, E, 0.25),
-      NoteWithoutChordContext(66, F, 0.25),
-      NoteWithoutChordContext(69, A, 0.25),
-      NoteWithoutChordContext(71, B, 0.25),
-      NoteWithoutChordContext(67, G, 0.25),
-      NoteWithoutChordContext(71, B, 0.25),
-      NoteWithoutChordContext(74, D, 0.25),
-      NoteWithoutChordContext(73, C, 0.5),
-      NoteWithoutChordContext(76, E, 0.5),
-      NoteWithoutChordContext(78, F, 0.5),
-      NoteWithoutChordContext(74, D, 0.25),
-      NoteWithoutChordContext(73, C, 0.25),
-      NoteWithoutChordContext(74, D, 0.5),
-      NoteWithoutChordContext(74, D, 0.25),
-      NoteWithoutChordContext(79, G, 0.25),
-      NoteWithoutChordContext(76, E, 0.25),
-      NoteWithoutChordContext(81, A, 0.25),
-      NoteWithoutChordContext(76, E, 0.25),
-      NoteWithoutChordContext(73, C, 0.25),
-      NoteWithoutChordContext(74, D, 1)
+      Measure(
+        Meter(4, 4),
+        List(
+          NoteWithoutChordContext(74, D, 0.5),
+          NoteWithoutChordContext(69, A, 0.25),
+          NoteWithoutChordContext(71, B, 0.25),
+        )
+      ),
+      Measure(
+        Meter(4, 4),
+        List(
+          NoteWithoutChordContext(69, A, 0.25),
+          NoteWithoutChordContext(64, E, 0.25),
+          NoteWithoutChordContext(66, F, 0.25),
+          NoteWithoutChordContext(69, A, 0.25),
+        )
+      ),
+      Measure(
+        Meter(4, 4),
+        List(
+          NoteWithoutChordContext(71, B, 0.25),
+          NoteWithoutChordContext(67, G, 0.25),
+          NoteWithoutChordContext(71, B, 0.25),
+          NoteWithoutChordContext(74, D, 0.25),
+        )
+      ),
+      Measure(
+        Meter(4, 4),
+        List(
+          NoteWithoutChordContext(73, C, 0.5),
+          NoteWithoutChordContext(76, E, 0.5),
+        )
+      ),
+      Measure(
+        Meter(4, 4),
+        List(
+          NoteWithoutChordContext(78, F, 0.5),
+          NoteWithoutChordContext(74, D, 0.25),
+          NoteWithoutChordContext(73, C, 0.25),
+        )
+      ),
+      Measure(
+        Meter(4, 4),
+        List(
+          NoteWithoutChordContext(74, D, 0.5),
+          NoteWithoutChordContext(74, D, 0.25),
+          NoteWithoutChordContext(79, G, 0.25),
+        )
+      ),
+      Measure(
+        Meter(4, 4),
+        List(
+          NoteWithoutChordContext(76, E, 0.25),
+          NoteWithoutChordContext(81, A, 0.25),
+          NoteWithoutChordContext(76, E, 0.25),
+          NoteWithoutChordContext(73, C, 0.25),
+        )
+      ),
+      Measure(
+        Meter(4, 4),
+        List(
+          NoteWithoutChordContext(74, D, 1)
+        )
+      )
     ),
     "Targosz p.59 ex.1"
   )
@@ -157,34 +197,74 @@ class SopranoSolverTest extends FunSuite with Matchers with TestUtils {
     keyA,
     Meter(4, 4),
     List(
-      NoteWithoutChordContext(73, C, 0.25),
-      NoteWithoutChordContext(69, A, 0.25),
-      NoteWithoutChordContext(68, G, 0.25),
-      NoteWithoutChordContext(69, A, 0.25),
-      NoteWithoutChordContext(69, A, 0.25),
-      NoteWithoutChordContext(66, F, 0.25),
-      NoteWithoutChordContext(64, E, 0.25),
-      NoteWithoutChordContext(68, G, 0.25),
-      NoteWithoutChordContext(69, A, 0.25),
-      NoteWithoutChordContext(73, C, 0.25),
-      NoteWithoutChordContext(74, D, 0.25),
-      NoteWithoutChordContext(73, C, 0.25),
-      NoteWithoutChordContext(71, B, 0.75),
-      NoteWithoutChordContext(76, E, 0.25),
-      NoteWithoutChordContext(76, E, 0.25),
-      NoteWithoutChordContext(73, C, 0.25),
-      NoteWithoutChordContext(71, B, 0.25),
-      NoteWithoutChordContext(73, C, 0.25),
-      NoteWithoutChordContext(74, D, 0.25),
-      NoteWithoutChordContext(78, F, 0.25),
-      NoteWithoutChordContext(76, E, 0.25),
-      NoteWithoutChordContext(80, G, 0.25),
-      NoteWithoutChordContext(81, A, 0.25),
-      NoteWithoutChordContext(73, C, 0.25),
-      NoteWithoutChordContext(74, D, 0.25),
-      NoteWithoutChordContext(71, B, 0.25),
-      NoteWithoutChordContext(73, C, 0.5),
-      NoteWithoutChordContext(69, A, 0.5)
+      Measure(
+        Meter(4, 4),
+        List(
+          NoteWithoutChordContext(73, C, 0.25),
+          NoteWithoutChordContext(69, A, 0.25),
+          NoteWithoutChordContext(68, G, 0.25),
+          NoteWithoutChordContext(69, A, 0.25),
+        )
+      ),
+      Measure(
+        Meter(4, 4),
+        List(
+          NoteWithoutChordContext(69, A, 0.25),
+          NoteWithoutChordContext(66, F, 0.25),
+          NoteWithoutChordContext(64, E, 0.25),
+          NoteWithoutChordContext(68, G, 0.25),
+        )
+      ),
+      Measure(
+        Meter(4, 4),
+        List(
+          NoteWithoutChordContext(69, A, 0.25),
+          NoteWithoutChordContext(73, C, 0.25),
+          NoteWithoutChordContext(74, D, 0.25),
+          NoteWithoutChordContext(73, C, 0.25),
+        )
+      ),
+      Measure(
+        Meter(4, 4),
+        List(
+          NoteWithoutChordContext(71, B, 0.75),
+          NoteWithoutChordContext(76, E, 0.25),
+        )
+      ),
+      Measure(
+        Meter(4, 4),
+        List(
+          NoteWithoutChordContext(76, E, 0.25),
+          NoteWithoutChordContext(73, C, 0.25),
+          NoteWithoutChordContext(71, B, 0.25),
+          NoteWithoutChordContext(73, C, 0.25),
+        )
+      ),
+      Measure(
+        Meter(4, 4),
+        List(
+          NoteWithoutChordContext(74, D, 0.25),
+          NoteWithoutChordContext(78, F, 0.25),
+          NoteWithoutChordContext(76, E, 0.25),
+          NoteWithoutChordContext(80, G, 0.25),
+        )
+      ),
+      Measure(
+        Meter(4, 4),
+        List(
+          NoteWithoutChordContext(81, A, 0.25),
+          NoteWithoutChordContext(73, C, 0.25),
+          NoteWithoutChordContext(74, D, 0.25),
+          NoteWithoutChordContext(71, B, 0.25),
+        )
+      ),
+      Measure(
+        Meter(4, 4),
+        List(
+          NoteWithoutChordContext(73, C, 0.5),
+          NoteWithoutChordContext(69, A, 0.5)
+        )
+      )
     ),
     "Targosz p.59 ex.2"
   )
@@ -193,30 +273,70 @@ class SopranoSolverTest extends FunSuite with Matchers with TestUtils {
     keyBb,
     Meter(4, 4),
     List(
-      NoteWithoutChordContext(74, D, 0.5),
-      NoteWithoutChordContext(70, B, 0.5),
-      NoteWithoutChordContext(69, A, 0.25),
-      NoteWithoutChordContext(72, C, 0.25),
-      NoteWithoutChordContext(65, F, 0.25),
-      NoteWithoutChordContext(69, A, 0.25),
-      NoteWithoutChordContext(70, B, 0.25),
-      NoteWithoutChordContext(74, D, 0.25),
-      NoteWithoutChordContext(70, B, 0.25),
-      NoteWithoutChordContext(77, F, 0.25),
-      NoteWithoutChordContext(79, G, 0.5),
-      NoteWithoutChordContext(75, E, 0.5),
-      NoteWithoutChordContext(72, C, 0.5),
-      NoteWithoutChordContext(77, F, 0.25),
-      NoteWithoutChordContext(69, A, 0.25),
-      NoteWithoutChordContext(70, B, 0.25),
-      NoteWithoutChordContext(74, D, 0.25),
-      NoteWithoutChordContext(75, E, 0.25),
-      NoteWithoutChordContext(67, G, 0.25),
-      NoteWithoutChordContext(65, F, 0.25),
-      NoteWithoutChordContext(74, D, 0.25),
-      NoteWithoutChordContext(72, C, 0.25),
-      NoteWithoutChordContext(69, A, 0.25),
-      NoteWithoutChordContext(70, B, 1)
+      Measure(
+        Meter(4, 4),
+        List(
+          NoteWithoutChordContext(74, D, 0.5),
+          NoteWithoutChordContext(70, B, 0.5),
+        )
+      ),
+      Measure(
+        Meter(4, 4),
+        List(
+          NoteWithoutChordContext(69, A, 0.25),
+          NoteWithoutChordContext(72, C, 0.25),
+          NoteWithoutChordContext(65, F, 0.25),
+          NoteWithoutChordContext(69, A, 0.25),
+        )
+      ),
+      Measure(
+        Meter(4, 4),
+        List(
+          NoteWithoutChordContext(70, B, 0.25),
+          NoteWithoutChordContext(74, D, 0.25),
+          NoteWithoutChordContext(70, B, 0.25),
+          NoteWithoutChordContext(77, F, 0.25),
+        )
+      ),
+      Measure(
+        Meter(4, 4),
+        List(
+          NoteWithoutChordContext(79, G, 0.5),
+          NoteWithoutChordContext(75, E, 0.5),
+        )
+      ),
+      Measure(
+        Meter(4, 4),
+        List(
+          NoteWithoutChordContext(72, C, 0.5),
+          NoteWithoutChordContext(77, F, 0.25),
+          NoteWithoutChordContext(69, A, 0.25),
+        )
+      ),
+      Measure(
+        Meter(4, 4),
+        List(
+          NoteWithoutChordContext(70, B, 0.25),
+          NoteWithoutChordContext(74, D, 0.25),
+          NoteWithoutChordContext(75, E, 0.25),
+          NoteWithoutChordContext(67, G, 0.25),
+        )
+      ),
+      Measure(
+        Meter(4, 4),
+        List(
+          NoteWithoutChordContext(65, F, 0.25),
+          NoteWithoutChordContext(74, D, 0.25),
+          NoteWithoutChordContext(72, C, 0.25),
+          NoteWithoutChordContext(69, A, 0.25),
+        )
+      ),
+      Measure(
+        Meter(4, 4),
+        List(
+          NoteWithoutChordContext(70, B, 1)
+        )
+      )
     ),
     "Targosz p.59 ex.3"
   )
@@ -225,27 +345,67 @@ class SopranoSolverTest extends FunSuite with Matchers with TestUtils {
     keyEb,
     Meter(3, 4),
     List(
-      NoteWithoutChordContext(67, G, 0.25),
-      NoteWithoutChordContext(70, B, 0.25),
-      NoteWithoutChordContext(72, C, 0.25),
-      NoteWithoutChordContext(70, B, 0.5),
-      NoteWithoutChordContext(65, F, 0.25),
-      NoteWithoutChordContext(67, G, 0.25),
-      NoteWithoutChordContext(75, E, 0.25),
-      NoteWithoutChordContext(74, D, 0.25),
-      NoteWithoutChordContext(75, E, 0.25),
-      NoteWithoutChordContext(79, G, 0.25),
-      NoteWithoutChordContext(70, B, 0.25),
-      NoteWithoutChordContext(72, C, 0.25),
-      NoteWithoutChordContext(75, E, 0.25),
-      NoteWithoutChordContext(72, C, 0.25),
-      NoteWithoutChordContext(70, B, 0.25),
-      NoteWithoutChordContext(75, E, 0.25),
-      NoteWithoutChordContext(67, G, 0.25),
-      NoteWithoutChordContext(68, A, 0.25),
-      NoteWithoutChordContext(65, F, 0.25),
-      NoteWithoutChordContext(62, D, 0.25),
-      NoteWithoutChordContext(63, E, 0.75)
+      Measure(
+        Meter(3, 4),
+        List(
+          NoteWithoutChordContext(67, G, 0.25),
+          NoteWithoutChordContext(70, B, 0.25),
+          NoteWithoutChordContext(72, C, 0.25),
+        )
+      ),
+      Measure(
+        Meter(3, 4),
+        List(
+          NoteWithoutChordContext(70, B, 0.5),
+          NoteWithoutChordContext(65, F, 0.25),
+        )
+      ),
+      Measure(
+        Meter(3, 4),
+        List(
+          NoteWithoutChordContext(67, G, 0.25),
+          NoteWithoutChordContext(75, E, 0.25),
+          NoteWithoutChordContext(74, D, 0.25),
+        )
+      ),
+      Measure(
+        Meter(3, 4),
+        List(
+          NoteWithoutChordContext(75, E, 0.25),
+          NoteWithoutChordContext(79, G, 0.25),
+          NoteWithoutChordContext(70, B, 0.25),
+        )
+      ),
+      Measure(
+        Meter(3, 4),
+        List(
+          NoteWithoutChordContext(72, C, 0.25),
+          NoteWithoutChordContext(75, E, 0.25),
+          NoteWithoutChordContext(72, C, 0.25),
+        )
+      ),
+      Measure(
+        Meter(3, 4),
+        List(
+          NoteWithoutChordContext(70, B, 0.25),
+          NoteWithoutChordContext(75, E, 0.25),
+          NoteWithoutChordContext(67, G, 0.25),
+        )
+      ),
+      Measure(
+        Meter(3, 4),
+        List(
+          NoteWithoutChordContext(68, A, 0.25),
+          NoteWithoutChordContext(65, F, 0.25),
+          NoteWithoutChordContext(62, D, 0.25),
+        )
+      ),
+      Measure(
+        Meter(3, 4),
+        List(
+          NoteWithoutChordContext(63, E, 0.75)
+        )
+      )
     ),
     "Targosz p.59 ex.4"
   )
@@ -254,29 +414,69 @@ class SopranoSolverTest extends FunSuite with Matchers with TestUtils {
     keyAb,
     Meter(4, 4),
     List(
-      NoteWithoutChordContext(68, A, 0.5),
-      NoteWithoutChordContext(72, C, 0.25),
-      NoteWithoutChordContext(70, B, 0.25),
-      NoteWithoutChordContext(72, C, 0.25),
-      NoteWithoutChordContext(75, E, 0.25),
-      NoteWithoutChordContext(77, F, 0.25),
-      NoteWithoutChordContext(73, D, 0.25),
-      NoteWithoutChordContext(70, B, 0.5),
-      NoteWithoutChordContext(75, E, 0.25),
-      NoteWithoutChordContext(70, B, 0.25),
-      NoteWithoutChordContext(72, C, 0.25),
-      NoteWithoutChordContext(75, E, 0.25),
-      NoteWithoutChordContext(80, A, 0.25),
-      NoteWithoutChordContext(79, G, 0.25),
-      NoteWithoutChordContext(80, A, 0.25),
-      NoteWithoutChordContext(75, E, 0.25),
-      NoteWithoutChordContext(77, F, 0.25),
-      NoteWithoutChordContext(73, D, 0.25),
-      NoteWithoutChordContext(70, B, 0.5),
-      NoteWithoutChordContext(75, E, 0.25),
-      NoteWithoutChordContext(67, G, 0.25),
-      NoteWithoutChordContext(68, A, 1),
-      NoteWithoutChordContext(68, A, 1)
+      Measure(
+        Meter(4, 4),
+        List(
+          NoteWithoutChordContext(68, A, 0.5),
+          NoteWithoutChordContext(72, C, 0.25),
+          NoteWithoutChordContext(70, B, 0.25),
+        )
+      ),
+      Measure(
+        Meter(4, 4),
+        List(
+          NoteWithoutChordContext(72, C, 0.25),
+          NoteWithoutChordContext(75, E, 0.25),
+          NoteWithoutChordContext(77, F, 0.25),
+          NoteWithoutChordContext(73, D, 0.25),
+        )
+      ),
+      Measure(
+        Meter(4, 4),
+        List(
+          NoteWithoutChordContext(70, B, 0.5),
+          NoteWithoutChordContext(75, E, 0.25),
+          NoteWithoutChordContext(70, B, 0.25),
+        )
+      ),
+      Measure(
+        Meter(4, 4),
+        List(
+          NoteWithoutChordContext(72, C, 0.25),
+          NoteWithoutChordContext(75, E, 0.25),
+          NoteWithoutChordContext(80, A, 0.25),
+          NoteWithoutChordContext(79, G, 0.25),
+        )
+      ),
+      Measure(
+        Meter(4, 4),
+        List(
+          NoteWithoutChordContext(80, A, 0.25),
+          NoteWithoutChordContext(75, E, 0.25),
+          NoteWithoutChordContext(77, F, 0.25),
+          NoteWithoutChordContext(73, D, 0.25),
+        )
+      ),
+      Measure(
+        Meter(4, 4),
+        List(
+          NoteWithoutChordContext(70, B, 0.5),
+          NoteWithoutChordContext(75, E, 0.25),
+          NoteWithoutChordContext(67, G, 0.25),
+        )
+      ),
+      Measure(
+        Meter(4, 4),
+        List(
+          NoteWithoutChordContext(68, A, 1),
+        )
+      ),
+      Measure(
+        Meter(4, 4),
+        List(
+          NoteWithoutChordContext(68, A, 1)
+        )
+      )
     ),
     "Targosz p.59 ex.5"
   )
@@ -285,27 +485,67 @@ class SopranoSolverTest extends FunSuite with Matchers with TestUtils {
     keyGb,
     Meter(3, 4),
     List(
-      NoteWithoutChordContext(70, B, 0.375),
-      NoteWithoutChordContext(73, D, 0.125),
-      NoteWithoutChordContext(70, B, 0.25),
-      NoteWithoutChordContext(68, A, 0.375),
-      NoteWithoutChordContext(73, D, 0.125),
-      NoteWithoutChordContext(68, A, 0.25),
-      NoteWithoutChordContext(70, B, 0.25),
-      NoteWithoutChordContext(78, G, 0.25),
-      NoteWithoutChordContext(73, D, 0.25),
-      NoteWithoutChordContext(75, E, 0.5),
-      NoteWithoutChordContext(71, C, 0.25),
-      NoteWithoutChordContext(68, A, 0.375),
-      NoteWithoutChordContext(73, D, 0.125),
-      NoteWithoutChordContext(68, A, 0.25),
-      NoteWithoutChordContext(70, B, 0.375),
-      NoteWithoutChordContext(73, D, 0.125),
-      NoteWithoutChordContext(66, G, 0.25),
-      NoteWithoutChordContext(66, G, 0.375),
-      NoteWithoutChordContext(71, C, 0.125),
-      NoteWithoutChordContext(68, A, 0.25),
-      NoteWithoutChordContext(70, B, 0.75)
+      Measure(
+        Meter(3, 4),
+        List(
+          NoteWithoutChordContext(70, B, 0.375),
+          NoteWithoutChordContext(73, D, 0.125),
+          NoteWithoutChordContext(70, B, 0.25),
+        )
+      ),
+      Measure(
+        Meter(3, 4),
+        List(
+          NoteWithoutChordContext(68, A, 0.375),
+          NoteWithoutChordContext(73, D, 0.125),
+          NoteWithoutChordContext(68, A, 0.25),
+        )
+      ),
+      Measure(
+        Meter(3, 4),
+        List(
+          NoteWithoutChordContext(70, B, 0.25),
+          NoteWithoutChordContext(78, G, 0.25),
+          NoteWithoutChordContext(73, D, 0.25),
+        )
+      ),
+      Measure(
+        Meter(3, 4),
+        List(
+          NoteWithoutChordContext(75, E, 0.5),
+          NoteWithoutChordContext(71, C, 0.25),
+        )
+      ),
+      Measure(
+        Meter(3, 4),
+        List(
+          NoteWithoutChordContext(68, A, 0.375),
+          NoteWithoutChordContext(73, D, 0.125),
+          NoteWithoutChordContext(68, A, 0.25),
+        )
+      ),
+      Measure(
+        Meter(3, 4),
+        List(
+          NoteWithoutChordContext(70, B, 0.375),
+          NoteWithoutChordContext(73, D, 0.125),
+          NoteWithoutChordContext(66, G, 0.25),
+        )
+      ),
+      Measure(
+        Meter(3, 4),
+        List(
+          NoteWithoutChordContext(66, G, 0.375),
+          NoteWithoutChordContext(71, C, 0.125),
+          NoteWithoutChordContext(68, A, 0.25),
+        )
+      ),
+      Measure(
+        Meter(3, 4),
+        List(
+          NoteWithoutChordContext(70, B, 0.75)
+        )
+      )
     ),
     "Targosz p.60 ex.6"
   )
@@ -314,29 +554,74 @@ class SopranoSolverTest extends FunSuite with Matchers with TestUtils {
     keyb,
     Meter(2, 4),
     List(
-      NoteWithoutChordContext(74, D, 0.125),
-      NoteWithoutChordContext(71, B, 0.125),
-      NoteWithoutChordContext(74, D, 0.125),
-      NoteWithoutChordContext(76, E, 0.125),
-      NoteWithoutChordContext(73, C, 0.25),
-      NoteWithoutChordContext(70, A, 0.25),
-      NoteWithoutChordContext(71, B, 0.25),
-      NoteWithoutChordContext(66, F, 0.25),
-      NoteWithoutChordContext(67, G, 0.125),
-      NoteWithoutChordContext(64, E, 0.125),
-      NoteWithoutChordContext(67, G, 0.125),
-      NoteWithoutChordContext(71, B, 0.125),
-      NoteWithoutChordContext(70, A, 0.25),
-      NoteWithoutChordContext(73, C, 0.25),
-      NoteWithoutChordContext(74, D, 0.25),
-      NoteWithoutChordContext(78, F, 0.25),
-      NoteWithoutChordContext(79, G, 0.125),
-      NoteWithoutChordContext(76, E, 0.125),
-      NoteWithoutChordContext(74, D, 0.125),
-      NoteWithoutChordContext(76, E, 0.125),
-      NoteWithoutChordContext(73, C, 0.25),
-      NoteWithoutChordContext(70, A, 0.25),
-      NoteWithoutChordContext(71, B, 0.5)
+      Measure(
+        Meter(2, 4),
+        List(
+          NoteWithoutChordContext(74, D, 0.125),
+          NoteWithoutChordContext(71, B, 0.125),
+          NoteWithoutChordContext(74, D, 0.125),
+          NoteWithoutChordContext(76, E, 0.125),
+        )
+      ),
+      Measure(
+        Meter(2, 4),
+        List(
+          NoteWithoutChordContext(73, C, 0.25),
+          NoteWithoutChordContext(70, A, 0.25),
+        )
+      ),
+      Measure(
+        Meter(2, 4),
+        List(
+          NoteWithoutChordContext(71, B, 0.25),
+          NoteWithoutChordContext(66, F, 0.25),
+        )
+      ),
+      Measure(
+        Meter(2, 4),
+        List(
+          NoteWithoutChordContext(67, G, 0.125),
+          NoteWithoutChordContext(64, E, 0.125),
+          NoteWithoutChordContext(67, G, 0.125),
+          NoteWithoutChordContext(71, B, 0.125),
+        )
+      ),
+      Measure(
+        Meter(2, 4),
+        List(
+          NoteWithoutChordContext(70, A, 0.25),
+          NoteWithoutChordContext(73, C, 0.25),
+        )
+      ),
+      Measure(
+        Meter(2, 4),
+        List(
+          NoteWithoutChordContext(74, D, 0.25),
+          NoteWithoutChordContext(78, F, 0.25),
+        )
+      ),
+      Measure(
+        Meter(2, 4),
+        List(
+          NoteWithoutChordContext(79, G, 0.125),
+          NoteWithoutChordContext(76, E, 0.125),
+          NoteWithoutChordContext(74, D, 0.125),
+          NoteWithoutChordContext(76, E, 0.125),
+        )
+      ),
+      Measure(
+        Meter(2, 4),
+        List(
+          NoteWithoutChordContext(73, C, 0.25),
+          NoteWithoutChordContext(70, A, 0.25),
+        )
+      ),
+      Measure(
+        Meter(2, 4),
+        List(
+          NoteWithoutChordContext(71, B, 0.5)
+        )
+      )
     ),
     "Targosz p.60 ex.7"
   )
@@ -345,30 +630,70 @@ class SopranoSolverTest extends FunSuite with Matchers with TestUtils {
     keyfsharp,
     Meter(4, 4),
     List(
-      NoteWithoutChordContext(73, C, 0.25),
-      NoteWithoutChordContext(66, F, 0.5),
-      NoteWithoutChordContext(74, D, 0.25),
-      NoteWithoutChordContext(73, C, 0.25),
-      NoteWithoutChordContext(68, G, 0.25),
-      NoteWithoutChordContext(69, A, 0.25),
-      NoteWithoutChordContext(73, C, 0.25),
-      NoteWithoutChordContext(73, C, 0.25),
-      NoteWithoutChordContext(68, G, 0.25),
-      NoteWithoutChordContext(69, A, 0.25),
-      NoteWithoutChordContext(78, F, 0.25),
-      NoteWithoutChordContext(78, F, 0.5),
-      NoteWithoutChordContext(77, E, 0.5),
-      NoteWithoutChordContext(78, F, 0.25),
-      NoteWithoutChordContext(73, C, 0.5),
-      NoteWithoutChordContext(80, G, 0.25),
-      NoteWithoutChordContext(81, A, 0.25),
-      NoteWithoutChordContext(78, F, 0.5),
-      NoteWithoutChordContext(74, D, 0.25),
-      NoteWithoutChordContext(73, C, 0.25),
-      NoteWithoutChordContext(80, G, 0.25),
-      NoteWithoutChordContext(73, C, 0.25),
-      NoteWithoutChordContext(77, E, 0.25),
-      NoteWithoutChordContext(78, F, 1)
+      Measure(
+        Meter(4, 4),
+        List(
+          NoteWithoutChordContext(73, C, 0.25),
+          NoteWithoutChordContext(66, F, 0.5),
+          NoteWithoutChordContext(74, D, 0.25),
+        )
+      ),
+      Measure(
+        Meter(4, 4),
+        List(
+          NoteWithoutChordContext(73, C, 0.25),
+          NoteWithoutChordContext(68, G, 0.25),
+          NoteWithoutChordContext(69, A, 0.25),
+          NoteWithoutChordContext(73, C, 0.25),
+        )
+      ),
+      Measure(
+        Meter(4, 4),
+        List(
+          NoteWithoutChordContext(73, C, 0.25),
+          NoteWithoutChordContext(68, G, 0.25),
+          NoteWithoutChordContext(69, A, 0.25),
+          NoteWithoutChordContext(78, F, 0.25),
+        )
+      ),
+      Measure(
+        Meter(4, 4),
+        List(
+          NoteWithoutChordContext(78, F, 0.5),
+          NoteWithoutChordContext(77, E, 0.5),
+        )
+      ),
+      Measure(
+        Meter(4, 4),
+        List(
+          NoteWithoutChordContext(78, F, 0.25),
+          NoteWithoutChordContext(73, C, 0.5),
+          NoteWithoutChordContext(80, G, 0.25),
+        )
+      ),
+      Measure(
+        Meter(4, 4),
+        List(
+          NoteWithoutChordContext(81, A, 0.25),
+          NoteWithoutChordContext(78, F, 0.5),
+          NoteWithoutChordContext(74, D, 0.25),
+        )
+      ),
+      Measure(
+        Meter(4, 4),
+        List(
+          NoteWithoutChordContext(73, C, 0.25),
+          NoteWithoutChordContext(80, G, 0.25),
+          NoteWithoutChordContext(73, C, 0.25),
+          NoteWithoutChordContext(77, E, 0.25),
+        )
+      ),
+      Measure(
+        Meter(4, 4),
+        List(
+          NoteWithoutChordContext(78, F, 1)
+        )
+      )
     ),
     "Targosz p.60 ex.8"
   )
@@ -377,25 +702,65 @@ class SopranoSolverTest extends FunSuite with Matchers with TestUtils {
     keycsharp,
     Meter(3, 4),
     List(
-      NoteWithoutChordContext(68, G, 0.5),
-      NoteWithoutChordContext(73, C, 0.25),
-      NoteWithoutChordContext(72, B, 0.25),
-      NoteWithoutChordContext(68, G, 0.25),
-      NoteWithoutChordContext(75, D, 0.25),
-      NoteWithoutChordContext(76, E, 0.25),
-      NoteWithoutChordContext(68, G, 0.25),
-      NoteWithoutChordContext(76, E, 0.25),
-      NoteWithoutChordContext(78, F, 0.5),
-      NoteWithoutChordContext(75, D, 0.25),
-      NoteWithoutChordContext(76, E, 0.5),
-      NoteWithoutChordContext(80, G, 0.25),
-      NoteWithoutChordContext(81, A, 0.25),
-      NoteWithoutChordContext(73, C, 0.25),
-      NoteWithoutChordContext(78, F, 0.25),
-      NoteWithoutChordContext(75, D, 0.25),
-      NoteWithoutChordContext(80, G, 0.25),
-      NoteWithoutChordContext(72, B, 0.25),
-      NoteWithoutChordContext(73, C, 0.75)
+      Measure(
+        Meter(3, 4),
+        List(
+          NoteWithoutChordContext(68, G, 0.5),
+          NoteWithoutChordContext(73, C, 0.25),
+        )
+      ),
+      Measure(
+        Meter(3, 4),
+        List(
+          NoteWithoutChordContext(72, B, 0.25),
+          NoteWithoutChordContext(68, G, 0.25),
+          NoteWithoutChordContext(75, D, 0.25),
+        )
+      ),
+      Measure(
+        Meter(3, 4),
+        List(
+          NoteWithoutChordContext(76, E, 0.25),
+          NoteWithoutChordContext(68, G, 0.25),
+          NoteWithoutChordContext(76, E, 0.25),
+        )
+      ),
+      Measure(
+        Meter(3, 4),
+        List(
+          NoteWithoutChordContext(78, F, 0.5),
+          NoteWithoutChordContext(75, D, 0.25),
+        )
+      ),
+      Measure(
+        Meter(3, 4),
+        List(
+          NoteWithoutChordContext(76, E, 0.5),
+          NoteWithoutChordContext(80, G, 0.25),
+        )
+      ),
+      Measure(
+        Meter(3, 4),
+        List(
+          NoteWithoutChordContext(81, A, 0.25),
+          NoteWithoutChordContext(73, C, 0.25),
+          NoteWithoutChordContext(78, F, 0.25),
+        )
+      ),
+      Measure(
+        Meter(3, 4),
+        List(
+          NoteWithoutChordContext(75, D, 0.25),
+          NoteWithoutChordContext(80, G, 0.25),
+          NoteWithoutChordContext(72, B, 0.25),
+        )
+      ),
+      Measure(
+        Meter(3, 4),
+        List(
+          NoteWithoutChordContext(73, C, 0.75)
+        )
+      )
     ),
     "Targosz p.60 ex.9"
   )
@@ -404,24 +769,64 @@ class SopranoSolverTest extends FunSuite with Matchers with TestUtils {
     keygsharp,
     Meter(3, 4),
     List(
-      NoteWithoutChordContext(68, G, 0.5),
-      NoteWithoutChordContext(67, F, 0.25),
-      NoteWithoutChordContext(68, G, 0.25),
-      NoteWithoutChordContext(71, B, 0.25),
-      NoteWithoutChordContext(70, A, 0.25),
-      NoteWithoutChordContext(71, B, 0.25),
-      NoteWithoutChordContext(75, D, 0.25),
-      NoteWithoutChordContext(76, E, 0.25),
-      NoteWithoutChordContext(75, D, 0.5),
-      NoteWithoutChordContext(70, A, 0.25),
-      NoteWithoutChordContext(71, B, 0.5),
-      NoteWithoutChordContext(73, C, 0.25),
-      NoteWithoutChordContext(70, A, 0.25),
-      NoteWithoutChordContext(71, B, 0.25),
-      NoteWithoutChordContext(68, G, 0.25),
-      NoteWithoutChordContext(68, G, 0.5),
-      NoteWithoutChordContext(67, F, 0.25),
-      NoteWithoutChordContext(68, G, 0.75)
+      Measure(
+        Meter(3, 4),
+        List(
+          NoteWithoutChordContext(68, G, 0.5),
+          NoteWithoutChordContext(67, F, 0.25),
+        )
+      ),
+      Measure(
+        Meter(3, 4),
+        List(
+          NoteWithoutChordContext(68, G, 0.25),
+          NoteWithoutChordContext(71, B, 0.25),
+          NoteWithoutChordContext(70, A, 0.25),
+        )
+      ),
+      Measure(
+        Meter(3, 4),
+        List(
+          NoteWithoutChordContext(71, B, 0.25),
+          NoteWithoutChordContext(75, D, 0.25),
+          NoteWithoutChordContext(76, E, 0.25),
+        )
+      ),
+      Measure(
+        Meter(3, 4),
+        List(
+          NoteWithoutChordContext(75, D, 0.5),
+          NoteWithoutChordContext(70, A, 0.25),
+        )
+      ),
+      Measure(
+        Meter(3, 4),
+        List(
+          NoteWithoutChordContext(71, B, 0.5),
+          NoteWithoutChordContext(73, C, 0.25),
+        )
+      ),
+      Measure(
+        Meter(3, 4),
+        List(
+          NoteWithoutChordContext(70, A, 0.25),
+          NoteWithoutChordContext(71, B, 0.25),
+          NoteWithoutChordContext(68, G, 0.25),
+        )
+      ),
+      Measure(
+        Meter(3, 4),
+        List(
+          NoteWithoutChordContext(68, G, 0.5),
+          NoteWithoutChordContext(67, F, 0.25),
+        )
+      ),
+      Measure(
+        Meter(3, 4),
+        List(
+          NoteWithoutChordContext(68, G, 0.75)
+        )
+      )
     ),
     "Targosz p.60 ex.10"
   )
@@ -430,40 +835,80 @@ class SopranoSolverTest extends FunSuite with Matchers with TestUtils {
     keyf,
     Meter(6, 8),
     List(
-      NoteWithoutChordContext(77, F, 0.375),
-      NoteWithoutChordContext(77, F, 0.125),
-      NoteWithoutChordContext(73, D, 0.125),
-      NoteWithoutChordContext(70, B, 0.125),
-      NoteWithoutChordContext(68, A, 0.125),
-      NoteWithoutChordContext(72, C, 0.125),
-      NoteWithoutChordContext(73, D, 0.125),
-      NoteWithoutChordContext(72, C, 0.25),
-      NoteWithoutChordContext(67, G, 0.125),
-      NoteWithoutChordContext(68, A, 0.375),
-      NoteWithoutChordContext(70, B, 0.125),
-      NoteWithoutChordContext(65, F, 0.125),
-      NoteWithoutChordContext(70, B, 0.125),
-      NoteWithoutChordContext(67, G, 0.375),
-      NoteWithoutChordContext(72, C, 0.375),
-      NoteWithoutChordContext(72, C, 0.125),
-      NoteWithoutChordContext(68, A, 0.125),
-      NoteWithoutChordContext(65, F, 0.125),
-      NoteWithoutChordContext(64, E, 0.125),
-      NoteWithoutChordContext(67, G, 0.125),
-      NoteWithoutChordContext(72, C, 0.125),
-      NoteWithoutChordContext(72, C, 0.125),
-      NoteWithoutChordContext(68, A, 0.125),
-      NoteWithoutChordContext(72, C, 0.125),
-      NoteWithoutChordContext(73, D, 0.125),
-      NoteWithoutChordContext(70, B, 0.125),
-      NoteWithoutChordContext(73, D, 0.125),
-      NoteWithoutChordContext(72, C, 0.375),
-      NoteWithoutChordContext(72, C, 0.125),
-      NoteWithoutChordContext(77, F, 0.125),
-      NoteWithoutChordContext(80, A, 0.125),
-      NoteWithoutChordContext(79, G, 0.25),
-      NoteWithoutChordContext(76, E, 0.125),
-      NoteWithoutChordContext(77, F, 0.375)
+      Measure(
+        Meter(6, 8),
+        List(
+          NoteWithoutChordContext(77, F, 0.375),
+          NoteWithoutChordContext(77, F, 0.125),
+          NoteWithoutChordContext(73, D, 0.125),
+          NoteWithoutChordContext(70, B, 0.125),
+        )
+      ),
+      Measure(
+        Meter(6, 8),
+        List(
+          NoteWithoutChordContext(68, A, 0.125),
+          NoteWithoutChordContext(72, C, 0.125),
+          NoteWithoutChordContext(73, D, 0.125),
+          NoteWithoutChordContext(72, C, 0.25),
+          NoteWithoutChordContext(67, G, 0.125),
+        )
+      ),
+      Measure(
+        Meter(6, 8),
+        List(
+          NoteWithoutChordContext(68, A, 0.375),
+          NoteWithoutChordContext(70, B, 0.125),
+          NoteWithoutChordContext(65, F, 0.125),
+          NoteWithoutChordContext(70, B, 0.125),
+        )
+      ),
+      Measure(
+        Meter(6, 8),
+        List(
+          NoteWithoutChordContext(67, G, 0.375),
+          NoteWithoutChordContext(72, C, 0.375),
+        )
+      ),
+      Measure(
+        Meter(6, 8),
+        List(
+          NoteWithoutChordContext(72, C, 0.125),
+          NoteWithoutChordContext(68, A, 0.125),
+          NoteWithoutChordContext(65, F, 0.125),
+          NoteWithoutChordContext(64, E, 0.125),
+          NoteWithoutChordContext(67, G, 0.125),
+          NoteWithoutChordContext(72, C, 0.125),
+        )
+      ),
+      Measure(
+        Meter(6, 8),
+        List(
+          NoteWithoutChordContext(72, C, 0.125),
+          NoteWithoutChordContext(68, A, 0.125),
+          NoteWithoutChordContext(72, C, 0.125),
+          NoteWithoutChordContext(73, D, 0.125),
+          NoteWithoutChordContext(70, B, 0.125),
+          NoteWithoutChordContext(73, D, 0.125),
+        )
+      ),
+      Measure(
+        Meter(6, 8),
+        List(
+          NoteWithoutChordContext(72, C, 0.375),
+          NoteWithoutChordContext(72, C, 0.125),
+          NoteWithoutChordContext(77, F, 0.125),
+          NoteWithoutChordContext(80, A, 0.125),
+        )
+      ),
+      Measure(
+        Meter(6, 8),
+        List(
+          NoteWithoutChordContext(79, G, 0.25),
+          NoteWithoutChordContext(76, E, 0.125),
+          NoteWithoutChordContext(77, F, 0.375)
+        )
+      )
     ),
     "Targosz p.60 ex.11"
   )
@@ -472,28 +917,78 @@ class SopranoSolverTest extends FunSuite with Matchers with TestUtils {
     keybb,
     Meter(4, 4),
     List(
-      NoteWithoutChordContext(65, F, 0.5),
-      NoteWithoutChordContext(70, B, 0.5),
-      NoteWithoutChordContext(70, B, 0.25),
-      NoteWithoutChordContext(66, G, 0.25),
-      NoteWithoutChordContext(65, F, 0.25),
-      NoteWithoutChordContext(72, C, 0.25),
-      NoteWithoutChordContext(73, D, 0.5),
-      NoteWithoutChordContext(70, B, 0.5),
-      NoteWithoutChordContext(69, A, 1),
-      NoteWithoutChordContext(70, B, 0.5),
-      NoteWithoutChordContext(77, F, 0.5),
-      NoteWithoutChordContext(78, G, 0.5),
-      NoteWithoutChordContext(75, E, 0.25),
-      NoteWithoutChordContext(78, G, 0.25),
-      NoteWithoutChordContext(77, F, 0.5),
-      NoteWithoutChordContext(72, C, 0.5),
-      NoteWithoutChordContext(73, D, 0.5),
-      NoteWithoutChordContext(77, F, 0.25),
-      NoteWithoutChordContext(73, D, 0.25),
-      NoteWithoutChordContext(72, C, 0.5),
-      NoteWithoutChordContext(69, A, 0.5),
-      NoteWithoutChordContext(70, B, 1)
+      Measure(
+        Meter(4, 4),
+        List(
+          NoteWithoutChordContext(65, F, 0.5),
+          NoteWithoutChordContext(70, B, 0.5),
+        )
+      ),
+      Measure(
+        Meter(4, 4),
+        List(
+          NoteWithoutChordContext(70, B, 0.25),
+          NoteWithoutChordContext(66, G, 0.25),
+          NoteWithoutChordContext(65, F, 0.25),
+          NoteWithoutChordContext(72, C, 0.25),
+        )
+      ),
+      Measure(
+        Meter(4, 4),
+        List(
+          NoteWithoutChordContext(73, D, 0.5),
+          NoteWithoutChordContext(70, B, 0.5),
+        )
+      ),
+      Measure(
+        Meter(4, 4),
+        List(
+          NoteWithoutChordContext(69, A, 1),
+        )
+      ),
+      Measure(
+        Meter(4, 4),
+        List(
+          NoteWithoutChordContext(70, B, 0.5),
+          NoteWithoutChordContext(77, F, 0.5),
+        )
+      ),
+      Measure(
+        Meter(4, 4),
+        List(
+          NoteWithoutChordContext(78, G, 0.5),
+          NoteWithoutChordContext(75, E, 0.25),
+          NoteWithoutChordContext(78, G, 0.25),
+        )
+      ),
+      Measure(
+        Meter(4, 4),
+        List(
+          NoteWithoutChordContext(77, F, 0.5),
+          NoteWithoutChordContext(72, C, 0.5),
+        )
+      ),
+      Measure(
+        Meter(4, 4),
+        List(
+          NoteWithoutChordContext(73, D, 0.5),
+          NoteWithoutChordContext(77, F, 0.25),
+          NoteWithoutChordContext(73, D, 0.25),
+        )
+      ),
+      Measure(
+        Meter(4, 4),
+        List(
+          NoteWithoutChordContext(72, C, 0.5),
+          NoteWithoutChordContext(69, A, 0.5),
+        )
+      ),
+      Measure(
+        Meter(4, 4),
+        List(
+          NoteWithoutChordContext(70, B, 1)
+        )
+      )
     ),
     "Targosz p.60 ex.12"
   )
@@ -508,7 +1003,7 @@ class SopranoSolverTest extends FunSuite with Matchers with TestUtils {
       counter += note.duration
       current_measure = current_measure :+ note
       if (counter == ex.meter.asDouble) {
-        measures = measures :+ Measure(current_measure)
+        measures = measures :+ Measure(ex.getMeter, current_measure)
         current_measure = List.empty[NoteWithoutChordContext]
         counter = 0.0
       }

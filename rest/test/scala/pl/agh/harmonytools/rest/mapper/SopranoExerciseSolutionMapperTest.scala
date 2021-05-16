@@ -21,7 +21,7 @@ class SopranoExerciseSolutionMapperTest
       SopranoExercise(
         keyC,
         Meter(4, 4),
-        List(Measure(List(NoteWithoutChordContext(71, BaseNote.B, 1.0))), Measure(List(NoteWithoutChordContext(72, BaseNote.C, 1.0)))),
+        List(Measure(Meter(4,4), List(NoteWithoutChordContext(71, BaseNote.B, 1.0))), Measure(Meter(4,4), List(NoteWithoutChordContext(72, BaseNote.C, 1.0)))),
         List(tonic, dominant)
       ),
       1.0,
