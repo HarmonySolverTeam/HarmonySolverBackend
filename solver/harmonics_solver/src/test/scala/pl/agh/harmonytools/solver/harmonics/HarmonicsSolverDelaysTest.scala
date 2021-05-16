@@ -11,7 +11,7 @@ class HarmonicsSolverDelaysTest extends FunSuite with Matchers {
   private def getParserOutputWithHandledDelays(input: String): HarmonicsExercise = {
     val exercise = HarmonicsSolverTest.parseInput(input).get
     exercise.copy(
-      measures = exercise.measures.map(m => Measure(DelayHandler.handleDelays(m.harmonicFunctions)))
+      measures = exercise.measures.map(m => Measure(m.meter, DelayHandler.handleDelays(m.contents)))
     )
   }
 
@@ -21,18 +21,18 @@ class HarmonicsSolverDelaysTest extends FunSuite with Matchers {
                                                            |""".stripMargin)
 
   test("Dividing function into two - delays") {
-    simpleDelayExercise.measures.head.harmonicFunctions.size shouldBe 2
+    simpleDelayExercise.measures.head.contents.size shouldBe 2
   }
 
   test("Transformation of first child function correctness - delays") {
-    val first = simpleDelayExercise.measures.head.harmonicFunctions.head
+    val first = simpleDelayExercise.measures.head.contents.head
     first.omit shouldBe Set(ChordComponentManager.chordComponentFromString("3"))
     first.extra shouldBe Set(ChordComponentManager.chordComponentFromString("4"))
     first.delay shouldBe Set(Delay("4", "3"))
   }
 
   test("Transformation of second child function correctness - delays") {
-    val second = simpleDelayExercise.measures.head.harmonicFunctions(1)
+    val second = simpleDelayExercise.measures.head.contents(1)
     second.omit shouldBe Set()
     second.extra shouldBe Set()
     second.delay shouldBe Set()
@@ -44,10 +44,10 @@ class HarmonicsSolverDelaysTest extends FunSuite with Matchers {
                                      |T{delay:4-3/position:3}
                                      |""".stripMargin)
 
-    exercise.measures.head.harmonicFunctions.head.position shouldBe Some(
+    exercise.measures.head.contents.head.position shouldBe Some(
       ChordComponentManager.chordComponentFromString("4")
     )
-    exercise.measures.head.harmonicFunctions(1).position shouldBe Some(
+    exercise.measures.head.contents(1).position shouldBe Some(
       ChordComponentManager.chordComponentFromString("3")
     )
   }
@@ -58,10 +58,10 @@ class HarmonicsSolverDelaysTest extends FunSuite with Matchers {
                                      |T{delay:4-3/inversion:3}
                                      |""".stripMargin)
 
-    exercise.measures.head.harmonicFunctions.head.inversion shouldBe ChordComponentManager.chordComponentFromString(
+    exercise.measures.head.contents.head.inversion shouldBe ChordComponentManager.chordComponentFromString(
       "4"
     )
-    exercise.measures.head.harmonicFunctions(1).inversion shouldBe ChordComponentManager.chordComponentFromString("3")
+    exercise.measures.head.contents(1).inversion shouldBe ChordComponentManager.chordComponentFromString("3")
   }
 
   test("More measures with delayed functions") {
@@ -71,7 +71,7 @@ class HarmonicsSolverDelaysTest extends FunSuite with Matchers {
                                      |T{delay:4-3}
                                      |T{delay:4-3} T{delay:4-3}
                                      |""".stripMargin)
-    exercise.measures.map(_.harmonicFunctions.length).sum shouldBe 10
+    exercise.measures.map(_.contents.length).sum shouldBe 10
   }
 
   test("Double delayed function transformation") {
@@ -79,7 +79,7 @@ class HarmonicsSolverDelaysTest extends FunSuite with Matchers {
                                      |3/4
                                      |T{delay:6-5,4-3}
                                      |""".stripMargin)
-    val first    = exercise.measures.head.harmonicFunctions.head
+    val first    = exercise.measures.head.contents.head
     first.extra shouldBe Set(
       ChordComponentManager.chordComponentFromString("6"),
       ChordComponentManager.chordComponentFromString("4")
@@ -95,7 +95,7 @@ class HarmonicsSolverDelaysTest extends FunSuite with Matchers {
                                      |3/4
                                      |T{delay:6-5,4-3,2-1}
                                      |""".stripMargin)
-    val first    = exercise.measures.head.harmonicFunctions.head
+    val first    = exercise.measures.head.contents.head
     first.extra shouldBe Set(
       ChordComponentManager.chordComponentFromString("6"),
       ChordComponentManager.chordComponentFromString("4"),

@@ -30,7 +30,7 @@ class HarmonicsExerciseParserBuilder(
     HarmonicsExercise(
       exKey,
       exMeter,
-      exMeasures.map(_.getMeasure)
+      exMeasures.map(_.getMeasure(exMeter))
     )
   }
 

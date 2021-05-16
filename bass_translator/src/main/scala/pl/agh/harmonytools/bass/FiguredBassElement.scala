@@ -29,6 +29,8 @@ case class FiguredBassElement(
       List.empty,
       this
     )
+
+  override val duration: Double = bassNote.duration
 }
 
 case class NoteBuilder(

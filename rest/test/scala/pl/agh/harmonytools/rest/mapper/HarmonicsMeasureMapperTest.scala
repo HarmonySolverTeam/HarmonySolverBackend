@@ -1,16 +1,18 @@
 package pl.agh.harmonytools.rest.mapper
 
-import pl.agh.harmonytools.model.measure.Measure
+import pl.agh.harmonytools.model.harmonicfunction.HarmonicFunction
+import pl.agh.harmonytools.model.measure.{Measure, Meter}
 import pl.agh.harmonytools.rest.dto.HarmonicFunctionDto.{Degree, FunctionName, Mode}
 import pl.agh.harmonytools.rest.dto.{HarmonicFunctionDto, HarmonicsMeasureDto}
 import pl.agh.harmonytools.utils.TestUtils
 
-class MeasureMapperTest extends MapperTest[Measure, HarmonicsMeasureDto](MeasureMapper) with TestUtils {
+class HarmonicsMeasureMapperTest extends MapperTest[Measure[HarmonicFunction], HarmonicsMeasureDto](HarmonicsMeasureMapper(Meter(4,4))) with TestUtils {
   import ChordComponents._
   import HarmonicFunctions._
 
-  override protected val models: List[Measure] = List(
+  override protected val models: List[Measure[HarmonicFunction]] = List(
     Measure(
+      Meter(4,4),
       List(
         tonic,
         subdominant

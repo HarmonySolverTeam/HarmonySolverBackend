@@ -9,7 +9,7 @@ object HarmonicsExerciseMapper extends Mapper[HarmonicsExercise, HarmonicsExerci
     val meter = MeterMapper.mapToModel(dto.meter)
     val measures = dto.measures
       .getOrElse(List.empty)
-      .map(MeasureMapper.mapToModel)
+      .map(HarmonicsMeasureMapper(meter).mapToModel)
     HarmonicsExercise(key, meter, measures)
   }
 
@@ -17,7 +17,7 @@ object HarmonicsExerciseMapper extends Mapper[HarmonicsExercise, HarmonicsExerci
     HarmonicsExerciseDto(
       KeyMapper.mapToDTO(model.key),
       MeterMapper.mapToDTO(model.meter),
-      Some(model.measures.map(MeasureMapper.mapToDTO))
+      Some(model.measures.map(HarmonicsMeasureMapper(model.meter).mapToDTO))
     )
   }
 }

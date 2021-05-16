@@ -18,9 +18,11 @@ class HarmonicsExerciseMapperTest
       Meter(4, 4),
       List(
         Measure(
+          Meter(4, 4),
           List(tonic, subdominant)
         ),
         Measure(
+          Meter(4, 4),
           List(dominant7, tonic)
         )
       )

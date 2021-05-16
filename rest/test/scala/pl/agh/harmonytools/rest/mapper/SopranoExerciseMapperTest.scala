@@ -1,7 +1,7 @@
 package pl.agh.harmonytools.rest.mapper
 
 import pl.agh.harmonytools.exercise.soprano.SopranoExercise
-import pl.agh.harmonytools.model.measure.Meter
+import pl.agh.harmonytools.model.measure.{Measure, Meter}
 import pl.agh.harmonytools.model.note.{BaseNote, NoteWithoutChordContext}
 import pl.agh.harmonytools.rest.dto.HarmonicFunctionDto.{Degree, FunctionName, Mode}
 import pl.agh.harmonytools.rest.dto.{HarmonicFunctionDto, NoteDto, SopranoExerciseDto, SopranoMeasureDto}
@@ -18,7 +18,7 @@ class SopranoExerciseMapperTest
     SopranoExercise(
       keyC,
       Meter(4, 4),
-      List(List(NoteWithoutChordContext(71, BaseNote.B, 1.0)), List(NoteWithoutChordContext(72, BaseNote.C, 1.0))),
+      List(Measure(Meter(4,4), List(NoteWithoutChordContext(71, BaseNote.B, 1.0))), Measure(Meter(4,4), List(NoteWithoutChordContext(72, BaseNote.C, 1.0)))),
       List(tonic, dominant)
     )
   )
