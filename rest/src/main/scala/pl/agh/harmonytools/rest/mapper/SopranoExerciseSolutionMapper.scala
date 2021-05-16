@@ -2,11 +2,11 @@ package pl.agh.harmonytools.rest.mapper
 
 import pl.agh.harmonytools.exercise.soprano.SopranoExercise
 import pl.agh.harmonytools.rest.dto.SopranoExerciseSolutionDto
-import pl.agh.harmonytools.solver.ExerciseSolution
+import pl.agh.harmonytools.solver.{ExerciseSolution, SopranoSolution}
 
-object SopranoExerciseSolutionMapper extends Mapper[ExerciseSolution, SopranoExerciseSolutionDto] {
-  override def mapToModel(dto: SopranoExerciseSolutionDto): ExerciseSolution = {
-    ExerciseSolution(
+object SopranoExerciseSolutionMapper extends Mapper[SopranoSolution, SopranoExerciseSolutionDto] {
+  override def mapToModel(dto: SopranoExerciseSolutionDto): SopranoSolution = {
+    SopranoSolution(
       exercise = SopranoExerciseMapper.mapToModel(dto.exercise),
       rating = dto.rating,
       chords = dto.chords.map(ChordMapper.mapToModel),
@@ -14,7 +14,7 @@ object SopranoExerciseSolutionMapper extends Mapper[ExerciseSolution, SopranoExe
     )
   }
 
-  override def mapToDTO(model: ExerciseSolution): SopranoExerciseSolutionDto = {
+  override def mapToDTO(model: SopranoSolution): SopranoExerciseSolutionDto = {
     SopranoExerciseSolutionDto(
       success = model.success,
       chords = model.chords.map(ChordMapper.mapToDTO),

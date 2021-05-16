@@ -2,14 +2,14 @@ package pl.agh.harmonytools.solver.bass
 
 import org.scalatest.{FunSuite, Ignore, Matchers}
 import pl.agh.harmonytools.bass.FiguredBassExercise
-import pl.agh.harmonytools.solver.ExerciseSolution
+import pl.agh.harmonytools.solver.{ExerciseSolution, HarmonicsSolution}
 import pl.agh.harmonytools.utils.{ResourcesHelper, TestUtils}
 import pl.agh.harmonytools.solver.bass.JSONBassExerciseParser._
-import spray.json.{enrichAny, JsonParser}
+import spray.json.{JsonParser, enrichAny}
 
 class BassSolverTest extends FunSuite with Matchers with TestUtils with ResourcesHelper {
 
-  def assertSolutionFound(exerciseName: String): ExerciseSolution = {
+  def assertSolutionFound(exerciseName: String): HarmonicsSolution = {
     val exercise = JsonParser(getFileContent(exerciseName)).convertTo[FiguredBassExercise]
     BassSolver(exercise).solve()
   }

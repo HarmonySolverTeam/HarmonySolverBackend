@@ -2,33 +2,26 @@ package pl.agh.harmonytools.rest.mapper
 
 import pl.agh.harmonytools.exercise.soprano.SopranoExercise
 import pl.agh.harmonytools.model.chord.Chord
-import pl.agh.harmonytools.model.measure.Meter
+import pl.agh.harmonytools.model.measure.{Measure, Meter}
 import pl.agh.harmonytools.model.note.{BaseNote, Note, NoteWithoutChordContext}
 import pl.agh.harmonytools.rest.dto.HarmonicFunctionDto.{Degree, FunctionName, Mode}
-import pl.agh.harmonytools.rest.dto.{
-  ChordDto,
-  HarmonicFunctionDto,
-  NoteDto,
-  SopranoExerciseDto,
-  SopranoExerciseSolutionDto,
-  SopranoMeasureDto
-}
-import pl.agh.harmonytools.solver.ExerciseSolution
+import pl.agh.harmonytools.rest.dto.{ChordDto, HarmonicFunctionDto, NoteDto, SopranoExerciseDto, SopranoExerciseSolutionDto, SopranoMeasureDto}
+import pl.agh.harmonytools.solver.{ExerciseSolution, SopranoSolution}
 import pl.agh.harmonytools.utils.TestUtils
 
 class SopranoExerciseSolutionMapperTest
-  extends MapperTest[ExerciseSolution, SopranoExerciseSolutionDto](SopranoExerciseSolutionMapper)
+  extends MapperTest[SopranoSolution, SopranoExerciseSolutionDto](SopranoExerciseSolutionMapper)
   with TestUtils {
   import Keys._
   import HarmonicFunctions._
   import ChordComponents._
 
-  override protected val models: List[ExerciseSolution] = List(
-    ExerciseSolution(
+  override protected val models: List[SopranoSolution] = List(
+    SopranoSolution(
       SopranoExercise(
         keyC,
         Meter(4, 4),
-        List(List(NoteWithoutChordContext(71, BaseNote.B, 1.0)), List(NoteWithoutChordContext(72, BaseNote.C, 1.0))),
+        List(Measure(List(NoteWithoutChordContext(71, BaseNote.B, 1.0))), Measure(List(NoteWithoutChordContext(72, BaseNote.C, 1.0)))),
         List(tonic, dominant)
       ),
       1.0,

@@ -105,36 +105,36 @@ class HarmonicsParserTest extends FunSuite with Matchers with BeforeAndAfterEach
 
   test("Chained classic deflection") {
     val exercise = getParserOutput(getFileContent("/chained_deflection_basic.txt"))
-    exercise.get.measures.head.harmonicFunctions(1).key shouldBe Some(Key("D"))
-    exercise.get.measures.head.harmonicFunctions(2).key shouldBe Some(Key("G"))
+    exercise.get.measures.head.contents(1).key shouldBe Some(Key("D"))
+    exercise.get.measures.head.contents(2).key shouldBe Some(Key("G"))
   }
 
   test("Deflection between measures") {
     val exercise = getParserOutput(getFileContent("/basic_deflection_between_measures.txt"))
-    exercise.get.measures.head.harmonicFunctions(1).key shouldBe Some(Key("a"))
-    exercise.get.measures(1).harmonicFunctions.head.key shouldBe Some(Key("a"))
+    exercise.get.measures.head.contents(1).key shouldBe Some(Key("a"))
+    exercise.get.measures(1).contents.head.key shouldBe Some(Key("a"))
   }
 
   test("Chained deflection backwards") {
     val exercise = getParserOutput(getFileContent("/deflection_backwards.txt"))
-    exercise.get.measures.head.harmonicFunctions(2).key shouldBe Some(Key("F"))
-    exercise.get.measures(1).harmonicFunctions.head.key shouldBe Some(Key("Bb"))
+    exercise.get.measures.head.contents(2).key shouldBe Some(Key("F"))
+    exercise.get.measures(1).contents.head.key shouldBe Some(Key("Bb"))
   }
 
   test("Deflection backwards between measures") {
     val exercise = getParserOutput(getFileContent("/deflection_backwards_between_measures.txt"))
-    exercise.get.measures.head.harmonicFunctions(2).key shouldBe Some(Key("Bb"))
-    exercise.get.measures(1).harmonicFunctions.head.key shouldBe Some(Key("Bb"))
+    exercise.get.measures.head.contents(2).key shouldBe Some(Key("Bb"))
+    exercise.get.measures(1).contents.head.key shouldBe Some(Key("Bb"))
   }
 
   test("Basic ellipse") {
     val exercise = getParserOutput(getFileContent("/elipse_correct.txt"))
-    exercise.get.measures.head.harmonicFunctions(1).key shouldBe Some(Key("a"))
-    exercise.get.measures.head.harmonicFunctions(2).key shouldBe Some(Key("a"))
-    exercise.get.measures(2).harmonicFunctions(1).key shouldBe Some(Key("G"))
-    exercise.get.measures(2).harmonicFunctions(2).key shouldBe Some(Key("G"))
-    exercise.get.measures.head.harmonicFunctions(2).baseFunction shouldBe TONIC
-    exercise.get.measures.head.harmonicFunctions(2).degree shouldBe VI
+    exercise.get.measures.head.contents(1).key shouldBe Some(Key("a"))
+    exercise.get.measures.head.contents(2).key shouldBe Some(Key("a"))
+    exercise.get.measures(2).contents(1).key shouldBe Some(Key("G"))
+    exercise.get.measures(2).contents(2).key shouldBe Some(Key("G"))
+    exercise.get.measures.head.contents(2).baseFunction shouldBe TONIC
+    exercise.get.measures.head.contents(2).degree shouldBe VI
   }
 
   test("Ellipse inside deflection") {

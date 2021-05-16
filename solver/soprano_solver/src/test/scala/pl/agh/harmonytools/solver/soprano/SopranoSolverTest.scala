@@ -8,7 +8,7 @@ import pl.agh.harmonytools.harmonics.parser.DeflectionsHandler
 import pl.agh.harmonytools.model.harmonicfunction.FunctionNames.{DOMINANT, SUBDOMINANT, TONIC}
 import pl.agh.harmonytools.model.harmonicfunction.HarmonicFunction
 import pl.agh.harmonytools.model.key.Key
-import pl.agh.harmonytools.model.measure.Meter
+import pl.agh.harmonytools.model.measure.{Measure, Meter}
 import pl.agh.harmonytools.model.note.BaseNote.{A, B, C, D, E, F, G}
 import pl.agh.harmonytools.model.note.NoteWithoutChordContext
 import pl.agh.harmonytools.model.scale.ScaleDegree.{II, III, VI, VII}
@@ -112,9 +112,9 @@ class SopranoSolverTest extends FunSuite with Matchers with TestUtils {
   class TestExercise(
     _key: Key,
     _meter: Meter,
-    _NoteWithoutChordContexts: List[NoteWithoutChordContext],
+    _noteWithoutChordContexts: List[NoteWithoutChordContext],
     val name: String = ""
-  ) extends SopranoExercise(_key, _meter, List(_NoteWithoutChordContexts), List.empty)
+  ) extends SopranoExercise(_key, _meter, List(Measure(_noteWithoutChordContexts)), List.empty)
 
   test("Combinations Test") {
     val ex = new TestExercise(keyC, Meter(4, 4), List.empty)
@@ -501,14 +501,14 @@ class SopranoSolverTest extends FunSuite with Matchers with TestUtils {
   private def sopranoBaseTest(ex: TestExercise, harmonicFunctions: List[HarmonicFunction]): Unit = {
 //    println(ex.name + " for functions: " + harmonicFunctions.map(_.getSimpleName).mkString(" "))
 
-    var measures        = List.empty[List[NoteWithoutChordContext]]
+    var measures        = List.empty[Measure[NoteWithoutChordContext]]
     var counter         = 0.0
     var current_measure = List.empty[NoteWithoutChordContext]
     for (note <- ex.notes) {
       counter += note.duration
       current_measure = current_measure :+ note
       if (counter == ex.meter.asDouble) {
-        measures = measures :+ current_measure
+        measures = measures :+ Measure(current_measure)
         current_measure = List.empty[NoteWithoutChordContext]
         counter = 0.0
       }

@@ -8,7 +8,7 @@ import pl.agh.harmonytools.harmonics.parser.DeflectionsHandler
 import pl.agh.harmonytools.model.chord.ChordComponent
 import pl.agh.harmonytools.model.chord.ChordSystem.UNDEFINED
 import pl.agh.harmonytools.model.harmonicfunction.FunctionNames.{BaseFunction, DOMINANT, SUBDOMINANT, TONIC}
-import pl.agh.harmonytools.model.harmonicfunction.Delay
+import pl.agh.harmonytools.model.harmonicfunction.{Delay, HarmonicFunction}
 import pl.agh.harmonytools.model.key.Key
 import pl.agh.harmonytools.model.key.Mode.{BaseMode, MAJOR, MINOR}
 import pl.agh.harmonytools.model.measure.{Measure, Meter}
@@ -761,7 +761,7 @@ object BassTranslator {
     val newFunctions    = handleDeflections(harmonicFunctionsAfterSplit, key, chordElementsAfterSplit)
     val measureDuration = figuredBassExercise.meter.asDouble
     var counter         = 0.0
-    var measures        = List.empty[Measure]
+    var measures        = List.empty[Measure[HarmonicFunction]]
     var measureHfs      = List.empty[BassHarmonicFunctionBuilder]
     for (i <- bassLineAfterSplit.indices) {
       measureHfs = measureHfs :+ newFunctions(i)

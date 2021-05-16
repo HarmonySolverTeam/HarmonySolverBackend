@@ -11,7 +11,7 @@ class MeasureParserBuilder(private var harmonicFunctions: Option[List[HarmonicFu
   def getHarmonicFunctions: List[HarmonicFunctionParserBuilder] =
     harmonicFunctions.getOrElse(throw UnexpectedInternalError("HarmonicFunctions not defined yet"))
 
-  def getMeasure: Measure = {
+  def getMeasure: Measure[HarmonicFunction] = {
     val hfs = harmonicFunctions
       .getOrElse(throw UnexpectedInternalError("HarmonicFunction list should be defined to initialize Measure"))
       .map(_.getHarmonicFunction)

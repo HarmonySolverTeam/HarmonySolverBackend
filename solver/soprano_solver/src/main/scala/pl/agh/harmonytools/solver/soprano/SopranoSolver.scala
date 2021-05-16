@@ -17,7 +17,7 @@ import pl.agh.harmonytools.model.note.NoteWithoutChordContext
 import pl.agh.harmonytools.solver.harmonics.evaluator.{AdaptiveRulesChecker, ChordRulesChecker}
 import pl.agh.harmonytools.solver.harmonics.evaluator.rules.ChordRules
 import pl.agh.harmonytools.solver.harmonics.generator.{ChordGenerator, ChordGeneratorInput}
-import pl.agh.harmonytools.solver.{ExerciseSolution, Solver, SolverError}
+import pl.agh.harmonytools.solver.{ExerciseSolution, HarmonicsSolution, Solver, SolverError, SopranoSolution}
 import pl.agh.harmonytools.solver.soprano.evaluator.{HarmonicFunctionWithSopranoInfo, SopranoRulesChecker}
 import pl.agh.harmonytools.solver.soprano.generator.{HarmonicFunctionGenerator, HarmonicFunctionGeneratorInput}
 
@@ -25,14 +25,14 @@ case class SopranoSolver(
   exercise: SopranoExercise,
   punishmentRatios: Option[Map[ChordRules.Rule, Double]] = None,
   override val shortestPathCompanion: ShortestPathAlgorithmCompanion = TopologicalSortAlgorithm
-) extends Solver {
+) extends Solver[NoteWithoutChordContext] {
   private val harmonicFunctionGenerator = HarmonicFunctionGenerator(exercise.possibleFunctionsList, exercise.key)
   private val sopranoRulesChecker       = SopranoRulesChecker(exercise.key, punishmentRatios)
 
   private def prepareSopranoGeneratorInputs(): List[HarmonicFunctionGeneratorInput] = {
     var inputs: List[HarmonicFunctionGeneratorInput] = List.empty
     for (i <- exercise.measures.indices) {
-      val measure     = exercise.measures(i)
+      val measure     = exercise.measures(i).contents
       var durationSum = 0.0
       for (j <- measure.indices) {
         val note = measure(j)
@@ -57,7 +57,7 @@ case class SopranoSolver(
   type Q = HarmonicFunctionGeneratorInput
   type R = ChordGeneratorInput
 
-  override def solve(): ExerciseSolution = {
+  override def solve(): SopranoSolution = {
     val graphBuilder = new DoubleLevelGraphBuilder[T, S, Q, R](
       nestedFirstContent = nestedFirst,
       nestedLastContent = nestedLast,
@@ -99,7 +99,7 @@ case class SopranoSolver(
       case (chord, note) => chord.copy(duration = note.duration)
     }
 
-    ExerciseSolution(exercise, solutionNodes.last.getDistanceFromBeginning, solutionChords)
+    SopranoSolution(exercise, solutionNodes.last.getDistanceFromBeginning, solutionChords)
   }
 }
 
@@ -108,8 +108,8 @@ object SopranoSolver extends App {
     Key("C"),
     Meter(4, 4),
     measures = List(
-      List(NoteWithoutChordContext(72, C, 0.5), NoteWithoutChordContext(72, C, 0.5)),
-      List(NoteWithoutChordContext(74, D, 0.5), NoteWithoutChordContext(76, E, 0.5))
+      Measure(List(NoteWithoutChordContext(72, C, 0.5), NoteWithoutChordContext(72, C, 0.5))),
+      Measure(List(NoteWithoutChordContext(74, D, 0.5), NoteWithoutChordContext(76, E, 0.5)))
     ),
     possibleFunctionsList = List(
       HarmonicFunction(TONIC),

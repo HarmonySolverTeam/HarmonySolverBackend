@@ -12,12 +12,13 @@ import pl.agh.harmonytools.harmonics.parser.DeflectionsHandler
 import pl.agh.harmonytools.solver.harmonics.generator.ChordGenerator
 import pl.agh.harmonytools.solver.harmonics.utils.ExerciseCorrector
 import pl.agh.harmonytools.model.chord.Chord
+import pl.agh.harmonytools.model.harmonicfunction.HarmonicFunction
 import pl.agh.harmonytools.model.note.{Note, NoteWithoutChordContext}
 import pl.agh.harmonytools.solver.harmonics.evaluator.rules.ChordRules
 import pl.agh.harmonytools.solver.harmonics.evaluator.{AdaptiveRulesChecker, ChordRulesChecker}
 import pl.agh.harmonytools.solver.harmonics.generator.{ChordGenerator, ChordGeneratorInput}
 import pl.agh.harmonytools.solver.harmonics.utils.{ExerciseCorrector, PreChecker}
-import pl.agh.harmonytools.solver.{ExerciseSolution, Solver, SolverError}
+import pl.agh.harmonytools.solver.{ExerciseSolution, HarmonicsSolution, Solver, SolverError}
 
 case class HarmonicsSolver(
   exercise: HarmonicsExercise,
@@ -25,7 +26,7 @@ case class HarmonicsSolver(
   precheckDisabled: Boolean = false,
   punishmentRatios: Option[Map[ChordRules.Rule, Double]] = None,
   override val shortestPathCompanion: ShortestPathAlgorithmCompanion = TopologicalSortAlgorithm
-) extends Solver {
+) extends Solver[HarmonicFunction] {
 
   if (exercise.measures.isEmpty)
     throw new SolverError("Measures could not be empty")
@@ -40,7 +41,7 @@ case class HarmonicsSolver(
         var addedNotes  = 0
         var i           = 0
         for (measure <- exercise.measures) {
-          for (hf <- measure.harmonicFunctions) {
+          for (hf <- measure.contents) {
             val delay = hf.delay
             if (delay.nonEmpty) {
               val durations = bl(i).getDurationDivision
@@ -60,7 +61,7 @@ case class HarmonicsSolver(
 
   private val chordGenerator = ChordGenerator(exercise.key)
   private val harmonicFunctions = {
-    val hfs = DelayHandler.handleDelays(exercise.measures.map(_.harmonicFunctions).reduce(_ ++ _))
+    val hfs = DelayHandler.handleDelays(exercise.measures.map(_.contents).reduce(_ ++ _))
     if (!correctDisabled)
       ExerciseCorrector(exercise.key, hfs, bassLine.isDefined).run()
     else
@@ -103,7 +104,7 @@ case class HarmonicsSolver(
     graphBuilder.build()
   }
 
-  override def solve(): ExerciseSolution = {
+  override def solve(): HarmonicsSolution = {
     if (!precheckDisabled)
       PreChecker.run(harmonicFunctions, chordGenerator, bassLine, sopranoLine)
     val graph = prepareGraph()
@@ -112,7 +113,7 @@ case class HarmonicsSolver(
     val shortestPathAlgorithm = shortestPathCompanion(graph)
     val solutionNodes         = shortestPathAlgorithm.getShortestPathToLastNode
     if (solutionNodes.length != graph.getLayers.length)
-      return ExerciseSolution(exercise, -1, List.empty, success = false)
+      return HarmonicsSolution(exercise, -1, List.empty, success = false)
     val solutionChords = {
       bassLine match {
         case Some(bassLine) =>
@@ -130,7 +131,7 @@ case class HarmonicsSolver(
       }
     }
     val solution =
-      ExerciseSolution(exercise, solutionNodes.last.getDistanceFromBeginning, solutionChords, solutionChords.nonEmpty)
+      HarmonicsSolution(exercise, solutionNodes.last.getDistanceFromBeginning, solutionChords, solutionChords.nonEmpty)
     if (bassLine.isEmpty && sopranoLine.isEmpty)
       solution.setDurations()
     solution

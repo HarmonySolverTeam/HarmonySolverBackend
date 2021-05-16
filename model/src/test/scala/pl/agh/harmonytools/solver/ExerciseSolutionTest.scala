@@ -14,14 +14,14 @@ class ExerciseSolutionTest extends FunSuite with Matchers with TestUtils {
   import HarmonicFunctions._
   test("Exact divide for hfs 1") {
     val exercise         = ExerciseImpl(keyC, Meter(3, 4), List(Measure(List(tonic, dominant, dominant))))
-    val exerciseSolution = ExerciseSolution(exercise, 0, List(Chord.empty, Chord.empty, Chord.empty))
+    val exerciseSolution = HarmonicsSolution(exercise, 0, List(Chord.empty, Chord.empty, Chord.empty))
     exerciseSolution.setDurations()
     exerciseSolution.chords.map(_.duration) shouldBe List(0.25, 0.25, 0.25)
   }
 
   test("Exact divide for hfs 2") {
     val exercise         = ExerciseImpl(keyC, Meter(4, 4), List(Measure(List(tonic, subdominant, dominant))))
-    val exerciseSolution = ExerciseSolution(exercise, 0, List(Chord.empty, Chord.empty, Chord.empty))
+    val exerciseSolution = HarmonicsSolution(exercise, 0, List(Chord.empty, Chord.empty, Chord.empty))
     exerciseSolution.setDurations()
     exerciseSolution.chords.map(_.duration) shouldBe List(0.5, 0.25, 0.25)
   }
@@ -32,7 +32,7 @@ class ExerciseSolutionTest extends FunSuite with Matchers with TestUtils {
       Meter(4, 4),
       List(Measure(List(tonic, subdominant, subdominant, dominant, dominant, tonic, tonic, tonic, dominant)))
     )
-    val exerciseSolution = ExerciseSolution(
+    val exerciseSolution = HarmonicsSolution(
       exercise,
       0,
       List(
@@ -59,7 +59,7 @@ class ExerciseSolutionTest extends FunSuite with Matchers with TestUtils {
       Meter(4, 4),
       List(Measure(List(hfDeflection, dominant, tonic, subdominant)))
     )
-    val exerciseSolution = ExerciseSolution(
+    val exerciseSolution = HarmonicsSolution(
       exercise,
       0,
       List(
@@ -75,4 +75,4 @@ class ExerciseSolutionTest extends FunSuite with Matchers with TestUtils {
 
 }
 
-case class ExerciseImpl(key: Key, meter: Meter, measures: List[Measure]) extends Exercise(key, meter, measures)
+case class ExerciseImpl(key: Key, meter: Meter, measures: List[Measure[HarmonicFunction]]) extends Exercise(key, meter, measures)
