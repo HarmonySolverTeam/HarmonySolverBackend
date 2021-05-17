@@ -31,6 +31,8 @@ case class FiguredBassElement(
     )
 
   override val duration: Double = bassNote.duration
+
+  override def supportsDuration: Boolean = false //todo HS-184
 }
 
 case class NoteBuilder(

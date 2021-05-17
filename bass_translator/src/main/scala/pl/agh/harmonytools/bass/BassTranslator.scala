@@ -1,6 +1,6 @@
 package pl.agh.harmonytools.bass
 
-import pl.agh.harmonytools.bass.AlterationType.{ELEVATED, FLAT, LOWERED, NATURAL, SHARP}
+import AlterationType.{ELEVATED, FLAT, LOWERED, NATURAL, SHARP}
 import pl.agh.harmonytools.error.{HarmonySolverError, UnexpectedInternalError}
 import pl.agh.harmonytools.exercise.harmonics.HarmonicsExercise
 import pl.agh.harmonytools.exercise.harmonics.helpers.DelayHandler
@@ -26,8 +26,6 @@ object BassTranslator {
     ChordComponentManager.chordComponentFromString(cc, isDown)
 
   /**
-   * *
-   *
    * @param functions list of lists of BassHarmonicFunctionBuilder
    * @return functions mapped to list of BassHarmonicFunctionBuilder - chooses only one
    *         from input lists to avoid D -> S connections.
@@ -365,7 +363,7 @@ object BassTranslator {
     var harmonicFunctions = List.empty[List[BassHarmonicFunctionBuilder]]
     var chordElements     = List.empty[ChordElement]
 
-    for (element <- figuredBassExercise.elements) {
+    for (element <- figuredBassExercise.measure.contents) {
       element.complete()
       val chordElement = element.buildChordElement()
       chordElement.completeUntilTwoNextThirds()
@@ -420,7 +418,7 @@ object BassTranslator {
         }
       }
       val alterationSymbol =
-        getAlterationSymbolForNote(figuredBassExercise.elements(i).bassNote, figuredBassExercise.key)
+        getAlterationSymbolForNote(figuredBassExercise.measure.contents(i).bassNote, figuredBassExercise.key)
 
       if (alterationSymbol != NATURAL) {
         val inversionString = hf.getInversion.chordComponentString
@@ -750,12 +748,12 @@ object BassTranslator {
   }
 
   def createExerciseFromFiguredBass(figuredBassExercise: FiguredBassExercise): HarmonicsExercise = {
-    if (figuredBassExercise.elements.isEmpty)
+    if (figuredBassExercise.measure.contents.isEmpty)
       throw SolverError("Elements of exercise could not be empty.")
     val (chordElements, harmonicFunctions) = convertToHarmonicFunctions(figuredBassExercise)
     val key                                = figuredBassExercise.key
     handleAlterations(harmonicFunctions, chordElements, figuredBassExercise)
-    val bassLine = figuredBassExercise.elements.map(_.bassNote)
+    val bassLine = figuredBassExercise.measure.contents.map(_.bassNote)
     val (harmonicFunctionsAfterSplit, bassLineAfterSplit, chordElementsAfterSplit) =
       split33Delays(harmonicFunctions, bassLine, chordElements)
     val newFunctions    = handleDeflections(harmonicFunctionsAfterSplit, key, chordElementsAfterSplit)

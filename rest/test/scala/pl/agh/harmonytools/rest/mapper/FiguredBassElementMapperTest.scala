@@ -1,5 +1,6 @@
 package pl.agh.harmonytools.rest.mapper
 
+import pl.agh.harmonytools.bass
 import pl.agh.harmonytools.bass.{AlterationType, BassDelay, BassSymbol, FiguredBassElement, NoteBuilder}
 import pl.agh.harmonytools.model.note.BaseNote
 import pl.agh.harmonytools.rest.dto.{BassElementDto, BassSymbolDto, NoteDto}
@@ -11,7 +12,7 @@ class FiguredBassElementMapperTest extends MapperTest[FiguredBassElement, BassEl
       symbols = List(BassSymbol(), BassSymbol(6, AlterationType.FLAT)),
       delays = List(
         BassDelay(BassSymbol(4), BassSymbol()),
-        BassDelay(BassSymbol(5, AlterationType.NATURAL), BassSymbol(6, AlterationType.FLAT))
+        BassDelay(bass.BassSymbol(5, AlterationType.NATURAL), bass.BassSymbol(6, AlterationType.FLAT))
       )
     )
   )

@@ -3,7 +3,7 @@ package pl.agh.harmonytools.bass
 import pl.agh.harmonytools.error.UnexpectedInternalError
 import pl.agh.harmonytools.model.chord.ChordComponent
 import pl.agh.harmonytools.model.harmonicfunction.{Delay, HarmonicFunction}
-import pl.agh.harmonytools.model.harmonicfunction.builder.{HarmonicFunctionBasicBuilder, HarmonicFunctionBuilder}
+import pl.agh.harmonytools.model.harmonicfunction.builder.HarmonicFunctionBasicBuilder
 import pl.agh.harmonytools.model.key.Mode.{MAJOR, MINOR}
 import pl.agh.harmonytools.model.scale.ScaleDegree.{II, III, VI}
 import pl.agh.harmonytools.model.util.ChordComponentManager

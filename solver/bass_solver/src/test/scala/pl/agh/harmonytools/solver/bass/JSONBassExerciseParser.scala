@@ -1,16 +1,10 @@
 package pl.agh.harmonytools.solver.bass
 import spray.json._
 import DefaultJsonProtocol._
-import pl.agh.harmonytools.bass.{
-  AlterationType,
-  BassDelay,
-  BassSymbol,
-  FiguredBassElement,
-  FiguredBassExercise,
-  NoteBuilder
-}
+import pl.agh.harmonytools.bass
+import pl.agh.harmonytools.bass.{AlterationType, BassDelay, BassSymbol, FiguredBassElement, FiguredBassExercise, NoteBuilder}
 import pl.agh.harmonytools.model.key.Key
-import pl.agh.harmonytools.model.measure.Meter
+import pl.agh.harmonytools.model.measure.{Measure, Meter}
 import pl.agh.harmonytools.model.note.{BaseNote, Note}
 
 object JSONBassExerciseParser extends DefaultJsonProtocol {
@@ -29,9 +23,9 @@ object JSONBassExerciseParser extends DefaultJsonProtocol {
 
     def createBassSymbol(s: String): BassSymbol = {
       if (s.length == 1 && s.head.isDigit) BassSymbol(s.toInt)
-      else if (s.length == 1 && !s.head.isDigit) BassSymbol(alteration = stringToAlterationType(s))
+      else if (s.length == 1 && !s.head.isDigit) bass.BassSymbol(alteration = stringToAlterationType(s))
       else
-        BassSymbol(s.head.toString.toInt, stringToAlterationType(s.tail))
+        bass.BassSymbol(s.head.toString.toInt, stringToAlterationType(s.tail))
     }
 
     override def read(json: JsValue): FiguredBassExercise = {
@@ -113,10 +107,11 @@ class FiguredBassExerciseBuilder {
   def withElements(els: List[FiguredBassElement])       = elements = els
 
   def getResult: FiguredBassExercise = {
+    val m = meter.getOrElse(sys.error("Meter not defined"))
     FiguredBassExercise(
       key.getOrElse(sys.error("Key not defined")),
-      meter.getOrElse(sys.error("Meter not defined")),
-      elements
+      m,
+      Measure(m, elements)
     )
   }
 }

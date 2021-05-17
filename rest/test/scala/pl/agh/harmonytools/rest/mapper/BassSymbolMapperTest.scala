@@ -1,5 +1,6 @@
 package pl.agh.harmonytools.rest.mapper
 
+import pl.agh.harmonytools.bass
 import pl.agh.harmonytools.bass.{AlterationType, BassSymbol}
 import pl.agh.harmonytools.rest.dto.BassSymbolDto
 
@@ -8,8 +9,8 @@ class BassSymbolMapperTest extends MapperTest[BassSymbol, BassSymbolDto](BassSym
     BassSymbol(),
     BassSymbol(4),
     BassSymbol(7, AlterationType.FLAT),
-    BassSymbol(3, AlterationType.SHARP),
-    BassSymbol(5, AlterationType.NATURAL)
+    bass.BassSymbol(3, AlterationType.SHARP),
+    bass.BassSymbol(5, AlterationType.NATURAL)
   )
   override protected val dtos: List[BassSymbolDto] = List(
     BassSymbolDto(Some(3), None),

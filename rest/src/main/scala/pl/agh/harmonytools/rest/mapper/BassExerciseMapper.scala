@@ -1,14 +1,17 @@
 package pl.agh.harmonytools.rest.mapper
 
+import pl.agh.harmonytools.bass
 import pl.agh.harmonytools.bass.FiguredBassExercise
+import pl.agh.harmonytools.model.measure.Measure
 import pl.agh.harmonytools.rest.dto.BassExerciseDto
 
 object BassExerciseMapper extends Mapper[FiguredBassExercise, BassExerciseDto] {
   override def mapToModel(dto: BassExerciseDto): FiguredBassExercise = {
-    FiguredBassExercise(
+    val meter = MeterMapper.mapToModel(dto.meter)
+    bass.FiguredBassExercise(
       key = KeyMapper.mapToModel(dto.key),
-      meter = MeterMapper.mapToModel(dto.meter),
-      elements = dto.elements.map(FiguredBassElementMapper.mapToModel)
+      meter = meter,
+      measure = Measure(meter, dto.elements.map(FiguredBassElementMapper.mapToModel))
     )
   }
 
@@ -16,7 +19,7 @@ object BassExerciseMapper extends Mapper[FiguredBassExercise, BassExerciseDto] {
     BassExerciseDto(
       key = KeyMapper.mapToDTO(model.key),
       meter = MeterMapper.mapToDTO(model.meter),
-      elements = model.elements.map(FiguredBassElementMapper.mapToDTO)
+      elements = model.measure.contents.map(FiguredBassElementMapper.mapToDTO)
     )
   }
 }

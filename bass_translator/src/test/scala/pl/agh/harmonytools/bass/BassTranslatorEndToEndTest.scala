@@ -1,10 +1,11 @@
 package pl.agh.harmonytools.bass
 
 import org.scalatest.{FunSuite, Matchers}
+import pl.agh.harmonytools.bass
 import pl.agh.harmonytools.model.key.Key
 import pl.agh.harmonytools.model.key.Mode.{MAJOR, MINOR}
-import pl.agh.harmonytools.model.measure.Meter
-import pl.agh.harmonytools.model.note.BaseNote.{A, B, C, D, E, F, G}
+import pl.agh.harmonytools.model.measure.{Measure, Meter}
+import pl.agh.harmonytools.model.note.BaseNote._
 import pl.agh.harmonytools.model.scale.ScaleDegree.V
 import pl.agh.harmonytools.utils.TestUtils
 
@@ -14,7 +15,7 @@ class BassTranslatorEndToEndTest extends FunSuite with Matchers with TestUtils {
 
   test("Base major triad") {
     val ex = BassTranslator.createExerciseFromFiguredBass(
-      FiguredBassExercise(Key("C"), Meter(4, 4), List(FiguredBassElement(NoteBuilder(48, C, 1))))
+      bass.FiguredBassExercise(Key("C"), Meter(4, 4), Measure(Meter(4, 4), List(FiguredBassElement(NoteBuilder(48, C, 1)))))
     )
     ex.measures.head.contents.head.inversion.chordComponentString shouldBe "1"
     ex.measures.head.contents.head.countChordComponents shouldBe 3
@@ -24,10 +25,10 @@ class BassTranslatorEndToEndTest extends FunSuite with Matchers with TestUtils {
 
   test("1st major triad inversion") {
     val ex = BassTranslator.createExerciseFromFiguredBass(
-      FiguredBassExercise(
+      bass.FiguredBassExercise(
         Key("C"),
         Meter(4, 4),
-        List(FiguredBassElement(NoteBuilder(52, E, 1), symbols = List(BassSymbol(6))))
+        Measure(Meter(4, 4), List(FiguredBassElement(NoteBuilder(52, E, 1), symbols = List(BassSymbol(6)))))
       )
     )
     ex.measures.head.contents.head.inversion.chordComponentString shouldBe "3"
@@ -38,10 +39,13 @@ class BassTranslatorEndToEndTest extends FunSuite with Matchers with TestUtils {
 
   test("2nd major triad inversion") {
     val ex = BassTranslator.createExerciseFromFiguredBass(
-      FiguredBassExercise(
+      bass.FiguredBassExercise(
         Key("C"),
         Meter(4, 4),
-        List(FiguredBassElement(NoteBuilder(55, G, 1), symbols = List(BassSymbol(6), BassSymbol(4))))
+        Measure(
+          Meter(4, 4),
+          List(FiguredBassElement(NoteBuilder(55, G, 1), symbols = List(BassSymbol(6), BassSymbol(4))))
+        )
       )
     )
     ex.measures.head.contents.head.inversion.chordComponentString shouldBe "5"
@@ -52,7 +56,7 @@ class BassTranslatorEndToEndTest extends FunSuite with Matchers with TestUtils {
 
   test("Base minor triad") {
     val ex = BassTranslator.createExerciseFromFiguredBass(
-      FiguredBassExercise(Key("c"), Meter(4, 4), List(FiguredBassElement(NoteBuilder(48, C, 1))))
+      bass.FiguredBassExercise(Key("c"), Meter(4, 4), Measure(Meter(4, 4), List(FiguredBassElement(NoteBuilder(48, C, 1)))))
     )
     ex.measures.head.contents.head.inversion.chordComponentString shouldBe "1"
     ex.measures.head.contents.head.getThird.chordComponentString shouldBe "3>"
@@ -63,10 +67,10 @@ class BassTranslatorEndToEndTest extends FunSuite with Matchers with TestUtils {
 
   test("1st minor triad inversion") {
     val ex = BassTranslator.createExerciseFromFiguredBass(
-      FiguredBassExercise(
+      bass.FiguredBassExercise(
         Key("c"),
         Meter(4, 4),
-        List(FiguredBassElement(NoteBuilder(51, E, 1), symbols = List(BassSymbol(6))))
+        Measure(Meter(4, 4), List(FiguredBassElement(NoteBuilder(51, E, 1), symbols = List(BassSymbol(6)))))
       )
     )
     ex.measures.head.contents.head.inversion.chordComponentString shouldBe "3>"
@@ -77,10 +81,13 @@ class BassTranslatorEndToEndTest extends FunSuite with Matchers with TestUtils {
 
   test("2nd minor triad inversion") {
     val ex = BassTranslator.createExerciseFromFiguredBass(
-      FiguredBassExercise(
+      bass.FiguredBassExercise(
         Key("c"),
         Meter(4, 4),
-        List(FiguredBassElement(NoteBuilder(55, G, 1), symbols = List(BassSymbol(6), BassSymbol(4))))
+        Measure(
+          Meter(4, 4),
+          List(FiguredBassElement(NoteBuilder(55, G, 1), symbols = List(BassSymbol(6), BassSymbol(4))))
+        )
       )
     )
     ex.measures.head.contents.head.inversion.chordComponentString shouldBe "5"
@@ -91,10 +98,13 @@ class BassTranslatorEndToEndTest extends FunSuite with Matchers with TestUtils {
 
   test("Picardian triad") {
     val ex = BassTranslator.createExerciseFromFiguredBass(
-      FiguredBassExercise(
+      bass.FiguredBassExercise(
         Key("c"),
         Meter(4, 4),
-        List(FiguredBassElement(NoteBuilder(48, C, 1), symbols = List(BassSymbol(3, AlterationType.NATURAL))))
+        Measure(
+          Meter(4, 4),
+          List(FiguredBassElement(NoteBuilder(48, C, 1), symbols = List(bass.BassSymbol(3, AlterationType.NATURAL))))
+        )
       )
     )
     ex.measures.head.contents.head.inversion.chordComponentString shouldBe "1"
@@ -106,10 +116,10 @@ class BassTranslatorEndToEndTest extends FunSuite with Matchers with TestUtils {
 
   test("Base D7") {
     val ex = BassTranslator.createExerciseFromFiguredBass(
-      FiguredBassExercise(
+      bass.FiguredBassExercise(
         Key("C"),
         Meter(4, 4),
-        List(FiguredBassElement(NoteBuilder(55, G, 1), symbols = List(BassSymbol(7))))
+        Measure(Meter(4, 4), List(FiguredBassElement(NoteBuilder(55, G, 1), symbols = List(BassSymbol(7)))))
       )
     )
     ex.measures.head.contents.head.inversion.chordComponentString shouldBe "1"
@@ -120,10 +130,13 @@ class BassTranslatorEndToEndTest extends FunSuite with Matchers with TestUtils {
 
   test("1st inversion D7") {
     val ex = BassTranslator.createExerciseFromFiguredBass(
-      FiguredBassExercise(
+      bass.FiguredBassExercise(
         Key("C"),
         Meter(4, 4),
-        List(FiguredBassElement(NoteBuilder(59, B, 1), symbols = List(BassSymbol(6), BassSymbol(5))))
+        Measure(
+          Meter(4, 4),
+          List(FiguredBassElement(NoteBuilder(59, B, 1), symbols = List(BassSymbol(6), BassSymbol(5))))
+        )
       )
     )
     ex.measures.head.contents.head.inversion.chordComponentString shouldBe "3"
@@ -134,10 +147,13 @@ class BassTranslatorEndToEndTest extends FunSuite with Matchers with TestUtils {
 
   test("2nd inversion D7") {
     val ex = BassTranslator.createExerciseFromFiguredBass(
-      FiguredBassExercise(
+      bass.FiguredBassExercise(
         Key("C"),
         Meter(4, 4),
-        List(FiguredBassElement(NoteBuilder(50, D, 1), symbols = List(BassSymbol(4), BassSymbol(3))))
+        Measure(
+          Meter(4, 4),
+          List(FiguredBassElement(NoteBuilder(50, D, 1), symbols = List(BassSymbol(4), BassSymbol(3))))
+        )
       )
     )
     ex.measures.head.contents.head.inversion.chordComponentString shouldBe "5"
@@ -148,10 +164,10 @@ class BassTranslatorEndToEndTest extends FunSuite with Matchers with TestUtils {
 
   test("3rd inversion D7") {
     val ex = BassTranslator.createExerciseFromFiguredBass(
-      FiguredBassExercise(
+      bass.FiguredBassExercise(
         Key("C"),
         Meter(4, 4),
-        List(FiguredBassElement(NoteBuilder(53, F, 1), symbols = List(BassSymbol(2))))
+        Measure(Meter(4, 4), List(FiguredBassElement(NoteBuilder(53, F, 1), symbols = List(BassSymbol(2)))))
       )
     )
     ex.measures.head.contents.head.inversion.chordComponentString shouldBe "7"
@@ -162,13 +178,16 @@ class BassTranslatorEndToEndTest extends FunSuite with Matchers with TestUtils {
 
   test("Base D7 in minor key") {
     val ex = BassTranslator.createExerciseFromFiguredBass(
-      FiguredBassExercise(
+      bass.FiguredBassExercise(
         Key("c"),
         Meter(4, 4),
-        List(
-          FiguredBassElement(
-            NoteBuilder(55, G, 1),
-            symbols = List(BassSymbol(7), BassSymbol(3, AlterationType.NATURAL))
+        Measure(
+          Meter(4, 4),
+          List(
+            FiguredBassElement(
+              NoteBuilder(55, G, 1),
+              symbols = List(BassSymbol(7), bass.BassSymbol(3, AlterationType.NATURAL))
+            )
           )
         )
       )
@@ -182,10 +201,13 @@ class BassTranslatorEndToEndTest extends FunSuite with Matchers with TestUtils {
 
   test("1st inversion D7 in minor key") {
     val ex = BassTranslator.createExerciseFromFiguredBass(
-      FiguredBassExercise(
+      bass.FiguredBassExercise(
         Key("c"),
         Meter(4, 4),
-        List(FiguredBassElement(NoteBuilder(59, B, 1), symbols = List(BassSymbol(6), BassSymbol(5))))
+        Measure(
+          Meter(4, 4),
+          List(FiguredBassElement(NoteBuilder(59, B, 1), symbols = List(BassSymbol(6), BassSymbol(5))))
+        )
       )
     )
     ex.measures.head.contents.head.inversion.chordComponentString shouldBe "3"
@@ -197,13 +219,16 @@ class BassTranslatorEndToEndTest extends FunSuite with Matchers with TestUtils {
 
   test("2nd inversion D7 in minor key") {
     val ex = BassTranslator.createExerciseFromFiguredBass(
-      FiguredBassExercise(
+      bass.FiguredBassExercise(
         Key("c"),
         Meter(4, 4),
-        List(
-          FiguredBassElement(
-            NoteBuilder(50, D, 1),
-            symbols = List(BassSymbol(6, AlterationType.NATURAL), BassSymbol(4), BassSymbol(3))
+        Measure(
+          Meter(4, 4),
+          List(
+            FiguredBassElement(
+              NoteBuilder(50, D, 1),
+              symbols = List(bass.BassSymbol(6, AlterationType.NATURAL), BassSymbol(4), BassSymbol(3))
+            )
           )
         )
       )
@@ -217,13 +242,16 @@ class BassTranslatorEndToEndTest extends FunSuite with Matchers with TestUtils {
 
   test("3rd inversion D7 in minor key") {
     val ex = BassTranslator.createExerciseFromFiguredBass(
-      FiguredBassExercise(
+      bass.FiguredBassExercise(
         Key("c"),
         Meter(4, 4),
-        List(
-          FiguredBassElement(
-            NoteBuilder(53, F, 1),
-            symbols = List(BassSymbol(4, AlterationType.NATURAL), BassSymbol(2))
+        Measure(
+          Meter(4, 4),
+          List(
+            FiguredBassElement(
+              NoteBuilder(53, F, 1),
+              symbols = List(bass.BassSymbol(4, AlterationType.NATURAL), BassSymbol(2))
+            )
           )
         )
       )
@@ -236,10 +264,10 @@ class BassTranslatorEndToEndTest extends FunSuite with Matchers with TestUtils {
 
   test("Base minor with 7") {
     val ex = BassTranslator.createExerciseFromFiguredBass(
-      FiguredBassExercise(
+      bass.FiguredBassExercise(
         Key("c"),
         Meter(4, 4),
-        List(FiguredBassElement(NoteBuilder(55, G, 1), symbols = List(BassSymbol(7))))
+        Measure(Meter(4, 4), List(FiguredBassElement(NoteBuilder(55, G, 1), symbols = List(BassSymbol(7)))))
       )
     )
     ex.measures.head.contents.head.inversion.chordComponentString shouldBe "1"
@@ -251,10 +279,13 @@ class BassTranslatorEndToEndTest extends FunSuite with Matchers with TestUtils {
 
   test("1st inversion minor with 7") {
     val ex = BassTranslator.createExerciseFromFiguredBass(
-      FiguredBassExercise(
+      bass.FiguredBassExercise(
         Key("c"),
         Meter(4, 4),
-        List(FiguredBassElement(NoteBuilder(58, B, 1), symbols = List(BassSymbol(6), BassSymbol(5))))
+        Measure(
+          Meter(4, 4),
+          List(FiguredBassElement(NoteBuilder(58, B, 1), symbols = List(BassSymbol(6), BassSymbol(5))))
+        )
       )
     )
     ex.measures.head.contents.head.inversion.chordComponentString shouldBe "3>"
@@ -266,10 +297,13 @@ class BassTranslatorEndToEndTest extends FunSuite with Matchers with TestUtils {
 
   test("2nd inversion minor with 7") {
     val ex = BassTranslator.createExerciseFromFiguredBass(
-      FiguredBassExercise(
+      bass.FiguredBassExercise(
         Key("c"),
         Meter(4, 4),
-        List(FiguredBassElement(NoteBuilder(50, D, 1), symbols = List(BassSymbol(4), BassSymbol(3))))
+        Measure(
+          Meter(4, 4),
+          List(FiguredBassElement(NoteBuilder(50, D, 1), symbols = List(BassSymbol(4), BassSymbol(3))))
+        )
       )
     )
     ex.measures.head.contents.head.inversion.chordComponentString shouldBe "5"
@@ -281,10 +315,10 @@ class BassTranslatorEndToEndTest extends FunSuite with Matchers with TestUtils {
 
   test("3rd inversion minor with 7") {
     val ex = BassTranslator.createExerciseFromFiguredBass(
-      FiguredBassExercise(
+      bass.FiguredBassExercise(
         Key("c"),
         Meter(4, 4),
-        List(FiguredBassElement(NoteBuilder(53, F, 1), symbols = List(BassSymbol(2))))
+        Measure(Meter(4, 4), List(FiguredBassElement(NoteBuilder(53, F, 1), symbols = List(BassSymbol(2)))))
       )
     )
     ex.measures.head.contents.head.inversion.chordComponentString shouldBe "7"
@@ -296,10 +330,13 @@ class BassTranslatorEndToEndTest extends FunSuite with Matchers with TestUtils {
 
   test("4-3 delay") {
     val ex = BassTranslator.createExerciseFromFiguredBass(
-      FiguredBassExercise(
+      bass.FiguredBassExercise(
         Key("C"),
         Meter(4, 4),
-        List(FiguredBassElement(NoteBuilder(48, C, 1), delays = List(BassDelay(BassSymbol(4), BassSymbol(3)))))
+        Measure(
+          Meter(4, 4),
+          List(FiguredBassElement(NoteBuilder(48, C, 1), delays = List(BassDelay(BassSymbol(4), BassSymbol(3)))))
+        )
       )
     )
     ex.measures.head.contents.head.delay.map(d =>
@@ -309,13 +346,16 @@ class BassTranslatorEndToEndTest extends FunSuite with Matchers with TestUtils {
 
   test("3-3> delay") {
     val ex = BassTranslator.createExerciseFromFiguredBass(
-      FiguredBassExercise(
+      bass.FiguredBassExercise(
         Key("C"),
         Meter(4, 4),
-        List(
-          FiguredBassElement(
-            NoteBuilder(48, C, 1),
-            delays = List(BassDelay(BassSymbol(3), BassSymbol(3, AlterationType.FLAT)))
+        Measure(
+          Meter(4, 4),
+          List(
+            FiguredBassElement(
+              NoteBuilder(48, C, 1),
+              delays = List(BassDelay(BassSymbol(3), bass.BassSymbol(3, AlterationType.FLAT)))
+            )
           )
         )
       )
@@ -329,13 +369,16 @@ class BassTranslatorEndToEndTest extends FunSuite with Matchers with TestUtils {
 
   test("6-5, 4-3 delay") {
     val ex = BassTranslator.createExerciseFromFiguredBass(
-      FiguredBassExercise(
+      bass.FiguredBassExercise(
         Key("C"),
         Meter(4, 4),
-        List(
-          FiguredBassElement(
-            NoteBuilder(48, C, 1),
-            delays = List(BassDelay(BassSymbol(6), BassSymbol(5)), BassDelay(BassSymbol(4), BassSymbol(3)))
+        Measure(
+          Meter(4, 4),
+          List(
+            FiguredBassElement(
+              NoteBuilder(48, C, 1),
+              delays = List(BassDelay(BassSymbol(6), BassSymbol(5)), BassDelay(BassSymbol(4), BassSymbol(3)))
+            )
           )
         )
       )
@@ -348,12 +391,15 @@ class BassTranslatorEndToEndTest extends FunSuite with Matchers with TestUtils {
 
   test("altered VI") {
     val ex = BassTranslator.createExerciseFromFiguredBass(
-      FiguredBassExercise(
+      bass.FiguredBassExercise(
         Key("e"),
         Meter(4, 4),
-        List(
-          FiguredBassElement(
-            NoteBuilder(49, C, 1)
+        Measure(
+          Meter(4, 4),
+          List(
+            FiguredBassElement(
+              NoteBuilder(49, C, 1)
+            )
           )
         )
       )
@@ -368,16 +414,19 @@ class BassTranslatorEndToEndTest extends FunSuite with Matchers with TestUtils {
 
   test("2 4# 10 symbols -> D9 on 7") {
     val ex = BassTranslator.createExerciseFromFiguredBass(
-      FiguredBassExercise(
+      bass.FiguredBassExercise(
         Key("f#"),
         Meter(4, 4),
-        List(
-          FiguredBassElement(
-            NoteBuilder(47, B, 1),
-            symbols = List(
-              BassSymbol(2),
-              BassSymbol(4, AlterationType.SHARP),
-              BassSymbol(10)
+        Measure(
+          Meter(4, 4),
+          List(
+            FiguredBassElement(
+              NoteBuilder(47, B, 1),
+              symbols = List(
+                BassSymbol(2),
+                bass.BassSymbol(4, AlterationType.SHARP),
+                BassSymbol(10)
+              )
             )
           )
         )
@@ -394,18 +443,21 @@ class BassTranslatorEndToEndTest extends FunSuite with Matchers with TestUtils {
 
   test("Dmaj on 5 Dmin on 5 delay") {
     val ex = BassTranslator.createExerciseFromFiguredBass(
-      FiguredBassExercise(
+      bass.FiguredBassExercise(
         Key("G"),
         Meter(4, 4),
-        List(
-          FiguredBassElement(
-            NoteBuilder(57, A, 1),
-            symbols = List(
-              BassSymbol(6),
-              BassSymbol(4)
-            ),
-            delays = List(
-              BassDelay(BassSymbol(6), BassSymbol(6, AlterationType.FLAT))
+        Measure(
+          Meter(4, 4),
+          List(
+            FiguredBassElement(
+              NoteBuilder(57, A, 1),
+              symbols = List(
+                BassSymbol(6),
+                BassSymbol(4)
+              ),
+              delays = List(
+                BassDelay(BassSymbol(6), bass.BassSymbol(6, AlterationType.FLAT))
+              )
             )
           )
         )
@@ -418,14 +470,17 @@ class BassTranslatorEndToEndTest extends FunSuite with Matchers with TestUtils {
 
   test("SII (dim chord) in minor key - I inversion") {
     val ex = BassTranslator.createExerciseFromFiguredBass(
-      FiguredBassExercise(
+      bass.FiguredBassExercise(
         Key("a"),
         Meter(4, 4),
-        List(
-          FiguredBassElement(
-            NoteBuilder(50, D, 1),
-            symbols = List(
-              BassSymbol(6)
+        Measure(
+          Meter(4, 4),
+          List(
+            FiguredBassElement(
+              NoteBuilder(50, D, 1),
+              symbols = List(
+                BassSymbol(6)
+              )
             )
           )
         )

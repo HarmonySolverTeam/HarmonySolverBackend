@@ -1,6 +1,5 @@
 package pl.agh.harmonytools.bass
 
-import pl.agh.harmonytools.bass.AlterationType.{ChordComponentType, ELEVATED, LOWERED}
 import pl.agh.harmonytools.error.UnexpectedInternalError
 import pl.agh.harmonytools.model.chord.ChordComponent
 import pl.agh.harmonytools.model.util.ChordComponentManager

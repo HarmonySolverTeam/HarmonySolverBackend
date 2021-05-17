@@ -1,14 +1,8 @@
 package pl.agh.harmonytools.rest.mapper
 
-import pl.agh.harmonytools.bass.{
-  AlterationType,
-  BassDelay,
-  BassSymbol,
-  FiguredBassElement,
-  FiguredBassExercise,
-  NoteBuilder
-}
-import pl.agh.harmonytools.model.measure.Meter
+import pl.agh.harmonytools.bass
+import pl.agh.harmonytools.bass._
+import pl.agh.harmonytools.model.measure.{Measure, Meter}
 import pl.agh.harmonytools.model.note.BaseNote
 import pl.agh.harmonytools.rest.dto.{BassElementDto, BassExerciseDto, BassSymbolDto, NoteDto}
 import pl.agh.harmonytools.utils.TestUtils
@@ -17,17 +11,20 @@ class BassExerciseMapperTest
   extends MapperTest[FiguredBassExercise, BassExerciseDto](BassExerciseMapper)
   with TestUtils {
   override protected val models: List[FiguredBassExercise] = List(
-    FiguredBassExercise(
+    bass.FiguredBassExercise(
       Keys.keyc,
       Meter(4, 4),
-      List(
-        FiguredBassElement(
-          NoteBuilder(55, BaseNote.G, 0.0, Some("1")),
-          List(BassSymbol(7)),
-          List(BassDelay(BassSymbol(4), BassSymbol(3, AlterationType.NATURAL)))
-        ),
-        FiguredBassElement(
-          NoteBuilder(60, BaseNote.C, 0.0, Some("1"))
+      Measure(
+        Meter(4, 4),
+        List(
+          FiguredBassElement(
+            NoteBuilder(55, BaseNote.G, 0.0, Some("1")),
+            List(BassSymbol(7)),
+            List(BassDelay(BassSymbol(4), bass.BassSymbol(3, AlterationType.NATURAL)))
+          ),
+          FiguredBassElement(
+            NoteBuilder(60, BaseNote.C, 0.0, Some("1"))
+          )
         )
       )
     )

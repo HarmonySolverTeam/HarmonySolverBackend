@@ -1,9 +1,9 @@
 package pl.agh.harmonytools.bass
 
 import pl.agh.harmonytools.error.UnexpectedInternalError
-
-import Math.abs
 import pl.agh.harmonytools.utils.Extensions.ExtendedInt
+
+import java.lang.Math.abs
 
 case class ChordElement(var notesNumbers: List[Int], var omit: List[Int], bassElement: FiguredBassElement) {
   private var primeNote: Option[Int]    = None
@@ -44,10 +44,9 @@ case class ChordElement(var notesNumbers: List[Int], var omit: List[Int], bassEl
 //    }
   }
 
-  def completeUntilTwoNextThirds(): Unit = {
+  def completeUntilTwoNextThirds(): Unit =
     while (!hasTwoNextThirds)
       addNextNote()
-  }
 
   def findPrime(): Unit = {
     val scaleNotes = notesNumbers.map(_ %% 7)
