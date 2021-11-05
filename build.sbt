@@ -141,7 +141,8 @@ lazy val soprano_solver = project
     libraryDependencies ++= testDependencies
   )
   .dependsOn(
-    harmonics_solver
+    harmonics_solver,
+    jenetics
   )
 
 lazy val validator = project
@@ -152,4 +153,38 @@ lazy val validator = project
   )
   .dependsOn(
     harmonics_solver
+  )
+
+lazy val integrations = project
+  .settings(
+    name := "integrations",
+    settings,
+    libraryDependencies ++= testDependencies
+  )
+  .aggregate(
+    jenetics
+  )
+
+lazy val jenetics = project
+  .in(file("integrations/jenetics"))
+  .settings(
+    name := "jenetics",
+    settings,
+    libraryDependencies ++= testDependencies ++ Seq(
+      "jenetics",
+      "jenetics.prog",
+      "jenetics.ext"
+    ).map("io.jenetics" % _ % "4.3.0")
+  )
+
+lazy val soprano_solver_genetic = project
+  .in(file("solver/soprano_solver_genetic"))
+  .settings(
+    name := "soprano_solver_genetic",
+    settings,
+    libraryDependencies ++= testDependencies
+  )
+  .dependsOn(
+    soprano_solver,
+    jenetics
   )
