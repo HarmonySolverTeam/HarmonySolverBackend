@@ -7,10 +7,10 @@ import pl.agh.harmonytools.exercise.harmonics.helpers.DelayHandler
 import pl.agh.harmonytools.harmonics.parser.DeflectionsHandler
 import pl.agh.harmonytools.model.chord.ChordComponent
 import pl.agh.harmonytools.model.chord.ChordSystem.UNDEFINED
-import pl.agh.harmonytools.model.harmonicfunction.FunctionNames.{BaseFunction, DOMINANT, SUBDOMINANT, TONIC}
+import pl.agh.harmonytools.model.harmonicfunction.BaseFunction.{BaseFunction, DOMINANT, SUBDOMINANT, TONIC}
 import pl.agh.harmonytools.model.harmonicfunction.{Delay, HarmonicFunction}
 import pl.agh.harmonytools.model.key.Key
-import pl.agh.harmonytools.model.key.Mode.{BaseMode, MAJOR, MINOR}
+import pl.agh.harmonytools.model.key.Mode.{Mode, MAJOR, MINOR}
 import pl.agh.harmonytools.model.measure.{Measure, Meter}
 import pl.agh.harmonytools.model.note.BaseNote.{B, F}
 import pl.agh.harmonytools.model.scale.{MajorScale, MinorScale, ScaleDegree}
@@ -146,7 +146,7 @@ object BassTranslator {
    * @param key
    * @return valid position for given chordElement in given key and mode
    */
-  def getValidPosition(chordElement: ChordElement, mode: BaseMode, key: Key): Option[ChordComponent] = {
+  def getValidPosition(chordElement: ChordElement, mode: Mode, key: Key): Option[ChordComponent] = {
     val symbols = chordElement.getSortedSymbols
     if (symbols == List(5, 6, 7) || symbols == List(2, 4, 10))
       Some(calculateChordComponentForSpecificNote(mode, key, chordElement.getPrimeNote, 9))
@@ -193,10 +193,10 @@ object BassTranslator {
    * @return chord component symbol with correct alteration symbol
    */
   def calculateChordComponentForSpecificNote(
-    mode: BaseMode,
-    key: Key,
-    primeNote: Int,
-    noteNumber: Int
+                                              mode: Mode,
+                                              key: Key,
+                                              primeNote: Int,
+                                              noteNumber: Int
   ): ChordComponent = {
     val realPrime       = (primeNote - key.baseNote.value) %% 7
     val pitches         = if (mode == MAJOR) MajorScale.pitches else MinorScale.pitches
@@ -214,10 +214,10 @@ object BassTranslator {
   }
 
   def translateDelays(
-    delays: List[Delay],
-    inversion: ChordComponent,
-    mode: BaseMode,
-    d: Degree
+                       delays: List[Delay],
+                       inversion: ChordComponent,
+                       mode: Mode,
+                       d: Degree
   ): Set[Delay] = {
     val revNumber = inversion.baseComponent - 1
     val degree    = d.root - 1

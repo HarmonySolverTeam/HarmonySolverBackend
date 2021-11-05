@@ -2,15 +2,15 @@ package pl.agh.harmonytools.model.harmonicfunction.builder
 
 import pl.agh.harmonytools.error.UnexpectedInternalError
 import pl.agh.harmonytools.model.chord.{ChordComponent, ChordSystem}
-import pl.agh.harmonytools.model.harmonicfunction.FunctionNames.BaseFunction
+import pl.agh.harmonytools.model.harmonicfunction.BaseFunction.BaseFunction
 import pl.agh.harmonytools.model.harmonicfunction.validator.HarmonicFunctionValidator
-import pl.agh.harmonytools.model.harmonicfunction.{BasicComponentsOwner, Delay, FunctionNames, HarmonicFunction}
+import pl.agh.harmonytools.model.harmonicfunction.{BasicComponentsOwner, Delay, BaseFunction, HarmonicFunction}
 import pl.agh.harmonytools.model.key.{Key, Mode}
 import pl.agh.harmonytools.model.scale.ScaleDegree
 import pl.agh.harmonytools.model.util.ChordComponentManager
 
 abstract class HarmonicFunctionBuilder(withValidation: Boolean = true) extends BasicComponentsOwner {
-  protected var baseFunction: Option[FunctionNames.BaseFunction] = None
+  protected var baseFunction: Option[BaseFunction.BaseFunction] = None
   protected var degree: Option[ScaleDegree.Degree]               = None
   protected var position: Option[ChordComponent]                 = None
   protected var inversion: Option[ChordComponent]                = None
@@ -18,8 +18,8 @@ abstract class HarmonicFunctionBuilder(withValidation: Boolean = true) extends B
   protected var extra: Set[ChordComponent]                       = Set.empty
   protected var omit: Set[ChordComponent]                        = Set.empty
   protected var isDown: Boolean                                  = false
-  protected var system: ChordSystem.System                       = ChordSystem.UNDEFINED
-  protected var mode: Mode.BaseMode                              = Mode.MAJOR
+  protected var system: ChordSystem.ChordSystem                       = ChordSystem.UNDEFINED
+  protected var mode: Mode.Mode                              = Mode.MAJOR
   protected var key: Option[Key]                                 = None
   protected var isRelatedBackwards: Boolean                      = false
 
@@ -29,7 +29,7 @@ abstract class HarmonicFunctionBuilder(withValidation: Boolean = true) extends B
       case None        => baseFunction.getOrElse(throw UnexpectedInternalError("Base Function undefined")).baseDegree
     }
   override def getIsDown: Boolean            = isDown
-  override def getMode: Mode.BaseMode        = mode
+  override def getMode: Mode.Mode        = mode
   override def getExtra: Set[ChordComponent] = extra
   override def getOmit: Set[ChordComponent]  = omit
   override def getDelay: Set[Delay]          = delay
@@ -52,8 +52,8 @@ abstract class HarmonicFunctionBuilder(withValidation: Boolean = true) extends B
   def withExtra(e: Set[ChordComponent]): Unit   = extra = e
   def withOmit(o: Set[ChordComponent]): Unit    = omit = o
   def withIsDown(d: Boolean): Unit              = isDown = d
-  def withSystem(s: ChordSystem.System): Unit   = system = s
-  def withMode(m: Mode.BaseMode): Unit          = mode = m
+  def withSystem(s: ChordSystem.ChordSystem): Unit   = system = s
+  def withMode(m: Mode.Mode): Unit          = mode = m
   def withKey(k: Key): Unit                     = key = Some(k)
   def withIsRelatedBackwards(rb: Boolean): Unit = isRelatedBackwards = rb
 

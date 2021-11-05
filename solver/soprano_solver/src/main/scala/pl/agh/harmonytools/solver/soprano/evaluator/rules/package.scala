@@ -1,6 +1,6 @@
 package pl.agh.harmonytools.solver.soprano.evaluator
 
-import pl.agh.harmonytools.model.harmonicfunction.FunctionNames.{DOMINANT, SUBDOMINANT, TONIC}
+import pl.agh.harmonytools.model.harmonicfunction.BaseFunction.{DOMINANT, SUBDOMINANT, TONIC}
 import pl.agh.harmonytools.solver.soprano.evaluator.rules.subrules.{
   NotChangeFunctionRule,
   SameFunctionRule,

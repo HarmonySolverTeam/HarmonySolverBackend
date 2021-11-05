@@ -1,7 +1,7 @@
 package pl.agh.harmonytools.model.harmonicfunction
 
 import pl.agh.harmonytools.model.chord.{ChordComponent, ChordSystem}
-import pl.agh.harmonytools.model.harmonicfunction.FunctionNames.{DOMINANT, SUBDOMINANT, TONIC}
+import pl.agh.harmonytools.model.harmonicfunction.BaseFunction.{DOMINANT, SUBDOMINANT, TONIC}
 import pl.agh.harmonytools.model.key.Mode.{MAJOR, MINOR}
 import pl.agh.harmonytools.model.key.{Key, Mode}
 import pl.agh.harmonytools.model.measure.MeasureContent
@@ -10,7 +10,7 @@ import pl.agh.harmonytools.model.scale.ScaleDegree.{II, III, VI}
 import pl.agh.harmonytools.model.util.ChordComponentManager
 
 case class HarmonicFunction(
-  baseFunction: FunctionNames.BaseFunction,
+  baseFunction: BaseFunction.BaseFunction,
   degree: ScaleDegree.Degree,
   position: Option[ChordComponent],
   inversion: ChordComponent,
@@ -18,8 +18,8 @@ case class HarmonicFunction(
   extra: Set[ChordComponent],
   omit: Set[ChordComponent],
   isDown: Boolean,
-  system: ChordSystem.System,
-  mode: Mode.BaseMode,
+  system: ChordSystem.ChordSystem,
+  mode: Mode.Mode,
   key: Option[Key],
   isRelatedBackwards: Boolean
 ) extends BasicComponentsOwner
@@ -27,15 +27,15 @@ case class HarmonicFunction(
   def getSimpleName: String =
     baseFunction.name + degree + { if (inversion != getPrime) "inv" + inversion.chordComponentString else "" }
 
-  override def getDegree: ScaleDegree.Degree               = degree
-  override def getIsDown: Boolean                          = isDown
-  override def getMode: Mode.BaseMode                      = mode
-  override def getExtra: Set[ChordComponent]               = extra
-  override def getOmit: Set[ChordComponent]                = omit
-  override def getDelay: Set[Delay]                        = delay
-  override def getKey: Option[Key]                         = key
-  override def getBaseFunction: FunctionNames.BaseFunction = baseFunction
-  override def getInversion: ChordComponent                = inversion
+  override def getDegree: ScaleDegree.Degree              = degree
+  override def getIsDown: Boolean                         = isDown
+  override def getMode: Mode.Mode                         = mode
+  override def getExtra: Set[ChordComponent]              = extra
+  override def getOmit: Set[ChordComponent]               = omit
+  override def getDelay: Set[Delay]                       = delay
+  override def getKey: Option[Key]                        = key
+  override def getBaseFunction: BaseFunction.BaseFunction = baseFunction
+  override def getInversion: ChordComponent               = inversion
 
   def isChopin: Boolean =
     baseFunction == DOMINANT && omit.exists(_.chordComponentString == "5") && extra.exists(
@@ -113,7 +113,7 @@ case class HarmonicFunction(
 
 object HarmonicFunction {
   def apply(
-    baseFunction: FunctionNames.BaseFunction,
+    baseFunction: BaseFunction.BaseFunction,
     degree: Option[ScaleDegree.Degree] = None,
     position: Option[ChordComponent] = None,
     inversion: Option[ChordComponent] = None,
@@ -121,8 +121,8 @@ object HarmonicFunction {
     extra: Set[ChordComponent] = Set.empty,
     omit: Set[ChordComponent] = Set.empty,
     isDown: Boolean = false,
-    system: ChordSystem.System = ChordSystem.UNDEFINED,
-    mode: Mode.BaseMode = Mode.MAJOR,
+    system: ChordSystem.ChordSystem = ChordSystem.UNDEFINED,
+    mode: Mode.Mode = Mode.MAJOR,
     key: Option[Key] = None,
     isRelatedBackwards: Boolean = false
   ): HarmonicFunction = {

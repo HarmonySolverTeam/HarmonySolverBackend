@@ -1,7 +1,7 @@
 package pl.agh.harmonytools.rest.mapper
 
 import pl.agh.harmonytools.model.chord.{Chord, ChordSystem}
-import pl.agh.harmonytools.model.harmonicfunction.{Delay, FunctionNames, HarmonicFunction}
+import pl.agh.harmonytools.model.harmonicfunction.{Delay, BaseFunction, HarmonicFunction}
 import pl.agh.harmonytools.model.note.{BaseNote, Note}
 import pl.agh.harmonytools.rest.dto.{ChordDto, DelayDto, HarmonicFunctionDto, NoteDto}
 import pl.agh.harmonytools.utils.TestUtils
@@ -17,7 +17,7 @@ class ChordMapperTest extends MapperTest[Chord, ChordDto](ChordMapper) with Test
       Note(65, BaseNote.F, fourth),
       Note(60, BaseNote.C, prime),
       HarmonicFunction(
-        baseFunction = FunctionNames.DOMINANT,
+        baseFunction = BaseFunction.DOMINANT,
         extra = Set(seventh, fifthAltUp),
         omit = Set(fifth),
         delay = Set(Delay(fourth, third)),

@@ -2,7 +2,7 @@ package pl.agh.harmonytools.solver.harmonics.evaluator.rules
 
 import pl.agh.harmonytools.algorithm.evaluator.{Connection, IRule}
 import pl.agh.harmonytools.model.chord.Chord
-import pl.agh.harmonytools.model.harmonicfunction.FunctionNames.TONIC
+import pl.agh.harmonytools.model.harmonicfunction.BaseFunction.TONIC
 import pl.agh.harmonytools.model.scale.ScaleDegree.I
 
 trait ConnectionRule extends IRule[Chord] {

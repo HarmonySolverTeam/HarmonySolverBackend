@@ -3,7 +3,7 @@ package pl.agh.harmonytools.model.harmonicfunction
 import pl.agh.harmonytools.error.UnexpectedInternalError
 import pl.agh.harmonytools.model.scale.ScaleDegree
 
-object FunctionNames {
+object BaseFunction {
   sealed abstract class BaseFunction(val name: String, val baseDegree: ScaleDegree.Degree)
 
   case object TONIC       extends BaseFunction("T", ScaleDegree.I)

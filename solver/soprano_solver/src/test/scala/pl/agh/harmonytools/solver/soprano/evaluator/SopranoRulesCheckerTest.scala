@@ -3,7 +3,7 @@ package pl.agh.harmonytools.solver.soprano.evaluator
 import org.scalatest.{FunSuite, Matchers}
 import pl.agh.harmonytools.algorithm.evaluator.Connection
 import pl.agh.harmonytools.model.chord.Chord
-import pl.agh.harmonytools.model.harmonicfunction.FunctionNames.DOMINANT
+import pl.agh.harmonytools.model.harmonicfunction.BaseFunction.DOMINANT
 import pl.agh.harmonytools.model.harmonicfunction.HarmonicFunction
 import pl.agh.harmonytools.model.measure.MeasurePlace
 import pl.agh.harmonytools.model.note.BaseNote.{A, B, C, D, E, F, G}

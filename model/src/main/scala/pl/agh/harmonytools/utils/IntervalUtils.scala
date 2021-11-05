@@ -4,8 +4,8 @@ import pl.agh.harmonytools.error.UnexpectedInternalError
 import pl.agh.harmonytools.model.chord.ChordComponent
 import pl.agh.harmonytools.model.harmonicfunction.HarmonicFunction
 import pl.agh.harmonytools.model.key.{Key, Mode}
-import pl.agh.harmonytools.model.key.Mode.{BaseMode, MAJOR, MINOR}
-import pl.agh.harmonytools.model.note.BaseNote.BaseNoteType
+import pl.agh.harmonytools.model.key.Mode.{Mode, MAJOR, MINOR}
+import pl.agh.harmonytools.model.note.BaseNote.BaseNote
 import pl.agh.harmonytools.model.note.{BaseNote, Note, NoteWithoutChordContext}
 import pl.agh.harmonytools.model.scale.{MajorScale, MinorScale}
 import pl.agh.harmonytools.model.scale.ScaleDegree.Degree
@@ -14,7 +14,7 @@ import pl.agh.harmonytools.utils.Extensions.ExtendedInt
 import scala.math.abs
 
 object IntervalUtils {
-  def getThirdMode(mode: BaseMode, degree: Degree): BaseMode = {
+  def getThirdMode(mode: Mode, degree: Degree): Mode = {
     val pitches = mode match {
       case Mode.MAJOR => MajorScale.pitches
       case Mode.MINOR => MinorScale.pitches
@@ -25,10 +25,10 @@ object IntervalUtils {
     else MINOR
   }
 
-  def getThirdMode(key: Key, degree: Degree): BaseMode =
+  def getThirdMode(key: Key, degree: Degree): Mode =
     getThirdMode(key.mode, degree)
 
-  def isFifthDiminished(mode: BaseMode, degree: Degree): Boolean = {
+  def isFifthDiminished(mode: Mode, degree: Degree): Boolean = {
     val pitches = mode match {
       case Mode.MAJOR => MajorScale.pitches
       case Mode.MINOR => MinorScale.pitches
@@ -50,10 +50,10 @@ object IntervalUtils {
     Math.abs(note1.pitch - note2.pitch)
 
   def toBaseNote(
-    scaleBaseNote: BaseNoteType,
-    harmonicFunction: HarmonicFunction,
-    chordComponent: ChordComponent
-  ): BaseNoteType =
+                  scaleBaseNote: BaseNote,
+                  harmonicFunction: HarmonicFunction,
+                  chordComponent: ChordComponent
+  ): BaseNote =
     BaseNote.fromInt((scaleBaseNote.value + (harmonicFunction.degree.root - 1) + chordComponent.baseComponent - 1) %% 7)
 
   def convertPitchToOneOctave(pitch: Int): Int =
@@ -78,7 +78,7 @@ object IntervalUtils {
   def isChromaticAlteration(note1: Note, note2: Note): Boolean =
     note1.baseNote == note2.baseNote && List(1, 11).contains((note1.pitch - note2.pitch) %% 12)
 
-  def getBaseDistance(baseNote1: BaseNoteType, baseNote2: BaseNoteType): Int = {
+  def getBaseDistance(baseNote1: BaseNote, baseNote2: BaseNote): Int = {
     var i              = 0
     val firstBaseNote  = baseNote1.value
     val secondBaseNote = baseNote2.value

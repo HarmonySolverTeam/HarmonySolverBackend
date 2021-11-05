@@ -8,7 +8,7 @@ import pl.agh.harmonytools.algorithm.graph.shortestpath.topologicalsort.Topologi
 import pl.agh.harmonytools.error.UnexpectedInternalError
 import pl.agh.harmonytools.exercise.soprano.SopranoExercise
 import pl.agh.harmonytools.model.chord.Chord
-import pl.agh.harmonytools.model.harmonicfunction.FunctionNames.{DOMINANT, SUBDOMINANT, TONIC}
+import pl.agh.harmonytools.model.harmonicfunction.BaseFunction.{DOMINANT, SUBDOMINANT, TONIC}
 import pl.agh.harmonytools.model.harmonicfunction.HarmonicFunction
 import pl.agh.harmonytools.model.key.Key
 import pl.agh.harmonytools.model.measure.{Measure, MeasurePlace, Meter}

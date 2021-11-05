@@ -1,15 +1,15 @@
 package pl.agh.harmonytools.model.key
 
 import pl.agh.harmonytools.error.{HarmonySolverError, UnexpectedInternalError}
-import pl.agh.harmonytools.model.key.Mode.{BaseMode, MAJOR}
+import pl.agh.harmonytools.model.key.Mode.{MAJOR, Mode}
 import pl.agh.harmonytools.model.note.BaseNote
 
 import scala.collection.immutable.HashMap
 
 case class Key(
-  mode: BaseMode,
+  mode: Mode,
   tonicPitch: Integer,
-  baseNote: BaseNote.BaseNoteType
+  baseNote: BaseNote.BaseNote
 ) {
   override def toString: String = {
     val keyLower = Key
@@ -25,7 +25,7 @@ case class Key(
 
 object Key {
 
-  private def baseNoteFromKeySignature(keySignature: String): BaseNote.BaseNoteType =
+  private def baseNoteFromKeySignature(keySignature: String): BaseNote.BaseNote =
     BaseNote.values
       .find(b => b.toString == keySignature.toUpperCase.head.toString)
       .getOrElse(throw KeyParseError("Unsupported key signature: " + keySignature))
@@ -41,7 +41,7 @@ object Key {
     )
   }
 
-  def inferKeySignature(baseNote: BaseNote.BaseNoteType, tonicPitch: Integer): String = {
+  def inferKeySignature(baseNote: BaseNote.BaseNote, tonicPitch: Integer): String = {
     val possibleKeySignatures = pitchKeyStr
       .getOrElse(tonicPitch, throw UnexpectedInternalError("Illegal tonicPitch: " + tonicPitch))
       .filter(keyCandidate => baseNoteFromKeySignature(keyCandidate).equals(baseNote))
@@ -53,7 +53,7 @@ object Key {
     }
   }
 
-  def apply(baseNote: BaseNote.BaseNoteType, tonicPitch: Integer): Key = {
+  def apply(baseNote: BaseNote.BaseNote, tonicPitch: Integer): Key = {
     Key(
       Mode.MAJOR,
       tonicPitch,

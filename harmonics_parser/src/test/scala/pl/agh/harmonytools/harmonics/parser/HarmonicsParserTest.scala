@@ -3,7 +3,7 @@ package pl.agh.harmonytools.harmonics.parser
 import org.scalatest.{Assertion, BeforeAndAfterEach, FunSuite, Ignore, Matchers}
 import pl.agh.harmonytools.exercise.harmonics.HarmonicsExercise
 import pl.agh.harmonytools.model.harmonicfunction.Delay
-import pl.agh.harmonytools.model.harmonicfunction.FunctionNames.TONIC
+import pl.agh.harmonytools.model.harmonicfunction.BaseFunction.TONIC
 import pl.agh.harmonytools.model.key.Key
 import pl.agh.harmonytools.model.scale.ScaleDegree.VI
 import pl.agh.harmonytools.model.util.ChordComponentManager

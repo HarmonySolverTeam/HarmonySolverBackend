@@ -1,10 +1,10 @@
 package pl.agh.harmonytools.model.key
 
 object Mode {
-  sealed trait BaseMode
+  sealed trait Mode
 
-  case object MAJOR extends BaseMode
-  case object MINOR extends BaseMode
+  case object MAJOR extends Mode
+  case object MINOR extends Mode
 
-  val values: List[BaseMode] = List(MAJOR, MINOR)
+  val values: List[Mode] = List(MAJOR, MINOR)
 }

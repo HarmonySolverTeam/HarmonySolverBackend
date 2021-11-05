@@ -1,7 +1,7 @@
 package pl.agh.harmonytools.rest.mapper
 
 import pl.agh.harmonytools.model.chord.ChordSystem
-import pl.agh.harmonytools.model.harmonicfunction.{Delay, FunctionNames, HarmonicFunction}
+import pl.agh.harmonytools.model.harmonicfunction.{Delay, BaseFunction, HarmonicFunction}
 import pl.agh.harmonytools.model.scale.ScaleDegree
 import pl.agh.harmonytools.rest.dto.{DelayDto, HarmonicFunctionDto}
 import pl.agh.harmonytools.utils.TestUtils
@@ -14,7 +14,7 @@ class HarmonicFunctionMapperTest
 
   override protected val models: List[HarmonicFunction] = List(
     HarmonicFunction(
-      baseFunction = FunctionNames.DOMINANT,
+      baseFunction = BaseFunction.DOMINANT,
       extra = Set(seventhD, fifthAltUpD),
       omit = Set(fifthD),
       delay = Set(Delay(fourthD, thirdD)),

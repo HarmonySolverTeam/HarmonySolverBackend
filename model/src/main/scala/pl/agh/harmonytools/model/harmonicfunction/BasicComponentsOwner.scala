@@ -1,7 +1,7 @@
 package pl.agh.harmonytools.model.harmonicfunction
 
 import pl.agh.harmonytools.model.chord.ChordComponent
-import pl.agh.harmonytools.model.harmonicfunction.FunctionNames.{BaseFunction, TONIC}
+import pl.agh.harmonytools.model.harmonicfunction.BaseFunction.{BaseFunction, TONIC}
 import pl.agh.harmonytools.model.key.Mode.{MAJOR, MINOR}
 import pl.agh.harmonytools.model.key.{Key, Mode}
 import pl.agh.harmonytools.model.scale.ScaleDegree.VI
@@ -13,7 +13,7 @@ import pl.agh.harmonytools.utils.IntervalUtils
 trait BasicComponentsOwner {
 
   def getIsDown: Boolean
-  def getMode: Mode.BaseMode
+  def getMode: Mode.Mode
   def getExtra: Set[ChordComponent]
   def getOmit: Set[ChordComponent]
   def getDelay: Set[Delay]

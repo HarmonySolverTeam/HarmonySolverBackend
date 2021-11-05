@@ -10,6 +10,6 @@ case class MinorScale(private val minorKey: Key) extends Scale {
 object MinorScale extends ScaleCompanion {
   override val pitches: List[Int] = List(0, 2, 3, 5, 7, 8, 10)
 
-  def apply(baseNote: BaseNote.BaseNoteType, tonicPitch: Int): MinorScale =
+  def apply(baseNote: BaseNote.BaseNote, tonicPitch: Int): MinorScale =
     MinorScale(Key(baseNote, tonicPitch))
 }

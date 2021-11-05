@@ -36,10 +36,10 @@ case class FiguredBassElement(
 }
 
 case class NoteBuilder(
-  pitch: Int,
-  baseNote: BaseNote.BaseNoteType,
-  duration: Double = 0.0,
-  private var chordComponentString: Option[String] = None
+                        pitch: Int,
+                        baseNote: BaseNote.BaseNote,
+                        duration: Double = 0.0,
+                        private var chordComponentString: Option[String] = None
 ) {
   def withChordComponentString(cc: String): Unit = chordComponentString = Some(cc)
   def getChordComponentString: Option[String]    = chordComponentString

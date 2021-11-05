@@ -1,15 +1,15 @@
 package pl.agh.harmonytools.solver.soprano.generator
 
 import pl.agh.harmonytools.model.harmonicfunction.HarmonicFunction
-import pl.agh.harmonytools.model.note.BaseNote.{A, B, BaseNoteType, C, D, E, F, G}
+import pl.agh.harmonytools.model.note.BaseNote.{A, B, BaseNote, C, D, E, F, G}
 import pl.agh.harmonytools.utils.Extensions._
 
 class HarmonicFunctionMap {
-  private def initializeForPitch(pitch: Int, baseNotes: List[BaseNoteType]): Unit = {
+  private def initializeForPitch(pitch: Int, baseNotes: List[BaseNote]): Unit = {
     for (baseNote <- baseNotes)
       map = map + ((pitch, baseNote) -> Set.empty)
   }
-  private var map: Map[(Int, BaseNoteType), Set[HarmonicFunction]] = Map.empty
+  private var map: Map[(Int, BaseNote), Set[HarmonicFunction]] = Map.empty
 
   initializeForPitch(60, List(B, C, D))
   initializeForPitch(61, List(B, C, D))
@@ -24,12 +24,12 @@ class HarmonicFunctionMap {
   initializeForPitch(70, List(A, B, C))
   initializeForPitch(71, List(A, B, C))
 
-  def getValues(pitch: Int, baseNoteType: BaseNoteType): Set[HarmonicFunction] = {
+  def getValues(pitch: Int, baseNoteType: BaseNote): Set[HarmonicFunction] = {
     val p = pitch %% 12 + 60
     map(p, baseNoteType)
   }
 
-  def pushToValues(pitch: Int, baseNoteType: BaseNoteType, harmonicFunction: HarmonicFunction): Unit = {
+  def pushToValues(pitch: Int, baseNoteType: BaseNote, harmonicFunction: HarmonicFunction): Unit = {
     if (pitch >= 60 && pitch < 72 && !map(pitch, baseNoteType).contains(harmonicFunction))
       map = map.updated((pitch, baseNoteType), map(pitch, baseNoteType) + harmonicFunction)
   }

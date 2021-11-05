@@ -2,7 +2,7 @@ package pl.agh.harmonytools.model.chord
 
 import pl.agh.harmonytools.algorithm.graph.node.NodeContent
 import pl.agh.harmonytools.error.{RequirementChecker, UnexpectedInternalError}
-import pl.agh.harmonytools.model.harmonicfunction.FunctionNames.TONIC
+import pl.agh.harmonytools.model.harmonicfunction.BaseFunction.TONIC
 import pl.agh.harmonytools.model.harmonicfunction.HarmonicFunction
 import pl.agh.harmonytools.model.note.{BaseNote, Note}
 import pl.agh.harmonytools.model.util.ChordComponentManager
@@ -65,17 +65,11 @@ case class Chord(
     notes.zip(other.notes).forall(p => p._1.isLowerThan(p._2))
 
   def getVoiceWithBaseComponent(baseComponent: Int): Int = {
-    for (i <- 0 until 4)
-      if (notes(i).baseChordComponentEquals(baseComponent))
-        return i
-    -1
+    (0 until 4).find(notes(_).baseChordComponentEquals(baseComponent)).getOrElse(-1)
   }
 
   def getVoiceWithComponentString(chordComponent: String): Int = {
-    for (i <- 0 until 4)
-      if (notes(i).chordComponentEquals(chordComponent))
-        return i
-    -1
+    (0 until 4).find(notes(_).chordComponentEquals(chordComponent)).getOrElse(-1)
   }
 
   def setDuration(d: Double): Unit = duration = d

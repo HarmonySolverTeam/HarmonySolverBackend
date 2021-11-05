@@ -3,11 +3,10 @@ package pl.agh.harmonytools.model.note
 import pl.agh.harmonytools.model.chord.ChordComponent
 import pl.agh.harmonytools.model.util.ChordComponentManager
 import pl.agh.harmonytools.utils.Extensions.ExtendedInt
-import pl.agh.harmonytools.utils.Extensions.ExtendedInt
 
 case class Note(
   pitch: Int,
-  baseNote: BaseNote.BaseNoteType,
+  baseNote: BaseNote.BaseNote,
   chordComponent: ChordComponent,
   duration: Double = 0.0 //todo builder for harmonics
 ) {
@@ -43,6 +42,6 @@ case class Note(
 }
 
 object Note {
-  def apply(pitch: Int, baseNote: BaseNote.BaseNoteType, chordComponentString: String, duration: Double): Note =
+  def apply(pitch: Int, baseNote: BaseNote.BaseNote, chordComponentString: String, duration: Double): Note =
     Note(pitch, baseNote, ChordComponentManager.chordComponentFromString(chordComponentString), duration)
 }

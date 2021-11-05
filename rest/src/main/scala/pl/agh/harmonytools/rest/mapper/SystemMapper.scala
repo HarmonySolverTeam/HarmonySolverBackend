@@ -3,8 +3,8 @@ package pl.agh.harmonytools.rest.mapper
 import pl.agh.harmonytools.model.chord.ChordSystem
 import pl.agh.harmonytools.rest.dto.HarmonicFunctionDto
 
-object SystemMapper extends Mapper[ChordSystem.System, HarmonicFunctionDto.System.Value] {
-  override def mapToModel(dto: HarmonicFunctionDto.System.Value): ChordSystem.System = {
+object SystemMapper extends Mapper[ChordSystem.ChordSystem, HarmonicFunctionDto.System.Value] {
+  override def mapToModel(dto: HarmonicFunctionDto.System.Value): ChordSystem.ChordSystem = {
     dto match {
       case HarmonicFunctionDto.System.Open      => ChordSystem.OPEN
       case HarmonicFunctionDto.System.Close     => ChordSystem.CLOSE
@@ -12,7 +12,7 @@ object SystemMapper extends Mapper[ChordSystem.System, HarmonicFunctionDto.Syste
     }
   }
 
-  override def mapToDTO(model: ChordSystem.System): HarmonicFunctionDto.System.Value = {
+  override def mapToDTO(model: ChordSystem.ChordSystem): HarmonicFunctionDto.System.Value = {
     model match {
       case ChordSystem.OPEN      => HarmonicFunctionDto.System.Open
       case ChordSystem.CLOSE     => HarmonicFunctionDto.System.Close

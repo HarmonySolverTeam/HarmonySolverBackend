@@ -2,7 +2,7 @@ package pl.agh.harmonytools.model.harmonicfunction.builder
 
 import org.scalatest.{FunSuite, Matchers}
 import pl.agh.harmonytools.model.harmonicfunction.Delay
-import pl.agh.harmonytools.model.harmonicfunction.FunctionNames.DOMINANT
+import pl.agh.harmonytools.model.harmonicfunction.BaseFunction.DOMINANT
 import pl.agh.harmonytools.model.harmonicfunction.validator.HarmonicFunctionValidationError
 import pl.agh.harmonytools.model.util.ChordComponentManager
 

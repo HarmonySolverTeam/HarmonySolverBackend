@@ -2,7 +2,7 @@ package pl.agh.harmonytools.rest.mapper
 
 import pl.agh.harmonytools.model.note.BaseNote
 
-class BaseNoteMapperTest extends MapperTest[BaseNote.BaseNoteType, Int](BaseNoteMapper) {
-  override protected val models: List[BaseNote.BaseNoteType] = BaseNote.values
+class BaseNoteMapperTest extends MapperTest[BaseNote.BaseNote, Int](BaseNoteMapper) {
+  override protected val models: List[BaseNote.BaseNote] = BaseNote.values
   override protected val dtos: List[Int]                     = (0 to 6).toList
 }

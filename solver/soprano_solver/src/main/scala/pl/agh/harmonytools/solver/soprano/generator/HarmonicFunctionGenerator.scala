@@ -1,7 +1,7 @@
 package pl.agh.harmonytools.solver.soprano.generator
 
 import pl.agh.harmonytools.algorithm.generator.LayerGenerator
-import pl.agh.harmonytools.model.harmonicfunction.FunctionNames.TONIC
+import pl.agh.harmonytools.model.harmonicfunction.BaseFunction.TONIC
 import pl.agh.harmonytools.model.harmonicfunction.HarmonicFunction
 import pl.agh.harmonytools.model.key.Key
 import pl.agh.harmonytools.model.scale.ScaleDegree.I

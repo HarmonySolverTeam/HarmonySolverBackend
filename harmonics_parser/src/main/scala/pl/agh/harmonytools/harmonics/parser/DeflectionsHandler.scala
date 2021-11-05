@@ -9,7 +9,7 @@ import pl.agh.harmonytools.harmonics.parser.builders.{
   HarmonicsElementType
 }
 import pl.agh.harmonytools.model.harmonicfunction.BasicComponentsOwner
-import pl.agh.harmonytools.model.harmonicfunction.FunctionNames.TONIC
+import pl.agh.harmonytools.model.harmonicfunction.BaseFunction.TONIC
 import pl.agh.harmonytools.model.harmonicfunction.builder.HarmonicFunctionBuilder
 import pl.agh.harmonytools.model.key.Mode.MINOR
 import pl.agh.harmonytools.model.key.{Key, Mode}

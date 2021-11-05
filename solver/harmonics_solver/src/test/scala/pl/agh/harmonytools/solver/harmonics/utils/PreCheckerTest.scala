@@ -2,7 +2,7 @@ package pl.agh.harmonytools.solver.harmonics.utils
 
 import org.scalatest.{FunSuite, Matchers}
 import pl.agh.harmonytools.solver.harmonics.generator.ChordGenerator
-import pl.agh.harmonytools.model.harmonicfunction.FunctionNames.{DOMINANT, TONIC}
+import pl.agh.harmonytools.model.harmonicfunction.BaseFunction.{DOMINANT, TONIC}
 import pl.agh.harmonytools.model.harmonicfunction.HarmonicFunction
 import pl.agh.harmonytools.model.key.Key
 import pl.agh.harmonytools.utils.TestUtils

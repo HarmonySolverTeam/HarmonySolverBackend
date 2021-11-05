@@ -12,13 +12,13 @@ import pl.agh.harmonytools.harmonics.parser.builders.{
   HarmonicsExerciseParserBuilder,
   MeasureParserBuilder
 }
-import pl.agh.harmonytools.model.chord.ChordSystem.System
-import pl.agh.harmonytools.model.harmonicfunction.FunctionNames._
+import pl.agh.harmonytools.model.chord.ChordSystem.ChordSystem
+import pl.agh.harmonytools.model.harmonicfunction.BaseFunction._
 import pl.agh.harmonytools.exercise.harmonics.HarmonicsExercise
-import pl.agh.harmonytools.model.key.Mode.BaseMode
+import pl.agh.harmonytools.model.key.Mode.Mode
 import pl.agh.harmonytools.model.scale.ScaleDegree.Degree
 import pl.agh.harmonytools.model.chord.{ChordComponent, ChordSystem}
-import pl.agh.harmonytools.model.harmonicfunction.{Delay, FunctionNames}
+import pl.agh.harmonytools.model.harmonicfunction.{Delay, BaseFunction}
 import pl.agh.harmonytools.model.key.{Key, Mode}
 import pl.agh.harmonytools.model.measure.Meter
 import pl.agh.harmonytools.model.scale.ScaleDegree
@@ -169,13 +169,13 @@ class HarmonicsParser extends RegexParsers {
 
   private def systemName: Parser[String] = Tokens.closeSystem | Tokens.openSystem ^^ { _.toString }
 
-  private def systemDef: Parser[System] =
+  private def systemDef: Parser[ChordSystem] =
     Tokens.system ~ Tokens.colon ~> systemName ^^ { n => ChordSystem.fromString(n) }
 
   private def harmonicFunctionNameDef: Parser[BaseFunction] =
-    (Tokens.tonicSymbol | Tokens.subdominantSymbol | Tokens.dominantSymbol) ^^ (x => FunctionNames.fromName(x))
+    (Tokens.tonicSymbol | Tokens.subdominantSymbol | Tokens.dominantSymbol) ^^ (x => BaseFunction.fromName(x))
 
-  private def modeDef: Parser[BaseMode] = Tokens.minorMode ^^ (_ => Mode.MINOR)
+  private def modeDef: Parser[Mode] = Tokens.minorMode ^^ (_ => Mode.MINOR)
 
   private def harmonicFunctionContent: Parser[Any] =
     systemDef | delayDef | omitDef | extraDef | isRelatedBackwardsDef | downDef | inversionDef | positionDef | degreeDef ^^ {
@@ -198,7 +198,7 @@ class HarmonicsParser extends RegexParsers {
                 xs.map(stringToChordComponent).toSet
 
               contents.foreach {
-                case s: System              => builder.withSystem(s)
+                case s: ChordSystem              => builder.withSystem(s)
                 case d: Delays              => builder.withDelay(d.value)
                 case o: Omit                => builder.withOmit(o.stringSet)
                 case e: Extra               => builder.withExtra(e.stringSet)

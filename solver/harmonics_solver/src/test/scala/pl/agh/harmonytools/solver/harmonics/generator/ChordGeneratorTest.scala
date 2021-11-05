@@ -3,7 +3,7 @@ package pl.agh.harmonytools.solver.harmonics.generator
 import org.scalatest.{FunSuite, Matchers}
 import pl.agh.harmonytools.model.chord.ChordSystem.UNDEFINED
 import pl.agh.harmonytools.model.chord.{Chord, ChordComponent}
-import pl.agh.harmonytools.model.harmonicfunction.FunctionNames.{DOMINANT, SUBDOMINANT, TONIC}
+import pl.agh.harmonytools.model.harmonicfunction.BaseFunction.{DOMINANT, SUBDOMINANT, TONIC}
 import pl.agh.harmonytools.model.harmonicfunction.HarmonicFunction
 import pl.agh.harmonytools.model.key.Key
 import pl.agh.harmonytools.model.key.Mode.{MAJOR, MINOR}

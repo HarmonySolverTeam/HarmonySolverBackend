@@ -2,7 +2,7 @@ package pl.agh.harmonytools.solver.soprano.evaluator
 
 import pl.agh.harmonytools.algorithm.graph.node.NodeContent
 import pl.agh.harmonytools.model.chord.Chord
-import pl.agh.harmonytools.model.harmonicfunction.FunctionNames.TONIC
+import pl.agh.harmonytools.model.harmonicfunction.BaseFunction.TONIC
 import pl.agh.harmonytools.model.harmonicfunction.HarmonicFunction
 import pl.agh.harmonytools.model.measure.MeasurePlace
 import pl.agh.harmonytools.model.measure.MeasurePlace.MeasurePlace

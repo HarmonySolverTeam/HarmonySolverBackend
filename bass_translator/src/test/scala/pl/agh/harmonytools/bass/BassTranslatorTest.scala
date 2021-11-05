@@ -1,7 +1,7 @@
 package pl.agh.harmonytools.bass
 
 import org.scalatest.{FunSuite, Matchers}
-import pl.agh.harmonytools.model.harmonicfunction.FunctionNames.{BaseFunction, DOMINANT, SUBDOMINANT, TONIC}
+import pl.agh.harmonytools.model.harmonicfunction.BaseFunction.{BaseFunction, DOMINANT, SUBDOMINANT, TONIC}
 import pl.agh.harmonytools.model.key.Key
 import pl.agh.harmonytools.model.note.BaseNote.A
 

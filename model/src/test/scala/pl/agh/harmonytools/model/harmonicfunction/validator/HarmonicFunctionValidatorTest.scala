@@ -1,7 +1,7 @@
 package pl.agh.harmonytools.model.harmonicfunction.validator
 
 import org.scalatest.{FunSuite, Matchers}
-import pl.agh.harmonytools.model.harmonicfunction.FunctionNames.TONIC
+import pl.agh.harmonytools.model.harmonicfunction.BaseFunction.TONIC
 import pl.agh.harmonytools.model.harmonicfunction.{Delay, HarmonicFunction}
 import pl.agh.harmonytools.model.util.ChordComponentManager
 

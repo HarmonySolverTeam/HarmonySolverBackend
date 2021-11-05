@@ -3,13 +3,13 @@ package pl.agh.harmonytools.model.chord
 import pl.agh.harmonytools.error.UnexpectedInternalError
 
 object ChordSystem {
-  sealed trait System
+  sealed trait ChordSystem
 
-  case object OPEN      extends System
-  case object CLOSE     extends System
-  case object UNDEFINED extends System
+  case object OPEN      extends ChordSystem
+  case object CLOSE     extends ChordSystem
+  case object UNDEFINED extends ChordSystem
 
-  def fromString(x: String): System = {
+  def fromString(x: String): ChordSystem = {
     x match {
       case "open"  => OPEN
       case "close" => CLOSE
@@ -17,5 +17,5 @@ object ChordSystem {
     }
   }
 
-  val values: List[System] = List(OPEN, CLOSE, UNDEFINED)
+  val values: List[ChordSystem] = List(OPEN, CLOSE, UNDEFINED)
 }

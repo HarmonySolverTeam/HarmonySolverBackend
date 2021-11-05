@@ -1,10 +1,10 @@
 package pl.agh.harmonytools.harmonics.parser.builders
 
 import pl.agh.harmonytools.error.UnexpectedInternalError
-import pl.agh.harmonytools.model.harmonicfunction.FunctionNames.BaseFunction
+import pl.agh.harmonytools.model.harmonicfunction.BaseFunction.BaseFunction
 import pl.agh.harmonytools.model.chord.{ChordComponent, ChordSystem}
 import pl.agh.harmonytools.model.harmonicfunction.builder.{HarmonicFunctionBasicBuilder, HarmonicFunctionBuilder}
-import pl.agh.harmonytools.model.harmonicfunction.{Delay, FunctionNames, HarmonicFunction}
+import pl.agh.harmonytools.model.harmonicfunction.{Delay, BaseFunction, HarmonicFunction}
 import pl.agh.harmonytools.model.key.{Key, Mode}
 import pl.agh.harmonytools.model.scale.ScaleDegree
 import pl.agh.harmonytools.model.util.ChordComponentManager
@@ -20,8 +20,8 @@ class HarmonicFunctionParserBuilder extends HarmonicFunctionBasicBuilder {
   override def withExtra(e: Set[ChordComponent]): Unit   = extra = e
   override def withOmit(o: Set[ChordComponent]): Unit    = omit = o
   override def withIsDown(d: Boolean): Unit              = isDown = d
-  override def withSystem(s: ChordSystem.System): Unit   = system = s
-  override def withMode(m: Mode.BaseMode): Unit          = mode = m
+  override def withSystem(s: ChordSystem.ChordSystem): Unit   = system = s
+  override def withMode(m: Mode.Mode): Unit          = mode = m
   override def withKey(k: Key): Unit                     = key = Some(k)
   override def withIsRelatedBackwards(rb: Boolean): Unit = isRelatedBackwards = rb
   def withType(t: HarmonicsElementType): Unit            = hfType = t

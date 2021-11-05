@@ -2,7 +2,7 @@ package pl.agh.harmonytools.utils
 
 import pl.agh.harmonytools.model.chord.ChordComponent
 import pl.agh.harmonytools.model.chord.ChordSystem.UNDEFINED
-import pl.agh.harmonytools.model.harmonicfunction.FunctionNames.{DOMINANT, SUBDOMINANT, TONIC}
+import pl.agh.harmonytools.model.harmonicfunction.BaseFunction.{DOMINANT, SUBDOMINANT, TONIC}
 import pl.agh.harmonytools.model.harmonicfunction.HarmonicFunction
 import pl.agh.harmonytools.model.key.Key
 import pl.agh.harmonytools.model.key.Mode.MINOR

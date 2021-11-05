@@ -4,27 +4,25 @@ import pl.agh.harmonytools.error.{RequirementChecker, UnexpectedInternalError}
 import pl.agh.harmonytools.utils.Extensions.ExtendedInt
 
 object BaseNote {
-  type tpe = BaseNoteType
-
-  sealed abstract class BaseNoteType(val value: Int) {
-    def +(x: Int): BaseNoteType =
+  sealed abstract class BaseNote(val value: Int) {
+    def +(x: Int): BaseNote =
       fromInt((value + x) %% 7)
 
     def name: Char =
       getClass.getSimpleName.head
   }
 
-  case object C extends BaseNoteType(0)
-  case object D extends BaseNoteType(1)
-  case object E extends BaseNoteType(2)
-  case object F extends BaseNoteType(3)
-  case object G extends BaseNoteType(4)
-  case object A extends BaseNoteType(5)
-  case object B extends BaseNoteType(6)
+  case object C extends BaseNote(0)
+  case object D extends BaseNote(1)
+  case object E extends BaseNote(2)
+  case object F extends BaseNote(3)
+  case object G extends BaseNote(4)
+  case object A extends BaseNote(5)
+  case object B extends BaseNote(6)
 
-  val values: List[BaseNoteType] = List(C, D, E, F, G, A, B)
+  val values: List[BaseNote] = List(C, D, E, F, G, A, B)
 
-  def fromInt(x: Int): BaseNoteType = {
+  def fromInt(x: Int): BaseNote = {
     RequirementChecker.isRequired(0 <= x && x < 7, UnexpectedInternalError("Base note should be from [0,6]"))
     x match {
       case 0 => C

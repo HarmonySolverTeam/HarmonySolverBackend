@@ -1,7 +1,7 @@
 package pl.agh.harmonytools.model.chord
 
 import org.scalatest.{FunSuite, Matchers}
-import pl.agh.harmonytools.model.harmonicfunction.FunctionNames.TONIC
+import pl.agh.harmonytools.model.harmonicfunction.BaseFunction.TONIC
 import pl.agh.harmonytools.model.harmonicfunction.HarmonicFunction
 import pl.agh.harmonytools.model.note.BaseNote.{A, C, D, E, F, G}
 import pl.agh.harmonytools.model.note.Note
