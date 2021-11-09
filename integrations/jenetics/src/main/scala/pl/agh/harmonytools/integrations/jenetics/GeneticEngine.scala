@@ -2,14 +2,15 @@ package pl.agh.harmonytools.integrations.jenetics
 
 import io.jenetics._
 import io.jenetics.engine.Engine.{Evaluator, GenotypeEvaluator}
-import io.jenetics.engine.{Engine, EvolutionResult, Problem}
+import io.jenetics.engine.{Engine, EvolutionResult}
 
 import java.time.Clock
 import java.util.concurrent.Executor
-
 import scala.collection.JavaConverters._
 
-class GeneticEngineBuilder[T <: ItemWrapper[_], G <: JGene[_, G], C <: Comparable[C]](jeneticsEngine: Engine.Builder[G, C]) {
+class GeneticEngineBuilder[T <: ItemWrapper[_], G <: JGene[_, G], C <: Comparable[C]](
+  private[jenetics] val jeneticsEngine: Engine.Builder[G, C]
+) {
 
   type GE = GeneticEngineBuilder[T, G, C]
 
@@ -26,7 +27,7 @@ class GeneticEngineBuilder[T <: ItemWrapper[_], G <: JGene[_, G], C <: Comparabl
   def alterers(alterers: Alterer[G, C]*): GE = mod(_.alterers(alterers.head, alterers.tail: _*))
 
   def phenotypeValidator(validator: Phenotype[G, C] => Boolean): GE =
-    mod(_.phenotypeValidator((t: Phenotype[G, C]) => validator(t)))
+    mod(_.phenotypeValidator((p: Phenotype[G, C]) => validator(p)))
 
   def genotypeValidator(validator: Genotype[G] => Boolean): GE =
     mod(_.genotypeValidator((g: Genotype[G]) => validator(g)))
@@ -72,12 +73,13 @@ class GeneticEngineBuilder[T <: ItemWrapper[_], G <: JGene[_, G], C <: Comparabl
 }
 
 class GeneticEngine[G <: JGene[_, G], C <: Comparable[C]](jeneticsEngine: Engine[G, C]) {
-  def stream(): Stream[EvolutionResult[G, C]] = {
+  def stream(): Stream[EvolutionResult[G, C]] =
     jeneticsEngine.stream().iterator().asScala.toStream
-  }
 }
 
 object GeneticEngine {
-  def builder[T <: ItemWrapper[_], G <: JGene[_, G], C <: Comparable[C]](problem: GeneticProblem[T, G, C]): GeneticEngineBuilder[T, G, C] =
+  def builder[T <: ItemWrapper[_], G <: JGene[_, G], C <: Comparable[C]](
+    problem: GeneticProblem[T, G, C]
+  ): GeneticEngineBuilder[T, G, C] =
     new GeneticEngineBuilder[T, G, C](Engine.builder(problem))
 }
