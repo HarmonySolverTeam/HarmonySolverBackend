@@ -39,6 +39,14 @@ case class Note(
       case (n, d) if !n.isPowerOf2 => (2 * n.toDouble / (3 * d), n.toDouble / (3 * d))
     }
   }
+
+  def withoutChordContext: NoteWithoutChordContext = {
+    NoteWithoutChordContext(
+      pitch,
+      baseNote,
+      duration
+    )
+  }
 }
 
 object Note {

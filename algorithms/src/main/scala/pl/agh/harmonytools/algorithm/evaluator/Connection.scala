@@ -7,3 +7,17 @@ case class Connection[T <: NodeContent](
   prev: T,
   prevPrev: Option[T] = None
 )
+
+object Connection {
+  def apply[T <: NodeContent](
+    current: T,
+    prev: T,
+    prevPrev: T
+  ): Connection[T] = {
+    Connection(
+      current,
+      prev,
+      Some(prevPrev)
+    )
+  }
+}

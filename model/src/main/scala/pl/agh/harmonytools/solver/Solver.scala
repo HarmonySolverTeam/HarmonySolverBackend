@@ -6,5 +6,8 @@ import pl.agh.harmonytools.model.measure.MeasureContent
 
 trait Solver[T <: MeasureContent] {
   def solve(): ExerciseSolution[T]
+}
+
+trait GraphSolver[T <: MeasureContent] extends  Solver[T] {
   protected val shortestPathCompanion: ShortestPathAlgorithmCompanion
 }
