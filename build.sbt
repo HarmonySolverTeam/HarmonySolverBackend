@@ -114,7 +114,7 @@ lazy val harmonics_solver = project
   .settings(
     name := "harmonics_solver",
     settings,
-    libraryDependencies ++= testDependencies
+    libraryDependencies ++= testDependencies ++ Seq("jpl" % "jpl" % "7.4.0")
   )
   .dependsOn(
     harmonics_parser,
