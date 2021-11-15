@@ -32,7 +32,7 @@ class NonRejectingHardRulesTest extends FunSuite with Matchers with TestUtils {
     val ch3 = Chord(Note(81, A, third), Note(72, C, fifth), Note(60, C, fifth), Note(53, F, prime), subdominant)
     val notRejectingEvaluator = PrologChordRulesChecker()
     notRejectingEvaluator.evaluateHardRules(Connection(ch2, ch1)) shouldBe true
-    notRejectingEvaluator.evaluateHardRules(Connection(ch3, ch1)) shouldBe true
+    notRejectingEvaluator.evaluateHardRules(Connection(ch3, ch1)) shouldBe false
   }
 
   test("Crossing Voices test") {
