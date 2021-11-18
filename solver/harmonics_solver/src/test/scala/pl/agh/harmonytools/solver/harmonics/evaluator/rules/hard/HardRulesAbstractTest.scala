@@ -36,19 +36,23 @@ trait HardRulesAbstractTest extends FunSuite with Matchers with TestUtils {
     isBroken(rule, Connection(ch3, ch1)) shouldBe true
   }
   
-  def crossingVoicesTest(f: (CrossingVoicesRule, C, C, C, C, C, C, C) => Unit): Unit = {
-    test("Crossing Voices test") {
-      // base notes and chord components not matters
-      val ch1  = Chord(Note(72, C, prime), Note(67, C, prime), Note(60, C, prime), Note(48, C, prime), tonic)
-      val ch2  = Chord(Note(79, C, prime), Note(74, C, prime), Note(60, C, prime), Note(60, C, prime), tonic)
-      val ch3  = Chord(Note(76, C, prime), Note(72, C, prime), Note(72, C, prime), Note(48, C, prime), tonic)
-      val ch4  = Chord(Note(72, C, prime), Note(67, C, prime), Note(64, C, prime), Note(62, C, prime), tonic)
-      val ch5  = Chord(Note(66, C, prime), Note(65, C, prime), Note(64, C, prime), Note(48, C, prime), tonic)
-      val ch6  = Chord(Note(72, C, prime), Note(59, C, prime), Note(58, C, prime), Note(48, C, prime), tonic)
-      val ch7  = Chord(Note(72, C, prime), Note(67, C, prime), Note(59, C, prime), Note(58, C, prime), tonic)
-      val rule = CrossingVoicesRule()
-      f(rule, ch1, ch2, ch3, ch4, ch5, ch6, ch7)
-    }
+  test("Crossing Voices test") {
+    // base notes and chord components not matters
+    val ch1  = Chord(Note(72, C, prime), Note(67, C, prime), Note(60, C, prime), Note(48, C, prime), tonic)
+    val ch2  = Chord(Note(79, C, prime), Note(74, C, prime), Note(60, C, prime), Note(60, C, prime), tonic)
+    val ch3  = Chord(Note(76, C, prime), Note(72, C, prime), Note(72, C, prime), Note(48, C, prime), tonic)
+    val ch4  = Chord(Note(72, C, prime), Note(67, C, prime), Note(64, C, prime), Note(62, C, prime), tonic)
+    val ch5  = Chord(Note(66, C, prime), Note(65, C, prime), Note(64, C, prime), Note(48, C, prime), tonic)
+    val ch6  = Chord(Note(72, C, prime), Note(59, C, prime), Note(58, C, prime), Note(48, C, prime), tonic)
+    val ch7  = Chord(Note(72, C, prime), Note(67, C, prime), Note(59, C, prime), Note(58, C, prime), tonic)
+    val rule = CrossingVoicesRule()
+    isNotBroken(rule, Connection(ch1, ch1)) shouldBe true
+    isBroken(rule, Connection(ch2, ch1)) shouldBe true
+    isBroken(rule, Connection(ch3, ch1)) shouldBe true
+    isBroken(rule, Connection(ch4, ch1)) shouldBe true
+    isBroken(rule, Connection(ch5, ch1)) shouldBe true
+    isBroken(rule, Connection(ch6, ch1)) shouldBe true
+    isBroken(rule, Connection(ch7, ch2)) shouldBe true
   }
 
   def oneDirectionTest(f: (OneDirectionRule, C, C, C) => Unit): Unit = {

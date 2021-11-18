@@ -4,17 +4,6 @@ import pl.agh.harmonytools.algorithm.evaluator.Connection
 import pl.agh.harmonytools.solver.harmonics.evaluator.prolog.PrologChordAnyRule
 
 class ClassicHardRulesTest extends HardRulesAbstractTest {
-  crossingVoicesTest {
-    (rule, ch1, ch2, ch3, ch4, ch5, ch6, ch7) =>
-      rule.isNotBroken(Connection(ch1, ch1)) shouldBe true
-      rule.isBroken(Connection(ch2, ch1)) shouldBe true
-      rule.isBroken(Connection(ch3, ch1)) shouldBe true
-      rule.isBroken(Connection(ch4, ch1)) shouldBe true
-      rule.isBroken(Connection(ch5, ch1)) shouldBe true
-      rule.isBroken(Connection(ch6, ch1)) shouldBe true
-      rule.isBroken(Connection(ch7, ch2)) shouldBe true
-  }
-
   oneDirectionTest {
     (rule, ch1, ch2, ch3) =>
       rule.isNotBroken(Connection(ch1, ch1)) shouldBe true
