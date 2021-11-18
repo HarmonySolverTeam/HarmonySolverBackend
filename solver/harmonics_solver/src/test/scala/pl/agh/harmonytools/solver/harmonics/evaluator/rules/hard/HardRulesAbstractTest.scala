@@ -55,14 +55,14 @@ trait HardRulesAbstractTest extends FunSuite with Matchers with TestUtils {
     isBroken(rule, Connection(ch7, ch2)) shouldBe true
   }
 
-  def oneDirectionTest(f: (OneDirectionRule, C, C, C) => Unit): Unit = {
-    test("One Direction test") {
-      val ch1  = Chord(Note(72, C, prime), Note(67, G, fifth), Note(64, E, third), Note(48, C, prime), tonic)
-      val ch2  = Chord(Note(84, C, prime), Note(79, G, fifth), Note(76, E, third), Note(60, C, prime), tonic)
-      val ch3  = Chord(Note(60, C, prime), Note(55, G, fifth), Note(52, E, third), Note(36, C, prime), tonic)
-      val rule = OneDirectionRule()
-      f(rule, ch1, ch2, ch3)
-    }
+  test("One Direction test") {
+    val ch1  = Chord(Note(72, C, prime), Note(67, G, fifth), Note(64, E, third), Note(48, C, prime), tonic)
+    val ch2  = Chord(Note(84, C, prime), Note(79, G, fifth), Note(76, E, third), Note(60, C, prime), tonic)
+    val ch3  = Chord(Note(60, C, prime), Note(55, G, fifth), Note(52, E, third), Note(36, C, prime), tonic)
+    val rule = OneDirectionRule()
+    isNotBroken(rule, Connection(ch1, ch1)) shouldBe true
+    isBroken(rule, Connection(ch2, ch1)) shouldBe true
+    isBroken(rule, Connection(ch3, ch1)) shouldBe true
   }
 
   def forbiddenJumpTest(f: (ForbiddenJumpRule, C, C, C, C, C, C, C, C, C, C, C, C, C, C) => Unit): Unit = {

@@ -25,6 +25,22 @@ parallel_octaves(Up_note1, Down_note1, Up_note2, Down_note2) :-
     is_octave_or_prime(Up_note1, Down_note1),
     is_octave_or_prime(Up_note2, Down_note2).
 
+all_voices_go_up(CurrentChord, PrevChord) :-
+    CurrentChord = chord(note(BassPitch1, _), note(TenorPitch1, _), note(AltoPitch1, _), note(SopranoPitch1, _), _),
+    PrevChord = chord(note(BassPitch2, _), note(TenorPitch2, _), note(AltoPitch2, _), note(SopranoPitch2, _), _),
+    BassPitch2 < BassPitch1,
+    TenorPitch2 < TenorPitch1,
+    AltoPitch2 < AltoPitch1,
+    SopranoPitch2 < SopranoPitch1.
+
+all_voices_go_down(CurrentChord, PrevChord) :-
+    CurrentChord = chord(note(BassPitch1, _), note(TenorPitch1, _), note(AltoPitch1, _), note(SopranoPitch1, _), _),
+    PrevChord = chord(note(BassPitch2, _), note(TenorPitch2, _), note(AltoPitch2, _), note(SopranoPitch2, _), _),
+    BassPitch2 > BassPitch1,
+    TenorPitch2 > TenorPitch1,
+    AltoPitch2 > AltoPitch1,
+    SopranoPitch2 > SopranoPitch1.
+
 connection_not_contain_parallel_fifths(CurrentChord, PrevChord) :-
     has_same_function(CurrentChord, PrevChord).
 
@@ -61,7 +77,12 @@ connection_not_overlapping_voices(CurrentChord, PrevChord) :-
     TenorPitch1 =< AltoPitch2,
     AltoPitch1 =< SopranoPitch2.
 
+connection_not_one_direction(CurrentChord, PrevChord) :-
+    \+ all_voices_go_up(CurrentChord, PrevChord),
+    \+ all_voices_go_down(CurrentChord, PrevChord).
+
 connection(CurrentChord, PrevChord) :-
     connection_not_contain_parallel_fifths(CurrentChord, PrevChord),
     connection_not_contain_parallel_octaves(CurrentChord, PrevChord),
-    connection_not_overlapping_voices(CurrentChord, PrevChord).
+    connection_not_overlapping_voices(CurrentChord, PrevChord),
+    connection_not_one_direction(CurrentChord, PrevChord).

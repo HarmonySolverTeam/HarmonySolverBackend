@@ -4,13 +4,6 @@ import pl.agh.harmonytools.algorithm.evaluator.Connection
 import pl.agh.harmonytools.solver.harmonics.evaluator.prolog.PrologChordAnyRule
 
 class ClassicHardRulesTest extends HardRulesAbstractTest {
-  oneDirectionTest {
-    (rule, ch1, ch2, ch3) =>
-      rule.isNotBroken(Connection(ch1, ch1)) shouldBe true
-      rule.isBroken(Connection(ch2, ch1)) shouldBe true
-      rule.isBroken(Connection(ch3, ch1)) shouldBe true
-  }
-
   forbiddenJumpTest {
     (rule, ch1, ch2, ch1up, ch2up, ch3up, ch4up, ch5up, ch6up, ch1down, ch2down, ch3down, ch4down, ch5down, ch6down) =>
       rule.isBroken(Connection(ch2, ch1)) shouldBe true
