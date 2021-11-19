@@ -23,8 +23,8 @@ trait HardRulesAbstractTest extends FunSuite with Matchers with TestUtils {
     val ch2 = Chord(Note(72, C, prime), Note(67, G, fifth), Note(64, E, third), Note(60, C, prime), tonic)
     val ch3 = Chord(Note(77, F, prime), Note(69, A, third), Note(60, C, fifth), Note(53, F, prime), subdominant)
     val rule = ParallelOctavesRule()
-    rule.isNotBroken(Connection(ch2, ch1)) shouldBe true
-    rule.isBroken(Connection(ch3, ch1)) shouldBe true
+    isNotBroken(rule, Connection(ch2, ch1)) shouldBe true
+    isBroken(rule, Connection(ch3, ch1)) shouldBe true
   }
   
   test("Parallel Fifths test") {
