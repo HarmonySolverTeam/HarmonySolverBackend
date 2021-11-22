@@ -61,6 +61,11 @@ case class Chord(
   def hasCorrespondingNotesUpperThan(other: Chord): Boolean =
     notes.zip(other.notes).forall(p => p._1.isUpperThan(p._2))
 
+  def sameDirectionOfOuterVoices(other: Chord): Boolean = {
+    (bassNote.isLowerThan(other.bassNote) && sopranoNote.isLowerThan(other.sopranoNote)) ||
+      (bassNote.isUpperThan(other.bassNote) && sopranoNote.isUpperThan(other.sopranoNote))
+  }
+
   def hasCorrespondingNotesLowerThan(other: Chord): Boolean =
     notes.zip(other.notes).forall(p => p._1.isLowerThan(p._2))
 

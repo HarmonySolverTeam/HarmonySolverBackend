@@ -109,14 +109,12 @@ trait HardRulesAbstractTest extends FunSuite with Matchers with TestUtils {
     }
   }
 
-  def hiddenOctavesTest(f: (HiddenOctavesRule, C, C) => Unit): Unit = {
-    test("Hidden Octaves test") {
-      val hf1  = HarmonicFunction(DOMINANT, inversion = Some(third))
-      val ch1  = Chord(Note(67, G, prime), Note(62, D, fifth), Note(55, G, prime), Note(47, B, third), hf1)
-      val ch2  = Chord(Note(72, C, prime), Note(64, E, third), Note(55, G, fifth), Note(48, C, prime), tonic)
-      val rule = HiddenOctavesRule()
-      f(rule, ch1, ch2)
-    }
+  test("Hidden Octaves test") {
+    val hf1  = HarmonicFunction(DOMINANT, inversion = Some(third))
+    val ch1  = Chord(Note(67, G, prime), Note(62, D, fifth), Note(55, G, prime), Note(47, B, third), hf1)
+    val ch2  = Chord(Note(72, C, prime), Note(64, E, third), Note(55, G, fifth), Note(48, C, prime), tonic)
+    val rule = HiddenOctavesRule()
+    isBroken(rule, Connection(ch2, ch1)) shouldBe true
   }
 
   test("False Relation test") {

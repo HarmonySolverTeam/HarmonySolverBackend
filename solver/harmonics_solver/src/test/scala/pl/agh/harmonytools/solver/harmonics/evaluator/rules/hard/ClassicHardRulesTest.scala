@@ -28,11 +28,6 @@ class ClassicHardRulesTest extends HardRulesAbstractTest {
       rule.isBroken(Connection(ch4, ch1)) shouldBe true
   }
 
-  hiddenOctavesTest {
-    (rule, ch1, ch2) =>
-      rule.isBroken(Connection(ch2, ch1))
-  }
-
   dsConnectionTest {
     (rule, ch1, ch2) =>
       rule.isBroken(Connection(ch2, ch1)) shouldBe true

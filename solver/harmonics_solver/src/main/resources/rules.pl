@@ -12,9 +12,19 @@ is_fifth(Up_Note, Down_Note) :-
     Diff is BaseNote1 - BaseNote2,
     member(Diff, [4, -3]).
 
-is_octave_or_prime(Up_Note, Down_Note) :-
-    Up_Note = note(_, BaseNote1),
-    Down_Note = note(_, BaseNote2),
+is_lower(Note1, Note2) :-
+    Note1 = note(Pitch1, _),
+    Note2 = note(Pitch2, _),
+    Pitch1 < Pitch2.
+
+is_upper(Note1, Note2) :-
+    Note1 = note(Pitch1, _),
+    Note2 = note(Pitch2, _),
+    Pitch1 > Pitch2.
+
+is_octave_or_prime(Note1, Note2) :-
+    Note1 = note(_, BaseNote1),
+    Note2 = note(_, BaseNote2),
     BaseNote1 == BaseNote2.
 
 chromatic_alteration(Note1, Note2) :-
@@ -104,9 +114,34 @@ connection_not_contain_false_relation(CurrentChord, PrevChord) :-
     \+ chromatic_alteration(TenorNote2, SopranoNote1),
     \+ chromatic_alteration(AltoNote2, SopranoNote1).
 
+same_direction_of_outer_voices(CurrentChord, PrevChord) :-
+    CurrentChord = chord(BassNote1, _, _, SopranoNote1, _),
+    PrevChord = chord(BassNote2, _, _, SopranoNote2, _),
+    is_upper(BassNote1, BassNote2),
+    is_upper(SopranoNote1, SopranoNote2).
+
+same_direction_of_outer_voices(CurrentChord, PrevChord) :-
+    CurrentChord = chord(BassNote1, _, _, SopranoNote1, _),
+    PrevChord = chord(BassNote2, _, _, SopranoNote2, _),
+    is_lower(BassNote1, BassNote2),
+    is_lower(SopranoNote1, SopranoNote2).
+
+connection_not_contain_hidden_octaves(CurrentChord, PrevChord) :-
+    \+ same_direction_of_outer_voices(CurrentChord, PrevChord).
+
+connection_not_contain_hidden_octaves(CurrentChord, PrevChord) :-
+    CurrentChord = chord(_, _, _, note(SopranoPitch1, _), _),
+    PrevChord = chord(_, _, _, note(SopranoPitch2, _), _),
+    abs(SopranoPitch1 - SopranoPitch2) =< 2.
+
+connection_not_contain_hidden_octaves(CurrentChord, _) :-
+    CurrentChord = chord(CurrentBassNote, _, _, CurrentSopranoNote, _),
+    \+ is_octave_or_prime(CurrentBassNote, CurrentSopranoNote).
+
 connection(CurrentChord, PrevChord) :-
     connection_not_contain_parallel_fifths(CurrentChord, PrevChord),
     connection_not_contain_parallel_octaves(CurrentChord, PrevChord),
     connection_not_overlapping_voices(CurrentChord, PrevChord),
     connection_not_one_direction(CurrentChord, PrevChord),
-    connection_not_contain_false_relation(CurrentChord, PrevChord).
+    connection_not_contain_false_relation(CurrentChord, PrevChord),
+    connection_not_contain_hidden_octaves(CurrentChord, PrevChord).
