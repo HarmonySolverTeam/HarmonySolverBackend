@@ -33,12 +33,6 @@ class ClassicHardRulesTest extends HardRulesAbstractTest {
       rule.isBroken(Connection(ch2, ch1))
   }
 
-  falseRelationTest {
-    (rule, ch1, ch2, ch3, ch4) =>
-      rule.isBroken(Connection(ch2, ch1)) shouldBe true
-      rule.isBroken(Connection(ch4, ch3)) shouldBe true
-  }
-
   dsConnectionTest {
     (rule, ch1, ch2) =>
       rule.isBroken(Connection(ch2, ch1)) shouldBe true

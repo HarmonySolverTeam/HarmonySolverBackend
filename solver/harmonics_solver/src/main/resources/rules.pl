@@ -17,6 +17,13 @@ is_octave_or_prime(Up_Note, Down_Note) :-
     Down_Note = note(_, BaseNote2),
     BaseNote1 == BaseNote2.
 
+chromatic_alteration(Note1, Note2) :-
+    Note1 = note(Pitch1, BaseNote1),
+    Note2 = note(Pitch2, BaseNote2),
+    BaseNote1 == BaseNote2,
+    Diff is (Pitch1 - Pitch2) mod 12,
+    member(Diff, [1, 11]).
+
 parallel_fifths(Up_note1, Down_note1, Up_note2, Down_note2) :-
     is_fifth(Up_note1, Down_note1),
     is_fifth(Up_note2, Down_note2).
@@ -81,8 +88,25 @@ connection_not_one_direction(CurrentChord, PrevChord) :-
     \+ all_voices_go_up(CurrentChord, PrevChord),
     \+ all_voices_go_down(CurrentChord, PrevChord).
 
+connection_not_contain_false_relation(CurrentChord, PrevChord) :-
+    CurrentChord = chord(BassNote1, TenorNote1, AltoNote1, SopranoNote1, _),
+    PrevChord = chord(BassNote2, TenorNote2, AltoNote2, SopranoNote2, _),
+    \+ chromatic_alteration(BassNote1, TenorNote2),
+    \+ chromatic_alteration(BassNote1, AltoNote2),
+    \+ chromatic_alteration(BassNote1, SopranoNote2),
+    \+ chromatic_alteration(TenorNote1, AltoNote2),
+    \+ chromatic_alteration(TenorNote1, SopranoNote2),
+    \+ chromatic_alteration(AltoNote1, SopranoNote2),
+    \+ chromatic_alteration(BassNote2, TenorNote1),
+    \+ chromatic_alteration(BassNote2, AltoNote1),
+    \+ chromatic_alteration(BassNote2, SopranoNote1),
+    \+ chromatic_alteration(TenorNote2, AltoNote1),
+    \+ chromatic_alteration(TenorNote2, SopranoNote1),
+    \+ chromatic_alteration(AltoNote2, SopranoNote1).
+
 connection(CurrentChord, PrevChord) :-
     connection_not_contain_parallel_fifths(CurrentChord, PrevChord),
     connection_not_contain_parallel_octaves(CurrentChord, PrevChord),
     connection_not_overlapping_voices(CurrentChord, PrevChord),
-    connection_not_one_direction(CurrentChord, PrevChord).
+    connection_not_one_direction(CurrentChord, PrevChord),
+    connection_not_contain_false_relation(CurrentChord, PrevChord).

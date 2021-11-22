@@ -119,20 +119,19 @@ trait HardRulesAbstractTest extends FunSuite with Matchers with TestUtils {
     }
   }
 
-  def falseRelationTest(f: (FalseRelationRule, C, C, C, C) => Unit): Unit = {
-    test("False Relation test") {
-      val ch1 = Chord(Note(68, A, fifthD), Note(65, F, thirdD), Note(61, D, primeD), Note(41, F, thirdD), neapolitan)
-      val ch2 = Chord(Note(67, G, prime), Note(62, D, fifth), Note(59, B, third), Note(43, G, prime), dominant)
+  test("False Relation test") {
+    val ch1 = Chord(Note(68, A, fifthD), Note(65, F, thirdD), Note(61, D, primeD), Note(41, F, thirdD), neapolitan)
+    val ch2 = Chord(Note(67, G, prime), Note(62, D, fifth), Note(59, B, third), Note(43, G, prime), dominant)
 
-      val d1 = HarmonicFunction(DOMINANT, extra = Set(seventh), key = Some(Key("D")))
-      val d2 = HarmonicFunction(DOMINANT, extra = Set(seventh), omit = Set(fifth))
+    val d1 = HarmonicFunction(DOMINANT, extra = Set(seventh), key = Some(Key("D")))
+    val d2 = HarmonicFunction(DOMINANT, extra = Set(seventh), omit = Set(fifth))
 
-      val ch3 = Chord(Note(76, E, fifth), Note(67, G, seventh), Note(61, C, third), Note(45, A, prime), d1)
-      val ch4 = Chord(Note(72, C, seventh), Note(66, F, third), Note(62, D, prime), Note(50, D, prime), d2)
+    val ch3 = Chord(Note(76, E, fifth), Note(67, G, seventh), Note(61, C, third), Note(45, A, prime), d1)
+    val ch4 = Chord(Note(72, C, seventh), Note(66, F, third), Note(62, D, prime), Note(50, D, prime), d2)
 
-      val rule = FalseRelationRule()
-      f(rule, ch1, ch2, ch3, ch4)
-    }
+    val rule = FalseRelationRule()
+    isBroken(rule, Connection(ch2, ch1)) shouldBe true
+    isBroken(rule, Connection(ch4, ch3)) shouldBe true
   }
 
   def dsConnectionTest(f: (DominantSubdominantConnectionRule, C, C) => Unit): Unit = {
