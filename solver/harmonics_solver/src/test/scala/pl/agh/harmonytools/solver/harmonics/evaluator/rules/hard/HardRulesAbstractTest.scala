@@ -65,30 +65,40 @@ trait HardRulesAbstractTest extends FunSuite with Matchers with TestUtils {
     isBroken(rule, Connection(ch3, ch1)) shouldBe true
   }
 
-  def forbiddenJumpTest(f: (ForbiddenJumpRule, C, C, C, C, C, C, C, C, C, C, C, C, C, C) => Unit): Unit = {
-    test("Forbidden Jump test") {
-      //Incorrect chord definitions only for this test case - only pitch and baseNote is important of soprano
-      val ch1 = Chord(Note(72, C, prime), Note(60, C, prime), Note(60, C, prime), Note(48, C, prime), tonic)
-      val ch2 = Chord(Note(85, C, prime), Note(60, C, prime), Note(60, C, prime), Note(48, C, prime), subdominant)
-      //altered up
-      val ch1up = Chord(Note(75, D, prime), Note(60, C, prime), Note(60, C, prime), Note(48, C, prime), subdominant)
-      val ch2up = Chord(Note(77, E, prime), Note(60, C, prime), Note(60, C, prime), Note(48, C, prime), subdominant)
-      val ch3up = Chord(Note(78, F, prime), Note(60, C, prime), Note(60, C, prime), Note(48, C, prime), subdominant)
-      val ch4up = Chord(Note(80, G, prime), Note(60, C, prime), Note(60, C, prime), Note(48, C, prime), subdominant)
-      val ch5up = Chord(Note(82, A, prime), Note(60, C, prime), Note(60, C, prime), Note(48, C, prime), subdominant)
-      val ch6up = Chord(Note(84, B, prime), Note(60, C, prime), Note(60, C, prime), Note(48, C, prime), subdominant)
-      //altered down
-      val ch1down = Chord(Note(69, B, prime), Note(60, C, prime), Note(60, C, prime), Note(48, C, prime), subdominant)
-      val ch2down = Chord(Note(67, A, prime), Note(60, C, prime), Note(60, C, prime), Note(48, C, prime), subdominant)
-      val ch3down = Chord(Note(66, G, prime), Note(60, C, prime), Note(60, C, prime), Note(48, C, prime), subdominant)
-      val ch4down = Chord(Note(64, F, prime), Note(60, C, prime), Note(60, C, prime), Note(48, C, prime), subdominant)
-      val ch5down = Chord(Note(62, E, prime), Note(60, C, prime), Note(60, C, prime), Note(48, C, prime), subdominant)
-      val ch6down = Chord(Note(60, D, prime), Note(60, C, prime), Note(60, C, prime), Note(48, C, prime), subdominant)
+  test("Forbidden Jump test") {
+    //Incorrect chord definitions only for this test case - only pitch and baseNote is important of soprano
+    val ch1 = Chord(Note(72, C, prime), Note(60, C, prime), Note(60, C, prime), Note(48, C, prime), tonic)
+    val ch2 = Chord(Note(85, C, prime), Note(60, C, prime), Note(60, C, prime), Note(48, C, prime), subdominant)
+    //altered up
+    val ch1up = Chord(Note(75, D, prime), Note(60, C, prime), Note(60, C, prime), Note(48, C, prime), subdominant)
+    val ch2up = Chord(Note(77, E, prime), Note(60, C, prime), Note(60, C, prime), Note(48, C, prime), subdominant)
+    val ch3up = Chord(Note(78, F, prime), Note(60, C, prime), Note(60, C, prime), Note(48, C, prime), subdominant)
+    val ch4up = Chord(Note(80, G, prime), Note(60, C, prime), Note(60, C, prime), Note(48, C, prime), subdominant)
+    val ch5up = Chord(Note(82, A, prime), Note(60, C, prime), Note(60, C, prime), Note(48, C, prime), subdominant)
+    val ch6up = Chord(Note(84, B, prime), Note(60, C, prime), Note(60, C, prime), Note(48, C, prime), subdominant)
+    //altered down
+    val ch1down = Chord(Note(69, B, prime), Note(60, C, prime), Note(60, C, prime), Note(48, C, prime), subdominant)
+    val ch2down = Chord(Note(67, A, prime), Note(60, C, prime), Note(60, C, prime), Note(48, C, prime), subdominant)
+    val ch3down = Chord(Note(66, G, prime), Note(60, C, prime), Note(60, C, prime), Note(48, C, prime), subdominant)
+    val ch4down = Chord(Note(64, F, prime), Note(60, C, prime), Note(60, C, prime), Note(48, C, prime), subdominant)
+    val ch5down = Chord(Note(62, E, prime), Note(60, C, prime), Note(60, C, prime), Note(48, C, prime), subdominant)
+    val ch6down = Chord(Note(60, D, prime), Note(60, C, prime), Note(60, C, prime), Note(48, C, prime), subdominant)
 
-      val rule = ForbiddenJumpRule()
+    val rule = ForbiddenJumpRule()
 
-      f(rule, ch1, ch2, ch1up, ch2up, ch3up, ch4up, ch5up, ch6up, ch1down, ch2down, ch3down, ch4down, ch5down, ch6down)
-    }
+    isBroken(rule, Connection(ch2, ch1)) shouldBe true
+//    isBroken(rule, Connection(ch1up, ch1)) shouldBe true
+//    isBroken(rule, Connection(ch2up, ch1)) shouldBe true
+//    isBroken(rule, Connection(ch3up, ch1)) shouldBe true
+//    isBroken(rule, Connection(ch4up, ch1)) shouldBe true
+//    isBroken(rule, Connection(ch5up, ch1)) shouldBe true
+//    isBroken(rule, Connection(ch6up, ch1)) shouldBe true
+    isBroken(rule, Connection(ch1down, ch1)) shouldBe true
+    isBroken(rule, Connection(ch2down, ch1)) shouldBe true
+    isBroken(rule, Connection(ch3down, ch1)) shouldBe true
+    isBroken(rule, Connection(ch4down, ch1)) shouldBe true
+    isBroken(rule, Connection(ch5down, ch1)) shouldBe true
+    isBroken(rule, Connection(ch6down, ch1)) shouldBe true
   }
 
   def delayCorrectnessRule(f: (DelayCorrectnessRule, C, C, C, C) => Unit): Unit = {
