@@ -1,6 +1,6 @@
 package pl.agh.harmonytools.solver.harmonics.evaluator.prolog
 
-import org.jpl7.{Atom, Compound, JPL, Query, Term, Variable}
+import org.jpl7.{Atom, Compound, Query, Term}
 import pl.agh.harmonytools.algorithm.evaluator.Connection
 import pl.agh.harmonytools.model.chord.{Chord, ChordComponent}
 import pl.agh.harmonytools.model.harmonicfunction.{Delay, HarmonicFunction}

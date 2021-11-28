@@ -1,8 +1,8 @@
 package pl.agh.harmonytools.solver.harmonics.evaluator.rules.soft
 
 import pl.agh.harmonytools.algorithm.evaluator.{Connection, SoftRule}
-import pl.agh.harmonytools.solver.harmonics.evaluator.rules.satisfied
 import pl.agh.harmonytools.model.chord.Chord
+import pl.agh.harmonytools.solver.harmonics.evaluator.rules.satisfied
 import pl.agh.harmonytools.utils.IntervalUtils.pitchOffsetBetween
 
 case class SopranoBestLine() extends SoftRule[Chord] {

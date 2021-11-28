@@ -5,8 +5,6 @@ import pl.agh.harmonytools.exercise.harmonics.HarmonicsExercise
 import pl.agh.harmonytools.harmonics.parser.HarmonicsParser
 import pl.agh.harmonytools.utils.{ResourcesHelper, TestUtils}
 
-import scala.io.Source
-
 class HarmonicsSolverTest extends FunSuite with Matchers with TestUtils with BeforeAndAfterEach with ResourcesHelper {
 
   private def getParserOutput(input: String) = HarmonicsSolverTest.parseInput(input)

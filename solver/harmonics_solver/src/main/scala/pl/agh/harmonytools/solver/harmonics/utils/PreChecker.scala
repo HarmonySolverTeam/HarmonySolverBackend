@@ -2,12 +2,11 @@ package pl.agh.harmonytools.solver.harmonics.utils
 
 import pl.agh.harmonytools.algorithm.evaluator.Connection
 import pl.agh.harmonytools.error.{HarmonySolverError, RequirementChecker, UnexpectedInternalError}
-import pl.agh.harmonytools.solver.harmonics.evaluator.ChordRulesChecker
-import pl.agh.harmonytools.solver.harmonics.generator.{ChordGenerator, ChordGeneratorInput}
 import pl.agh.harmonytools.model.chord.Chord
 import pl.agh.harmonytools.model.harmonicfunction.HarmonicFunction
 import pl.agh.harmonytools.model.note.{Note, NoteWithoutChordContext}
-import pl.agh.harmonytools.solver.harmonics.generator.ChordGenerator
+import pl.agh.harmonytools.solver.harmonics.evaluator.ChordRulesChecker
+import pl.agh.harmonytools.solver.harmonics.generator.{ChordGenerator, ChordGeneratorInput}
 
 object PreChecker {
   def run(

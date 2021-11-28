@@ -89,3 +89,8 @@ is_altered_interval(Note1, Note2) :-
     HalfToneDistance >= 0,
     get_base_distance(BaseNote1, BaseNote2, BaseDistance),
     member([HalfToneDistance, BaseDistance], [[3, 1], [5, 2], [6, 3], [8, 4], [10, 5], [12, 6]]).
+
+valid_delay(Same, Same, _).
+
+valid_delay(Prev1, Current1, D_List) :-
+    member(delay(Prev1, Current1), D_List).

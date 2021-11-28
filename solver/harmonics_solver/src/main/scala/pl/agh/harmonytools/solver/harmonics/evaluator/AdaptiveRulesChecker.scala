@@ -4,19 +4,7 @@ import pl.agh.harmonytools.algorithm.evaluator.{HardRule, SoftRule}
 import pl.agh.harmonytools.error.UnexpectedInternalError
 import pl.agh.harmonytools.model.chord.Chord
 import pl.agh.harmonytools.solver.harmonics.evaluator.rules.ChordRules
-import pl.agh.harmonytools.solver.harmonics.evaluator.rules.hard.{
-  CrossingVoicesRule,
-  DelayCorrectnessRule,
-  DominantSubdominantConnectionRule,
-  FalseRelationRule,
-  ForbiddenJumpRule,
-  HiddenOctavesRule,
-  IllegalDoubledThirdRule,
-  OneDirectionRule,
-  ParallelFifthsRule,
-  ParallelOctavesRule,
-  SameFunctionConnectionRule
-}
+import pl.agh.harmonytools.solver.harmonics.evaluator.rules.hard._
 
 case class AdaptiveRulesChecker(punishmentRatios: Map[ChordRules.Rule, Double])
   extends BasicChordRulesChecker(isFixedSoprano = true) {

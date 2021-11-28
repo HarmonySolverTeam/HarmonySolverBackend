@@ -1,8 +1,8 @@
 package pl.agh.harmonytools.solver.harmonics.evaluator.rules.hard
 
 import pl.agh.harmonytools.algorithm.evaluator.{AnyRule, Connection}
-import pl.agh.harmonytools.solver.harmonics.evaluator.rules.{satisfied, specificConnectionRuleDT}
 import pl.agh.harmonytools.model.chord.Chord
+import pl.agh.harmonytools.solver.harmonics.evaluator.rules.{satisfied, specificConnectionRuleDT}
 
 case class IllegalDoubledThirdRule(evaluationRatio: Double = 1.0) extends AnyRule[Chord](evaluationRatio) {
   override def evaluate(connection: Connection[Chord]): Double = {

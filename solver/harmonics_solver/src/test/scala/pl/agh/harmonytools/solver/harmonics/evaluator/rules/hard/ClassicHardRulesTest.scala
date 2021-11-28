@@ -1,7 +1,7 @@
 package pl.agh.harmonytools.solver.harmonics.evaluator.rules.hard
 
 import pl.agh.harmonytools.algorithm.evaluator.Connection
-import pl.agh.harmonytools.solver.harmonics.evaluator.prolog.{PrologChordAnyRule, PrologChordRule}
+import pl.agh.harmonytools.solver.harmonics.evaluator.prolog.PrologChordRule
 
 class ClassicHardRulesTest extends HardRulesAbstractTest {
   dsConnectionTest {

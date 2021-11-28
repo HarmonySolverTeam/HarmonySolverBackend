@@ -1,6 +1,5 @@
 package pl.agh.harmonytools.solver.harmonics.evaluator.rules.hard
 
-import org.jpl7.Query
 import org.scalatest.{FunSuite, Matchers}
 import pl.agh.harmonytools.algorithm.evaluator.Connection
 import pl.agh.harmonytools.model.chord.Chord
@@ -9,7 +8,7 @@ import pl.agh.harmonytools.model.harmonicfunction.{Delay, HarmonicFunction}
 import pl.agh.harmonytools.model.key.Key
 import pl.agh.harmonytools.model.note.BaseNote._
 import pl.agh.harmonytools.model.note.Note
-import pl.agh.harmonytools.solver.harmonics.evaluator.prolog.{PrologChordAnyRule, PrologChordRule}
+import pl.agh.harmonytools.solver.harmonics.evaluator.prolog.PrologChordRule
 import pl.agh.harmonytools.utils.TestUtils
 
 trait HardRulesAbstractTest extends FunSuite with Matchers with TestUtils {

@@ -1,14 +1,8 @@
 package pl.agh.harmonytools.solver.harmonics.evaluator.rules.soft
 
 import pl.agh.harmonytools.algorithm.evaluator.{Connection, SoftRule}
-import pl.agh.harmonytools.solver.harmonics.evaluator.rules.{
-  forbiddenJumpRule,
-  sameFunctionRule,
-  satisfied,
-  voicesIndexes
-}
-import pl.agh.harmonytools.solver.harmonics.evaluator.rules.subrules.SameFunctionRule
 import pl.agh.harmonytools.model.chord.Chord
+import pl.agh.harmonytools.solver.harmonics.evaluator.rules.{forbiddenJumpRule, sameFunctionRule, satisfied, voicesIndexes}
 
 case class ForbiddenSumJumpRule() extends SoftRule[Chord] {
   override def evaluate(connection: Connection[Chord]): Double = {

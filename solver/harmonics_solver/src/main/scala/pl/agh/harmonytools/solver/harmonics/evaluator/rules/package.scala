@@ -1,10 +1,8 @@
 package pl.agh.harmonytools.solver.harmonics.evaluator
 
-import pl.agh.harmonytools.solver.harmonics.evaluator.rules.hard.ForbiddenJumpRule
-import pl.agh.harmonytools.solver.harmonics.evaluator.rules.subrules.{SameFunctionRule, SpecificFunctionConnectionRule}
 import pl.agh.harmonytools.model.harmonicfunction.FunctionNames.{DOMINANT, SUBDOMINANT, TONIC}
 import pl.agh.harmonytools.solver.harmonics.evaluator.rules.hard.ForbiddenJumpRule
-import pl.agh.harmonytools.solver.harmonics.evaluator.rules.subrules.SameFunctionRule
+import pl.agh.harmonytools.solver.harmonics.evaluator.rules.subrules.{SameFunctionRule, SpecificFunctionConnectionRule}
 
 package object rules {
   val satisfied: Double                                        = 0.0

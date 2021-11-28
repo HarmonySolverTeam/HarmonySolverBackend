@@ -1,9 +1,9 @@
 package pl.agh.harmonytools.solver.harmonics.evaluator.rules.hard
 
-import pl.agh.harmonytools.algorithm.evaluator.{AnyRule, Connection}
-import pl.agh.harmonytools.solver.harmonics.evaluator.rules.{satisfied, voicePairs}
+import pl.agh.harmonytools.algorithm.evaluator.Connection
 import pl.agh.harmonytools.model.chord.Chord
 import pl.agh.harmonytools.solver.harmonics.evaluator.prolog.PrologChordAnyRule
+import pl.agh.harmonytools.solver.harmonics.evaluator.rules.{satisfied, voicePairs}
 import pl.agh.harmonytools.utils.IntervalUtils.isChromaticAlteration
 
 case class FalseRelationRule(evaluationRatio: Double = 1.0) extends PrologChordAnyRule(evaluationRatio) {

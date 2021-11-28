@@ -78,15 +78,14 @@ connection_not_contain_forbidden_jump(CurrentChord, PrevChord) :-
     \+ is_altered_interval(AltoNote2, AltoNote1),
     \+ is_altered_interval(SopranoNote2, SopranoNote1).
 
-connection_not_contain_incorrect_delay(CurrentChord, PrevChord, [Delay | Tail]) :-
-    Delay = delay(first, second),
-    first > second.
-
 connection_not_contain_incorrect_delay(CurrentChord, PrevChord) :-
-    CurrentChord = chord(BassNote1, TenorNote1, AltoNote1, SopranoNote1, _),
-    PrevChord = chord(BassNote2, TenorNote2, AltoNote2, SopranoNote2, harmonic_function(_, _, _, _, Delay, _, _, _, _, _, _)),
+    CurrentChord = chord(note(_, _, CurrentB), note(_, _, CurrentT), note(_, _, CurrentA), note(_, _, CurrentS), _),
+    PrevChord = chord(note(_, _, PrevB), note(_, _, PrevT), note(_, _, PrevA), note(_, _, PrevS), harmonic_function(_, _, _, _, Delay, _, _, _, _, _, _)),
     to_array(Delay, D_List),
-    connection_not_contain_incorrect_delay(CurrentChord, PrevChord, D_List).
+    valid_delay(PrevB, CurrentB, D_List),
+    valid_delay(PrevT, CurrentT, D_List),
+    valid_delay(PrevA, CurrentA, D_List),
+    valid_delay(PrevS, CurrentS, D_List).
 
 
 connection(CurrentChord, PrevChord) :-

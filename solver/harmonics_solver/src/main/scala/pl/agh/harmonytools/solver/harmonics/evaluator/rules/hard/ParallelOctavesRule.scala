@@ -1,9 +1,9 @@
 package pl.agh.harmonytools.solver.harmonics.evaluator.rules.hard
 
-import pl.agh.harmonytools.algorithm.evaluator.{AnyRule, Connection, HardRule, IRule}
-import pl.agh.harmonytools.solver.harmonics.evaluator.rules.{sameFunctionRule, satisfied, voicePairs}
+import pl.agh.harmonytools.algorithm.evaluator.Connection
 import pl.agh.harmonytools.model.chord.Chord
 import pl.agh.harmonytools.solver.harmonics.evaluator.prolog.PrologChordAnyRule
+import pl.agh.harmonytools.solver.harmonics.evaluator.rules.{sameFunctionRule, satisfied, voicePairs}
 import pl.agh.harmonytools.utils.IntervalUtils.isOctaveOrPrime
 
 case class ParallelOctavesRule(evaluationRatio: Double = 1.0) extends PrologChordAnyRule(evaluationRatio) {

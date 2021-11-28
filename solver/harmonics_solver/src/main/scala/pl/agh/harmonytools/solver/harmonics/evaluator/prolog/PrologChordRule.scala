@@ -1,7 +1,7 @@
 package pl.agh.harmonytools.solver.harmonics.evaluator.prolog
 
 import org.jpl7.{Compound, Term}
-import pl.agh.harmonytools.algorithm.evaluator.{AnyRule, Connection, HardRule, IRule, SoftRule}
+import pl.agh.harmonytools.algorithm.evaluator._
 import pl.agh.harmonytools.model.chord.Chord
 import pl.agh.harmonytools.solver.harmonics.evaluator.prolog.PrologImplicits._
 

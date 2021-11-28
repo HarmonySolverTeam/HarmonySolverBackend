@@ -2,15 +2,11 @@ package pl.agh.harmonytools.solver.harmonics
 
 import pl.agh.harmonytools.algorithm.graph.SingleLevelGraph
 import pl.agh.harmonytools.algorithm.graph.builders.SingleLevelGraphBuilder
-import pl.agh.harmonytools.algorithm.graph.shortestpath.dijkstra.DijkstraAlgorithm
 import pl.agh.harmonytools.algorithm.graph.node.EmptyContent
 import pl.agh.harmonytools.algorithm.graph.shortestpath.ShortestPathAlgorithmCompanion
 import pl.agh.harmonytools.algorithm.graph.shortestpath.topologicalsort.TopologicalSortAlgorithm
 import pl.agh.harmonytools.exercise.harmonics.HarmonicsExercise
 import pl.agh.harmonytools.exercise.harmonics.helpers.DelayHandler
-import pl.agh.harmonytools.harmonics.parser.DeflectionsHandler
-import pl.agh.harmonytools.solver.harmonics.generator.ChordGenerator
-import pl.agh.harmonytools.solver.harmonics.utils.ExerciseCorrector
 import pl.agh.harmonytools.model.chord.Chord
 import pl.agh.harmonytools.model.harmonicfunction.HarmonicFunction
 import pl.agh.harmonytools.model.note.{Note, NoteWithoutChordContext}
@@ -18,7 +14,7 @@ import pl.agh.harmonytools.solver.harmonics.evaluator.rules.ChordRules
 import pl.agh.harmonytools.solver.harmonics.evaluator.{AdaptiveRulesChecker, ChordRulesChecker}
 import pl.agh.harmonytools.solver.harmonics.generator.{ChordGenerator, ChordGeneratorInput}
 import pl.agh.harmonytools.solver.harmonics.utils.{ExerciseCorrector, PreChecker}
-import pl.agh.harmonytools.solver.{ExerciseSolution, HarmonicsSolution, Solver, SolverError}
+import pl.agh.harmonytools.solver.{HarmonicsSolution, Solver, SolverError}
 
 case class HarmonicsSolver(
   exercise: HarmonicsExercise,

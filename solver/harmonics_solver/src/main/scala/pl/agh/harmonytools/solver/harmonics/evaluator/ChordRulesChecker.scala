@@ -1,32 +1,8 @@
 package pl.agh.harmonytools.solver.harmonics.evaluator
 
-import pl.agh.harmonytools.algorithm.evaluator.{ConnectionEvaluator, HardRule, IRule, SoftRule}
-import pl.agh.harmonytools.solver.harmonics.evaluator.rules.hard.DelayCorrectnessRule
-import pl.agh.harmonytools.solver.harmonics.evaluator.rules.soft.DominantSecondRelationConnectionRule
+import pl.agh.harmonytools.algorithm.evaluator.{HardRule, SoftRule}
 import pl.agh.harmonytools.model.chord.Chord
-import pl.agh.harmonytools.solver.harmonics.evaluator.rules.hard.{
-  CrossingVoicesRule,
-  DelayCorrectnessRule,
-  DominantSubdominantConnectionRule,
-  FalseRelationRule,
-  ForbiddenJumpRule,
-  HiddenOctavesRule,
-  IllegalDoubledThirdRule,
-  OneDirectionRule,
-  ParallelFifthsRule,
-  ParallelOctavesRule,
-  SameFunctionConnectionRule
-}
-import pl.agh.harmonytools.solver.harmonics.evaluator.rules.soft.{
-  ClosestMoveInBassRule,
-  ClosestMoveRule,
-  DominantRelationConnectionRule,
-  DominantSecondRelationConnectionRule,
-  DoublePrimeOrFifthRule,
-  ForbiddenSumJumpRule,
-  SopranoBestLine,
-  SubdominantDominantConnectionRule
-}
+import pl.agh.harmonytools.solver.harmonics.evaluator.rules.hard._
 
 case class ChordRulesChecker(isFixedBass: Boolean = false, isFixedSoprano: Boolean = false)
   extends BasicChordRulesChecker(isFixedSoprano) {
