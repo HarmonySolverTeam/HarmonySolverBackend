@@ -141,13 +141,12 @@ trait HardRulesAbstractTest extends FunSuite with Matchers with TestUtils {
     isBroken(rule, Connection(ch4, ch3)) shouldBe true
   }
 
-  def dsConnectionTest(f: (DominantSubdominantConnectionRule, C, C) => Unit): Unit = {
-    test("D -> S Connection test") {
-      val ch1  = Chord(Note(72, C, prime), Note(60, C, prime), Note(60, C, prime), Note(48, C, prime), dominant)
-      val ch2  = Chord(Note(72, C, prime), Note(60, C, prime), Note(60, C, prime), Note(48, C, prime), subdominant)
-      val rule = DominantSubdominantConnectionRule()
-      f(rule, ch1, ch2)
-    }
+  test("D -> S Connection test") {
+    val ch1  = Chord(Note(72, C, prime), Note(60, C, prime), Note(60, C, prime), Note(48, C, prime), dominant)
+    val ch2  = Chord(Note(72, C, prime), Note(60, C, prime), Note(60, C, prime), Note(48, C, prime), subdominant)
+    val rule = DominantSubdominantConnectionRule()
+    isBroken(rule, Connection(ch2, ch1)) shouldBe true
+    isNotBroken(rule, Connection(ch1, ch2)) shouldBe true
   }
 
   def sameFunctionConnectionTest(f: (SameFunctionConnectionRule, C, C, C) => Unit): Unit = {

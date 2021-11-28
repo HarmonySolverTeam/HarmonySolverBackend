@@ -97,3 +97,15 @@ connection(CurrentChord, PrevChord) :-
     connection_not_contain_hidden_octaves(CurrentChord, PrevChord),
     connection_not_contain_forbidden_jump(CurrentChord, PrevChord),
     connection_not_contain_incorrect_delay(CurrentChord, PrevChord).
+
+connection_is_ds(CurrentChord, PrevChord) :-
+    CurrentChord = chord(_, _, _, _, harmonic_function('S', _, _, _, _, _, _, _, _, _, _)),
+    PrevChord = chord(_, _, _, _, harmonic_function('D', _, _, _, _, _, _, _, IsMajor, _, _)),
+    boolean(IsMajor).
+
+connection_is_not_ds(CurrentChord, PrevChord) :-
+    \+ connection_is_ds(CurrentChord, PrevChord).
+
+
+translated_connection(CurrentChord, PrevChord) :-
+    connection_is_not_ds(CurrentChord, PrevChord).

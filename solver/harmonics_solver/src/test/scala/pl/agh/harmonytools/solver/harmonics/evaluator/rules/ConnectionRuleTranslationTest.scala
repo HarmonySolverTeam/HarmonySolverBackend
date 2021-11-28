@@ -7,6 +7,7 @@ import pl.agh.harmonytools.model.harmonicfunction.FunctionNames.{DOMINANT, SUBDO
 import pl.agh.harmonytools.model.harmonicfunction.HarmonicFunction
 import pl.agh.harmonytools.model.key.Key
 import pl.agh.harmonytools.model.scale.ScaleDegree.I
+import pl.agh.harmonytools.solver.harmonics.evaluator.rules.ConnectionRule.translateConnectionIncludingDeflections
 import pl.agh.harmonytools.utils.TestUtils
 
 class ConnectionRuleTranslationTest extends FunSuite with Matchers with ConnectionRule with TestUtils {

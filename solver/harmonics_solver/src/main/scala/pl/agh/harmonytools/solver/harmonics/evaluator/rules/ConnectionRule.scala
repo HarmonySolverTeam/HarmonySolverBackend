@@ -4,6 +4,7 @@ import pl.agh.harmonytools.algorithm.evaluator.{Connection, IRule}
 import pl.agh.harmonytools.model.chord.Chord
 import pl.agh.harmonytools.model.harmonicfunction.FunctionNames.TONIC
 import pl.agh.harmonytools.model.scale.ScaleDegree.I
+import pl.agh.harmonytools.solver.harmonics.evaluator.rules.ConnectionRule.translateConnectionIncludingDeflections
 
 trait ConnectionRule extends IRule[Chord] {
 
@@ -17,8 +18,10 @@ trait ConnectionRule extends IRule[Chord] {
         satisfied
     }
   }
+}
 
-  protected final def translateConnectionIncludingDeflections(
+object ConnectionRule {
+  def translateConnectionIncludingDeflections(
     connection: Connection[Chord]
   ): Option[Connection[Chord]] = {
     val currentChord              = connection.current

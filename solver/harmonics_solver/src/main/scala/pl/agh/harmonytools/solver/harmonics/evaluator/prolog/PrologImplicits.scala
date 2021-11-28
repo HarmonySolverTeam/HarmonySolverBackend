@@ -85,8 +85,18 @@ object PrologImplicits extends TestUtils with App {
     new Compound(
       "connection",
       Array[Term](
-        chord2Prolog(connection.current),
-        chord2Prolog(connection.prev)
+        connection.current,
+        connection.prev
+      )
+    )
+  }
+
+  implicit def translatedConnection2Prolog(connection: TranslatedConnection): Compound = {
+    new Compound(
+      "translated_connection",
+      Array[Term](
+        connection.content.current,
+        connection.content.prev
       )
     )
   }
