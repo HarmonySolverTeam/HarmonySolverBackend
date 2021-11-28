@@ -94,3 +94,8 @@ valid_delay(Same, Same, _).
 
 valid_delay(Prev1, Current1, D_List) :-
     member(delay(Prev1, Current1), D_List).
+
+equals_in_one_octave(Note1, Note2) :-
+    Note1 = note(Pitch1, BaseNote, CC),
+    Note2 = note(Pitch2, BaseNote, CC),
+    0 is (Pitch1 - Pitch2) mod 12.

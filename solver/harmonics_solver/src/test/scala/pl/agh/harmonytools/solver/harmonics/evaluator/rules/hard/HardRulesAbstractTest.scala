@@ -149,14 +149,14 @@ trait HardRulesAbstractTest extends FunSuite with Matchers with TestUtils {
     isNotBroken(rule, Connection(ch1, ch2)) shouldBe true
   }
 
-  def sameFunctionConnectionTest(f: (SameFunctionConnectionRule, C, C, C) => Unit): Unit = {
-    test("Same Function Connection test") {
-      val ch1  = Chord(Note(72, C, prime), Note(67, G, fifth), Note(64, E, third), Note(48, C, prime), tonic)
-      val ch2  = Chord(Note(72, C, prime), Note(67, G, fifth), Note(64, E, third), Note(60, C, prime), tonic)
-      val ch3  = Chord(Note(79, G, fifth), Note(67, G, fifth), Note(64, E, third), Note(48, C, prime), tonic)
-      val rule = SameFunctionConnectionRule()
-      f(rule, ch1, ch2, ch3)
-    }
+  test("Same Function Connection test") {
+    val ch1  = Chord(Note(72, C, prime), Note(67, G, fifth), Note(64, E, third), Note(48, C, prime), tonic)
+    val ch2  = Chord(Note(72, C, prime), Note(67, G, fifth), Note(64, E, third), Note(60, C, prime), tonic)
+    val ch3  = Chord(Note(79, G, fifth), Note(67, G, fifth), Note(64, E, third), Note(48, C, prime), tonic)
+    val rule = SameFunctionConnectionRule()
+    isBroken(rule, Connection(ch1, ch1)) shouldBe true
+    isBroken(rule, Connection(ch2, ch1)) shouldBe true
+    isNotBroken(rule, Connection(ch3, ch1)) shouldBe true
   }
 
   def isBroken(rule: PrologChordRule, connection: Connection[Chord]): Boolean

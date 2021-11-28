@@ -106,6 +106,15 @@ connection_is_ds(CurrentChord, PrevChord) :-
 connection_is_not_ds(CurrentChord, PrevChord) :-
     \+ connection_is_ds(CurrentChord, PrevChord).
 
+connection_is_same(CurrentChord, PrevChord) :-
+    CurrentChord = chord(BassNote1, TenorNote, AltoNote, SopranoNote, harmonic_function(BF, Degree, _, _, _, _, _, Down, _, Key, _)),
+    PrevChord = chord(BassNote2, TenorNote, AltoNote, SopranoNote, harmonic_function(BF, Degree, _, _, _, _, _, Down, _, Key, _)),
+    equals_in_one_octave(BassNote1, BassNote2).
+
+
+connection_is_not_same(CurrentChord, PrevChord) :-
+    \+ connection_is_same(CurrentChord, PrevChord).
 
 translated_connection(CurrentChord, PrevChord) :-
-    connection_is_not_ds(CurrentChord, PrevChord).
+    connection_is_not_ds(CurrentChord, PrevChord),
+    connection_is_not_same(CurrentChord, PrevChord).
