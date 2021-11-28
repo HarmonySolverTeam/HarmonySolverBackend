@@ -9,7 +9,7 @@ import pl.agh.harmonytools.model.harmonicfunction.{Delay, HarmonicFunction}
 import pl.agh.harmonytools.model.key.Key
 import pl.agh.harmonytools.model.note.BaseNote._
 import pl.agh.harmonytools.model.note.Note
-import pl.agh.harmonytools.solver.harmonics.evaluator.prolog.PrologChordAnyRule
+import pl.agh.harmonytools.solver.harmonics.evaluator.prolog.{PrologChordAnyRule, PrologChordRule}
 import pl.agh.harmonytools.utils.TestUtils
 
 trait HardRulesAbstractTest extends FunSuite with Matchers with TestUtils {
@@ -87,12 +87,12 @@ trait HardRulesAbstractTest extends FunSuite with Matchers with TestUtils {
     val rule = ForbiddenJumpRule()
 
     isBroken(rule, Connection(ch2, ch1)) shouldBe true
-//    isBroken(rule, Connection(ch1up, ch1)) shouldBe true
-//    isBroken(rule, Connection(ch2up, ch1)) shouldBe true
-//    isBroken(rule, Connection(ch3up, ch1)) shouldBe true
-//    isBroken(rule, Connection(ch4up, ch1)) shouldBe true
-//    isBroken(rule, Connection(ch5up, ch1)) shouldBe true
-//    isBroken(rule, Connection(ch6up, ch1)) shouldBe true
+    isBroken(rule, Connection(ch1up, ch1)) shouldBe true
+    isBroken(rule, Connection(ch2up, ch1)) shouldBe true
+    isBroken(rule, Connection(ch3up, ch1)) shouldBe true
+    isBroken(rule, Connection(ch4up, ch1)) shouldBe true
+    isBroken(rule, Connection(ch5up, ch1)) shouldBe true
+    isBroken(rule, Connection(ch6up, ch1)) shouldBe true
     isBroken(rule, Connection(ch1down, ch1)) shouldBe true
     isBroken(rule, Connection(ch2down, ch1)) shouldBe true
     isBroken(rule, Connection(ch3down, ch1)) shouldBe true
@@ -101,22 +101,22 @@ trait HardRulesAbstractTest extends FunSuite with Matchers with TestUtils {
     isBroken(rule, Connection(ch6down, ch1)) shouldBe true
   }
 
-  def delayCorrectnessRule(f: (DelayCorrectnessRule, C, C, C, C) => Unit): Unit = {
-    test("Delay Correctness test") {
-      val hf1 = HarmonicFunction(
-        DOMINANT,
-        delay = Set(Delay(sixth, fifth), Delay(fourth, third)),
-        extra = Set(sixth, fourth),
-        omit = Set(fifth, third)
-      )
-      val ch1  = Chord(Note(67, G, prime), Note(64, E, sixth), Note(60, C, fourth), Note(55, G, prime), hf1)
-      val ch2  = Chord(Note(67, G, prime), Note(62, D, fifth), Note(59, B, third), Note(43, G, prime), dominant)
-      val ch3  = Chord(Note(65, F, seventh), Note(62, D, fifth), Note(59, B, third), Note(43, G, prime), dominant)
-      val ch4  = Chord(Note(69, G, third), Note(62, D, fifth), Note(55, B, prime), Note(43, G, prime), dominant)
-      val rule = DelayCorrectnessRule()
+  test("Delay Correctness test") {
+    val hf1 = HarmonicFunction(
+      DOMINANT,
+      delay = Set(Delay(sixth, fifth), Delay(fourth, third)),
+      extra = Set(sixth, fourth),
+      omit = Set(fifth, third)
+    )
+    val ch1  = Chord(Note(67, G, prime), Note(64, E, sixth), Note(60, C, fourth), Note(55, G, prime), hf1)
+    val ch2  = Chord(Note(67, G, prime), Note(62, D, fifth), Note(59, B, third), Note(43, G, prime), dominant)
+    val ch3  = Chord(Note(65, F, seventh), Note(62, D, fifth), Note(59, B, third), Note(43, G, prime), dominant)
+    val ch4  = Chord(Note(69, G, third), Note(62, D, fifth), Note(55, B, prime), Note(43, G, prime), dominant)
+    val rule = DelayCorrectnessRule()
 
-      f(rule, ch1, ch2, ch3, ch4)
-    }
+    isNotBroken(rule, Connection(ch2, ch1)) shouldBe true
+    isBroken(rule, Connection(ch3, ch1)) shouldBe true
+    isBroken(rule, Connection(ch4, ch1)) shouldBe true
   }
 
   test("Hidden Octaves test") {
@@ -161,7 +161,7 @@ trait HardRulesAbstractTest extends FunSuite with Matchers with TestUtils {
     }
   }
 
-  def isBroken(rule: PrologChordAnyRule, connection: Connection[Chord]): Boolean
+  def isBroken(rule: PrologChordRule, connection: Connection[Chord]): Boolean
 
-  def isNotBroken(rule: PrologChordAnyRule, connection: Connection[Chord]): Boolean = !isBroken(rule, connection)
+  def isNotBroken(rule: PrologChordRule, connection: Connection[Chord]): Boolean = !isBroken(rule, connection)
 }
