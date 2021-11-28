@@ -18,7 +18,7 @@ import pl.agh.harmonytools.solver.harmonics.evaluator.rules.ChordRules
 import pl.agh.harmonytools.solver.harmonics.evaluator.{AdaptiveRulesChecker, ChordRulesChecker}
 import pl.agh.harmonytools.solver.harmonics.generator.{ChordGenerator, ChordGeneratorInput}
 import pl.agh.harmonytools.solver.harmonics.utils.{ExerciseCorrector, PreChecker}
-import pl.agh.harmonytools.solver.{ExerciseSolution, HarmonicsSolution, Solver, SolverError}
+import pl.agh.harmonytools.solver.{ExerciseSolution, GraphSolver, HarmonicsSolution, Solver, SolverError}
 
 case class HarmonicsSolver(
   exercise: HarmonicsExercise,
@@ -26,7 +26,7 @@ case class HarmonicsSolver(
   precheckDisabled: Boolean = false,
   punishmentRatios: Option[Map[ChordRules.Rule, Double]] = None,
   override val shortestPathCompanion: ShortestPathAlgorithmCompanion = TopologicalSortAlgorithm
-) extends Solver[HarmonicFunction] {
+) extends GraphSolver[HarmonicFunction] {
 
   if (exercise.measures.isEmpty)
     throw new SolverError("Measures could not be empty")

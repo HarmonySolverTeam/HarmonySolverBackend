@@ -7,7 +7,8 @@ import pl.agh.harmonytools.model.harmonicfunction.HarmonicFunction
 import pl.agh.harmonytools.model.measure.MeasurePlace
 import pl.agh.harmonytools.model.measure.MeasurePlace.MeasurePlace
 import pl.agh.harmonytools.model.note.BaseNote.C
-import pl.agh.harmonytools.model.note.{Note, NoteWithoutChordContext}
+import pl.agh.harmonytools.model.note.NoteWithoutChordContext
+import pl.agh.harmonytools.solver.harmonics.generator.ChordGeneratorInput
 
 case class HarmonicFunctionWithSopranoInfo(
   harmonicFunction: HarmonicFunction,
@@ -20,6 +21,15 @@ case class HarmonicFunctionWithSopranoInfo(
       case chord: Chord                             => chord.harmonicFunction.hasSameFunctionInKey(harmonicFunction)
       case _                                        => false
     }
+  }
+
+  def toChordGeneratorInput(allowDoubleThird: Boolean = false): ChordGeneratorInput = {
+    ChordGeneratorInput(
+      harmonicFunction,
+      allowDoubleThird,
+      Some(sopranoNote),
+      None
+    )
   }
 }
 
