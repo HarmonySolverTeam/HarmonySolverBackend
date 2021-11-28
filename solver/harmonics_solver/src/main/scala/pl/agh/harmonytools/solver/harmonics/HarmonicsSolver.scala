@@ -10,6 +10,7 @@ import pl.agh.harmonytools.exercise.harmonics.helpers.DelayHandler
 import pl.agh.harmonytools.model.chord.Chord
 import pl.agh.harmonytools.model.harmonicfunction.HarmonicFunction
 import pl.agh.harmonytools.model.note.{Note, NoteWithoutChordContext}
+import pl.agh.harmonytools.solver.harmonics.evaluator.prolog.PrologChordRulesChecker
 import pl.agh.harmonytools.solver.harmonics.evaluator.rules.ChordRules
 import pl.agh.harmonytools.solver.harmonics.evaluator.{AdaptiveRulesChecker, ChordRulesChecker}
 import pl.agh.harmonytools.solver.harmonics.generator.{ChordGenerator, ChordGeneratorInput}
@@ -21,6 +22,7 @@ case class HarmonicsSolver(
   correctDisabled: Boolean = false,
   precheckDisabled: Boolean = false,
   punishmentRatios: Option[Map[ChordRules.Rule, Double]] = None,
+  evaluateWithProlog: Boolean = false,
   override val shortestPathCompanion: ShortestPathAlgorithmCompanion = TopologicalSortAlgorithm
 ) extends Solver[HarmonicFunction] {
 
@@ -93,7 +95,8 @@ case class HarmonicsSolver(
     graphBuilder.withEvaluator(
       punishmentRatios match {
         case Some(value) => AdaptiveRulesChecker(value)
-        case None        => ChordRulesChecker(isFixedBass = bassLine.isDefined, isFixedSoprano = sopranoLine.isDefined)
+        case _ if evaluateWithProlog => PrologChordRulesChecker(isFixedBass = bassLine.isDefined, isFixedSoprano = sopranoLine.isDefined)
+        case _ => ChordRulesChecker(isFixedBass = bassLine.isDefined, isFixedSoprano = sopranoLine.isDefined)
       }
     )
     graphBuilder.withGeneratorInput(getGeneratorInput)

@@ -39,17 +39,11 @@ connection_not_one_direction(CurrentChord, PrevChord) :-
     \+ all_voices_go_down(CurrentChord, PrevChord).
 
 connection_not_contain_false_relation(CurrentChord, PrevChord) :-
-    CurrentChord = chord(BassNote1, TenorNote1, AltoNote1, SopranoNote1, _),
-    PrevChord = chord(BassNote2, TenorNote2, AltoNote2, SopranoNote2, _),
-    \+ chromatic_alteration(BassNote1, TenorNote2),
-    \+ chromatic_alteration(BassNote1, AltoNote2),
-    \+ chromatic_alteration(BassNote1, SopranoNote2),
+    CurrentChord = chord(_, TenorNote1, AltoNote1, SopranoNote1, _),
+    PrevChord = chord(_, TenorNote2, AltoNote2, SopranoNote2, _),
     \+ chromatic_alteration(TenorNote1, AltoNote2),
     \+ chromatic_alteration(TenorNote1, SopranoNote2),
     \+ chromatic_alteration(AltoNote1, SopranoNote2),
-    \+ chromatic_alteration(BassNote2, TenorNote1),
-    \+ chromatic_alteration(BassNote2, AltoNote1),
-    \+ chromatic_alteration(BassNote2, SopranoNote1),
     \+ chromatic_alteration(TenorNote2, AltoNote1),
     \+ chromatic_alteration(TenorNote2, SopranoNote1),
     \+ chromatic_alteration(AltoNote2, SopranoNote1).
@@ -86,7 +80,6 @@ connection_not_contain_incorrect_delay(CurrentChord, PrevChord) :-
     valid_delay(PrevT, CurrentT, D_List),
     valid_delay(PrevA, CurrentA, D_List),
     valid_delay(PrevS, CurrentS, D_List).
-
 
 connection(CurrentChord, PrevChord) :-
     connection_not_contain_parallel_fifths(CurrentChord, PrevChord),

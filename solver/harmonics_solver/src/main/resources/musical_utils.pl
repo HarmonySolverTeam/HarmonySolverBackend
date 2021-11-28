@@ -4,8 +4,8 @@ dist_leq_than(Note1, Note2, X) :-
     abs(Pitch1 - Pitch2) =< X.
 
 has_same_function(Chord1, Chord2) :-
-    Chord1 = chord(_, _, _, _, HF),
-    Chord2 = chord(_, _, _, _, HF).
+    Chord1 = chord(_, _, _, _, harmonic_function(BF, Degree, _, _, _, _, _, Down, _, Key, _)),
+    Chord2 = chord(_, _, _, _, harmonic_function(BF, Degree, _, _, _, _, _, Down, _, Key, _)).
 
 is_fifth(Up_Note, Down_Note) :-
     Up_Note = note(_, BaseNote1, _),
@@ -91,6 +91,8 @@ is_altered_interval(Note1, Note2) :-
     member([HalfToneDistance, BaseDistance], [[3, 1], [5, 2], [6, 3], [8, 4], [10, 5], [12, 6]]).
 
 valid_delay(Same, Same, _).
+
+valid_delay(_, _, []).
 
 valid_delay(Prev1, Current1, D_List) :-
     member(delay(Prev1, Current1), D_List).
