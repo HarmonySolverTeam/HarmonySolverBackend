@@ -1,10 +1,10 @@
 package pl.agh.harmonytools.soprano.genetic
 
+import io.jenetics.util.RandomRegistry
 import pl.agh.harmonytools.integrations.jenetics.Gene
+import pl.agh.harmonytools.model.chord.Chord
 import pl.agh.harmonytools.model.measure.MeasurePlace.MeasurePlace
 import pl.agh.harmonytools.solver.soprano.generator.HarmonicFunctionGeneratorInput
-
-import scala.util.Random
 
 case class SopranoHarmonizationGene(
   chord: GeneticChord,
@@ -14,11 +14,18 @@ case class SopranoHarmonizationGene(
   generator: SopranoChordGenerator,
   id: Int
 ) extends Gene[GeneticChord, SopranoHarmonizationGene](chord) {
-  override def newInstance(): SopranoHarmonizationGene = {
-    val input = HarmonicFunctionGeneratorInput(chord.content.sopranoNote.withoutChordContext, measurePlace, isFirst, isLast)
-    val possibleChords = generator.generate(input)
-    copy(chord = GeneticChord(possibleChords(Random.nextInt(possibleChords.size)), id))
+  override def newInstance(): SopranoHarmonizationGene =
+    newInstance(generateSubstitutions, RandomRegistry.getRandom)
+
+  override def newInstance(newChord: GeneticChord): SopranoHarmonizationGene = copy(chord = newChord)
+
+  def toGeneratorInput: HarmonicFunctionGeneratorInput =
+    HarmonicFunctionGeneratorInput(chord.content.sopranoNote.withoutChordContext, measurePlace, isFirst, isLast)
+
+  def newInstance(chords: List[Chord], random: java.util.Random): SopranoHarmonizationGene = {
+    val chord = chords(random.nextInt(chords.length))
+    newInstance(GeneticChord(chord, id))
   }
 
-  override def newInstance(value: GeneticChord): SopranoHarmonizationGene = copy(chord = chord)
+  def generateSubstitutions: List[Chord] = generator.generate(toGeneratorInput)
 }

@@ -1,6 +1,7 @@
 package pl.agh.harmonytools.soprano.genetic
 
 import io.jenetics
+import io.jenetics.util.RandomRegistry
 import pl.agh.harmonytools.error.HarmonySolverError
 import pl.agh.harmonytools.integrations.jenetics.Chromosome
 import pl.agh.harmonytools.model.measure.MeasurePlace
@@ -46,7 +47,7 @@ case class SopranoHarmonizationChromosome(solution: SopranoGeneticSolution, gene
         throw new HarmonySolverError("Provided note which cannot be harmonized with given set of harmonic functions") {
           override val source: String = "Soprano Solver"
         }
-      chords(Random.nextInt(chords.size))
+      chords(RandomRegistry.getRandom.nextInt(chords.size))
     }
     SopranoHarmonizationChromosome(
       SopranoGeneticSolution(

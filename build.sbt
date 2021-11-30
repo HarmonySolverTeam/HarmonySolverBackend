@@ -182,7 +182,7 @@ lazy val soprano_solver_genetic = project
   .settings(
     name := "soprano_solver_genetic",
     settings,
-    libraryDependencies ++= testDependencies
+    libraryDependencies ++= testDependencies ++ Seq("com.github.wookietreiber" %% "scala-chart" % "latest.integration")
   )
   .dependsOn(
     soprano_solver,

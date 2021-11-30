@@ -1,5 +1,6 @@
 package pl.agh.harmonytools.soprano.genetic
 
+import io.jenetics.util.RandomRegistry
 import pl.agh.harmonytools.error.HarmonySolverError
 import pl.agh.harmonytools.exercise.soprano.SopranoExercise
 import pl.agh.harmonytools.integrations.jenetics.{GeneticProblem, JGenotype}
@@ -35,7 +36,7 @@ case class SopranoHarmonizationProblem(exercise: SopranoExercise)
           zipped._1.content.sopranoNote.withoutChordContext
         )
       }
-    val harmonicFunctionEvaluationValue = harmonicFunctionEvaluator.evaluate(inputs)
+    val harmonicFunctionEvaluationValue = 0.0 // harmonicFunctionEvaluator.evaluate(inputs)
     new FitnessResult(chordEvaluationValue + harmonicFunctionEvaluationValue)
   }
 
@@ -45,7 +46,7 @@ case class SopranoHarmonizationProblem(exercise: SopranoExercise)
         throw new HarmonySolverError("Provided note which cannot be harmonized with given set of harmonic functions") {
           override val source: String = "Soprano Solver"
         }
-      chords(Random.nextInt(chords.size))
+      chords(RandomRegistry.getRandom.nextInt(chords.size))
     }
     Seq(
       SopranoHarmonizationChromosome(

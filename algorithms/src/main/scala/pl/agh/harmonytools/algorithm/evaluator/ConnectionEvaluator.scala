@@ -8,7 +8,7 @@ trait ConnectionEvaluator[T <: NodeContent] {
   protected val hardRules: List[HardRule[T]]
   private lazy val brokenRulesCounter: BrokenRulesCounter[T] = BrokenRulesCounter(hardRules)
 
-  private val maxPenalty = Integer.MAX_VALUE
+  private val maxPenalty = 1000
 
   def initializeBrokenRulesCounter(): Unit = brokenRulesCounter.initialize()
 
@@ -45,7 +45,8 @@ trait ConnectionEvaluator[T <: NodeContent] {
       case current :: Nil => 0.0
       case prev :: current :: tail =>
         val connection = Connection(current, prev)
-        if (evaluateHardRules(connection)) maxPenalty else evaluateSoftRules(connection) + evaluate2(tail)
+        val penalty = if (evaluateHardRules(connection)) 0 else maxPenalty
+        penalty + evaluateSoftRules(connection) + evaluate2(current :: tail)
     }
   }
 
@@ -56,7 +57,8 @@ trait ConnectionEvaluator[T <: NodeContent] {
       case prev :: current :: Nil => 0.0
       case prevPrev :: prev :: current :: tail =>
         val connection = Connection(current, prev, prevPrev)
-        if (evaluateHardRules(connection)) maxPenalty else evaluateSoftRules(connection) + evaluate3(tail)
+        val penalty = if (evaluateHardRules(connection)) 0 else maxPenalty
+        penalty + evaluateSoftRules(connection) + evaluate3(prev :: current :: tail)
     }
   }
 }
