@@ -3,6 +3,11 @@ dist_leq_than(Note1, Note2, X) :-
     Note2 = note(Pitch2, _, _),
     abs(Pitch1 - Pitch2) =< X.
 
+dist_geq_than(Note1, Note2, X) :-
+    Note1 = note(Pitch1, _, _),
+    Note2 = note(Pitch2, _, _),
+    abs(Pitch1 - Pitch2) >= X.
+
 has_same_function(Chord1, Chord2) :-
     Chord1 = chord(_, _, _, _, harmonic_function(BF, Degree, _, _, _, _, _, Down, _, Key, _)),
     Chord2 = chord(_, _, _, _, harmonic_function(BF, Degree, _, _, _, _, _, Down, _, Key, _)).
