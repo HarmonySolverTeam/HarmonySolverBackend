@@ -43,8 +43,38 @@ connection_not_contain_double_prime_or_fifth(CurrentChord, _, _, PunishmentValue
 connection_not_contain_double_prime_or_fifth(_, _, _, PunishmentValue) :-
     PunishmentValue is 0.
 
+could_be_closer(CurrentChord, Offset, _, PrevBassPitch, PunishmentValue) :-
+    CurrentChord = chord(note(Pitch,_,_),_,_,_,_),
+    abs(mod(Pitch - PrevBassPitch, 12)) < Offset,
+    PunishmentValue is 50.
+
+could_be_closer(CurrentChord, Offset, _, PrevBassPitch, PunishmentValue) :-
+    CurrentChord = chord(_,note(Pitch,_,_),_,_,_),
+    abs(mod(Pitch - PrevBassPitch, 12)) < Offset,
+    PunishmentValue is 50.
+
+could_be_closer(CurrentChord, Offset, _, PrevBassPitch, PunishmentValue) :-
+    CurrentChord = chord(_,_,note(Pitch,_,_),_,_),
+    abs(mod(Pitch - PrevBassPitch, 12)) < Offset,
+    PunishmentValue is 50.
+
+could_be_closer(CurrentChord, Offset, Inversion, PrevBassPitch, PunishmentValue) :-
+    CurrentChord = chord(_,_,note(Pitch,_,Inversion),_,_),
+    PunishmentValue is 0.
+
+connection_closest_move_in_bass(CurrentChord, PrevChord, PunishmentValue) :-
+    CurrentChord = chord(_,_,_,note(CurrentPitch,_,_),HarmonicFunction),
+    HarmonicFunction = harmonic_function(_, _, _, Inversion, _, _, _, _, _, _, _),
+    PrevChord = chord(_,_,_,note(PrevPitch,_,_),_),
+    Offset is abs(CurrentPitch-PrevPitch),
+    could_be_closer(CurrentChord, Offset, Inversion, PrevPitch, PunishmentValue).
+
+connection_closest_move_in_bass(_, _, PunishmentValue) :-
+    PunishmentValue is 0.
+
 soft_rules(CurrentChord, PrevChord, PrevPrevChord, PunishmentValue) :-
     soprano_jump_to_large(CurrentChord, PrevChord, PrevPrevChord, P1),
     connection_not_contain_double_prime_or_fifth(CurrentChord, PrevChord, PrevPrevChord, P2),
-    PunishmentValue is P1 + P2.
-P1 + P2.
+    connection_closest_move_in_bass(CurrentChord, PrevChord, P3)
+    PunishmentValue is P1 + P2 + P3.
+P1 + P2 + P3.
