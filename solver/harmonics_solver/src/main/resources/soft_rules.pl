@@ -72,9 +72,19 @@ connection_closest_move_in_bass(CurrentChord, PrevChord, PunishmentValue) :-
 connection_closest_move_in_bass(_, _, PunishmentValue) :-
     PunishmentValue is 0.
 
+connection_s_d(CurrentChord, PrevChord, PunishmentValue) :-
+    CurrentChord = chord(_,_,_,note(_, _, chord_component('1',_)),harmonic_function('D', DegreeCurrent, _, _, _, _, _, _, _, _, _)),
+    PrevChord = chord(_,_,_,note(_, _, chord_component('1',_),_),harmonic_function('S', DegreeCurrent - 1, _, _, _, _, _, _, _, _, _)),
+    \+ all_voices_go_down(CurrentChord, PrevChord),
+    PunishmentValue is 40.
+
+connection_s_d(_, _, PunishmentValue) :-
+    PunishmentValue is 0.
+
+
 soft_rules(CurrentChord, PrevChord, PrevPrevChord, PunishmentValue) :-
     soprano_jump_to_large(CurrentChord, PrevChord, PrevPrevChord, P1),
     connection_not_contain_double_prime_or_fifth(CurrentChord, PrevChord, PrevPrevChord, P2),
-    connection_closest_move_in_bass(CurrentChord, PrevChord, P3)
-    PunishmentValue is P1 + P2 + P3.
-P1 + P2 + P3.
+    connection_closest_move_in_bass(CurrentChord, PrevChord, P3),
+    connection_s_d(CurrentChord, PrevChord, P4),
+    PunishmentValue is P1 + P2 + P3 + P4.
