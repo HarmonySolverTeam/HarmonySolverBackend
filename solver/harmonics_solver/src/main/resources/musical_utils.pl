@@ -106,3 +106,21 @@ equals_in_one_octave(Note1, Note2) :-
     Note1 = note(Pitch1, BaseNote, CC),
     Note2 = note(Pitch2, BaseNote, CC),
     0 is (Pitch1 - Pitch2) mod 12.
+
+count_occurrences_in_list(_, [], Count) :-
+    Count is 0.
+
+count_occurrences_in_list(Element, [Element|Tail], Count) :-
+    count_occurrences_in_list(Element, Tail, Count2),
+    Count is Count2 + 1.
+
+count_occurrences_in_list(Element, [_|Tail], Count) :-
+    count_occurrences_in_list(Element, Tail, Count).
+
+count_base_components(CurrentChord, BaseComponent, Count) :-
+    CurrentChord = chord(SopranoNote, AltoNote, TenorNote, BassNote, _),
+    SopranoNote = note(_, _, chord_component(_, SopranoBC)),
+    AltoNote = note(_, _, chord_component(_, AltoBC)),
+    TenorNote = note(_, _, chord_component(_, TenorBC)),
+    BassNote = note(_, _, chord_component(_, BassBC)),
+    count_occurrences_in_list(BaseComponent, [SopranoBC, AltoBC, TenorBC, BassBC], Count).

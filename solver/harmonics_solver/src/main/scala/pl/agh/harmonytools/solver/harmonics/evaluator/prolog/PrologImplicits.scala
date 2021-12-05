@@ -16,7 +16,10 @@ object PrologImplicits extends TestUtils with App {
   implicit def string2Prolog(s: String): Term = new Atom(s)
 
   implicit def chordComponent2Prolog(cc: ChordComponent): Term =
-    cc.chordComponentString
+    new Compound(
+      "chord_component",
+      Array[Term](cc.chordComponentString, cc.baseComponent)
+    )
 
   implicit def note2Prolog(note: Note): Term =
     new Compound(
