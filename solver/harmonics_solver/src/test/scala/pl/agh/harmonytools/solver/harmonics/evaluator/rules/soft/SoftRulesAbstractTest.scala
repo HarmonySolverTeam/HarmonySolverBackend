@@ -18,20 +18,22 @@ trait SoftRulesAbstractTest extends FunSuite with Matchers with TestUtils {
 
   type C = Chord
 
-//    test("Forbidden Sum Jump test") {
-//      //Incorrect chord definitions only for this test case - only pitch and baseNote is important of soprano
-//      val ch1 = Chord(Note(72, C, prime), Note(60, C, prime), Note(60, C, prime), Note(48, C, prime), tonic)
-//      val ch2up = Chord(Note(75, E, prime), Note(60, C, prime), Note(60, C, prime), Note(48, C, prime), subdominant)
-//      val ch3up = Chord(Note(78, F, prime), Note(60, C, prime), Note(60, C, prime), Note(48, C, prime), subdominant)
-//      val ch2down = Chord(Note(69, A, prime), Note(60, C, prime), Note(60, C, prime), Note(48, C, prime), subdominant)
-//      val ch3down = Chord(Note(66, G, prime), Note(60, C, prime), Note(60, C, prime), Note(48, C, prime), subdominant)
-//      val ch2downSameFun = Chord(Note(69, A, prime), Note(60, C, prime), Note(60, C, prime), Note(48, C, prime), tonic)
-//      val ch3downSameFun = Chord(Note(66, F, prime), Note(60, C, prime), Note(60, C, prime), Note(48, C, prime), tonic)
-//      val rule = ForbiddenSumJumpRule()
-//      isBroken(rule, Connection(ch3up, ch2up, Some(ch1))) shouldBe true
-//      isBroken(rule, Connection(ch3down, ch2down, Some(ch1))) shouldBe true
-//      isNotBroken(rule, Connection(ch3downSameFun, ch2downSameFun, Some(ch1))) shouldBe true
-//    }
+    test("Forbidden Sum Jump test") {
+      //Incorrect chord definitions only for this test case - only pitch and baseNote is important of soprano
+      val ch1 = Chord(Note(72, C, prime), Note(60, C, prime), Note(60, C, prime), Note(48, C, prime), tonic)
+      val ch2up = Chord(Note(75, E, prime), Note(60, C, prime), Note(60, C, prime), Note(48, C, prime), subdominant)
+      val ch3up = Chord(Note(78, F, prime), Note(60, C, prime), Note(60, C, prime), Note(48, C, prime), subdominant)
+      val ch2down = Chord(Note(69, A, prime), Note(60, C, prime), Note(60, C, prime), Note(48, C, prime), subdominant)
+      val ch3down = Chord(Note(66, G, prime), Note(60, C, prime), Note(60, C, prime), Note(48, C, prime), subdominant)
+      val ch2downSameFun = Chord(Note(69, A, prime), Note(60, C, prime), Note(60, C, prime), Note(48, C, prime), tonic)
+      val ch3downSameFun = Chord(Note(66, F, prime), Note(60, C, prime), Note(60, C, prime), Note(48, C, prime), tonic)
+      val rule = ForbiddenSumJumpRule()
+      isBroken(rule, Connection(ch3up, ch2up, Some(ch1))) shouldBe true
+      evaluationResult(rule, Connection(ch3up, ch2up, Some(ch1))) shouldBe 10
+      isBroken(rule, Connection(ch3down, ch2down, Some(ch1))) shouldBe true
+      evaluationResult(rule, Connection(ch3down, ch2down, Some(ch1))) shouldBe 10
+      isNotBroken(rule, Connection(ch3downSameFun, ch2downSameFun, Some(ch1))) shouldBe true
+    }
 //
 //    test("Closest Move In Bass test") {
 //      val d3 = HarmonicFunction(DOMINANT, inversion = Some(third))
