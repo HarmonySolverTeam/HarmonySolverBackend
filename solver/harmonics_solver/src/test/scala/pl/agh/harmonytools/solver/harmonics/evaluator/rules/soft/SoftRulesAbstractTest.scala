@@ -32,7 +32,7 @@ trait SoftRulesAbstractTest extends FunSuite with Matchers with TestUtils {
 //      isBroken(rule, Connection(ch3down, ch2down, Some(ch1))) shouldBe true
 //      isNotBroken(rule, Connection(ch3downSameFun, ch2downSameFun, Some(ch1))) shouldBe true
 //    }
-//
+
     test("Closest Move In Bass test") {
       val d3 = HarmonicFunction(DOMINANT, inversion = Some(third))
       val chd3 = Chord(Note(74, D, fifth), Note(67, G, prime), Note(62, D, fifth), Note(59, B, third), d3)
@@ -42,7 +42,7 @@ trait SoftRulesAbstractTest extends FunSuite with Matchers with TestUtils {
       isNotBroken(rule, Connection(cht, chd3))
       isBroken(rule, Connection(cht, chd))
     }
-//
+
     test("S -> D test") {
       val ch1 = Chord(Note(72, C, fifth), Note(69, A, third), Note(60, C, fifth), Note(53, F, prime), subdominant)
       val ch2 = Chord(Note(74, D, fifth), Note(62, D, fifth), Note(59, B, third), Note(55, G, prime), dominant)
