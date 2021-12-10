@@ -2,9 +2,10 @@ package pl.agh.harmonytools.solver.harmonics.evaluator.rules.soft
 
 import pl.agh.harmonytools.algorithm.evaluator.{Connection, SoftRule}
 import pl.agh.harmonytools.model.chord.Chord
+import pl.agh.harmonytools.solver.harmonics.evaluator.prolog.PrologChordConnectionSoftRule
 import pl.agh.harmonytools.solver.harmonics.evaluator.rules.{ConnectionRule, satisfied, specificConnectionRuleSD}
 
-case class SubdominantDominantConnectionRule() extends ConnectionRule with SoftRule[Chord] {
+case class SubdominantDominantConnectionRule() extends PrologChordConnectionSoftRule {
 
   def brokenVoicesMoveOppositeDirectionRule(currentChord: Chord, prevChord: Chord): Boolean = {
     if (currentChord.bassNote.chordComponentEquals("1") && prevChord.bassNote.chordComponentEquals("1")) {
@@ -32,4 +33,6 @@ case class SubdominantDominantConnectionRule() extends ConnectionRule with SoftR
   }
 
   override def caption: String = "Subdominant Dominant Connection"
+
+  override protected val prologPredicateName: String = "connection_s_d"
 }

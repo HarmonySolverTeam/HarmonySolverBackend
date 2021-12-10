@@ -13,6 +13,11 @@ to_array(list(P1, P2), X) :- array(P1, P2, X).
 to_array(list(P1, P2, P3), X) :- array(P1, P2, P3, X).
 boolean(X) :- X == 1.
 
+is_between(A, B, X1) :-
+    Sum = abs(A-X1) + abs(X1-B),
+    Diff = abs(A-B),
+    Sum = Diff.
+
 count_different_([], _, C):-
     C is 0.
 

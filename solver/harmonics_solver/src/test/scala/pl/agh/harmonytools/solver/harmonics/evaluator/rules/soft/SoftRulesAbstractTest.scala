@@ -3,11 +3,11 @@ package pl.agh.harmonytools.solver.harmonics.evaluator.rules.soft
 import org.scalatest.{FunSuite, Matchers}
 import pl.agh.harmonytools.algorithm.evaluator.Connection
 import pl.agh.harmonytools.model.chord.Chord
-import pl.agh.harmonytools.model.harmonicfunction.FunctionNames.TONIC
+import pl.agh.harmonytools.model.harmonicfunction.FunctionNames.{DOMINANT, TONIC}
 import pl.agh.harmonytools.model.harmonicfunction.HarmonicFunction
 import pl.agh.harmonytools.model.note.BaseNote._
 import pl.agh.harmonytools.model.note.Note
-import pl.agh.harmonytools.solver.harmonics.evaluator.prolog.PrologChordAnyRule
+import pl.agh.harmonytools.solver.harmonics.evaluator.prolog.{PrologChordAnyRule, PrologChordRule}
 import pl.agh.harmonytools.utils.TestUtils
 
 trait SoftRulesAbstractTest extends FunSuite with Matchers with TestUtils {
@@ -34,23 +34,23 @@ trait SoftRulesAbstractTest extends FunSuite with Matchers with TestUtils {
       evaluationResult(rule, Connection(ch3down, ch2down, Some(ch1))) shouldBe 10
       isNotBroken(rule, Connection(ch3downSameFun, ch2downSameFun, Some(ch1))) shouldBe true
     }
-//
-//    test("Closest Move In Bass test") {
-//      val d3 = HarmonicFunction(DOMINANT, inversion = Some(third))
-//      val chd3 = Chord(Note(74, D, fifth), Note(67, G, prime), Note(62, D, fifth), Note(59, B, third), d3)
-//      val chd = Chord(Note(74, D, fifth), Note(67, G, prime), Note(62, D, fifth), Note(55, G, prime), dominant)
-//      val cht = Chord(Note(72, C, prime), Note(67, G, fifth), Note(64, E, third), Note(60, C, prime), tonic)
-//      val rule = ClosestMoveInBassRule(true)
-//      isNotBroken(rule, Connection(cht, chd3))
-//      isBroken(rule, Connection(cht, chd))
-//    }
-//
-//    test("S -> D test") {
-//      val ch1 = Chord(Note(72, C, fifth), Note(69, A, third), Note(60, C, fifth), Note(53, F, prime), subdominant)
-//      val ch2 = Chord(Note(74, D, fifth), Note(62, D, fifth), Note(59, B, third), Note(55, G, prime), dominant)
-//      val rule = SubdominantDominantConnectionRule()
-//      isBroken(rule, Connection(ch2, ch1))
-//    }
+
+    test("Closest Move In Bass test") {
+      val d3 = HarmonicFunction(DOMINANT, inversion = Some(third))
+      val chd3 = Chord(Note(74, D, fifth), Note(67, G, prime), Note(62, D, fifth), Note(59, B, third), d3)
+      val chd = Chord(Note(74, D, fifth), Note(67, G, prime), Note(62, D, fifth), Note(55, G, prime), dominant)
+      val cht = Chord(Note(72, C, prime), Note(67, G, fifth), Note(64, E, third), Note(60, C, prime), tonic)
+      val rule = ClosestMoveInBassRule(true)
+      isNotBroken(rule, Connection(cht, chd3))
+      isBroken(rule, Connection(cht, chd))
+    }
+
+    test("S -> D test") {
+      val ch1 = Chord(Note(72, C, fifth), Note(69, A, third), Note(60, C, fifth), Note(53, F, prime), subdominant)
+      val ch2 = Chord(Note(74, D, fifth), Note(62, D, fifth), Note(59, B, third), Note(55, G, prime), dominant)
+      val rule = SubdominantDominantConnectionRule()
+      isBroken(rule, Connection(ch2, ch1))
+    }
 //
 //    test("D -> T test") {
 //      val d7 = Chord(Note(65, F, seventh), Note(62, D, fifth), Note(59, B, third), Note(55, G, prime), dominant7)
@@ -163,10 +163,10 @@ trait SoftRulesAbstractTest extends FunSuite with Matchers with TestUtils {
     evaluationResult(rule, Connection(ch3, ch2)) shouldBe 3
   }
 
-  def isBroken(rule: PrologChordAnyRule, connection: Connection[Chord]): Boolean
+  def isBroken(rule: PrologChordRule, connection: Connection[Chord]): Boolean
 
-  def isNotBroken(rule: PrologChordAnyRule, connection: Connection[Chord]): Boolean = !isBroken(rule, connection)
+  def isNotBroken(rule: PrologChordRule, connection: Connection[Chord]): Boolean = !isBroken(rule, connection)
 
-  def evaluationResult(rule: PrologChordAnyRule, connection: Connection[Chord]): Int
+  def evaluationResult(rule: PrologChordRule, connection: Connection[Chord]): Int
 
 }

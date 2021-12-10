@@ -124,11 +124,80 @@ connection_not_contain_forbidden_sum_jumps(CurrentChord, PrevChord, PrevPrevChor
 connection_not_contain_forbidden_sum_jumps(_, _, _, PunishmentValue) :-
     PunishmentValue is 0.
 
+could_be_closer(CurrentChord, Offset, _, PrevBassPitch, PunishmentValue) :-
+    CurrentChord = chord(note(Pitch,_,_),_,_,_,_),
+    abs(mod(Pitch - PrevBassPitch, 12)) < Offset,
+    PunishmentValue is 50.
+
+could_be_closer(CurrentChord, Offset, _, PrevBassPitch, PunishmentValue) :-
+    CurrentChord = chord(_,note(Pitch,_,_),_,_,_),
+    abs(mod(Pitch - PrevBassPitch, 12)) < Offset,
+    PunishmentValue is 50.
+
+could_be_closer(CurrentChord, Offset, _, PrevBassPitch, PunishmentValue) :-
+    CurrentChord = chord(_,_,note(Pitch,_,_),_,_),
+    abs(mod(Pitch - PrevBassPitch, 12)) < Offset,
+    PunishmentValue is 50.
+
+could_be_closer(CurrentChord, Offset, Inversion, PrevBassPitch, PunishmentValue) :-
+    CurrentChord = chord(_,_,note(Pitch,_,Inversion),_,_),
+    PunishmentValue is 0.
+
+connection_closest_move_in_bass(CurrentChord, PrevChord, PunishmentValue) :-
+    CurrentChord = chord(_,_,_,note(CurrentPitch,_,_),HarmonicFunction),
+    HarmonicFunction = harmonic_function(_, _, _, Inversion, _, _, _, _, _, _, _),
+    PrevChord = chord(_,_,_,note(PrevPitch,_,_),_),
+    Offset is abs(CurrentPitch-PrevPitch),
+    could_be_closer(CurrentChord, Offset, Inversion, PrevPitch, PunishmentValue).
+
+connection_closest_move_in_bass(_, _, PunishmentValue) :-
+    PunishmentValue is 0.
+
+connection_s_d(CurrentChord, PrevChord, PunishmentValue) :-
+    CurrentChord = chord(_,_,_,note(_, _, chord_component('1',_)),harmonic_function('D', DegreeCurrent, _, _, _, _, _, _, _, _, _)),
+    PrevChord = chord(_,_,_,note(_, _, chord_component('1',_),_),harmonic_function('S', DegreeCurrent - 1, _, _, _, _, _, _, _, _, _)),
+    \+ all_voices_go_down(CurrentChord, PrevChord),
+    PunishmentValue is 40.
+
+connection_s_d(_, _, PunishmentValue) :-
+    PunishmentValue is 0.
+
+connection_closest_move_rule(CurrentChord, PrevChord, PunishmentValue) :-
+    CurrentChord = chord(note(BassPitch1, _, _), note(TenorPitch1, _, _), note(AltoPitch1, _, _), note(SopranoPitch1, _, _), _),
+    PrevChord = chord(_, note(TenorPitch2, _, _), note(AltoPitch2, _, _), note(SopranoPitch2, _, _), _),
+    \+ is_between(TenorPitch1, TenorPitch2, BassPitch1),
+    \+ is_between(TenorPitch1, TenorPitch2, BassPitch1 + 12),
+    \+ is_between(TenorPitch1, TenorPitch2, BassPitch1 + 24),
+    \+ is_between(TenorPitch1, TenorPitch2, AltoPitch1),
+    \+ is_between(TenorPitch1, TenorPitch2, AltoPitch1 - 12),
+    \+ is_between(TenorPitch1, TenorPitch2, SopranoPitch1 - 12),
+    \+ is_between(TenorPitch1, TenorPitch2, SopranoPitch1 - 24),
+    \+ is_between(AltoPitch1, AltoPitch2, BassPitch1 + 12),
+    \+ is_between(AltoPitch1, AltoPitch2, BassPitch1 + 24),
+    \+ is_between(AltoPitch1, AltoPitch2, TenorPitch1),
+    \+ is_between(AltoPitch1, AltoPitch2, TenorPitch1 + 12),
+    \+ is_between(AltoPitch1, AltoPitch2, SopranoPitch1),
+    \+ is_between(AltoPitch1, AltoPitch2, SopranoPitch1 - 12),
+    \+ is_between(SopranoPitch1, SopranoPitch2, BassPitch1 + 12),
+    \+ is_between(SopranoPitch1, SopranoPitch2, BassPitch1 + 24),
+    \+ is_between(SopranoPitch1, SopranoPitch2, BassPitch1 + 36),
+    \+ is_between(SopranoPitch1, SopranoPitch2, TenorPitch1 + 12),
+    \+ is_between(SopranoPitch1, SopranoPitch2, TenorPitch1 + 24),
+    \+ is_between(SopranoPitch1, SopranoPitch2, AltoPitch1),
+    \+ is_between(SopranoPitch1, SopranoPitch2, AltoPitch1 + 12),
+    PunishmentValue is 0.
+
+connection_closest_move_rule(_, _, PunishmentValue) :-
+    PunishmentValue is 10.
+
 soft_rules(CurrentChord, PrevChord, PrevPrevChord, PunishmentValue) :-
     soprano_jump_to_large(CurrentChord, PrevChord, PrevPrevChord, P1),
     connection_not_contain_double_prime_or_fifth(CurrentChord, PrevChord, PrevPrevChord, P2),
-    connection_not_contain_forbidden_sum_jumps(CurrentChord, PrevChord, PrevPrevChord, P3),
-    PunishmentValue is P1 + P2 + P3.
+    connection_closest_move_in_bass(CurrentChord, PrevChord, P3),
+    connection_s_d(CurrentChord, PrevChord, P4),
+    connection_closest_move_rule(CurrentChord, PrevChord, PunishmentValue, P5),
+    connection_not_contain_forbidden_sum_jumps(CurrentChord, PrevChord, PrevPrevChord, P6),
+    PunishmentValue is P1 + P2 + P3 + P4 + P5 + P6.
 
 soft_rules(_, _, PunishmentValue) :-
     PunishmentValue is 0.
