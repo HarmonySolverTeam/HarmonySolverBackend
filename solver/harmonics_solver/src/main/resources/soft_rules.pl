@@ -190,14 +190,220 @@ connection_closest_move_rule(CurrentChord, PrevChord, PunishmentValue) :-
 connection_closest_move_rule(_, _, PunishmentValue) :-
     PunishmentValue is 10.
 
+is_DT_connection(CurrentChord, PrevChord)  :-
+    CurrentChord = chord(_,_,_,_,CurrentHF),
+    PrevChord = chord(_,_,_,_,PrevHF),
+    CurrentHF = harmonic_function('T', _, _, _, _, _, _, _, _, _, _),
+    PrevHF = harmonic_function('D', _, _, _, _, _, _, _, _, _, _).
+
+is_seventh_chord(CurrentChord) :-
+    CurrentChord = chord(_,_,_,_,CurrentHF),
+    CurrentHF = harmonic_function(_, _, _, _, _, Extra, _, _, _, _, _),
+    list_contains_chord_component_with_base(7, Extra).
+
+is_ninth_chord(CurrentChord) :-
+    CurrentChord = chord(_,_,_,_,CurrentHF),
+    CurrentHF = harmonic_function(_, _, _, _, _, Extra, _, _, _, _, _),
+    list_contains_chord_component_with_base(9, Extra).
+
+is_chopin_chord(CurrentChord) :-
+    CurrentChord = chord(_,_,_,_,CurrentHF),
+    CurrentHF = harmonic_function('D', _, _, _, _, Extra, Omit, _, _, _, _),
+    list_contains_chord_component_with_string_repr("7", Extra),
+    list_contains_chord_component_with_string_repr("6", Extra),
+    list_contains_chord_component_with_string_repr("5", Omit).
+
+is_DT_or_seventh(CurrentChord, PrevChord) :-
+    is_DT_connection(CurrentChord, PrevChord);
+    is_seventh_chord(PrevChord).
+
+is_in_dominant_relation(CurrentChord, PrevChord) :-
+    CurrentChord = chord(_,_,_,_,HF1),
+    PrevChord = chord(_,_,_,_,HF2),
+    HF1 = harmonic_function(_, Degree1, _, _, _, _, _, IsDown, _, Key, _),
+    HF2 = harmonic_function(_, Degree2, _, _, _, _, _, IsDown, _, Key, _),
+    (Degree2-Degree1) mod 7 is 4.
+
+is_in_dominant_relation(CurrentChord, PrevChord) :-
+    CurrentChord = chord(_,_,_,_,HF1),
+    PrevChord = chord(_,_,_,_,HF2),
+    HF1 = harmonic_function(_, Degree1, _, _, _, _, _, _, _, Key, _),
+    HF2 = harmonic_function('T', 6, Degree2, _, _, _, _, true, Mode2, Key, _),
+    is_minor(Mode2),
+    (Degree2-Degree1) mod 7 is 4.
+
+is_in_dominant_relation(CurrentChord, PrevChord) :-
+    CurrentChord = chord(_,_,_,_,HF1),
+    PrevChord = chord(_,_,_,_,HF2),
+    HF1 = harmonic_function(_, Degree1, _, _, _, _, _, _, _, Key, _),
+    HF2 = harmonic_function(_, Degree2, _, _, _, _, _, _, _, Key, _),
+    (Degree2-Degree1) mod 7 is 4.
+
+broken_third_move_rule(CurrentChord, PrevChord, PunishmentValue) :-
+    get_voice_with_base_component(3, PrevChord, VoiceWith3),
+    get_note_with_voice_index(CurrentChord, VoiceWith3, Note1),
+    get_note_with_voice_index(PrevChord, VoiceWith3, Note2),
+    Note1 = note(Pitch1, _, _),
+    Note2 = note(Pitch2, _, _),
+    \+ Pitch1 = Pitch2,
+    CurrentChord = chord(_,_,_,_, CurrentHF),
+    CurrentHF = harmonic_function(_, _, _, _, _, _, Omit, _, _, _, _),
+    \+ list_contains_chord_component_with_base(1, Omit),
+    Note1 = note(_,_,chord_component(_, BC1)),
+    \+ BC1 = 1,
+    %todo !currentChord.harmonicFunction.containsDelayedChordComponentString("1")
+    Note2 = note(_,_,chord_component(_, BC2)),
+    \+ (BC1 = 3, BC2 = 3),
+    PunishmentValue is 50.
+
+broken_seventh_move_rule_helping(CCS, CCS_expected, Voice1, Voice2) :-
+    CCS is CCS_expected,
+    Voice1 < Voice2.
+
+broken_seventh_move_rule(CurrentChord, PrevChord) :-
+    get_voice_with_base_component(3, PrevChord, DominantVoiceWith3),
+    get_voice_with_base_component(7, PrevChord, DominantVoiceWith7),
+    get_note_with_voice_index(CurrentChord, DominantVoiceWith7, Note1),
+    get_note_with_voice_index(PrevChord, DominantVoiceWith7, Note2),
+    Note1 = note(Pitch1, _, chord_component(_, BaseComponent1)),
+    Note2 = note(Pitch2, _, _),
+    \+ Pitch1 = Pitch2,
+    \+ BaseComponent1 = 3,
+    % !currentChord.harmonicFunction.containsDelayedBaseChordComponent(3) &&
+    CurrentChord = chord(_, _, _, _, CurrentHF),
+    CurrentHF = harmonic_function(_, _, Position, Inversion, _, _, _, _, _, _, _),
+    Inversion = chord_component(CurrentInversionCCS, _),
+    Position = chord_component(_, CurrentPositionBC),
+    \+ broken_seventh_move_rule_helping(CurrentInversionCCS, '3', DominantVoiceWith7, DominantVoiceWith3),
+    \+ broken_seventh_move_rule_helping(CurrentInversionCCS, '3>', DominantVoiceWith7, DominantVoiceWith3),
+    \+ broken_seventh_move_rule_helping(CurrentPositionBC, 3, DominantVoiceWith7, DominantVoiceWith3).
+
+broken_seventh_move_rule(CurrentChord, PrevChord) :-
+    get_voice_with_base_component(7, PrevChord, DominantVoiceWith7),
+    get_note_with_voice_index(CurrentChord, DominantVoiceWith7, Note1),
+    get_note_with_voice_index(PrevChord, DominantVoiceWith7, Note2),
+    Note1 = note(Pitch1, _, chord_component(_, BaseComponent1)),
+    Note2 = note(Pitch2, _, _),
+    \+ Pitch1 = Pitch2,
+    \+ BaseComponent1 = 3,
+    % !currentChord.harmonicFunction.containsDelayedBaseChordComponent(3) &&
+    BaseComponent1 = 5.
+
+broken_ninth_move_rule(CurrentChord, PrevChord) :-
+    get_voice_with_chord_component_string('9', PrevChord, VoiceWith9),
+    get_note_with_voice_index(CurrentChord, VoiceWith9, Note1),
+    get_note_with_voice_index(PrevChord, VoiceWith9, Note2),
+    Note1 = note(Pitch1, _, chord_component(_, BC)),
+    Note2 = note(Pitch2, _, _),
+    \+ Pitch1 = Pitch2,
+    \+ BC = 5.
+    %todo !currentChord.harmonicFunction.containsDelayedBaseChordComponent(5)
+
+broken_up_fifth_move_rule(CurrentChord, PrevChord) :-
+    get_voice_with_chord_component_string('5<', PrevChord, VoiceWith9),
+    get_note_with_voice_index(CurrentChord, VoiceWith9, Note1),
+    get_note_with_voice_index(PrevChord, VoiceWith9, Note2),
+    Note1 = note(Pitch1, _, chord_component(_, BC)),
+    Note2 = note(Pitch2, _, _),
+    \+ Pitch1 = Pitch2,
+    \+ BC = 3.
+    %todo !currentChord.harmonicFunction.containsDelayedBaseChordComponent(3)
+
+broken_down_fifth_move_rule(CurrentChord, PrevChord) :-
+    get_voice_with_chord_component_string('5>', PrevChord, VoiceWith9),
+    get_note_with_voice_index(CurrentChord, VoiceWith9, Note1),
+    get_note_with_voice_index(PrevChord, VoiceWith9, Note2),
+    Note1 = note(Pitch1, _, chord_component(_, BC)),
+    Note2 = note(Pitch2, _, _),
+    \+ Pitch1 = Pitch2,
+    \+ BC = 1.
+    %todo !currentChord.harmonicFunction.containsDelayedBaseChordComponent(1)
+
+broken_chopin_move_rule(CurrentChord, PrevChord, PunishmentValue) :-
+  get_voice_with_base_component(6, PrevChord, VoiceWith6),
+  get_note_with_voice_index(CurrentChord, VoiceWith6, Note1),
+  Note1 = note(_, _, chord_component('1', _)),
+  %todo       !currentChord.harmonicFunction.containsDelayedChordComponentString("1")
+  PunishmentValue is 50.
+
+seventh_chord_DT_rule1(CurrentChord, PrevChord, PunishmentValue) :-
+    is_seventh_chord(PrevChord),
+    broken_seventh_move_rule(CurrentChord, PrevChord),
+    PunishmentValue is 20.
+
+seventh_chord_DT_rule1(_, _, PunishmentValue) :-
+    PunishmentValue is 0.
+
+seventh_chord_DT_rule2(CurrentChord, PrevChord, PunishmentValue) :-
+    is_seventh_chord(PrevChord),
+    is_ninth_chord(PrevChord),
+    broken_ninth_move_rule(CurrentChord, PrevChord),
+    PunishmentValue is 20.
+
+seventh_chord_DT_rule2(_, _, PunishmentValue) :-
+    PunishmentValue is 0.
+
+up_fifth_chord_DT_rule(CurrentChord, PrevChord, PunishmentValue) :-
+    PrevChord = chord(_,_,_,_,PrevHF),
+    PrevHF = harmonic_function(_, _, _, _, _, Extra, _, _, _, _, _),
+    list_contains_chord_component_with_string_repr("5<", Extra),
+    broken_up_fifth_move_rule(CurrentChord, PrevChord),
+    PunishmentValue is 20.
+
+up_fifth_chord_DT_rule(_, _, PunishmentValue) :-
+    PunishmentValue is 0.
+
+down_fifth_chord_DT_rule(CurrentChord, PrevChord, PunishmentValue) :-
+    PrevChord = chord(_,_,_,_,PrevHF),
+    PrevHF = harmonic_function(_, _, _, _, _, Extra, _, _, _, _, _),
+    list_contains_chord_component_with_string_repr("5>", Extra),
+    broken_down_fifth_move_rule(CurrentChord, PrevChord),
+    PunishmentValue is 20.
+
+down_fifth_chord_DT_rule(CurrentChord, PrevChord, PunishmentValue) :-
+    get_voice_with_chord_component_string("5>", prevChord, Voice_no),
+    \+ Voice_no is -1,
+    broken_down_fifth_move_rule(CurrentChord, PrevChord),
+    PunishmentValue is 20.
+
+down_fifth_chord_DT_rule(_, _, PunishmentValue) :-
+    PunishmentValue is 0.
+
+connection_dominant_relation_base(CurrentChord, PrevChord) :-
+    is_DT_or_seventh(CurrentChord, PrevChord),
+    is_in_dominant_relation(CurrentChord, PrevChord).
+
+connection_dominant_relation_rule(CurrentChord, PrevChord, _, PunishmentValue) :-
+    connection_dominant_relation_base(CurrentChord, PrevChord),
+    broken_third_move_rule(CurrentChord, PrevChord, P1),
+    PunishmentValue is P1.
+
+connection_dominant_relation_rule(CurrentChord, PrevChord, _, PunishmentValue) :-
+    connection_dominant_relation_base(CurrentChord, PrevChord),
+    is_chopin_chord(PrevChord),
+    broken_chopin_move_rule(CurrentChord, PrevChord, P1),
+    PunishmentValue is P1.
+
+connection_dominant_relation_rule(CurrentChord, PrevChord, _, PunishmentValue) :-
+    connection_dominant_relation_base(CurrentChord, PrevChord),
+    seventh_chord_DT_rule1(CurrentChord, PrevChord, P1),
+    seventh_chord_DT_rule2(CurrentChord, PrevChord, P2),
+    up_fifth_chord_DT_rule(CurrentChord, PrevChord, P3),
+    down_fifth_chord_DT_rule(CurrentChord, PrevChord, P4),
+    PunishmentValue is P1 + P2 + P3 + P4.
+
+connection_dominant_relation_rule(_, _, _, PunishmentValue) :-
+    PunishmentValue is 0.
+
 soft_rules(CurrentChord, PrevChord, PrevPrevChord, PunishmentValue) :-
     soprano_jump_to_large(CurrentChord, PrevChord, PrevPrevChord, P1),
     connection_not_contain_double_prime_or_fifth(CurrentChord, PrevChord, PrevPrevChord, P2),
     connection_closest_move_in_bass(CurrentChord, PrevChord, P3),
     connection_s_d(CurrentChord, PrevChord, P4),
-    connection_closest_move_rule(CurrentChord, PrevChord, PunishmentValue, P5),
+    connection_closest_move_rule(CurrentChord, PrevChord, P5),
     connection_not_contain_forbidden_sum_jumps(CurrentChord, PrevChord, PrevPrevChord, P6),
-    PunishmentValue is P1 + P2 + P3 + P4 + P5 + P6.
+    connection_dominant_relation_rule(CurrentChord, PrevChord, PrevPrevChord, P7),
+    PunishmentValue is P1 + P2 + P3 + P4 + P5 + P6 + P7.
 
 soft_rules(_, _, PunishmentValue) :-
     PunishmentValue is 0.

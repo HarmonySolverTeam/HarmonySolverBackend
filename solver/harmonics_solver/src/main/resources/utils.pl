@@ -33,3 +33,15 @@ count_different_([Element|Tail], Set, C) :-
 
 count_different(L, C) :-
     count_different_(L, [], C).
+
+list_contains(Element, List) :-
+    to_array(List, Array),
+    member(Element, Array).
+
+index_of_in(Element, [H|_], Index) :-
+    Element = H,
+    Index is 1.
+
+index_of_in(Element, [_|T], Index) :-
+    index_of_in(Element, T, Index_),
+    Index is Index_ + 1.

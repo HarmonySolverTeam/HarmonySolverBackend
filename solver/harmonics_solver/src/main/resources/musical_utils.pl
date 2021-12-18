@@ -124,3 +124,60 @@ count_base_components(CurrentChord, BaseComponent, Count) :-
     TenorNote = note(_, _, chord_component(_, TenorBC)),
     BassNote = note(_, _, chord_component(_, BassBC)),
     count_occurrences_in_list(BaseComponent, [SopranoBC, AltoBC, TenorBC, BassBC], Count).
+
+is_minor(Mode) :-
+    Mode is 1.
+
+is_major(Mode) :-
+    Mode is 0.
+
+list_contains_chord_component_with_base(BaseComponent, List) :-
+    to_array(List, Array),
+    array_contains_chord_component_with_base(BaseComponent, Array).
+
+array_contains_chord_component_with_base(BaseComponent, [H|T]) :-
+    H = chord_component(_, BaseComponent2),
+    BaseComponent = BaseComponent2;
+    array_contains_chord_component_with_base(BaseComponent, T).
+
+list_contains_chord_component_with_string_repr(ChordComponentString, List) :-
+    to_array(List, Array),
+    array_contains_chord_component_with_base(ChordComponentString, Array).
+
+array_contains_chord_component_with__string_repr(ChordComponentString, [H|T]) :-
+    H = chord_component(ChordComponentString2, _),
+    ChordComponentString = ChordComponentString2;
+    array_contains_chord_component_with_base(ChordComponentString, T).
+
+get_voice_with_base_component(BaseComponent, Chord, Voice_no) :-
+    Chord = chord(note(_, _, chord_component(_, BassBC)), note(_, _, chord_component(_, AltoBC)), note(_, _, chord_component(_, TenorBC)), note(_, _, chord_component(_, SopranoBC)), _),
+    index_of_in(BaseComponent, [BassBC, TenorBC, AltoBC, SopranoBC], Voice_no).
+
+get_voice_with_chord_component_string(ChordComponentString, Chord, Voice_no) :-
+     Chord = chord(note(_, _, chord_component(BassCCS, _)), note(_, _, chord_component(AltoCCS, _)), note(_, _, chord_component(TenorCCS, _)), note(_, _, chord_component(SopranoCCS, _)), _),
+     index_of_in(ChordComponentString, [BassCCS, TenorCCS, AltoCCS, SopranoCCS], Voice_no).
+
+get_voice_with_chord_component_string(_, _, Voice_no) :-
+    Voice_no is -1.
+
+get_note_with_voice_index(Chord, Voice_no, Note) :-
+    Chord = chord(BassNote, _, _, _, _),
+    Voice_no is 1,
+    Note = BassNote.
+
+get_note_with_voice_index(Chord, Voice_no, Note) :-
+    Chord = chord(_, TenorNote, _, _, _),
+    Voice_no is 2,
+    Note = TenorNote.
+
+get_note_with_voice_index(Chord, Voice_no, Note) :-
+    Chord = chord(_, _, AltoNote, _, _),
+    Voice_no is 3,
+    Note = AltoNote.
+
+get_note_with_voice_index(Chord, Voice_no, Note) :-
+    Chord = chord(_, _, _, SopranoNote, _),
+    Voice_no is 4,
+    Note = SopranoNote.
+
+
