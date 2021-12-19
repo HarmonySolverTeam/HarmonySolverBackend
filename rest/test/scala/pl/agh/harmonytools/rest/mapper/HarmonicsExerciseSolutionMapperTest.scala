@@ -57,7 +57,8 @@ class HarmonicsExerciseSolutionMapperTest
       HarmonicsExerciseDto(
         "C",
         List(4, 4),
-        Some(List(HarmonicsMeasureDto(List(tonicDTO))))
+        Some(List(HarmonicsMeasureDto(List(tonicDTO)))),
+        evaluateWithProlog = Some(false)
       ),
       1.0,
       List(

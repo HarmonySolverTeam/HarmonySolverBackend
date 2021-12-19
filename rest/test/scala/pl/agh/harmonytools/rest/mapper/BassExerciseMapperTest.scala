@@ -44,7 +44,8 @@ class BassExerciseMapperTest
           Some(List()),
           Some(List())
         )
-      )
+      ),
+      evaluateWithProlog = Some(false)
     )
   )
 }

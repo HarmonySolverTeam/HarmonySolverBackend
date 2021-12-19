@@ -5,7 +5,7 @@ import pl.agh.harmonytools.algorithm.graph.shortestpath.topologicalsort.Topologi
 import pl.agh.harmonytools.bass.{BassTranslator, FiguredBassExercise}
 import pl.agh.harmonytools.model.harmonicfunction.HarmonicFunction
 import pl.agh.harmonytools.solver.harmonics.HarmonicsSolver
-import pl.agh.harmonytools.solver.{ExerciseSolution, HarmonicsSolution, Solver, SolverError}
+import pl.agh.harmonytools.solver.{HarmonicsSolution, Solver}
 
 case class BassSolver(
   exercise: FiguredBassExercise,

@@ -22,7 +22,6 @@ case class HarmonicsSolver(
   correctDisabled: Boolean = false,
   precheckDisabled: Boolean = false,
   punishmentRatios: Option[Map[ChordRules.Rule, Double]] = None,
-  evaluateWithProlog: Boolean = false,
   override val shortestPathCompanion: ShortestPathAlgorithmCompanion = TopologicalSortAlgorithm
 ) extends Solver[HarmonicFunction] {
 
@@ -94,8 +93,8 @@ case class HarmonicsSolver(
     graphBuilder.withGenerator(chordGenerator)
     graphBuilder.withEvaluator(
       punishmentRatios match {
+        case _ if exercise.evaluateWithProlog => PrologChordRulesChecker(isFixedBass = bassLine.isDefined, isFixedSoprano = sopranoLine.isDefined)
         case Some(value) => AdaptiveRulesChecker(value)
-        case _ if evaluateWithProlog => PrologChordRulesChecker(isFixedBass = bassLine.isDefined, isFixedSoprano = sopranoLine.isDefined)
         case _ => ChordRulesChecker(isFixedBass = bassLine.isDefined, isFixedSoprano = sopranoLine.isDefined)
       }
     )

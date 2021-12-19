@@ -11,7 +11,8 @@ object BassExerciseMapper extends Mapper[FiguredBassExercise, BassExerciseDto] {
     bass.FiguredBassExercise(
       key = KeyMapper.mapToModel(dto.key),
       meter = meter,
-      measure = Measure(meter, dto.elements.map(FiguredBassElementMapper.mapToModel))
+      measure = Measure(meter, dto.elements.map(FiguredBassElementMapper.mapToModel)),
+      evaluateWithProlog = dto.evaluateWithProlog.getOrElse(false)
     )
   }
 
@@ -19,7 +20,8 @@ object BassExerciseMapper extends Mapper[FiguredBassExercise, BassExerciseDto] {
     BassExerciseDto(
       key = KeyMapper.mapToDTO(model.key),
       meter = MeterMapper.mapToDTO(model.meter),
-      elements = model.measure.contents.map(FiguredBassElementMapper.mapToDTO)
+      elements = model.measure.contents.map(FiguredBassElementMapper.mapToDTO),
+      evaluateWithProlog = Some(model.evaluateWithProlog)
     )
   }
 }

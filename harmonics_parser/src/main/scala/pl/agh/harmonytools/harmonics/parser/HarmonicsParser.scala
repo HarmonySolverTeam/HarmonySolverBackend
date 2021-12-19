@@ -287,6 +287,11 @@ class HarmonicsParser extends RegexParsers {
       throw HarmonicsParserException("Error during parsing exercise")
     )
 
+  def parse(exerciseNotation: String, evaluateWithProlog: Boolean): HarmonicsExercise =
+    parse(harmonicsExerciseDef, exerciseNotation).getOrElse(
+      throw HarmonicsParserException("Error during parsing exercise")
+    ).copy(evaluateWithProlog = evaluateWithProlog)
+
 }
 
 object TestParser extends HarmonicsParser {

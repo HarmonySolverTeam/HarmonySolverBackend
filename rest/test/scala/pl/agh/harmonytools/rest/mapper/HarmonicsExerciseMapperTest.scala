@@ -99,7 +99,8 @@ class HarmonicsExerciseMapperTest
             )
           )
         )
-      )
+      ),
+      evaluateWithProlog = Some(false)
     )
   )
 }

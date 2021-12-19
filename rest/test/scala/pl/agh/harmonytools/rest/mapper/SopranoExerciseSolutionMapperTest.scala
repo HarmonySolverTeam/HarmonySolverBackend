@@ -85,7 +85,8 @@ class SopranoExerciseSolutionMapperTest
           SopranoMeasureDto(List(NoteDto(71, 6, None, Some(1.0)))),
           SopranoMeasureDto(List(NoteDto(72, 0, None, Some(1.0))))
         ),
-        List(tonicDTO, dominantDTO)
+        List(tonicDTO, dominantDTO),
+        evaluateWithProlog = Some(false)
       ),
       1.0,
       List(

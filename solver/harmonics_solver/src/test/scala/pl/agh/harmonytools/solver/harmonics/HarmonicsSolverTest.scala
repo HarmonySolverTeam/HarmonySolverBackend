@@ -15,7 +15,7 @@ class HarmonicsSolverTest extends FunSuite with Matchers with TestUtils with Bef
 
   private def harmonicsEndToEndTest(filePath: String)(implicit evaluateWithProlog: Boolean): Assertion = {
     val harmonicsExercise = getParserOutput(getFileContent(filePath)).get
-    val solution          = HarmonicsSolver(harmonicsExercise, evaluateWithProlog = evaluateWithProlog).solve()
+    val solution          = HarmonicsSolver(harmonicsExercise).solve()
     solution.success shouldBe true
   }
 

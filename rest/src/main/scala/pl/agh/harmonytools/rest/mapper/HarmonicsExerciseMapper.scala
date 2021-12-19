@@ -10,14 +10,15 @@ object HarmonicsExerciseMapper extends Mapper[HarmonicsExercise, HarmonicsExerci
     val measures = dto.measures
       .getOrElse(List.empty)
       .map(HarmonicsMeasureMapper(meter).mapToModel)
-    HarmonicsExercise(key, meter, measures)
+    HarmonicsExercise(key, meter, measures, evaluateWithProlog = dto.evaluateWithProlog.getOrElse(false))
   }
 
   override def mapToDTO(model: HarmonicsExercise): HarmonicsExerciseDto = {
     HarmonicsExerciseDto(
       KeyMapper.mapToDTO(model.key),
       MeterMapper.mapToDTO(model.meter),
-      Some(model.measures.map(HarmonicsMeasureMapper(model.meter).mapToDTO))
+      Some(model.measures.map(HarmonicsMeasureMapper(model.meter).mapToDTO)),
+      evaluateWithProlog = Some(model.evaluateWithProlog)
     )
   }
 }

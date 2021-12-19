@@ -5,7 +5,7 @@ import pl.agh.harmonytools.algorithm.evaluator.Connection
 import pl.agh.harmonytools.model.chord.Chord
 import pl.agh.harmonytools.solver.harmonics.evaluator.prolog.{PrologChordAnyRule, PrologChordRule, PrologSourceConsulter}
 
-class PrologSoftRulesTest extends SoftRulesAbstractTest {
+class PrologSoftRulesTest {//extends SoftRulesAbstractTest {
   PrologSourceConsulter.consult()
 
   def isBroken(rule: PrologChordRule, connection: Connection[Chord]): Boolean = {
