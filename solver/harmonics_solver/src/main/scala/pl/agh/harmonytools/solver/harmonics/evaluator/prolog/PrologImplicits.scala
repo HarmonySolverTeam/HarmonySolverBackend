@@ -8,7 +8,7 @@ import pl.agh.harmonytools.model.note.Note
 import pl.agh.harmonytools.utils.TestUtils
 
 object PrologImplicits extends TestUtils with App {
-  val q = new Query(harmonicFunction2Prolog(HarmonicFunctions.tonicOmit5))
+  val q = new Query(harmonicFunction2Prolog(HarmonicFunctions.neapolitan))
   print(q)
 
   implicit def int2Prolog(i: Int): Term = new JPLInteger(i)

@@ -38,6 +38,13 @@ list_contains(Element, List) :-
     to_array(List, Array),
     member(Element, Array).
 
+count([], _, 0).
+count([X | T], X, Y):-
+    count(T, X, Z),
+    Y is 1 + Z.
+count([_ | T], X, Z) :-
+    count(T, X, Z).
+
 index_of_in(Element, [H|_], Index) :-
     Element = H,
     Index is 1.

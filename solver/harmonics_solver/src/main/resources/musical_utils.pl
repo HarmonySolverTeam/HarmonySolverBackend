@@ -126,10 +126,10 @@ count_base_components(CurrentChord, BaseComponent, Count) :-
     count_occurrences_in_list(BaseComponent, [SopranoBC, AltoBC, TenorBC, BassBC], Count).
 
 is_minor(Mode) :-
-    Mode is 1.
+    Mode is 0.
 
 is_major(Mode) :-
-    Mode is 0.
+    Mode is 1.
 
 list_not_contains_chord_component_with_base(BaseComponent, List) :-
     \+ list_contains_chord_component_with_base(BaseComponent, List).

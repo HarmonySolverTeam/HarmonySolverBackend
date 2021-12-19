@@ -139,8 +139,8 @@ could_be_closer(CurrentChord, Offset, _, PrevBassPitch, PunishmentValue) :-
     abs(mod(Pitch - PrevBassPitch, 12)) < Offset,
     PunishmentValue is 50.
 
-could_be_closer(CurrentChord, Offset, Inversion, PrevBassPitch, PunishmentValue) :-
-    CurrentChord = chord(_,_,note(Pitch,_,Inversion),_,_),
+could_be_closer(CurrentChord, _, Inversion, _, PunishmentValue) :-
+    CurrentChord = chord(_,_,note(_,_,Inversion),_,_),
     PunishmentValue is 0.
 
 connection_closest_move_in_bass(CurrentChord, PrevChord, PunishmentValue) :-

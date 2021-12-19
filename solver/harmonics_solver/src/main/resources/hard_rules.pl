@@ -81,6 +81,44 @@ connection_not_contain_incorrect_delay(CurrentChord, PrevChord) :-
     valid_delay(PrevA, CurrentA, D_List),
     valid_delay(PrevS, CurrentS, D_List).
 
+is_DT(CurrentHF, PrevHF) :-
+   CurrentHF = harmonic_function('T', _, _, _, _, _, _, _, _, _, _),
+   PrevHF = harmonic_function('D', _, _, _, _, _, _, _, _, _, _).
+
+is_notDT_or_contains_7(CurrentHF, PrevHF) :-
+    \+ is_DT(CurrentHF, PrevHF).
+
+is_notDT_or_contains_7(_, PrevHF) :-
+    PrevHF = harmonic_function(_, _, _, _, _, Extra, _, _, _, _, _),
+    list_contains_chord_component_with_base(7, Extra).
+
+is_DT_sharp5(CurrentChord, PrevChord) :-
+    CurrentChord = chord(_, _, _, _, CurrentHF),
+    PrevChord = chord(_, _, _, _, PrevHF),
+    is_notDT_or_contains_7(CurrentHF, PrevHF),
+    is_in_dominant_relation(CurrentChord, PrevChord),
+    PrevHF = harmonic_function(_, _, _, _, _, Extra, _, _, _, _, _),
+    list_contains_chord_component_with_string_repr("5<", Extra).
+
+is_in_second_relation_DT(CurrentHF, PrevHF) :-
+    is_in_second_relation(CurrentHF, PrevHF),
+    CurrentHF = harmonic_function('T', _, _, _, _, _, _, _, _, _, _),
+    PrevHF = harmonic_function('D', _, _, _, _, _, _, _, _, _, _).
+
+is_neapolitan(HF) :-
+    HF = harmonic_function('S', 2, _, chord_component(_, 3), _, list, _, 1, 0, _, _).
+
+connection_contains_illegal_double_3(CurrentChord, PrevChord) :-
+    CurrentChord = chord(note(_, _, chord_component(_, B)), note(_, _, chord_component(_, T)), note(_, _, chord_component(_, A)), note(_, _, chord_component(_, S)), CurrentHF),
+    PrevChord = chord(_, _, _, _, PrevHF),
+    \+ is_in_second_relation_DT(CurrentHF, PrevHF),
+    \+ is_DT_sharp5(CurrentChord, PrevChord),
+    \+ is_neapolitan(CurrentHF),
+    count([B, T, A, S], 3, Count),
+    Count > 1.
+
+
+
 connection(CurrentChord, PrevChord) :-
     connection_not_contain_parallel_fifths(CurrentChord, PrevChord),
     connection_not_contain_parallel_octaves(CurrentChord, PrevChord),
@@ -89,7 +127,8 @@ connection(CurrentChord, PrevChord) :-
     connection_not_contain_false_relation(CurrentChord, PrevChord),
     connection_not_contain_hidden_octaves(CurrentChord, PrevChord),
     connection_not_contain_forbidden_jump(CurrentChord, PrevChord),
-    connection_not_contain_incorrect_delay(CurrentChord, PrevChord).
+    connection_not_contain_incorrect_delay(CurrentChord, PrevChord),
+    \+ connection_contains_illegal_double_3(CurrentChord, PrevChord).
 
 connection_is_ds(CurrentChord, PrevChord) :-
     CurrentChord = chord(_, _, _, _, harmonic_function('S', _, _, _, _, _, _, _, _, _, _)),
