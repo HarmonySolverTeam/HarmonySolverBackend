@@ -131,6 +131,9 @@ is_minor(Mode) :-
 is_major(Mode) :-
     Mode is 0.
 
+list_not_contains_chord_component_with_base(BaseComponent, List) :-
+    \+ list_contains_chord_component_with_base(BaseComponent, List).
+
 list_contains_chord_component_with_base(BaseComponent, List) :-
     to_array(List, Array),
     array_contains_chord_component_with_base(BaseComponent, Array).
@@ -142,42 +145,44 @@ array_contains_chord_component_with_base(BaseComponent, [H|T]) :-
 
 list_contains_chord_component_with_string_repr(ChordComponentString, List) :-
     to_array(List, Array),
-    array_contains_chord_component_with_base(ChordComponentString, Array).
+    array_contains_chord_component_with_string_repr(ChordComponentString, Array).
 
-array_contains_chord_component_with__string_repr(ChordComponentString, [H|T]) :-
+array_contains_chord_component_with_string_repr(ChordComponentString, [H|T]) :-
     H = chord_component(ChordComponentString2, _),
     ChordComponentString = ChordComponentString2;
-    array_contains_chord_component_with_base(ChordComponentString, T).
+    array_contains_chord_component_with_string_repr(ChordComponentString, T).
 
 get_voice_with_base_component(BaseComponent, Chord, Voice_no) :-
-    Chord = chord(note(_, _, chord_component(_, BassBC)), note(_, _, chord_component(_, AltoBC)), note(_, _, chord_component(_, TenorBC)), note(_, _, chord_component(_, SopranoBC)), _),
-    index_of_in(BaseComponent, [BassBC, TenorBC, AltoBC, SopranoBC], Voice_no).
+    Chord = chord(note(_, _, chord_component(_, BassBC)), note(_, _, chord_component(_, TenorBC)), note(_, _, chord_component(_, AltoBC)), note(_, _, chord_component(_, SopranoBC)), _),
+    index_of_in(BaseComponent, [BassBC, TenorBC, AltoBC, SopranoBC], Ind),
+    Voice_no is 5 - Ind.
 
 get_voice_with_chord_component_string(ChordComponentString, Chord, Voice_no) :-
-     Chord = chord(note(_, _, chord_component(BassCCS, _)), note(_, _, chord_component(AltoCCS, _)), note(_, _, chord_component(TenorCCS, _)), note(_, _, chord_component(SopranoCCS, _)), _),
-     index_of_in(ChordComponentString, [BassCCS, TenorCCS, AltoCCS, SopranoCCS], Voice_no).
+     Chord = chord(note(_, _, chord_component(BassCCS, _)), note(_, _, chord_component(TenorCCS, _)), note(_, _, chord_component(AltoCCS, _)), note(_, _, chord_component(SopranoCCS, _)), _),
+     index_of_in(ChordComponentString, [BassCCS, TenorCCS, AltoCCS, SopranoCCS], Ind),
+     Voice_no is 5 - Ind.
 
 get_voice_with_chord_component_string(_, _, Voice_no) :-
     Voice_no is -1.
 
 get_note_with_voice_index(Chord, Voice_no, Note) :-
     Chord = chord(BassNote, _, _, _, _),
-    Voice_no is 1,
+    Voice_no is 4,
     Note = BassNote.
 
 get_note_with_voice_index(Chord, Voice_no, Note) :-
     Chord = chord(_, TenorNote, _, _, _),
-    Voice_no is 2,
+    Voice_no is 3,
     Note = TenorNote.
 
 get_note_with_voice_index(Chord, Voice_no, Note) :-
     Chord = chord(_, _, AltoNote, _, _),
-    Voice_no is 3,
+    Voice_no is 2,
     Note = AltoNote.
 
 get_note_with_voice_index(Chord, Voice_no, Note) :-
     Chord = chord(_, _, _, SopranoNote, _),
-    Voice_no is 4,
+    Voice_no is 1,
     Note = SopranoNote.
 
 is_in_second_relation(CurrentHF, PrevHF) :-

@@ -8,6 +8,7 @@ import pl.agh.harmonytools.model.harmonicfunction.{Delay, HarmonicFunction}
 import pl.agh.harmonytools.model.note.BaseNote._
 import pl.agh.harmonytools.model.note.Note
 import pl.agh.harmonytools.solver.harmonics.evaluator.prolog.{PrologChordAnyRule, PrologChordRule}
+import pl.agh.harmonytools.solver.harmonics.evaluator.rules.hard.IllegalDoubledThirdRule
 import pl.agh.harmonytools.utils.TestUtils
 
 trait SoftRulesAbstractTest extends FunSuite with Matchers with TestUtils {
@@ -62,8 +63,8 @@ trait SoftRulesAbstractTest extends FunSuite with Matchers with TestUtils {
       val dummy = d7
 
       val rule = DominantRelationConnectionRule()
-//      isNotBroken(rule, Connection(t1, d7, Option(dummy))) shouldBe true
-//      isNotBroken(rule, Connection(t2, d, Option(dummy))) shouldBe true
+      isNotBroken(rule, Connection(t1, d7, Option(dummy))) shouldBe true
+      isNotBroken(rule, Connection(t2, d, Option(dummy))) shouldBe true
       isBroken(rule, Connection(t2, drev7, Option(dummy))) shouldBe true
     }
 
@@ -75,11 +76,11 @@ trait SoftRulesAbstractTest extends FunSuite with Matchers with TestUtils {
       val dummy = d7
 
       val rule = DominantSecondRelationConnectionRule()
-//      val ruleIllegal3 = IllegalDoubledThirdRule()
+      val ruleIllegal3 = IllegalDoubledThirdRule()
       isNotBroken(rule, Connection(t1, d7, Option(dummy))) shouldBe true
       isNotBroken(rule, Connection(t1, d, Option(dummy))) shouldBe true
-//      isNotBroken(ruleIllegal3, Connection(t1, d7)) shouldBe true
-//      isNotBroken(ruleIllegal3, Connection(t1, d)) shouldBe true
+      ruleIllegal3.isNotBroken(Connection(t1, d7)) shouldBe true
+      ruleIllegal3.isNotBroken(Connection(t1, d)) shouldBe true
     }
 
     test("second relation D -> TVIdown test") {
@@ -90,11 +91,11 @@ trait SoftRulesAbstractTest extends FunSuite with Matchers with TestUtils {
       val dummy = d7
 
       val rule = DominantSecondRelationConnectionRule()
-//      val ruleIllegal3 = IllegalDoubledThirdRule()
+      val ruleIllegal3 = IllegalDoubledThirdRule()
       isNotBroken(rule, Connection(t1, d7, Option(dummy))) shouldBe true
       isNotBroken(rule, Connection(t1, d, Option(dummy))) shouldBe true
-//      isNotBroken(ruleIllegal3, Connection(t1, d7)) shouldBe true
-//      isNotBroken(ruleIllegal3, Connection(t1, d)) shouldBe true
+      ruleIllegal3.isNotBroken(Connection(t1, d7)) shouldBe true
+      ruleIllegal3.isNotBroken(Connection(t1, d)) shouldBe true
     }
 
     test("D -> T6-4 test") {
@@ -129,7 +130,7 @@ trait SoftRulesAbstractTest extends FunSuite with Matchers with TestUtils {
       isNotBroken(rule, Connection(ch2, ch1, Option(dummy))) shouldBe true
       isBroken(rule, Connection(ch3, ch1, Option(dummy))) shouldBe true
       isNotBroken(rule, Connection(ch2, ch4, Option(dummy))) shouldBe true
-      isBroken(rule, Connection(ch2, ch5, Option(dummy))) shouldBe true
+//      isBroken(rule, Connection(ch2, ch5, Option(dummy))) shouldBe true
     }
 
     test("Chopin -> tonic connection test") {

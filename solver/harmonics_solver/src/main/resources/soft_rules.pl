@@ -209,30 +209,46 @@ is_ninth_chord(CurrentChord) :-
 is_chopin_chord(CurrentChord) :-
     CurrentChord = chord(_,_,_,_,CurrentHF),
     CurrentHF = harmonic_function('D', _, _, _, _, Extra, Omit, _, _, _, _),
-    list_contains_chord_component_with_string_repr("7", Extra),
-    list_contains_chord_component_with_string_repr("6", Extra),
-    list_contains_chord_component_with_string_repr("5", Omit).
+    list_contains_chord_component_with_string_repr('7', Extra),
+    list_contains_chord_component_with_string_repr('6', Extra),
+    list_contains_chord_component_with_string_repr('5', Omit).
 
 is_DT_or_seventh(CurrentChord, PrevChord) :-
     is_DT_connection(CurrentChord, PrevChord);
     is_seventh_chord(PrevChord).
 
-is_in_dominant_relation(CurrentChord, PrevChord) :-
+is_in_dominant_relation_base(CurrentChord, PrevChord) :-
     CurrentChord = chord(_,_,_,_,HF1),
     PrevChord = chord(_,_,_,_,HF2),
-    HF1 = harmonic_function(_, Degree1, _, _, _, _, _, IsDown, _, Key, _),
-    HF2 = harmonic_function(_, Degree2, _, _, _, _, _, IsDown, _, Key, _),
-    4 is (Degree2-Degree1) mod 7.
+    HF1 = harmonic_function(_, _, _, _, _, _, _, IsDown, _, _, _),
+    HF2 = harmonic_function(_, _, _, _, _, _, _, IsDown, _, _, _).
 
-is_in_dominant_relation(CurrentChord, PrevChord) :-
+is_in_dominant_relation_base(CurrentChord, PrevChord) :-
     CurrentChord = chord(_,_,_,_,HF1),
     PrevChord = chord(_,_,_,_,HF2),
-    HF1 = harmonic_function(_, Degree1, _, _, _, _, _, _, _, Key, _),
-    HF2 = harmonic_function('T', 6, Degree2, _, _, _, _, true, Mode2, Key, _),
-    is_minor(Mode2),
-    4 is (Degree2-Degree1) mod 7.
+    HF1 = harmonic_function(_, _, _, _, _, _, _, _, _, Key1, _),
+    HF2 = harmonic_function(_, _, _, _, _, _, _, _, _, Key2, _),
+    \+ Key1 = Key2.
+
+is_in_dominant_relation_base(CurrentChord, PrevChord) :-
+    CurrentChord = chord(_,_,_,_,HF1),
+    PrevChord = chord(_,_,_,_,HF2),
+    HF1 = harmonic_function(_,  _,  _, _, _, _, _,    1,     _, _, _),
+    HF2 = harmonic_function('T', 6, _, _, _, _, _, true, Mode2, _, _),
+    is_minor(Mode2).
 
 is_in_dominant_relation(CurrentChord, PrevChord) :-
+    is_in_dominant_relation_base(CurrentChord, PrevChord),
+    CurrentChord = chord(_,_,_,_,HF1),
+    PrevChord = chord(_,_,_,_,HF2),
+    HF1 = harmonic_function(_, _, _, _, _, _, _, _, _, Key1, _),
+    HF2 = harmonic_function(_, Degree2, _, _, _, _, _, _, _, Key2, _),
+    Key2 \== '',
+    Key1 \== Key2,
+    4 is (Degree2-1) mod 7.
+
+is_in_dominant_relation(CurrentChord, PrevChord) :-
+    is_in_dominant_relation_base(CurrentChord, PrevChord),
     CurrentChord = chord(_,_,_,_,HF1),
     PrevChord = chord(_,_,_,_,HF2),
     HF1 = harmonic_function(_, Degree1, _, _, _, _, _, _, _, Key, _),
@@ -245,15 +261,16 @@ broken_third_move_rule(CurrentChord, PrevChord, PunishmentValue) :-
     get_note_with_voice_index(PrevChord, VoiceWith3, Note2),
     Note1 = note(Pitch1, _, _),
     Note2 = note(Pitch2, _, _),
-    \+ Pitch1 = Pitch2,
+    Pitch1 =\= Pitch2,
     CurrentChord = chord(_,_,_,_, CurrentHF),
     CurrentHF = harmonic_function(_, _, _, _, _, _, Omit, _, _, _, _),
-    \+ list_contains_chord_component_with_base(1, Omit),
-    Note1 = note(_,_,chord_component(_, BC1)),
-    \+ BC1 = 1,
-    %todo !currentChord.harmonicFunction.containsDelayedChordComponentString("1")
-    Note2 = note(_,_,chord_component(_, BC2)),
-    \+ (BC1 = 3, BC2 = 3),
+    list_not_contains_chord_component_with_base(1, Omit),
+    Note1 = note(_,_,chord_component(_, BC)),
+    BC =\= 1,
+    % todo !currentChord.harmonicFunction.containsDelayedChordComponentString("1")
+    CurrentChord = chord(note(_, _, chord_component(_, CurrentBassBC)),_,_,_,_),
+    PrevChord = chord(note(_, _, chord_component(_, PrevBassBC)),_,_,_,_),
+    \+ (CurrentBassBC = 3, PrevBassBC = 3),
     PunishmentValue is 50.
 
 broken_seventh_move_rule_helping(CCS, CCS_expected, Voice1, Voice2) :-
@@ -267,8 +284,8 @@ broken_seventh_move_rule(CurrentChord, PrevChord) :-
     get_note_with_voice_index(PrevChord, DominantVoiceWith7, Note2),
     Note1 = note(Pitch1, _, chord_component(_, BaseComponent1)),
     Note2 = note(Pitch2, _, _),
-    \+ Pitch1 = Pitch2,
-    \+ BaseComponent1 = 3,
+    Pitch1 =\= Pitch2,
+    BaseComponent1 =\= 3,
     % !currentChord.harmonicFunction.containsDelayedBaseChordComponent(3) &&
     CurrentChord = chord(_, _, _, _, CurrentHF),
     CurrentHF = harmonic_function(_, _, Position, Inversion, _, _, _, _, _, _, _),
@@ -284,8 +301,8 @@ broken_seventh_move_rule(CurrentChord, PrevChord) :-
     get_note_with_voice_index(PrevChord, DominantVoiceWith7, Note2),
     Note1 = note(Pitch1, _, chord_component(_, BaseComponent1)),
     Note2 = note(Pitch2, _, _),
-    \+ Pitch1 = Pitch2,
-    \+ BaseComponent1 = 3,
+    Pitch1 =\=  Pitch2,
+    BaseComponent1 =\= 3,
     % !currentChord.harmonicFunction.containsDelayedBaseChordComponent(3) &&
     CurrentChord = chord(_, _, _, _, CurrentHF),
     CurrentHF = harmonic_function(_, _, Position, Inversion, _, _, _, _, _, _, _),
@@ -301,8 +318,8 @@ broken_seventh_move_rule(CurrentChord, PrevChord) :-
     get_note_with_voice_index(PrevChord, DominantVoiceWith7, Note2),
     Note1 = note(Pitch1, _, chord_component(_, BaseComponent1)),
     Note2 = note(Pitch2, _, _),
-    \+ Pitch1 = Pitch2,
-    \+ BaseComponent1 = 3,
+    Pitch1 =\=  Pitch2,
+    BaseComponent1 =\= 3,
     % !currentChord.harmonicFunction.containsDelayedBaseChordComponent(3) &&
     BaseComponent1 = 5.
 
@@ -312,8 +329,8 @@ broken_ninth_move_rule(CurrentChord, PrevChord) :-
     get_note_with_voice_index(PrevChord, VoiceWith9, Note2),
     Note1 = note(Pitch1, _, chord_component(_, BC)),
     Note2 = note(Pitch2, _, _),
-    \+ Pitch1 = Pitch2,
-    \+ BC = 5.
+    Pitch1 =\=  Pitch2,
+    BC =\= 5.
     %todo !currentChord.harmonicFunction.containsDelayedBaseChordComponent(5)
 
 broken_up_fifth_move_rule(CurrentChord, PrevChord) :-
@@ -322,8 +339,8 @@ broken_up_fifth_move_rule(CurrentChord, PrevChord) :-
     get_note_with_voice_index(PrevChord, VoiceWith9, Note2),
     Note1 = note(Pitch1, _, chord_component(_, BC)),
     Note2 = note(Pitch2, _, _),
-    \+ Pitch1 = Pitch2,
-    \+ BC = 3.
+    Pitch1 =\=  Pitch2,
+    BC =\= 3.
     %todo !currentChord.harmonicFunction.containsDelayedBaseChordComponent(3)
 
 broken_down_fifth_move_rule(CurrentChord, PrevChord) :-
@@ -332,14 +349,15 @@ broken_down_fifth_move_rule(CurrentChord, PrevChord) :-
     get_note_with_voice_index(PrevChord, VoiceWith9, Note2),
     Note1 = note(Pitch1, _, chord_component(_, BC)),
     Note2 = note(Pitch2, _, _),
-    \+ Pitch1 = Pitch2,
-    \+ BC = 1.
+    Pitch1 =\=  Pitch2,
+    BC =\= 1.
     %todo !currentChord.harmonicFunction.containsDelayedBaseChordComponent(1)
 
 broken_chopin_move_rule(CurrentChord, PrevChord, PunishmentValue) :-
   get_voice_with_base_component(6, PrevChord, VoiceWith6),
   get_note_with_voice_index(CurrentChord, VoiceWith6, Note1),
-  Note1 = note(_, _, chord_component('1', _)),
+  Note1 = note(_, _, chord_component(CCS, _)),
+  CCS \== '1',
   %todo       !currentChord.harmonicFunction.containsDelayedChordComponentString("1")
   PunishmentValue is 50.
 
@@ -379,7 +397,7 @@ down_fifth_chord_DT_rule(CurrentChord, PrevChord, PunishmentValue) :-
 
 down_fifth_chord_DT_rule(CurrentChord, PrevChord, PunishmentValue) :-
     get_voice_with_chord_component_string("5>", prevChord, Voice_no),
-    \+ Voice_no is -1,
+    Voice_no =\= -1,
     broken_down_fifth_move_rule(CurrentChord, PrevChord),
     PunishmentValue is 20.
 
@@ -413,7 +431,8 @@ connection_dominant_relation_rule(_, _, _, PunishmentValue) :-
 second_broken_third_move_rule(CurrentChord, PrevChord, PunishmentValue) :-
     get_voice_with_base_component(3, PrevChord, VoiceWith3),
     get_note_with_voice_index(CurrentChord, VoiceWith3, Note1),
-    \+ Note1 = note(_, _, chord_component(3, _)),
+    Note1 = note(_, _, chord_component(_, BC)),
+    BC =\= 3,
     %#    !currentChord.harmonicFunction.containsDelayedBaseChordComponent(3)
     PunishmentValue is 50.
 
@@ -427,7 +446,8 @@ second_broken_third_move_rule(CurrentChord, PrevChord, PunishmentValue) :-
 second_broken_fifth_move_rule(CurrentChord, PrevChord, PunishmentValue) :-
     get_voice_with_chord_component_string("5", PrevChord, VoiceWith5),
     get_note_with_voice_index(CurrentChord, VoiceWith5, Note1),
-    \+ Note1 = note(_, _, chord_component(_, 3)),
+    Note1 = note(_, _, chord_component(_, BC)),
+    BC =\= 3,
     %#    !currentChord.harmonicFunction.containsDelayedBaseChordComponent(3)
     PunishmentValue is 20.
 
@@ -445,7 +465,8 @@ second_broken_seventh_move_rule(CurrentChord, PrevChord, PunishmentValue) :-
     list_contains_chord_component_with_string_repr("7", Extra),
     get_voice_with_base_component(7, PrevChord, VoiceWith7),
     get_note_with_voice_index(CurrentChord, VoiceWith7, Note1),
-    \+ Note1 = note(_, _, chord_component(5, _)),
+    Note1 = note(_, _, chord_component(_, BC)),
+    BC =\= 5,
     %#    !currentChord.harmonicFunction.containsDelayedBaseChordComponent(5)
     PunishmentValue is 20.
 
@@ -466,8 +487,9 @@ second_broken_down_fifth_move_rule(CurrentChord, PrevChord, PunishmentValue) :-
     get_note_with_voice_index(PrevChord, VoiceWith5, Note2),
     Note1 = note(Pitch1, _, _),
     Note2 = note(Pitch2, _, _),
-    \+ Pitch1 is Pitch2,
-    \+ Note1 = note(_, _, chord_component(_, 3)),
+    Pitch1 =\= Pitch2,
+    Note1 = note(_, _, chord_component(_, BC)),
+    BC =\= 3,
     %#    !currentChord.harmonicFunction.containsDelayedBaseChordComponent(3)
     PunishmentValue is 20.
 
