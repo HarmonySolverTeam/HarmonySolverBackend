@@ -2,9 +2,10 @@ package pl.agh.harmonytools.solver.harmonics.evaluator.rules.soft
 
 import pl.agh.harmonytools.algorithm.evaluator.{Connection, SoftRule}
 import pl.agh.harmonytools.model.chord.Chord
+import pl.agh.harmonytools.solver.harmonics.evaluator.prolog.PrologChordSoftRule
 import pl.agh.harmonytools.solver.harmonics.evaluator.rules.{ConnectionRule, specificConnectionRuleDT}
 
-case class DominantSecondRelationConnectionRule() extends ConnectionRule with SoftRule[Chord] {
+case class DominantSecondRelationConnectionRule() extends PrologChordSoftRule with ConnectionRule {
   override def evaluateIncludingDeflections(connection: Connection[Chord]): Double = {
     val currentChord = connection.current
     val prevChord    = connection.prev
@@ -59,4 +60,6 @@ case class DominantSecondRelationConnectionRule() extends ConnectionRule with So
   }
 
   override def caption: String = "Dominant Second Relation Connection"
+
+  override protected val prologPredicateName: String = "connection_dominant_second_relation_rule"
 }

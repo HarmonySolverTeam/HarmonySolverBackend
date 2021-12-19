@@ -222,7 +222,7 @@ is_in_dominant_relation(CurrentChord, PrevChord) :-
     PrevChord = chord(_,_,_,_,HF2),
     HF1 = harmonic_function(_, Degree1, _, _, _, _, _, IsDown, _, Key, _),
     HF2 = harmonic_function(_, Degree2, _, _, _, _, _, IsDown, _, Key, _),
-    (Degree2-Degree1) mod 7 is 4.
+    4 is (Degree2-Degree1) mod 7.
 
 is_in_dominant_relation(CurrentChord, PrevChord) :-
     CurrentChord = chord(_,_,_,_,HF1),
@@ -230,14 +230,14 @@ is_in_dominant_relation(CurrentChord, PrevChord) :-
     HF1 = harmonic_function(_, Degree1, _, _, _, _, _, _, _, Key, _),
     HF2 = harmonic_function('T', 6, Degree2, _, _, _, _, true, Mode2, Key, _),
     is_minor(Mode2),
-    (Degree2-Degree1) mod 7 is 4.
+    4 is (Degree2-Degree1) mod 7.
 
 is_in_dominant_relation(CurrentChord, PrevChord) :-
     CurrentChord = chord(_,_,_,_,HF1),
     PrevChord = chord(_,_,_,_,HF2),
     HF1 = harmonic_function(_, Degree1, _, _, _, _, _, _, _, Key, _),
     HF2 = harmonic_function(_, Degree2, _, _, _, _, _, _, _, Key, _),
-    (Degree2-Degree1) mod 7 is 4.
+    4 is (Degree2-Degree1) mod 7.
 
 broken_third_move_rule(CurrentChord, PrevChord, PunishmentValue) :-
     get_voice_with_base_component(3, PrevChord, VoiceWith3),
@@ -257,7 +257,7 @@ broken_third_move_rule(CurrentChord, PrevChord, PunishmentValue) :-
     PunishmentValue is 50.
 
 broken_seventh_move_rule_helping(CCS, CCS_expected, Voice1, Voice2) :-
-    CCS is CCS_expected,
+    CCS = CCS_expected,
     Voice1 < Voice2.
 
 broken_seventh_move_rule(CurrentChord, PrevChord) :-
@@ -273,9 +273,26 @@ broken_seventh_move_rule(CurrentChord, PrevChord) :-
     CurrentChord = chord(_, _, _, _, CurrentHF),
     CurrentHF = harmonic_function(_, _, Position, Inversion, _, _, _, _, _, _, _),
     Inversion = chord_component(CurrentInversionCCS, _),
-    Position = chord_component(_, CurrentPositionBC),
     \+ broken_seventh_move_rule_helping(CurrentInversionCCS, '3', DominantVoiceWith7, DominantVoiceWith3),
     \+ broken_seventh_move_rule_helping(CurrentInversionCCS, '3>', DominantVoiceWith7, DominantVoiceWith3),
+    Position = ''.
+
+broken_seventh_move_rule(CurrentChord, PrevChord) :-
+    get_voice_with_base_component(3, PrevChord, DominantVoiceWith3),
+    get_voice_with_base_component(7, PrevChord, DominantVoiceWith7),
+    get_note_with_voice_index(CurrentChord, DominantVoiceWith7, Note1),
+    get_note_with_voice_index(PrevChord, DominantVoiceWith7, Note2),
+    Note1 = note(Pitch1, _, chord_component(_, BaseComponent1)),
+    Note2 = note(Pitch2, _, _),
+    \+ Pitch1 = Pitch2,
+    \+ BaseComponent1 = 3,
+    % !currentChord.harmonicFunction.containsDelayedBaseChordComponent(3) &&
+    CurrentChord = chord(_, _, _, _, CurrentHF),
+    CurrentHF = harmonic_function(_, _, Position, Inversion, _, _, _, _, _, _, _),
+    Inversion = chord_component(CurrentInversionCCS, _),
+    \+ broken_seventh_move_rule_helping(CurrentInversionCCS, '3', DominantVoiceWith7, DominantVoiceWith3),
+    \+ broken_seventh_move_rule_helping(CurrentInversionCCS, '3>', DominantVoiceWith7, DominantVoiceWith3),
+    Position = chord_component(_, CurrentPositionBC),
     \+ broken_seventh_move_rule_helping(CurrentPositionBC, 3, DominantVoiceWith7, DominantVoiceWith3).
 
 broken_seventh_move_rule(CurrentChord, PrevChord) :-
@@ -375,14 +392,12 @@ connection_dominant_relation_base(CurrentChord, PrevChord) :-
 
 connection_dominant_relation_rule(CurrentChord, PrevChord, _, PunishmentValue) :-
     connection_dominant_relation_base(CurrentChord, PrevChord),
-    broken_third_move_rule(CurrentChord, PrevChord, P1),
-    PunishmentValue is P1.
+    broken_third_move_rule(CurrentChord, PrevChord, PunishmentValue).
 
 connection_dominant_relation_rule(CurrentChord, PrevChord, _, PunishmentValue) :-
     connection_dominant_relation_base(CurrentChord, PrevChord),
     is_chopin_chord(PrevChord),
-    broken_chopin_move_rule(CurrentChord, PrevChord, P1),
-    PunishmentValue is P1.
+    broken_chopin_move_rule(CurrentChord, PrevChord, PunishmentValue).
 
 connection_dominant_relation_rule(CurrentChord, PrevChord, _, PunishmentValue) :-
     connection_dominant_relation_base(CurrentChord, PrevChord),
@@ -395,6 +410,98 @@ connection_dominant_relation_rule(CurrentChord, PrevChord, _, PunishmentValue) :
 connection_dominant_relation_rule(_, _, _, PunishmentValue) :-
     PunishmentValue is 0.
 
+second_broken_third_move_rule(CurrentChord, PrevChord, PunishmentValue) :-
+    get_voice_with_base_component(3, PrevChord, VoiceWith3),
+    get_note_with_voice_index(CurrentChord, VoiceWith3, Note1),
+    \+ Note1 = note(_, _, chord_component(3, _)),
+    %#    !currentChord.harmonicFunction.containsDelayedBaseChordComponent(3)
+    PunishmentValue is 50.
+
+%#  private def brokenThirdMoveRule(prevChord: Chord, currentChord: Chord): Boolean = {
+%#    val dominantVoiceWith3 = prevChord.getVoiceWithBaseComponent(3)
+%#    dominantVoiceWith3 > -1 && !currentChord.notes(dominantVoiceWith3).baseChordComponentEquals(3) &&
+%#    !currentChord.harmonicFunction.containsDelayedBaseChordComponent(3)
+%#  }
+%#
+
+second_broken_fifth_move_rule(CurrentChord, PrevChord, PunishmentValue) :-
+    get_voice_with_chord_component_string("5", PrevChord, VoiceWith5),
+    get_note_with_voice_index(CurrentChord, VoiceWith5, Note1),
+    \+ Note1 = note(_, _, chord_component(_, 3)),
+    %#    !currentChord.harmonicFunction.containsDelayedBaseChordComponent(3)
+    PunishmentValue is 20.
+
+
+%#  private def brokenFifthMoveRule(prevChord: Chord, currentChord: Chord): Boolean = {
+%#    val dominantVoiceWith5 = prevChord.getVoiceWithComponentString("5")
+%#    dominantVoiceWith5 > -1 && !currentChord.notes(dominantVoiceWith5).baseChordComponentEquals(3) &&
+%#    !currentChord.harmonicFunction.containsDelayedBaseChordComponent(3)
+%#  }
+%#
+
+second_broken_seventh_move_rule(CurrentChord, PrevChord, PunishmentValue) :-
+    PrevChord = chord(_, _, _, _, HF),
+    HF = harmonic_function(_, _, _, _, _, Extra, _, _, _, _, _),
+    list_contains_chord_component_with_string_repr("7", Extra),
+    get_voice_with_base_component(7, PrevChord, VoiceWith7),
+    get_note_with_voice_index(CurrentChord, VoiceWith7, Note1),
+    \+ Note1 = note(_, _, chord_component(5, _)),
+    %#    !currentChord.harmonicFunction.containsDelayedBaseChordComponent(5)
+    PunishmentValue is 20.
+
+
+%#  private def brokenSeventhMoveRule(prevChord: Chord, currentChord: Chord): Boolean = {
+%#    val dominantVoiceWith7 = prevChord.getVoiceWithBaseComponent(7)
+%#    dominantVoiceWith7 > -1 && !currentChord.notes(dominantVoiceWith7).baseChordComponentEquals(5) &&
+%#    !currentChord.harmonicFunction.containsDelayedBaseChordComponent(5)
+%#  }
+%#
+
+second_broken_down_fifth_move_rule(CurrentChord, PrevChord, PunishmentValue) :-
+    PrevChord = chord(_, _, _, _, HF),
+    HF = harmonic_function(_, _, _, _, _, Extra, _, _, _, _, _),
+    list_contains_chord_component_with_string_repr("5>", Extra),
+    get_voice_with_chord_component_string("5>", PrevChord, VoiceWith5),
+    get_note_with_voice_index(CurrentChord, VoiceWith5, Note1),
+    get_note_with_voice_index(PrevChord, VoiceWith5, Note2),
+    Note1 = note(Pitch1, _, _),
+    Note2 = note(Pitch2, _, _),
+    \+ Pitch1 is Pitch2,
+    \+ Note1 = note(_, _, chord_component(_, 3)),
+    %#    !currentChord.harmonicFunction.containsDelayedBaseChordComponent(3)
+    PunishmentValue is 20.
+
+
+%#  private def brokenDownFifthMoveRule(prevChord: Chord, currentChord: Chord): Boolean = {
+%#    val dominantVoiceWithAlt5 = prevChord.getVoiceWithComponentString("5>")
+%#    dominantVoiceWithAlt5 > -1 && !prevChord
+%#      .notes(dominantVoiceWithAlt5)
+%#      .equalPitches(currentChord.notes(dominantVoiceWithAlt5)) &&
+%#    !currentChord.notes(dominantVoiceWithAlt5).baseChordComponentEquals(3) &&
+%#    !currentChord.harmonicFunction.containsDelayedBaseChordComponent(3)
+%#  }
+
+
+connection_dominant_second_relation_rule_base(CurrentChord, PrevChord) :-
+     CurrentChord = chord(_, _, _, _, CurrentHF),
+     PrevChord = chord(_, _, _, _, PrevHF),
+     is_DT_connection(CurrentChord, PrevChord),
+     is_in_second_relation(CurrentHF, PrevHF).
+
+connection_dominant_second_relation_rule(CurrentChord, PrevChord, _, PunishmentValue) :-
+    connection_dominant_second_relation_rule_base(CurrentChord, PrevChord),
+    second_broken_third_move_rule(CurrentChord, PrevChord, PunishmentValue).
+
+connection_dominant_second_relation_rule(CurrentChord, PrevChord, _, PunishmentValue) :-
+    connection_dominant_second_relation_rule_base(CurrentChord, PrevChord),
+    second_broken_down_fifth_move_rule(CurrentChord, PrevChord, P1),
+    second_broken_fifth_move_rule(CurrentChord, PrevChord, P2),
+    second_broken_seventh_move_rule(CurrentChord, PrevChord, P3),
+    PunishmentValue is P1 + P2 + P3.
+
+connection_dominant_second_relation_rule(_, _, _, PunishmentValue) :-
+    PunishmentValue is 0.
+
 soft_rules(CurrentChord, PrevChord, PrevPrevChord, PunishmentValue) :-
     soprano_jump_to_large(CurrentChord, PrevChord, PrevPrevChord, P1),
     connection_not_contain_double_prime_or_fifth(CurrentChord, PrevChord, PrevPrevChord, P2),
@@ -403,7 +510,8 @@ soft_rules(CurrentChord, PrevChord, PrevPrevChord, PunishmentValue) :-
     connection_closest_move_rule(CurrentChord, PrevChord, P5),
     connection_not_contain_forbidden_sum_jumps(CurrentChord, PrevChord, PrevPrevChord, P6),
     connection_dominant_relation_rule(CurrentChord, PrevChord, PrevPrevChord, P7),
-    PunishmentValue is P1 + P2 + P3 + P4 + P5 + P6 + P7.
+    connection_dominant_second_relation_rule(CurrentChord, PrevChord, PrevPrevChord, P8),
+    PunishmentValue is P1 + P2 + P3 + P4 + P5 + P6 + P7 + P8.
 
 soft_rules(_, _, PunishmentValue) :-
     PunishmentValue is 0.

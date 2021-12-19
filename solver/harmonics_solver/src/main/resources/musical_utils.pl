@@ -180,4 +180,8 @@ get_note_with_voice_index(Chord, Voice_no, Note) :-
     Voice_no is 4,
     Note = SopranoNote.
 
+is_in_second_relation(CurrentHF, PrevHF) :-
+    CurrentHF = harmonic_function(_, CurrentDegree, _, _, _, _, _, _, _, _, _),
+    PrevHF = harmonic_function(_, PrevDegree, _, _, _, _, _, _, _, _, _),
+    CurrentDegree - PrevDegree is 1.
 

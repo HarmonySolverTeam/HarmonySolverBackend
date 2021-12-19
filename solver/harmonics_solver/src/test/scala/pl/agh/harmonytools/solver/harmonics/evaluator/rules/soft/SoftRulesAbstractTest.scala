@@ -66,31 +66,37 @@ trait SoftRulesAbstractTest extends FunSuite with Matchers with TestUtils {
 //      isNotBroken(rule, Connection(t2, d, Option(dummy))) shouldBe true
       isBroken(rule, Connection(t2, drev7, Option(dummy))) shouldBe true
     }
-//
-//    test("D -> TVI test") {
-//      val d7 = Chord(Note(65, F, seventh), Note(62, D, fifth), Note(59, B, third), Note(55, G, prime), dominant7)
-//      val t1 = Chord(Note(64, E, fifth), Note(60, C, third), Note(60, C, third), Note(57, A, prime), tonicVI)
-//      val d = Chord(Note(67, G, prime), Note(62, D, fifth), Note(59, B, third), Note(55, G, prime), dominant)
-//      val rule = DominantSecondRelationConnectionRule()
+
+    test("second relation D -> TVI test") {
+      val d7 = Chord(Note(65, F, seventh), Note(62, D, fifth), Note(59, B, third), Note(55, G, prime), dominant7)
+      val t1 = Chord(Note(64, E, fifth), Note(60, C, third), Note(60, C, third), Note(57, A, prime), tonicVI)
+      val d = Chord(Note(67, G, prime), Note(62, D, fifth), Note(59, B, third), Note(55, G, prime), dominant)
+
+      val dummy = d7
+
+      val rule = DominantSecondRelationConnectionRule()
 //      val ruleIllegal3 = IllegalDoubledThirdRule()
-//      isNotBroken(rule, Connection(t1, d7)) shouldBe true
-//      isNotBroken(rule, Connection(t1, d)) shouldBe true
+      isNotBroken(rule, Connection(t1, d7, Option(dummy))) shouldBe true
+      isNotBroken(rule, Connection(t1, d, Option(dummy))) shouldBe true
 //      isNotBroken(ruleIllegal3, Connection(t1, d7)) shouldBe true
 //      isNotBroken(ruleIllegal3, Connection(t1, d)) shouldBe true
-//    }
-//
-//    test("D -> TVIdown test") {
-//      val d7 = Chord(Note(65, F, seventh), Note(62, D, fifth), Note(59, B, third), Note(55, G, prime), dominant7)
-//      val t1 = Chord(Note(63, E, fifthD), Note(60, C, thirdD), Note(60, C, thirdD), Note(56, A, primeD), tonicVIDown)
-//      val d = Chord(Note(67, G, prime), Note(62, D, fifth), Note(59, B, third), Note(55, G, prime), dominant)
-//      val rule = DominantSecondRelationConnectionRule()
+    }
+
+    test("second relation D -> TVIdown test") {
+      val d7 = Chord(Note(65, F, seventh), Note(62, D, fifth), Note(59, B, third), Note(55, G, prime), dominant7)
+      val t1 = Chord(Note(63, E, fifthD), Note(60, C, thirdD), Note(60, C, thirdD), Note(56, A, primeD), tonicVIDown)
+      val d = Chord(Note(67, G, prime), Note(62, D, fifth), Note(59, B, third), Note(55, G, prime), dominant)
+
+      val dummy = d7
+
+      val rule = DominantSecondRelationConnectionRule()
 //      val ruleIllegal3 = IllegalDoubledThirdRule()
-//      isNotBroken(rule, Connection(t1, d7)) shouldBe true
-//      isNotBroken(rule, Connection(t1, d)) shouldBe true
+      isNotBroken(rule, Connection(t1, d7, Option(dummy))) shouldBe true
+      isNotBroken(rule, Connection(t1, d, Option(dummy))) shouldBe true
 //      isNotBroken(ruleIllegal3, Connection(t1, d7)) shouldBe true
 //      isNotBroken(ruleIllegal3, Connection(t1, d)) shouldBe true
-//    }
-//
+    }
+
     test("D -> T6-4 test") {
       val t64 = HarmonicFunction(
         TONIC,
