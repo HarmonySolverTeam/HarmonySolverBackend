@@ -3,18 +3,14 @@ package pl.agh.harmonytools.soprano.genetic
 import io.jenetics.util.RandomRegistry
 import pl.agh.harmonytools.error.HarmonySolverError
 import pl.agh.harmonytools.exercise.soprano.SopranoExercise
-import pl.agh.harmonytools.integrations.jenetics.{GeneticProblem, JGenotype}
+import pl.agh.harmonytools.integrations.jenetics.{Fitness, GeneticProblem, JGenotype}
 import pl.agh.harmonytools.solver.harmonics.evaluator.ChordRulesChecker
 import pl.agh.harmonytools.solver.soprano.SopranoSolver
 import pl.agh.harmonytools.solver.soprano.evaluator.{HarmonicFunctionWithSopranoInfo, SopranoRulesChecker}
 
-import scala.util.Random
-
-class FitnessResult(val value: Double) extends Comparable[FitnessResult] {
+class FitnessResult(val value: Double) extends Fitness[FitnessResult] {
   override def compareTo(o: FitnessResult): Int = {
-    if (value > o.value) 1
-    else if (value == o.value) 0
-    else -1
+    value.compareTo(o.value)
   }
 
   def toDouble: Double = value
@@ -24,7 +20,7 @@ case class SopranoHarmonizationProblem(exercise: SopranoExercise)
   extends GeneticProblem[SopranoGeneticSolution, SopranoHarmonizationGene, FitnessResult] {
   private val chordEvaluator            = ChordRulesChecker(isFixedSoprano = true)
   private val harmonicFunctionEvaluator = SopranoRulesChecker(exercise.key)
-  private val generator                 = SopranoChordGenerator(exercise.possibleFunctionsList, exercise.key)
+  private val generator                 = SopranoChordGenerator(exercise.key)
 
   override def computeFitness(input: SopranoGeneticSolution): FitnessResult = {
     val chordEvaluationValue = chordEvaluator.evaluate(input.getStandardChords)
@@ -36,7 +32,7 @@ case class SopranoHarmonizationProblem(exercise: SopranoExercise)
           zipped._1.content.sopranoNote.withoutChordContext
         )
       }
-    val harmonicFunctionEvaluationValue = 0.0 // harmonicFunctionEvaluator.evaluate(inputs)
+    val harmonicFunctionEvaluationValue = harmonicFunctionEvaluator.evaluate(inputs)
     new FitnessResult(chordEvaluationValue + harmonicFunctionEvaluationValue)
   }
 

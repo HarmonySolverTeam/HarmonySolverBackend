@@ -13,15 +13,13 @@ import java.util.concurrent.Executor
 class GeneticEngineBuilderTest extends FunSuite with Matchers {
   private val builder            = GeneticEngine.builder(new TestGeneticProblem)
   private val genotype           = Genotype.create(Seq(new TestChromosome(new TestItemWrapper(List(1, 2, 3)))))
-  private val boltzmannSelector  = new BoltzmannSelector[TestGene, Integer]
-  private val tournamentSelector = new TournamentSelector[TestGene, Integer]
-  private val rouletteSelector   = new RouletteWheelSelector[TestGene, Integer]
-  private val alterers = List(
-    new Mutator[TestGene, Integer],
-    new WeaselMutator[TestGene, Integer],
-    new SwapMutator[TestGene, Integer]
-  )
+  private val boltzmannSelector  = new BoltzmannSelector[TestGene, TestFitness]
+  private val tournamentSelector = new TournamentSelector[TestGene, TestFitness]
+  private val rouletteSelector   = new RouletteWheelSelector[TestGene, TestFitness]
+
   private val population = 111
+
+  implicit def int2fitness(i: Integer): TestFitness = TestFitness(i)
 
   test("population") {
     builder.populationSize(population)
@@ -30,7 +28,7 @@ class GeneticEngineBuilderTest extends FunSuite with Matchers {
 
   test("fitness function") {
     val fitness =
-      (genotype: Genotype[TestGene]) => new Integer(genotype.getChromosome.asInstanceOf[TestChromosome].getGene(0).item)
+      (genotype: Genotype[TestGene]) => TestFitness(new Integer(genotype.getChromosome.asInstanceOf[TestChromosome].getGene(0).item))
     builder.fitnessFunction(fitness)
     assertBuild(_.getFitnessFunction.apply(genotype), fitness(genotype))
   }
@@ -55,11 +53,6 @@ class GeneticEngineBuilderTest extends FunSuite with Matchers {
     builder.selector(rouletteSelector)
     assertBuild(_.getOffspringSelector, rouletteSelector)
     assertBuild(_.getSurvivorsSelector, rouletteSelector)
-  }
-
-  test("alterers") {
-    builder.alterers(alterers: _*)
-    assertBuild(_.getAlterers, Alterer.of(alterers: _*))
   }
 
   test("optimize") {
@@ -126,6 +119,6 @@ class GeneticEngineBuilderTest extends FunSuite with Matchers {
     assertBuild(_.getIndividualCreationRetries, 11)
   }
 
-  def assertBuild[A](f: Engine.Builder[TestGene, Integer] => A, result: A): Assertion =
+  def assertBuild[A](f: Engine.Builder[TestGene, TestFitness] => A, result: A): Assertion =
     f(builder.jeneticsEngine) shouldBe result
 }

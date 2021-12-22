@@ -58,7 +58,8 @@ lazy val rest = project
     harmonics_parser,
     bass_solver,
     soprano_solver,
-    validator
+    validator,
+    soprano_solver_genetic
   )
 
 lazy val model = project

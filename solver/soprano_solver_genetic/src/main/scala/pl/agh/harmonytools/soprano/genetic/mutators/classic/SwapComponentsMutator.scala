@@ -1,12 +1,13 @@
-package pl.agh.harmonytools.soprano.genetic.mutators
+package pl.agh.harmonytools.soprano.genetic.mutators.classic
 
 import io.jenetics.Mutator
+import pl.agh.harmonytools.soprano.genetic.mutators.SopranoHarmonizationMutator
 import pl.agh.harmonytools.soprano.genetic.{FitnessResult, SopranoHarmonizationGene}
 
 import java.util.Random
 
 class SwapComponentsMutator(mutationProbability: Double)
-  extends Mutator[SopranoHarmonizationGene, FitnessResult](mutationProbability) {
+  extends SopranoHarmonizationMutator(mutationProbability) {
   override def mutate(gene: SopranoHarmonizationGene, random: Random): SopranoHarmonizationGene = {
     val chord = gene.getAllele.content
 
@@ -18,7 +19,7 @@ class SwapComponentsMutator(mutationProbability: Double)
     val chordComponents = List(sopranoComponent, tenorComponent, altoComponent, bassComponent)
 
     val possibleChords =
-      gene.generateSubstitutions.filter(_.notes.map(_.chordComponent) == chordComponents)
+      gene.generateSubstitutions(_.notes.map(_.chordComponent) == chordComponents)
     if (possibleChords.nonEmpty)
       gene.newInstance(possibleChords, random)
     else

@@ -6,10 +6,14 @@ import io.jenetics.engine.{Engine, EvolutionResult}
 
 import java.time.Clock
 import java.util.concurrent.Executor
+import java.util.concurrent.atomic.AtomicInteger
 import scala.collection.JavaConverters._
 
-class GeneticEngineBuilder[T <: ItemWrapper[_], G <: JGene[_, G], C <: Comparable[C]](
-  private[jenetics] val jeneticsEngine: Engine.Builder[G, C]
+case class GeneticEngineBuilder[T <: ItemWrapper[_], G <: JGene[_, G], C <: Fitness[C]](
+  private[jenetics] val jeneticsEngine: Engine.Builder[G, C],
+  private val recombinators: Seq[Recombinator[G, C]] = Seq(),
+  private val repairOperators: Seq[RepairOperator[G, C]] = Seq(),
+  private val otherMutators: Seq[Mutator[G, C]] = Seq()
 ) {
 
   type GE = GeneticEngineBuilder[T, G, C]
@@ -24,7 +28,11 @@ class GeneticEngineBuilder[T <: ItemWrapper[_], G <: JGene[_, G], C <: Comparabl
 
   def selector(selector: Selector[G, C]): GE = mod(_.selector(selector))
 
-  def alterers(alterers: Alterer[G, C]*): GE = mod(_.alterers(alterers.head, alterers.tail: _*))
+  def repairOperators(repairOperators: RepairOperator[G, C]*): GE = copy(repairOperators = repairOperators)
+
+  def recombinators(recombinators: Recombinator[G, C]*): GE = copy(recombinators = recombinators)
+
+  def mutators(mutators: Mutator[G, C]*): GE = copy(otherMutators = mutators)
 
   def phenotypeValidator(validator: Phenotype[G, C] => Boolean): GE =
     mod(_.phenotypeValidator((p: Phenotype[G, C]) => validator(p)))
@@ -63,22 +71,45 @@ class GeneticEngineBuilder[T <: ItemWrapper[_], G <: JGene[_, G], C <: Comparabl
   def mapping(mapper: EvolutionResult[G, C] => EvolutionResult[G, C]): GE =
     mod(_.mapping((res: EvolutionResult[G, C]) => mapper(res)))
 
-  def build(): GeneticEngine[G, C] = new GeneticEngine(jeneticsEngine.build())
+  def getAlterers: Seq[Alterer[G, C]] = otherMutators ++ recombinators ++ repairOperators
 
-  private def mod(op: Engine.Builder[G, C] => Unit): GE = {
-    op(jeneticsEngine)
-    this
+  def build(): GeneticEngine[G, C] = {
+    val alterers = getAlterers
+    new GeneticEngine(jeneticsEngine.alterers(alterers.head, alterers.tail: _*).build())
   }
+
+  private def mod(op: Engine.Builder[G, C] => Engine.Builder[G, C]): GE =
+    copy(jeneticsEngine = op(jeneticsEngine))
 
 }
 
-class GeneticEngine[G <: JGene[_, G], C <: Comparable[C]](jeneticsEngine: Engine[G, C]) {
-  def stream(): Stream[EvolutionResult[G, C]] =
-    jeneticsEngine.stream().iterator().asScala.toStream
+
+
+class GeneticEngine[G <: JGene[_, G], C <: Fitness[C]](val jeneticsEngine: Engine[G, C]) {
+  def stream(maxIterations: Int): Stream[EvolutionResult[G, C]] = {
+    val loader      = new AtomicInteger()
+    val fivePercent = maxIterations / 20
+    val startTime   = System.nanoTime()
+    jeneticsEngine
+      .stream()
+      .peek { stat =>
+        if (loader.incrementAndGet() % fivePercent == 0) {
+          val currentTime  = System.nanoTime()
+          val mean         = (currentTime - startTime) / loader.get() / 1e9d
+          val timeToTheEnd = (maxIterations - loader.get()) * mean
+          println(s"${loader.get()}/${maxIterations} | ${5 * (loader
+            .get() / fivePercent)}% | $mean s/it | $timeToTheEnd s remaining | current rating ${stat.getBestFitness.toDouble}")
+        }
+      }
+      .iterator()
+      .asScala
+      .toStream
+      .take(maxIterations)
+  }
 }
 
 object GeneticEngine {
-  def builder[T <: ItemWrapper[_], G <: JGene[_, G], C <: Comparable[C]](
+  def builder[T <: ItemWrapper[_], G <: JGene[_, G], C <: Fitness[C]](
     problem: GeneticProblem[T, G, C]
   ): GeneticEngineBuilder[T, G, C] =
     new GeneticEngineBuilder[T, G, C](Engine.builder(problem))

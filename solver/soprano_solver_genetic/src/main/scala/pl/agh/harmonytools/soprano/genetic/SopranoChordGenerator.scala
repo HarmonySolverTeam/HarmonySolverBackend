@@ -2,10 +2,12 @@ package pl.agh.harmonytools.soprano.genetic
 
 import pl.agh.harmonytools.algorithm.generator.LayerGenerator
 import pl.agh.harmonytools.model.chord.Chord
-import pl.agh.harmonytools.model.harmonicfunction.HarmonicFunction
+import pl.agh.harmonytools.model.harmonicfunction.{BaseFunction, HarmonicFunction}
 import pl.agh.harmonytools.model.key.Key
+import pl.agh.harmonytools.model.util.ChordComponentManager
 import pl.agh.harmonytools.solver.harmonics.generator.{ChordGenerator, ChordGeneratorInput}
 import pl.agh.harmonytools.solver.soprano.generator.{HarmonicFunctionGenerator, HarmonicFunctionGeneratorInput}
+import pl.agh.harmonytools.utils.TestUtils
 
 import scala.collection.immutable.HashMap
 import scala.collection.mutable
@@ -32,5 +34,34 @@ case class SopranoChordGenerator(
         map.put(input, list)
         list
     }
+  }
+}
+
+object SopranoChordGenerator extends TestUtils {
+  def apply(key: Key): SopranoChordGenerator = {
+    import HarmonicFunctions._
+    import ChordComponents._
+
+    val baseFunctions: List[HarmonicFunction] = List(
+      tonic, subdominant, dominant
+    )
+
+    val inversionFunctions: List[HarmonicFunction] = baseFunctions.map {
+      f => f.getBasicChordComponents.map(cc => f.copy(inversion = cc))
+    }.reduce(_ ++ _)
+
+    val functionsWithExtra: List[HarmonicFunction] = List(
+      dominant7,
+      dominantRev7,
+      subdominant6
+    )
+
+    val omitFunctions: List[HarmonicFunction] = List(
+      dominant7.copy(omit = Set(fifth)),
+      dominant7.copy(omit = Set(prime))
+    )
+
+    val possibleFunctions = baseFunctions ++ inversionFunctions ++ functionsWithExtra ++ omitFunctions
+    SopranoChordGenerator(possibleFunctions, key)
   }
 }

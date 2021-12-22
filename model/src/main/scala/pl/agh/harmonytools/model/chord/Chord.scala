@@ -72,6 +72,10 @@ case class Chord(
     (0 until 4).find(notes(_).chordComponentEquals(chordComponent)).getOrElse(-1)
   }
 
+  def getChordComponents: Set[ChordComponent] = {
+    notes.map(_.chordComponent).toSet
+  }
+
   def setDuration(d: Double): Unit = duration = d
 }
 

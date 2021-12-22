@@ -15,7 +15,7 @@ case class SopranoHarmonizationGene(
   id: Int
 ) extends Gene[GeneticChord, SopranoHarmonizationGene](chord) {
   override def newInstance(): SopranoHarmonizationGene =
-    newInstance(generateSubstitutions, RandomRegistry.getRandom)
+    newInstance(generateSubstitutions(), RandomRegistry.getRandom)
 
   override def newInstance(newChord: GeneticChord): SopranoHarmonizationGene = copy(chord = newChord)
 
@@ -23,9 +23,10 @@ case class SopranoHarmonizationGene(
     HarmonicFunctionGeneratorInput(chord.content.sopranoNote.withoutChordContext, measurePlace, isFirst, isLast)
 
   def newInstance(chords: List[Chord], random: java.util.Random): SopranoHarmonizationGene = {
+    assert(chords.nonEmpty)
     val chord = chords(random.nextInt(chords.length))
     newInstance(GeneticChord(chord, id))
   }
 
-  def generateSubstitutions: List[Chord] = generator.generate(toGeneratorInput)
+  def generateSubstitutions(filter: Chord => Boolean = _ => true): List[Chord] = generator.generate(toGeneratorInput).filter(filter)
 }

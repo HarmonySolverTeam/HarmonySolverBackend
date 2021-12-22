@@ -1,18 +1,20 @@
-package pl.agh.harmonytools.soprano.genetic.mutators
+package pl.agh.harmonytools.soprano.genetic.mutators.repair
 
 import io.jenetics.internal.math.probability
 import io.jenetics.util.ISeq
-import io.jenetics.{Chromosome, Mutator, MutatorResult}
+import io.jenetics.{Chromosome, MutatorResult}
 import pl.agh.harmonytools.algorithm.evaluator.{Connection, IRule}
+import pl.agh.harmonytools.integrations.jenetics.RepairOperator
 import pl.agh.harmonytools.model.chord.Chord
+import pl.agh.harmonytools.soprano.genetic.mutators.SopranoHarmonizationRepairOperator
 import pl.agh.harmonytools.soprano.genetic.{FitnessResult, SopranoHarmonizationGene}
 
 import java.util.Random
 import scala.collection.JavaConverters.asScalaIteratorConverter
 
 abstract class MutatorForBigram(rule: IRule[Chord], mutationProbability: Double = 1.0)
-  extends Mutator[SopranoHarmonizationGene, FitnessResult](mutationProbability) {
-  protected def currentChordFilterFunction: Chord => Boolean
+  extends SopranoHarmonizationRepairOperator(mutationProbability) {
+  protected def currentChordFilterFunction(gene: SopranoHarmonizationGene): Chord => Boolean
 
   def conditionToMutate(prevGene: SopranoHarmonizationGene, currentGene: SopranoHarmonizationGene): Boolean =
       rule.isBroken(Connection(currentGene.getAllele.content, prevGene.getAllele.content))
@@ -49,7 +51,7 @@ abstract class MutatorForBigram(rule: IRule[Chord], mutationProbability: Double 
   }
 
   override protected def mutate(gene: SopranoHarmonizationGene, random: Random): SopranoHarmonizationGene = {
-    val correctChords = gene.generateSubstitutions.filter(currentChordFilterFunction)
+    val correctChords = gene.generateSubstitutions(currentChordFilterFunction(gene))
     if (correctChords.nonEmpty)
       gene.newInstance(correctChords, random)
     else
