@@ -5,7 +5,7 @@ import pl.agh.harmonytools.solver.harmonics.evaluator.rules.hard.IllegalDoubledT
 import pl.agh.harmonytools.soprano.genetic.SopranoHarmonizationGene
 
 
-class SingleThirdMutator(mutationProbability: Double)
-  extends MutatorForBigram(rule = IllegalDoubledThirdRule(), mutationProbability = mutationProbability) {
+class SingleThirdMutator()
+  extends MutatorForBigramSecond(IllegalDoubledThirdRule()) {
   override protected def currentChordFilterFunction(gene: SopranoHarmonizationGene): Chord => Boolean = !_.hasIllegalDoubled3
 }

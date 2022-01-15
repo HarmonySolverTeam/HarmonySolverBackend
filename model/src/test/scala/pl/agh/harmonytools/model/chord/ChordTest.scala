@@ -16,4 +16,11 @@ class ChordTest extends FunSuite with Matchers with TestUtils {
     ch1.hasIllegalDoubled3 shouldBe true
     ch2.hasIllegalDoubled3 shouldBe false
   }
+
+  test("System test") {
+    val ch1 = Chord(Note(72, C, third), Note(64, E, third), Note(55, G, fifth), Note(48, C, prime), tonic)
+    val ch2 = Chord(Note(69, A, fifthD), Note(65, F, thirdD), Note(61, D, primeD), Note(41, F, thirdD), neapolitan)
+    ch1.computeSystem shouldBe ChordSystem.OPEN
+    ch2.computeSystem shouldBe ChordSystem.CLOSE
+  }
 }

@@ -2,6 +2,7 @@ package pl.agh.harmonytools.model.chord
 
 import pl.agh.harmonytools.algorithm.graph.node.NodeContent
 import pl.agh.harmonytools.error.{RequirementChecker, UnexpectedInternalError}
+import pl.agh.harmonytools.model.chord.ChordSystem.ChordSystem
 import pl.agh.harmonytools.model.harmonicfunction.BaseFunction.TONIC
 import pl.agh.harmonytools.model.harmonicfunction.HarmonicFunction
 import pl.agh.harmonytools.model.note.{BaseNote, Note}
@@ -77,6 +78,23 @@ case class Chord(
   }
 
   def setDuration(d: Double): Unit = duration = d
+
+  def computeSystem: ChordSystem = {
+    harmonicFunction.system match {
+      case system@ChordSystem.OPEN => system
+      case system@ChordSystem.CLOSE => system
+      case ChordSystem.UNDEFINED =>
+        val sopranoPitch = sopranoNote.pitch
+        val tenorPitch = tenorNote.pitch
+        val altoPitch = altoNote.pitch
+        for (i <- 0 until 3) {
+          if (tenorPitch + 12 * i < sopranoPitch && tenorPitch + 12 * i > altoPitch) {
+            return ChordSystem.OPEN
+          }
+        }
+        ChordSystem.CLOSE
+    }
+  }
 }
 
 object Chord {

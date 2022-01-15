@@ -13,4 +13,22 @@ package object mutators {
       list.updated(first, list(second)).updated(second, list(first))
     }
   }
+
+  def randomWeighted[T](objWithWeights: List[(T, Double)], random: Random): T = {
+    val sum = objWithWeights.map(_._2).sum
+    val normalized = objWithWeights.map {
+      case (value, weight) =>
+        (value, weight / sum)
+    }
+
+    val rand = random.nextDouble()
+    var acc = 0.0
+    for (obj <- normalized) {
+      acc += obj._2
+      if (rand < acc) {
+        return obj._1
+      }
+    }
+    normalized.last._1
+  }
 }

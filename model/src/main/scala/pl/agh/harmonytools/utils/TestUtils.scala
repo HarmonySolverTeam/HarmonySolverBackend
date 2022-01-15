@@ -8,7 +8,7 @@ import pl.agh.harmonytools.model.key.Key
 import pl.agh.harmonytools.model.key.Mode.MINOR
 import pl.agh.harmonytools.model.note.BaseNote.C
 import pl.agh.harmonytools.model.note.{Note, NoteWithoutChordContext}
-import pl.agh.harmonytools.model.scale.ScaleDegree.{II, VI}
+import pl.agh.harmonytools.model.scale.ScaleDegree.{II, III, VI, VII}
 import pl.agh.harmonytools.model.util.ChordComponentManager
 
 trait TestUtils {
@@ -42,6 +42,10 @@ trait TestUtils {
     val tonicVIDown: HarmonicFunction   = HarmonicFunction(TONIC, degree = Some(VI), isDown = true)
     val subdominant6: HarmonicFunction  = HarmonicFunction(SUBDOMINANT, extra = Set(ChordComponents.sixth))
     val subdominantII: HarmonicFunction = HarmonicFunction(SUBDOMINANT, degree = Some(II))
+    val subdominantVI: HarmonicFunction = HarmonicFunction(SUBDOMINANT, degree = Some(VI))
+    val tonicIII: HarmonicFunction = HarmonicFunction(TONIC, degree = Some(III))
+    val dominantIII: HarmonicFunction = HarmonicFunction(DOMINANT, degree = Some(III))
+    val dominantVII: HarmonicFunction = HarmonicFunction(DOMINANT, degree = Some(VII))
   }
 
   protected object ChordComponents {

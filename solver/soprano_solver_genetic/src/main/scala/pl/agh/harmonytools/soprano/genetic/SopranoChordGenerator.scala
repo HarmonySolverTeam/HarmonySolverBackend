@@ -20,6 +20,10 @@ case class SopranoChordGenerator(
   private val chordGenerator            = ChordGenerator(key)
   private val map = new mutable.HashMap[HarmonicFunctionGeneratorInput, List[Chord]]()
 
+  def getMapLengths: (Int, Int) = {
+    (map.keys.size, map.values.map(_.size).sum)
+  }
+
   override def generate(input: HarmonicFunctionGeneratorInput): List[Chord] = {
     map.get(input) match {
       case Some(list) => list
@@ -61,7 +65,16 @@ object SopranoChordGenerator extends TestUtils {
       dominant7.copy(omit = Set(prime))
     )
 
-    val possibleFunctions = baseFunctions ++ inversionFunctions ++ functionsWithExtra ++ omitFunctions
+    val sideFunctions: List[HarmonicFunction] = List(
+      subdominantII,
+      tonicIII,
+      dominantIII,
+      tonicVI,
+      subdominantVI,
+      dominantVII
+    )
+
+    val possibleFunctions = baseFunctions ++ inversionFunctions ++ functionsWithExtra ++ omitFunctions ++ sideFunctions
     SopranoChordGenerator(possibleFunctions, key)
   }
 }

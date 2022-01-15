@@ -5,6 +5,7 @@ import pl.agh.harmonytools.integrations.jenetics.Gene
 import pl.agh.harmonytools.model.chord.Chord
 import pl.agh.harmonytools.model.measure.MeasurePlace.MeasurePlace
 import pl.agh.harmonytools.solver.soprano.generator.HarmonicFunctionGeneratorInput
+import pl.agh.harmonytools.soprano.genetic.mutators.randomWeighted
 
 case class SopranoHarmonizationGene(
   chord: GeneticChord,
@@ -24,8 +25,10 @@ case class SopranoHarmonizationGene(
 
   def newInstance(chords: List[Chord], random: java.util.Random): SopranoHarmonizationGene = {
     assert(chords.nonEmpty)
-    val chord = chords(random.nextInt(chords.length))
-    newInstance(GeneticChord(chord, id))
+    val weightedChords = chords.map(c => (c, 100 - chord.computeMetric(c)))
+    val chosenChord = randomWeighted(weightedChords, random)
+//    val chord = chords(random.nextInt(chords.length))
+    newInstance(GeneticChord(chosenChord, id))
   }
 
   def generateSubstitutions(filter: Chord => Boolean = _ => true): List[Chord] = generator.generate(toGeneratorInput).filter(filter)
