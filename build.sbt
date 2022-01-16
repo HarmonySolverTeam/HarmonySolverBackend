@@ -10,7 +10,8 @@ lazy val settings = Seq(
 )
 
 lazy val testDependencies = Seq(
-  "org.scalatest" %% "scalatest" % "3.0.4" % Test
+  "org.scalatest" %% "scalatest" % "3.0.4" % Test,
+  "com.bayesfusion" % "jsmile" % "1.6.0" from "file:///home/jsroka/Study/HarmonySolverBackend/libs/jsmile-1.6.0.jar"
 )
 
 lazy val playDependencies = Seq(
@@ -98,7 +99,7 @@ lazy val solver = project
   .settings(
     name := "solver",
     settings,
-    libraryDependencies ++= testDependencies
+    libraryDependencies ++= testDependencies ++ Seq("com.bayesfusion" % "jsmile" % "1.6.0" from "file:///home/jsroka/Study/HarmonySolverBackend/libs/jsmile-1.6.0.jar")
   )
   .aggregate(
     harmonics_solver,
@@ -138,7 +139,7 @@ lazy val soprano_solver = project
   .settings(
     name := "soprano_solver",
     settings,
-    libraryDependencies ++= testDependencies
+    libraryDependencies ++= testDependencies  ++ Seq("com.bayesfusion" % "jsmile" % "1.6.0" from "file:///home/jsroka/Study/HarmonySolverBackend/libs/jsmile-1.6.0.jar")
   )
   .dependsOn(
     harmonics_solver
