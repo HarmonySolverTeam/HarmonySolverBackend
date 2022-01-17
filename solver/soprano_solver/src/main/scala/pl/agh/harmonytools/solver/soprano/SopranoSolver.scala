@@ -30,25 +30,6 @@ case class SopranoSolver(
   private val harmonicFunctionGenerator = HarmonicFunctionGenerator(exercise.possibleFunctionsList, exercise.key)
   private val sopranoRulesChecker       = SopranoRulesChecker(exercise.key, punishmentRatios)
 
-  private def prepareSopranoGeneratorInputs(): List[HarmonicFunctionGeneratorInput] = {
-    var inputs: List[HarmonicFunctionGeneratorInput] = List.empty
-    for (i <- exercise.measures.indices) {
-      val measure     = exercise.measures(i).contents
-      var durationSum = 0.0
-      for (j <- measure.indices) {
-        val note = measure(j)
-        inputs = inputs :+ HarmonicFunctionGeneratorInput(
-          note,
-          MeasurePlace.getMeasurePlace(exercise.meter, durationSum),
-          i == 0 && j == 0,
-          i == exercise.measures.length - 1 && j == measure.length - 1
-        )
-        durationSum += note.duration
-      }
-    }
-    inputs
-  }
-
   private val nestedFirst: Chord                     = Chord.empty
   private val nestedLast: Chord                      = Chord.empty
   private val first: HarmonicFunctionWithSopranoInfo = HarmonicFunctionWithSopranoInfo.empty
@@ -71,7 +52,7 @@ case class SopranoSolver(
 
     graphBuilder.withOuterGenerator(harmonicFunctionGenerator);
     graphBuilder.withOuterEvaluator(sopranoRulesChecker);
-    graphBuilder.withOuterGeneratorInputs(prepareSopranoGeneratorInputs())
+    graphBuilder.withOuterGeneratorInputs(SopranoSolver.prepareSopranoGeneratorInputs(exercise))
     graphBuilder.withInnerGenerator(ChordGenerator(exercise.key))
     val innerEvaluator = punishmentRatios match {
       case _ if exercise.evaluateWithProlog => PrologChordRulesChecker(isFixedSoprano = true)
@@ -106,6 +87,25 @@ case class SopranoSolver(
 }
 
 object SopranoSolver extends App {
+  def prepareSopranoGeneratorInputs(exercise: SopranoExercise): List[HarmonicFunctionGeneratorInput] = {
+    var inputs: List[HarmonicFunctionGeneratorInput] = List.empty
+    for (i <- exercise.measures.indices) {
+      val measure     = exercise.measures(i).contents
+      var durationSum = 0.0
+      for (j <- measure.indices) {
+        val note = measure(j)
+        inputs = inputs :+ HarmonicFunctionGeneratorInput(
+          note,
+          MeasurePlace.getMeasurePlace(exercise.meter, durationSum),
+          i == 0 && j == 0,
+          i == exercise.measures.length - 1 && j == measure.length - 1
+        )
+        durationSum += note.duration
+      }
+    }
+    inputs
+  }
+
   val exercise = SopranoExercise(
     Key("C"),
     Meter(4, 4),

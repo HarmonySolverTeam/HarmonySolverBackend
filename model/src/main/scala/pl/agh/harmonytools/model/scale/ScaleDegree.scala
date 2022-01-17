@@ -3,7 +3,9 @@ package pl.agh.harmonytools.model.scale
 import pl.agh.harmonytools.error.{RequirementChecker, UnexpectedInternalError}
 
 object ScaleDegree {
-  sealed abstract class Degree(val root: Int)
+  sealed abstract class Degree(val root: Int) {
+    override def toString: String = super.toString.split("\\@").head.split("\\$").drop(1).head
+  }
 
   case object I   extends Degree(1)
   case object II  extends Degree(2)
@@ -26,6 +28,19 @@ object ScaleDegree {
       case 5 => V
       case 6 => VI
       case 7 => VII
+    }
+  }
+
+  def fromString(x: String): Degree = {
+    x match {
+      case "I"   => I
+      case "II"  => II
+      case "III" => III
+      case "IV"  => IV
+      case "V"   => V
+      case "VI"  => VI
+      case "VII" => VII
+      case _     => throw UnexpectedInternalError("Unknown ScaleDegree: " + x)
     }
   }
 

@@ -41,4 +41,9 @@ class IntervalUtilsTest extends FunSuite with Matchers {
     IntervalUtils.isFifthDiminished(MINOR, ScaleDegree.VI) shouldBe false
     IntervalUtils.isFifthDiminished(MINOR, ScaleDegree.VII) shouldBe false
   }
+
+  test("Degree toString") {
+    ScaleDegree.I.toString shouldBe "I"
+    ScaleDegree.VI.toString shouldBe "VI"
+  }
 }
