@@ -18,10 +18,13 @@ class BayesNetSopranoSolver(exercise: SopranoExercise, choosingTactic: ChoosingT
     input.measurePlace match {
       case pl.agh.harmonytools.model.measure.MeasurePlace.UPBEAT =>
         net.setEvidence("MeasurePlace", "Weak")
+        net.setEvidence("MeasureBeginning", "No")
       case pl.agh.harmonytools.model.measure.MeasurePlace.DOWNBEAT =>
         net.setEvidence("MeasurePlace", "Strong")
+        net.setEvidence("MeasureBeginning", "No")
       case pl.agh.harmonytools.model.measure.MeasurePlace.BEGINNING =>
         net.setEvidence("MeasurePlace", "Strong")
+        net.setEvidence("MeasureBeginning", "Yes")
     }
   }
 
@@ -69,7 +72,7 @@ class BayesNetSopranoSolver(exercise: SopranoExercise, choosingTactic: ChoosingT
   }
 
   private def getBaseHf: FunctionNames.BaseFunction = {
-    val hfName = getBeliefFromNet("Hypothesis")
+    val hfName = getBeliefFromNet("FunctionName")
     FunctionNames.fromName(hfName)
   }
 
@@ -79,7 +82,7 @@ class BayesNetSopranoSolver(exercise: SopranoExercise, choosingTactic: ChoosingT
 
   private def setCommonEvidences(input: HarmonicFunctionGeneratorInput): Unit = {
     setEvidenceMeasurePlace(input)
-    // setEvidenceNote(input) ->  Outcome [N6] of node [Note] is impossible???
+    setEvidenceNote(input)
     setEvidenceStartOrEnd(input)
   }
 

@@ -12,7 +12,7 @@
 			<state id="VII" />
 			<probabilities>0.15 0.14 0.14 0.14 0.15 0.14 0.14</probabilities>
 		</cpt>
-		<cpt id="Hypothesis">
+		<cpt id="FunctionName">
 			<state id="T" />
 			<state id="S" />
 			<state id="D" />
@@ -23,14 +23,25 @@
 			<state id="prevT" />
 			<state id="prevS" />
 			<state id="prevD" />
-			<parents>Hypothesis</parents>
+			<parents>FunctionName</parents>
 			<probabilities>0.2 0.2 0.6 0.7 0.3 0 0.2 0.6 0.2</probabilities>
+		</cpt>
+		<cpt id="PrevDegree">
+			<state id="I" />
+			<state id="II" />
+			<state id="III" />
+			<state id="IV" />
+			<state id="V" />
+			<state id="VI" />
+			<state id="VII" />
+			<parents>Degree</parents>
+			<probabilities>0.25 0.05 0.1 0.15 0.2 0.05 0.2 0.1 0.2 0.1 0.1 0.1 0.3 0.1 0.1 0.15 0.2 0.1 0.1 0.1 0.25 0.25 0.15 0.1 0.25 0 0.2 0.05 0.15 0.2 0.1 0.2 0.2 0.05 0.1 0.1 0.1 0.2 0.2 0.1 0.2 0.1 0.1 0.2 0.1 0.1 0.1 0.2 0.2</probabilities>
 		</cpt>
 		<cpt id="MeasurePlace">
 			<state id="Strong" />
 			<state id="Weak" />
-			<parents>Hypothesis PrevFunctionName</parents>
-			<probabilities>0.1 0.9 0.9 0.1 0.9 0.1 0.9 0.1 0.1 0.9 0.1 0.9 0.9 0.1 0.9 0.1 0.1 0.9</probabilities>
+			<parents>PrevDegree Degree</parents>
+			<probabilities>0.4 0.6 0.6 0.4 0.6 0.4 0.6 0.4 0.6 0.4 0.6 0.4 0.6 0.4 0.6 0.4 0.4 0.6 0.6 0.4 0.6 0.4 0.6 0.4 0.6 0.4 0.6 0.4 0.6 0.4 0.6 0.4 0.4 0.6 0.6 0.4 0.6 0.4 0.6 0.4 0.6 0.4 0.6 0.4 0.6 0.4 0.6 0.4 0.4 0.6 0.6 0.4 0.6 0.4 0.6 0.4 0.6 0.4 0.6 0.4 0.6 0.4 0.6 0.4 0.4 0.6 0.6 0.4 0.6 0.4 0.6 0.4 0.6 0.4 0.6 0.4 0.6 0.4 0.6 0.4 0.4 0.6 0.6 0.4 0.6 0.4 0.6 0.4 0.6 0.4 0.6 0.4 0.6 0.4 0.6 0.4 0.4 0.6</probabilities>
 		</cpt>
 		<cpt id="Note">
 			<state id="N1" />
@@ -47,25 +58,20 @@
 			<state id="Start" />
 			<state id="Middle" />
 			<state id="End" />
-			<parents>Hypothesis</parents>
+			<parents>FunctionName</parents>
 			<probabilities>0.33 0.34 0.33 0 1 0 0 1 0</probabilities>
 		</cpt>
-		<cpt id="PrevDegree">
-			<state id="I" />
-			<state id="II" />
-			<state id="III" />
-			<state id="IV" />
-			<state id="V" />
-			<state id="VI" />
-			<state id="VII" />
-			<parents>Degree</parents>
-			<probabilities>1 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 1</probabilities>
+		<cpt id="MeasureBeginning">
+			<state id="Yes" />
+			<state id="No" />
+			<parents>PrevFunctionName FunctionName</parents>
+			<probabilities>0.4 0.6 0.6 0.4 0.6 0.4 0.6 0.4 0.4 0.6 0.6 0.4 0.6 0.4 0.5 0.5 0.4 0.6</probabilities>
 		</cpt>
 	</nodes>
 	<extensions>
 		<genie version="1.0" app="GeNIe 3.0.6518.0 ACADEMIC" name="Network1">
-			<node id="Hypothesis">
-				<name>Hypothesis (CurrentFunctionName)</name>
+			<node id="FunctionName">
+				<name>FunctionName</name>
 				<interior color="e5f6f7" />
 				<outline color="000080" />
 				<font color="000000" name="Arial" size="8" />
@@ -77,7 +83,7 @@
 				<interior color="e5f6f7" />
 				<outline color="000080" />
 				<font color="000000" name="Arial" size="8" />
-				<position>243 159 393 276</position>
+				<position>270 201 420 318</position>
 				<barchart active="true" width="128" height="72" />
 			</node>
 			<node id="MeasurePlace">
@@ -85,7 +91,7 @@
 				<interior color="e5f6f7" />
 				<outline color="000080" />
 				<font color="000000" name="Arial" size="8" />
-				<position>533 96 613 146</position>
+				<position>382 366 462 416</position>
 				<barchart active="true" width="128" height="64" />
 			</node>
 			<node id="Note">
@@ -113,12 +119,20 @@
 				<barchart active="true" width="128" height="144" />
 			</node>
 			<node id="PrevDegree">
-				<name>Copy of Degree</name>
+				<name>PrevDegree</name>
 				<interior color="e5f6f7" />
 				<outline color="000080" />
 				<font color="000000" name="Arial" size="8" />
-				<position>242 366 290 396</position>
+				<position>129 411 177 441</position>
 				<barchart active="true" width="128" height="144" />
+			</node>
+			<node id="MeasureBeginning">
+				<name>MeasureBeginning</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>404 53 484 103</position>
+				<barchart active="true" width="128" height="64" />
 			</node>
 		</genie>
 	</extensions>
