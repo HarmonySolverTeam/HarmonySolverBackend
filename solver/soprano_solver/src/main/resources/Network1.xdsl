@@ -58,14 +58,43 @@
 			<state id="Start" />
 			<state id="Middle" />
 			<state id="End" />
-			<parents>FunctionName</parents>
-			<probabilities>0.33 0.34 0.33 0 1 0 0 1 0</probabilities>
+			<parents>FunctionName Degree</parents>
+			<probabilities>0.33 0.34 0.33 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0</probabilities>
 		</cpt>
 		<cpt id="MeasureBeginning">
 			<state id="Yes" />
 			<state id="No" />
 			<parents>PrevFunctionName FunctionName</parents>
 			<probabilities>0.4 0.6 0.6 0.4 0.6 0.4 0.6 0.4 0.4 0.6 0.6 0.4 0.6 0.4 0.5 0.5 0.4 0.6</probabilities>
+		</cpt>
+		<cpt id="IsJumpOrStep">
+			<state id="Jump" />
+			<state id="Step" />
+			<parents>Degree PrevDegree</parents>
+			<probabilities>0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5</probabilities>
+		</cpt>
+		<cpt id="Inversion">
+			<state id="Inv1" />
+			<state id="Inv3" />
+			<state id="Inv5" />
+			<parents>MeasurePlace StartOrEnd</parents>
+			<probabilities>1 0 0 0.8 0.2 0 0.8 0.2 0 1 0 0 0.5 0.25 0.25 0.5 0.25 0.25</probabilities>
+		</cpt>
+		<cpt id="Omit">
+			<state id="State0" />
+			<state id="State1" />
+			<probabilities>0.5 0.5</probabilities>
+		</cpt>
+		<cpt id="isJumpOrStep2">
+			<state id="Jump" />
+			<state id="Step" />
+			<parents>PrevFunctionName FunctionName</parents>
+			<probabilities>0.8 0.2 0.2 0.8 0.2 0.8 0.2 0.8 0.8 0.2 0.2 0.8 0.2 0.8 0.2 0.8 0.8 0.2</probabilities>
+		</cpt>
+		<cpt id="Extra">
+			<state id="State0" />
+			<state id="State1" />
+			<probabilities>0.5 0.5</probabilities>
 		</cpt>
 	</nodes>
 	<extensions>
@@ -75,7 +104,7 @@
 				<interior color="e5f6f7" />
 				<outline color="000080" />
 				<font color="000000" name="Arial" size="8" />
-				<position>519 284 748 426</position>
+				<position>767 179 996 321</position>
 				<barchart active="true" width="128" height="72" />
 			</node>
 			<node id="PrevFunctionName">
@@ -83,7 +112,7 @@
 				<interior color="e5f6f7" />
 				<outline color="000080" />
 				<font color="000000" name="Arial" size="8" />
-				<position>270 201 420 318</position>
+				<position>332 190 482 307</position>
 				<barchart active="true" width="128" height="72" />
 			</node>
 			<node id="MeasurePlace">
@@ -91,7 +120,7 @@
 				<interior color="e5f6f7" />
 				<outline color="000080" />
 				<font color="000000" name="Arial" size="8" />
-				<position>382 366 462 416</position>
+				<position>590 645 670 695</position>
 				<barchart active="true" width="128" height="64" />
 			</node>
 			<node id="Note">
@@ -99,7 +128,7 @@
 				<interior color="e5f6f7" />
 				<outline color="000080" />
 				<font color="000000" name="Arial" size="8" />
-				<position>436 636 478 662</position>
+				<position>859 755 901 781</position>
 				<barchart active="true" width="128" height="144" />
 			</node>
 			<node id="StartOrEnd">
@@ -107,15 +136,15 @@
 				<interior color="e5f6f7" />
 				<outline color="000080" />
 				<font color="000000" name="Arial" size="8" />
-				<position>759 133 903 223</position>
-				<barchart active="true" width="128" height="64" />
+				<position>1075 206 1219 296</position>
+				<barchart active="true" width="128" height="72" />
 			</node>
 			<node id="Degree">
 				<name>Degree</name>
 				<interior color="e5f6f7" />
 				<outline color="000080" />
 				<font color="000000" name="Arial" size="8" />
-				<position>691 604 739 634</position>
+				<position>855 495 903 525</position>
 				<barchart active="true" width="128" height="144" />
 			</node>
 			<node id="PrevDegree">
@@ -123,7 +152,7 @@
 				<interior color="e5f6f7" />
 				<outline color="000080" />
 				<font color="000000" name="Arial" size="8" />
-				<position>129 411 177 441</position>
+				<position>362 502 410 532</position>
 				<barchart active="true" width="128" height="144" />
 			</node>
 			<node id="MeasureBeginning">
@@ -131,7 +160,47 @@
 				<interior color="e5f6f7" />
 				<outline color="000080" />
 				<font color="000000" name="Arial" size="8" />
-				<position>404 53 484 103</position>
+				<position>593 55 673 105</position>
+				<barchart active="true" width="128" height="64" />
+			</node>
+			<node id="IsJumpOrStep">
+				<name>IsJumpOrStep</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>594 400 672 448</position>
+				<barchart active="true" width="128" height="64" />
+			</node>
+			<node id="isJumpOrStep2">
+				<name>isJumpOrStep2</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>596 314 674 362</position>
+				<barchart active="true" width="128" height="64" />
+			</node>
+			<node id="Extra">
+				<name>Extra</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>1252 436 1295 462</position>
+				<barchart active="true" width="128" height="64" />
+			</node>
+			<node id="Inversion">
+				<name>Inversion</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>1119 650 1178 686</position>
+				<barchart active="true" width="128" height="72" />
+			</node>
+			<node id="Omit">
+				<name>Omit</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>1252 535 1295 561</position>
 				<barchart active="true" width="128" height="64" />
 			</node>
 		</genie>
