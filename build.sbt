@@ -154,3 +154,5 @@ lazy val validator = project
   .dependsOn(
     harmonics_solver
   )
+
+javaOptions in run ++= Seq("-Djava.library.path=C:/Users/lenovo/Desktop/Inzynierka/HarmonySolverBackend/libs")

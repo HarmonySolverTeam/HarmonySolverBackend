@@ -6,6 +6,7 @@ import play.api.http.{DefaultHttpErrorHandler, Writeable}
 import play.api.libs.json.JsResultException
 import play.api.mvc.Results._
 import play.api.mvc.{RequestHeader, Result}
+import smile.SMILEException
 
 import scala.concurrent.Future
 
@@ -43,6 +44,11 @@ class ErrorHandler extends DefaultHttpErrorHandler {
         Future.successful(BadRequest(e.getMessage))
       case _: JsResultException =>
         Future.successful(BadRequest(e.getMessage))
+      case _: play.api.UnexpectedException =>
+        Future.successful(InternalServerError(e.getMessage))
+      case e: SMILEException =>
+        println(e.getMessage)
+        Future.successful(InternalServerError(e.getMessage))
       case _ =>
         // Handles dev mode properly, or otherwise returns internal server error in production mode
         super.onServerError(request, e)

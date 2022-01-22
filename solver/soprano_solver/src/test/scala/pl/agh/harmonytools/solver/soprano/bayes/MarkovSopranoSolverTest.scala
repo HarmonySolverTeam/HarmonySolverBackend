@@ -42,7 +42,7 @@ class MarkovSopranoSolverTest extends FunSuite with Matchers with TestUtils {
   }
 
   test("BayesNet Soprano Solver test") {
-    val solver = new BayesNetSopranoSolver(targosz_p59_ex1, ChoosingTactic.ARGMAX)
+    val solver = new BayesNetSopranoSolver(targosz_p59_ex1)
     solver.solve().success shouldBe true
   }
 }

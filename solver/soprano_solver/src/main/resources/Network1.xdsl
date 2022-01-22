@@ -67,7 +67,7 @@
 			<parents>PrevFunctionName FunctionName</parents>
 			<probabilities>0.4 0.6 0.6 0.4 0.6 0.4 0.6 0.4 0.4 0.6 0.6 0.4 0.6 0.4 0.5 0.5 0.4 0.6</probabilities>
 		</cpt>
-		<cpt id="IsJumpOrStep">
+		<cpt id="IsJumpOrStep1">
 			<state id="Jump" />
 			<state id="Step" />
 			<parents>Degree PrevDegree</parents>
@@ -85,7 +85,7 @@
 			<state id="State1" />
 			<probabilities>0.5 0.5</probabilities>
 		</cpt>
-		<cpt id="isJumpOrStep2">
+		<cpt id="IsJumpOrStep2">
 			<state id="Jump" />
 			<state id="Step" />
 			<parents>PrevFunctionName FunctionName</parents>
@@ -163,16 +163,16 @@
 				<position>593 55 673 105</position>
 				<barchart active="true" width="128" height="64" />
 			</node>
-			<node id="IsJumpOrStep">
-				<name>IsJumpOrStep</name>
+			<node id="IsJumpOrStep1">
+				<name>IsJumpOrStep1</name>
 				<interior color="e5f6f7" />
 				<outline color="000080" />
 				<font color="000000" name="Arial" size="8" />
 				<position>594 400 672 448</position>
 				<barchart active="true" width="128" height="64" />
 			</node>
-			<node id="isJumpOrStep2">
-				<name>isJumpOrStep2</name>
+			<node id="IsJumpOrStep2">
+				<name>IsJumpOrStep2</name>
 				<interior color="e5f6f7" />
 				<outline color="000080" />
 				<font color="000000" name="Arial" size="8" />

@@ -6,25 +6,30 @@ import pl.agh.harmonytools.model.key.Mode
 import pl.agh.harmonytools.model.scale.{MajorScale, MinorScale, ScaleDegree}
 import pl.agh.harmonytools.solver.soprano.bayes.ChoosingTactic.{ARGMAX, STOCHASTIC}
 import pl.agh.harmonytools.solver.soprano.generator.HarmonicFunctionGeneratorInput
-import smile.{License, Network}
+import smile.Network
+import java.lang.Math.abs
+
+import pl.agh.harmonytools.error.UnexpectedInternalError
+import pl.agh.harmonytools.model.chord.ChordComponent
+import pl.agh.harmonytools.solver.soprano.evaluator.HarmonicFunctionWithSopranoInfo
 
 import scala.util.Random
 
-class BayesNetSopranoSolver(exercise: SopranoExercise, choosingTactic: ChoosingTactic) extends MarkovSopranoSolver(exercise) {
+class BayesNetSopranoSolver(exercise: SopranoExercise) extends MarkovSopranoSolver(exercise) {
   private val net = new Network()
   net.readFile(getClass.getResource("/Network1.xdsl").getPath.tail)
 
   private def setEvidenceMeasurePlace(input: HarmonicFunctionGeneratorInput): Unit = {
     input.measurePlace match {
       case pl.agh.harmonytools.model.measure.MeasurePlace.UPBEAT =>
-        net.setEvidence("MeasurePlace", "Weak")
-        net.setEvidence("MeasureBeginning", "No")
+        setEvidence("MeasurePlace", "Weak")
+        setEvidence("MeasureBeginning", "No")
       case pl.agh.harmonytools.model.measure.MeasurePlace.DOWNBEAT =>
-        net.setEvidence("MeasurePlace", "Strong")
-        net.setEvidence("MeasureBeginning", "No")
+        setEvidence("MeasurePlace", "Strong")
+        setEvidence("MeasureBeginning", "No")
       case pl.agh.harmonytools.model.measure.MeasurePlace.BEGINNING =>
-        net.setEvidence("MeasurePlace", "Strong")
-        net.setEvidence("MeasureBeginning", "Yes")
+        setEvidence("MeasurePlace", "Strong")
+        setEvidence("MeasureBeginning", "Yes")
     }
   }
 
@@ -34,7 +39,7 @@ class BayesNetSopranoSolver(exercise: SopranoExercise, choosingTactic: ChoosingT
       case Mode.MINOR => MinorScale
     }
     val degree = scale.getDegree(input.sopranoNote.pitch, exercise.key)
-    net.setEvidence("Note", s"N${degree.root}")
+    setEvidence("Note", s"N${degree.root}")
   }
 
   private def setEvidenceStartOrEnd(input: HarmonicFunctionGeneratorInput): Unit = {
@@ -43,14 +48,23 @@ class BayesNetSopranoSolver(exercise: SopranoExercise, choosingTactic: ChoosingT
     } else if (input.isLast) {
       "End"
     } else "Middle"
-    net.setEvidence("StartOrEnd", str)
+    setEvidence("StartOrEnd", str)
   }
 
-  private val rand = new Random(seed = 79)
+  private def setEvidenceIsJumpOrStep(input: HarmonicFunctionGeneratorInput, prev: HarmonicFunctionWithSopranoInfo): Unit = {
+    val isStep = abs(input.sopranoNote.pitch - prev.sopranoNote.pitch) <= 2
+    val outcomeId = if (isStep) "Step" else "Jump"
+    setEvidence("IsJumpOrStep1", outcomeId)
+    setEvidence("IsJumpOrStep2", outcomeId)
+  }
+
+  private val rand = new Random()
 
   private def weightedProbability(beliefs: Array[Double]): Int = {
     val p = rand.nextDouble()
+    println(p)
     val zipped = beliefs.zipWithIndex
+    println(beliefs.mkString(","))
     var accum = 0.0
     for ((probability, idx) <- zipped) {
       accum += probability
@@ -60,14 +74,16 @@ class BayesNetSopranoSolver(exercise: SopranoExercise, choosingTactic: ChoosingT
     zipped.last._2
   }
 
-  private def getBeliefFromNet(nodeId: String): String = {
+  private def getBeliefFromNet(nodeId: String, choosingTactic: ChoosingTactic=ChoosingTactic.ARGMAX): String = {
     val beliefs = net.getNodeValue(nodeId)
     choosingTactic match {
       case ARGMAX =>
         val i = beliefs.zipWithIndex.maxBy(_._1)._2
         net.getOutcomeId(nodeId, i)
       case STOCHASTIC =>
-        net.getOutcomeId(nodeId, weightedProbability(beliefs))
+        val idx = weightedProbability(beliefs)
+        println(idx)
+        net.getOutcomeId(nodeId, idx)
     }
   }
 
@@ -78,6 +94,19 @@ class BayesNetSopranoSolver(exercise: SopranoExercise, choosingTactic: ChoosingT
 
   private def getDegree: ScaleDegree.Degree = {
     ScaleDegree.fromString(getBeliefFromNet("Degree"))
+  }
+
+  private def getInv(hf: HarmonicFunction, input: HarmonicFunctionGeneratorInput): ChordComponent = {
+    if (input.isLast || input.isFirst) hf.getPrime
+    else {
+      val inv = getBeliefFromNet("Inversion", ChoosingTactic.STOCHASTIC)
+      inv match {
+        case "Inv1" => hf.getPrime
+        case "Inv3" => hf.getThird
+        case "Inv5" => hf.getFifth
+        case _ => throw UnexpectedInternalError(s"Unknown inv from bayes net: ${inv}")
+      }
+    }
   }
 
   private def setCommonEvidences(input: HarmonicFunctionGeneratorInput): Unit = {
@@ -92,12 +121,20 @@ class BayesNetSopranoSolver(exercise: SopranoExercise, choosingTactic: ChoosingT
     HarmonicFunction(baseFunction = getBaseHf, degree = Some(getDegree))
   }
 
-  override def chooseNextHarmonicFunction(previousHf: HarmonicFunction, currentInput: HarmonicFunctionGeneratorInput): HarmonicFunction = {
-    net.setEvidence("PrevFunctionName", "prev" + previousHf.baseFunction.name)
+  private def setEvidence(nodeId: String, outcomeId: String): Unit = {
+//    println(s"Set evidence of $nodeId: $outcomeId")
+    net.setEvidence(nodeId, outcomeId)
+  }
+
+  override def chooseNextHarmonicFunction(previousHf: HarmonicFunctionWithSopranoInfo, currentInput: HarmonicFunctionGeneratorInput): HarmonicFunction = {
+    net.clearAllEvidence()
+    setEvidence("PrevFunctionName", "prev" + previousHf.harmonicFunction.baseFunction.name)
     setCommonEvidences(currentInput)
-    net.setEvidence("PrevDegree", previousHf.degree.toString)
+    setEvidence("PrevDegree", previousHf.harmonicFunction.degree.toString)
+    setEvidenceIsJumpOrStep(currentInput, previousHf)
     net.updateBeliefs()
-    HarmonicFunction(baseFunction = getBaseHf, degree = Some(getDegree))
+    val hf = HarmonicFunction(baseFunction = getBaseHf, degree = Some(getDegree))
+    hf.copy(inversion = getInv(hf, currentInput))
   }
 }
 

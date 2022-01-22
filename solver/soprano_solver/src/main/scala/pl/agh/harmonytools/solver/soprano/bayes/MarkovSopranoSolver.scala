@@ -11,6 +11,7 @@ import pl.agh.harmonytools.model.note.NoteWithoutChordContext
 import pl.agh.harmonytools.solver.harmonics.HarmonicsSolver
 import pl.agh.harmonytools.solver.harmonics.evaluator.rules.ChordRules
 import pl.agh.harmonytools.solver.soprano.SopranoSolver
+import pl.agh.harmonytools.solver.soprano.evaluator.HarmonicFunctionWithSopranoInfo
 import pl.agh.harmonytools.solver.soprano.generator.HarmonicFunctionGeneratorInput
 import pl.agh.harmonytools.solver.{Solver, SopranoSolution}
 
@@ -18,19 +19,19 @@ import scala.collection.mutable.ListBuffer
 
 abstract class MarkovSopranoSolver(exercise: SopranoExercise) extends Solver[NoteWithoutChordContext] {
 
-  private def prepareHarmonicFunctionsSequence(inputs: List[HarmonicFunctionGeneratorInput]): List[HarmonicFunction] = {
-    def prepareHarmonicFunctionsSequence(inputs: List[HarmonicFunctionGeneratorInput], previousHf: HarmonicFunction): List[HarmonicFunction] = {
+  private def prepareHarmonicFunctionsSequence(inputs: List[HarmonicFunctionGeneratorInput]): List[HarmonicFunctionWithSopranoInfo] = {
+    def prepareHarmonicFunctionsSequence(inputs: List[HarmonicFunctionGeneratorInput], previousHf: HarmonicFunctionWithSopranoInfo): List[HarmonicFunctionWithSopranoInfo] = {
       inputs match {
         case Nil => List()
         case input::tail =>
-          val currentHf = chooseNextHarmonicFunction(previousHf, input)
+          val currentHf = HarmonicFunctionWithSopranoInfo(chooseNextHarmonicFunction(previousHf, input), input.measurePlace, input.sopranoNote)
           currentHf +: prepareHarmonicFunctionsSequence(tail, currentHf)
       }
     }
     inputs match {
       case Nil => List()
       case input::tail =>
-        val firstHf = chooseFirstHarmonicFunction(input)
+        val firstHf = HarmonicFunctionWithSopranoInfo(chooseFirstHarmonicFunction(input), input.measurePlace, input.sopranoNote)
         firstHf +: prepareHarmonicFunctionsSequence(tail, firstHf)
     }
   }
@@ -39,11 +40,12 @@ abstract class MarkovSopranoSolver(exercise: SopranoExercise) extends Solver[Not
 
   def chooseFirstHarmonicFunction(input: HarmonicFunctionGeneratorInput): HarmonicFunction
 
-  def chooseNextHarmonicFunction(previousHf: HarmonicFunction, currentInput: HarmonicFunctionGeneratorInput): HarmonicFunction
+  def chooseNextHarmonicFunction(previousHf: HarmonicFunctionWithSopranoInfo, currentInput: HarmonicFunctionGeneratorInput): HarmonicFunction
 
   override def solve(): SopranoSolution = {
     val inputs = SopranoSolver.prepareSopranoGeneratorInputs(exercise)
     val harmonicFunctions = prepareHarmonicFunctionsSequence(inputs)
+    println("Prepared harmonic function sequence")
     val measures: ListBuffer[Measure[HarmonicFunction]] = ListBuffer()
     var i = 0
     val meterDouble = exercise.meter.asDouble
@@ -51,7 +53,7 @@ abstract class MarkovSopranoSolver(exercise: SopranoExercise) extends Solver[Not
       val measure: ListBuffer[HarmonicFunction] = ListBuffer()
       var duration = 0.0
       while (duration < meterDouble) {
-        measure.append(harmonicFunctions(i))
+        measure.append(harmonicFunctions(i).harmonicFunction)
         duration += inputs(i).sopranoNote.duration
         i += 1
       }
