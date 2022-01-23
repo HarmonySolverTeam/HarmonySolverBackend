@@ -46,6 +46,7 @@ abstract class MarkovSopranoSolver(exercise: SopranoExercise) extends Solver[Not
     val inputs = SopranoSolver.prepareSopranoGeneratorInputs(exercise)
     val harmonicFunctions = prepareHarmonicFunctionsSequence(inputs)
     println("Prepared harmonic function sequence")
+//    println(harmonicFunctions.map(_.harmonicFunction.simpleInfo))
     val measures: ListBuffer[Measure[HarmonicFunction]] = ListBuffer()
     var i = 0
     val meterDouble = exercise.meter.asDouble

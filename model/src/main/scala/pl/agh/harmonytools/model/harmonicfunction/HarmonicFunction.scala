@@ -91,6 +91,7 @@ case class HarmonicFunction(
       "Function: " + baseFunction.name,
       "Degree: " + degree.root,
       "Inversion: " + inversion.chordComponentString,
+      "Position: " + position.map(_.chordComponentString).getOrElse(""),
       "Delay: " + delay.map(d => d.first.chordComponentString + "-" + d.second.chordComponentString).mkString(","),
       "Extra: " + extra.map(_.chordComponentString).mkString(","),
       "Omit: " + omit.map(_.chordComponentString).mkString(","),
@@ -100,6 +101,10 @@ case class HarmonicFunction(
       "IsRelatedBackwards: " + isRelatedBackwards
     )
       .mkString("\n")
+  }
+
+  def simpleInfo: String = {
+    baseFunction.name + degree.root + s" e${extra.map(_.chordComponentString)}" + s" o${omit.map(_.chordComponentString)}" + s" inv ${inversion.chordComponentString}"
   }
 
   //todo np. (d) == t, gdy mają tego samego roota => chyba wystarczy po prymie?

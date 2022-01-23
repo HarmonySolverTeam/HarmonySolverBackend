@@ -4,6 +4,7 @@ import org.scalatest.{FunSuite, Matchers}
 import pl.agh.harmonytools.exercise.soprano.SopranoExercise
 import pl.agh.harmonytools.model.measure.{MeasurePlace, Meter}
 import pl.agh.harmonytools.model.note.{BaseNote, NoteWithoutChordContext}
+import pl.agh.harmonytools.model.util.ChordComponentManager
 import pl.agh.harmonytools.solver.soprano.bayes.BayesNetSopranoSolver
 import pl.agh.harmonytools.solver.soprano.evaluator.HarmonicFunctionWithSopranoInfo
 import pl.agh.harmonytools.solver.soprano.generator.HarmonicFunctionGeneratorInput
@@ -33,6 +34,6 @@ class BayesBasedSopranoSolverTest extends FunSuite with Matchers with TestUtils 
     b.chooseNextHarmonicFunction(
       HarmonicFunctionWithSopranoInfo(dominant, MeasurePlace.BEGINNING, NoteWithoutChordContext(71, BaseNote.B)),
       HarmonicFunctionGeneratorInput(NoteWithoutChordContext(72, BaseNote.C), MeasurePlace.BEGINNING, true, false)
-    ) shouldBe tonic
+    ) shouldBe tonic.copy(position = Some(tonic.getPrime))
   }
 }

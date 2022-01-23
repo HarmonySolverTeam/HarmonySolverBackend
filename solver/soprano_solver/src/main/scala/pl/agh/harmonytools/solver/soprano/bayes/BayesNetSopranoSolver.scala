@@ -2,7 +2,7 @@ package pl.agh.harmonytools.solver.soprano.bayes
 
 import pl.agh.harmonytools.exercise.soprano.SopranoExercise
 import pl.agh.harmonytools.model.harmonicfunction.{FunctionNames, HarmonicFunction}
-import pl.agh.harmonytools.model.key.Mode
+import pl.agh.harmonytools.model.key.{Key, Mode}
 import pl.agh.harmonytools.model.scale.{MajorScale, MinorScale, ScaleDegree}
 import pl.agh.harmonytools.solver.soprano.bayes.ChoosingTactic.{ARGMAX, STOCHASTIC}
 import pl.agh.harmonytools.solver.soprano.generator.HarmonicFunctionGeneratorInput
@@ -11,6 +11,8 @@ import java.lang.Math.abs
 
 import pl.agh.harmonytools.error.UnexpectedInternalError
 import pl.agh.harmonytools.model.chord.ChordComponent
+import pl.agh.harmonytools.model.util.ChordComponentManager
+import pl.agh.harmonytools.solver.harmonics.generator.ChordGenerator
 import pl.agh.harmonytools.solver.soprano.evaluator.HarmonicFunctionWithSopranoInfo
 
 import scala.util.Random
@@ -62,9 +64,7 @@ class BayesNetSopranoSolver(exercise: SopranoExercise) extends MarkovSopranoSolv
 
   private def weightedProbability(beliefs: Array[Double]): Int = {
     val p = rand.nextDouble()
-    println(p)
     val zipped = beliefs.zipWithIndex
-    println(beliefs.mkString(","))
     var accum = 0.0
     for ((probability, idx) <- zipped) {
       accum += probability
@@ -82,7 +82,6 @@ class BayesNetSopranoSolver(exercise: SopranoExercise) extends MarkovSopranoSolv
         net.getOutcomeId(nodeId, i)
       case STOCHASTIC =>
         val idx = weightedProbability(beliefs)
-        println(idx)
         net.getOutcomeId(nodeId, idx)
     }
   }
@@ -94,6 +93,39 @@ class BayesNetSopranoSolver(exercise: SopranoExercise) extends MarkovSopranoSolv
 
   private def getDegree: ScaleDegree.Degree = {
     ScaleDegree.fromString(getBeliefFromNet("Degree"))
+  }
+
+  private def getPosition(hf: HarmonicFunction): ChordComponent = {
+    getBeliefFromNet("Position") match {
+      case "P1" => hf.getPrime
+      case "P3" => hf.getThird
+      case "P5" => hf.getFifth
+      case "NotValid" => throw UnexpectedInternalError("Not valid position from neural net")
+    }
+  }
+
+  private def addOmit(hf: HarmonicFunction): HarmonicFunction = {
+    getBeliefFromNet("Omit", ChoosingTactic.STOCHASTIC) match {
+      case "No" => hf
+      case "O1" => hf.copy(omit = Set(hf.getPrime))
+      case "O5" => hf.copy(omit = Set(hf.getFifth))
+      case "NotValidExtra" => hf.copy(extra = Set())
+    }
+  }
+
+  private def getExtra(hf: HarmonicFunction): Set[ChordComponent] = {
+    if (hf.degree != ScaleDegree.V) Set()
+    else {
+      getBeliefFromNet("Extra", ChoosingTactic.STOCHASTIC) match {
+        case "No" => Set()
+        case "E6" => Set(ChordComponentManager.chordComponentFromString("6"))
+        case "E7" => Set(ChordComponentManager.chordComponentFromString("7"))
+        case "E9" => Set(
+          ChordComponentManager.chordComponentFromString("7"),
+          ChordComponentManager.chordComponentFromString("9")
+        )
+      }
+    }
   }
 
   private def getInv(hf: HarmonicFunction, input: HarmonicFunctionGeneratorInput): ChordComponent = {
@@ -134,7 +166,7 @@ class BayesNetSopranoSolver(exercise: SopranoExercise) extends MarkovSopranoSolv
     setEvidenceIsJumpOrStep(currentInput, previousHf)
     net.updateBeliefs()
     val hf = HarmonicFunction(baseFunction = getBaseHf, degree = Some(getDegree))
-    hf.copy(inversion = getInv(hf, currentInput))
+    addOmit(hf.copy(inversion = getInv(hf, currentInput), position = Some(getPosition(hf)), extra = getExtra(hf)))
   }
 }
 

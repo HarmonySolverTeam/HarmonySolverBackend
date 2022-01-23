@@ -71,19 +71,30 @@
 			<state id="Jump" />
 			<state id="Step" />
 			<parents>Degree PrevDegree</parents>
-			<probabilities>0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5</probabilities>
+			<probabilities>0.8 0.2 0.2 0.8 0.2 0.8 0.2 0.8 0.2 0.8 0.2 0.8 0.2 0.8 0.2 0.8 0.8 0.2 0.2 0.8 0.2 0.8 0.2 0.8 0.2 0.8 0.2 0.8 0.2 0.8 0.2 0.8 0.8 0.2 0.2 0.8 0.2 0.8 0.2 0.8 0.2 0.8 0.2 0.8 0.2 0.8 0.2 0.8 0.8 0.2 0.2 0.8 0.2 0.8 0.2 0.8 0.2 0.8 0.2 0.8 0.2 0.8 0.2 0.8 0.8 0.2 0.2 0.8 0.2 0.8 0.2 0.8 0.2 0.8 0.2 0.8 0.2 0.8 0.2 0.8 0.8 0.2 0.2 0.8 0.2 0.8 0.2 0.8 0.2 0.8 0.2 0.8 0.2 0.8 0.2 0.8 0.8 0.2</probabilities>
+		</cpt>
+		<cpt id="Position">
+			<state id="P1" />
+			<state id="P3" />
+			<state id="P5" />
+			<state id="NotValid" />
+			<parents>Degree Note</parents>
+			<probabilities>1 0 0 0 0 0 0 1 0 1 0 0 0 0 0 1 0 0 1 0 0 0 0 1 0 0 0 1 0 0 0 1 1 0 0 0 0 0 0 1 0 1 0 0 0 0 0 1 0 0 1 0 0 0 0 1 0 0 0 1 0 0 0 1 1 0 0 0 0 0 0 1 0 1 0 0 0 0 0 1 0 0 1 0 0 0 1 0 0 0 0 1 0 0 0 1 1 0 0 0 0 0 0 1 0 1 0 0 0 0 0 1 0 0 0 1 0 1 0 0 0 0 0 1 1 0 0 0 1 0 0 0 0 0 0 1 0 1 0 0 0 1 0 0 0 0 0 1 0 0 1 0 1 0 0 0 1 0 0 0 1 0 0 0 0 0 0 1 0 0 0 1 0 1 0 0 0 0 0 1 0 0 1 0 0 0 0 1 0 0 0 1 1 0 0 0</probabilities>
 		</cpt>
 		<cpt id="Inversion">
 			<state id="Inv1" />
 			<state id="Inv3" />
 			<state id="Inv5" />
-			<parents>MeasurePlace StartOrEnd</parents>
-			<probabilities>1 0 0 0.8 0.2 0 0.8 0.2 0 1 0 0 0.5 0.25 0.25 0.5 0.25 0.25</probabilities>
+			<parents>MeasurePlace StartOrEnd Position</parents>
+			<probabilities>1 0 0 1 0 0 1 0 0 1 0 0 0.8 0.2 0 1 0 0 0.8 0.2 0 0.8 0.2 0 0.8 0.2 0 1 0 0 0.8 0.2 0 0.8 0.2 0 1 0 0 1 0 0 1 0 0 1 0 0 0.5 0.25 0.25 0.7 0 0.3 0.5 0.25 0.25 0.5 0.25 0.25 0.5 0.25 0.25 0.7 0 0.3 0.5 0.25 0.25 0.5 0.25 0.25</probabilities>
 		</cpt>
-		<cpt id="Omit">
-			<state id="State0" />
-			<state id="State1" />
-			<probabilities>0.5 0.5</probabilities>
+		<cpt id="Extra">
+			<state id="No" />
+			<state id="E6" />
+			<state id="E7" />
+			<state id="E9" />
+			<parents>Degree</parents>
+			<probabilities>1 0 0 0 1 0 0 0 1 0 0 0 0.3 0.7 0 0 0.2 0 0.5 0.3 1 0 0 0 1 0 0 0</probabilities>
 		</cpt>
 		<cpt id="IsJumpOrStep2">
 			<state id="Jump" />
@@ -91,10 +102,13 @@
 			<parents>PrevFunctionName FunctionName</parents>
 			<probabilities>0.8 0.2 0.2 0.8 0.2 0.8 0.2 0.8 0.8 0.2 0.2 0.8 0.2 0.8 0.2 0.8 0.8 0.2</probabilities>
 		</cpt>
-		<cpt id="Extra">
-			<state id="State0" />
-			<state id="State1" />
-			<probabilities>0.5 0.5</probabilities>
+		<cpt id="Omit">
+			<state id="No" />
+			<state id="O1" />
+			<state id="O5" />
+			<state id="NotValidExtra" />
+			<parents>Inversion Position Extra</parents>
+			<probabilities>1 0 0 0 1 0 0 0 0 0 1 0 0 0 0 1 1 0 0 0 1 0 0 0 0.5 0 0.5 0 0 0 1 0 1 0 0 0 1 0 0 0 1 0 0 0 0 0 0 1 1 0 0 0 1 0 0 0 1 0 0 0 1 0 0 0 1 0 0 0 1 0 0 0 0.5 0 0.5 0 0 0 1 0 1 0 0 0 1 0 0 0 1 0 0 0 1 0 0 0 1 0 0 0 1 0 0 0 0.5 0.5 0 0 0 1 0 0 1 0 0 0 1 0 0 0 1 0 0 0 1 0 0 0 1 0 0 0 1 0 0 0 1 0 0 0 0 0 0 1 1 0 0 0 1 0 0 0 0.5 0.5 0 0 0 1 0 0 1 0 0 0 1 0 0 0 1 0 0 0 0 0 0 1 1 0 0 0 1 0 0 0 1 0 0 0 1 0 0 0</probabilities>
 		</cpt>
 	</nodes>
 	<extensions>
@@ -128,7 +142,7 @@
 				<interior color="e5f6f7" />
 				<outline color="000080" />
 				<font color="000000" name="Arial" size="8" />
-				<position>859 755 901 781</position>
+				<position>860 755 902 781</position>
 				<barchart active="true" width="128" height="144" />
 			</node>
 			<node id="StartOrEnd">
@@ -184,24 +198,32 @@
 				<interior color="e5f6f7" />
 				<outline color="000080" />
 				<font color="000000" name="Arial" size="8" />
-				<position>1252 436 1295 462</position>
-				<barchart active="true" width="128" height="64" />
+				<position>1070 421 1113 447</position>
+				<barchart active="true" width="128" height="90" />
 			</node>
 			<node id="Inversion">
 				<name>Inversion</name>
 				<interior color="e5f6f7" />
 				<outline color="000080" />
 				<font color="000000" name="Arial" size="8" />
-				<position>1119 650 1178 686</position>
+				<position>1179 676 1238 712</position>
 				<barchart active="true" width="128" height="72" />
+			</node>
+			<node id="Position">
+				<name>Position</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>1030 566 1073 592</position>
+				<barchart active="true" width="128" height="90" />
 			</node>
 			<node id="Omit">
 				<name>Omit</name>
 				<interior color="e5f6f7" />
 				<outline color="000080" />
 				<font color="000000" name="Arial" size="8" />
-				<position>1252 535 1295 561</position>
-				<barchart active="true" width="128" height="64" />
+				<position>1239 439 1282 465</position>
+				<barchart active="true" width="128" height="90" />
 			</node>
 		</genie>
 	</extensions>
