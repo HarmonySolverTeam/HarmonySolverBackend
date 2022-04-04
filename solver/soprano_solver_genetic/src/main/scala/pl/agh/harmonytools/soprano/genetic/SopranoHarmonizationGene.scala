@@ -27,7 +27,6 @@ case class SopranoHarmonizationGene(
     assert(chords.nonEmpty)
     val weightedChords = chords.map(c => (c, 100 - chord.computeMetric(c)))
     val chosenChord = randomWeighted(weightedChords, random)
-//    val chord = chords(random.nextInt(chords.length))
     newInstance(GeneticChord(chosenChord, id))
   }
 

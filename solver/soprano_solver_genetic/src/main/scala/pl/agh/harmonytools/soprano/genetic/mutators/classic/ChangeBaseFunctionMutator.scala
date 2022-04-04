@@ -6,10 +6,10 @@ import pl.agh.harmonytools.soprano.genetic.{FitnessResult, SopranoHarmonizationG
 
 import java.util.Random
 
-class ChangeBaseFunctionMutator(mutationProbability: Double)
-  extends SopranoHarmonizationMutator(mutationProbability) {
+class ChangeBaseFunctionMutator(mutationProbability: Double, generationLimit: Int)
+  extends SopranoHarmonizationMutator(mutationProbability, generationLimit) {
   override def mutate(gene: SopranoHarmonizationGene, random: Random): SopranoHarmonizationGene = {
-    if (gene.isFirst || gene.isLast) return gene
+    if (gene.isFirst || gene.isLast || gene.chord.content.harmonicFunction.key.isDefined) return gene
     val baseFunction = gene.chord.content.harmonicFunction.baseFunction
     val possibleChords = gene.generateSubstitutions(_.harmonicFunction.baseFunction != baseFunction)
     if (possibleChords.nonEmpty) {

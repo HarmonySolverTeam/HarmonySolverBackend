@@ -86,6 +86,8 @@ case class HarmonicFunction(
   def containsDelayedBaseChordComponent(cc: Int): Boolean =
     delay.exists(_.second.baseComponent == cc)
 
+  def isModulation: Boolean = key.isDefined
+
   override def toString: String = {
     List(
       "Function: " + baseFunction.name,

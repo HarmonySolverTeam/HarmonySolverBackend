@@ -12,9 +12,11 @@ import pl.agh.harmonytools.solver.soprano.evaluator.{HarmonicFunctionWithSoprano
 class FitnessResult(val valueChord: Double, val valueFunctions: Double) extends Fitness[FitnessResult] {
   def value: Double = valueChord + valueFunctions
 
-  override def compareTo(o: FitnessResult): Int = {
+  override def compareTo(o: FitnessResult): Int =
     value.compareTo(o.value)
-  }
+
+  def dominates(other: FitnessResult): Boolean =
+    (this.valueChord >= other.valueChord && this.valueFunctions > other.valueFunctions) || (this.valueChord > other.valueChord && this.valueFunctions >= other.valueFunctions)
 
   def toDouble: Double = value
 }
@@ -27,7 +29,8 @@ case class SopranoHarmonizationProblem(exercise: SopranoExercise)
 
   override def computeFitness(input: SopranoGeneticSolution): FitnessResult = {
     val chordEvaluationValue = SopranoHarmonizationProblem.fitnessChords(input, chordEvaluator, exercise)
-    val harmonicFunctionEvaluationValue = SopranoHarmonizationProblem.fitnessFunctions(input, harmonicFunctionEvaluator, exercise)
+    val harmonicFunctionEvaluationValue =
+      SopranoHarmonizationProblem.fitnessFunctions(input, harmonicFunctionEvaluator, exercise)
     new FitnessResult(chordEvaluationValue, harmonicFunctionEvaluationValue)
   }
 
@@ -52,9 +55,12 @@ case class SopranoHarmonizationProblem(exercise: SopranoExercise)
 }
 
 object SopranoHarmonizationProblem {
-  def fitnessFunctions(input: SopranoGeneticSolution, evaluator: SopranoRulesChecker, exercise: SopranoExercise): Double = {
+  def fitnessFunctions(
+    input: SopranoGeneticSolution,
+    evaluator: SopranoRulesChecker,
+    exercise: SopranoExercise
+  ): Double =
     fitnessFunctions(input.getStandardChords, evaluator, exercise)
-  }
 
   def fitnessFunctions(chords: List[Chord], evaluator: SopranoRulesChecker, exercise: SopranoExercise): Double = {
     val inputs =
@@ -68,11 +74,9 @@ object SopranoHarmonizationProblem {
     evaluator.evaluate(inputs)
   }
 
-  def fitnessChords(input: SopranoGeneticSolution, evaluator: ChordRulesChecker, exercise: SopranoExercise): Double = {
+  def fitnessChords(input: SopranoGeneticSolution, evaluator: ChordRulesChecker, exercise: SopranoExercise): Double =
     fitnessChords(input.getStandardChords, evaluator, exercise)
-  }
 
-  def fitnessChords(chords: List[Chord], evaluator: ChordRulesChecker, exercise: SopranoExercise): Double = {
+  def fitnessChords(chords: List[Chord], evaluator: ChordRulesChecker, exercise: SopranoExercise): Double =
     evaluator.evaluate(chords)
-  }
 }

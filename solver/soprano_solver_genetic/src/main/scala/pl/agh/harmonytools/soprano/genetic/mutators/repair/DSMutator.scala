@@ -6,9 +6,9 @@ import pl.agh.harmonytools.solver.harmonics.evaluator.rules.hard.DominantSubdomi
 import pl.agh.harmonytools.soprano.genetic.SopranoHarmonizationGene
 
 class DSConnectionSMutator() extends MutatorForBigramSecond(DominantSubdominantConnectionRule()) {
-  override protected def currentChordFilterFunction(gene: SopranoHarmonizationGene): Chord => Boolean = _.harmonicFunction.baseFunction == BaseFunction.TONIC
+  override protected def currentChordFilterFunction(gene: SopranoHarmonizationGene): Chord => Boolean = chord => chord.harmonicFunction.baseFunction == BaseFunction.TONIC || chord.harmonicFunction.isModulation
 }
 
 class DSConnectionDMutator() extends MutatorForBigramFirst(DominantSubdominantConnectionRule()) {
-  override protected def currentChordFilterFunction(gene: SopranoHarmonizationGene): Chord => Boolean = _.harmonicFunction.baseFunction != BaseFunction.DOMINANT
+  override protected def currentChordFilterFunction(gene: SopranoHarmonizationGene): Chord => Boolean = chord => chord.harmonicFunction.baseFunction != BaseFunction.DOMINANT || chord.harmonicFunction.isModulation
 }

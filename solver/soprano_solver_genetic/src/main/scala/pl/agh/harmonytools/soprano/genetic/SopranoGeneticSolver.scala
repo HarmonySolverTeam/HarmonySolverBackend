@@ -1,5 +1,9 @@
 package pl.agh.harmonytools.soprano.genetic
 
+import java.io.File
+import java.nio.charset.StandardCharsets
+import java.nio.file.{Files, Paths}
+
 import io.jenetics.ext.moea.{ElementComparator, ElementDistance, NSGA2Selector}
 import io.jenetics.{Phenotype, SinglePointCrossover, TournamentSelector}
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer
@@ -11,13 +15,16 @@ import pl.agh.harmonytools.model.measure.{Measure, Meter}
 import pl.agh.harmonytools.model.note.BaseNote._
 import pl.agh.harmonytools.model.note.NoteWithoutChordContext
 import pl.agh.harmonytools.solver.harmonics.evaluator.ChordRulesChecker
-import pl.agh.harmonytools.solver.soprano.evaluator.SopranoRulesChecker
 import pl.agh.harmonytools.solver.{Solver, SopranoSolution}
 import pl.agh.harmonytools.soprano.genetic.mutators.classic._
-import pl.agh.harmonytools.soprano.genetic.mutators.repair.{DSConnectionDMutator, DSConnectionSMutator, DTMutator, SingleThirdMutator}
+import pl.agh.harmonytools.soprano.genetic.mutators.repair.{DSConnectionDMutator, DSConnectionSMutator, DTMutator, ModulationMutator, SingleThirdMutator}
 import scalax.chart.module.Charting
-
 import java.time.LocalDateTime
+
+import sys.process._
+import net.liftweb.json._
+import net.liftweb.json.Serialization.write
+
 import scala.math.abs
 
 class SopranoGeneticSolver(exercise: SopranoExercise, populationSize: Int, iterations: Int)
@@ -27,33 +34,37 @@ class SopranoGeneticSolver(exercise: SopranoExercise, populationSize: Int, itera
     val engine = GeneticEngine
       .builder(SopranoHarmonizationProblem(exercise))
       .populationSize(populationSize)
+      .survivorsFraction(0.3)
       .survivorsSelector(nsga2Selector)
       .offspringSelector(new TournamentSelector(2))
       .recombinators(
-        new SinglePointCrossover(0.2)
+        new SinglePointCrossover(0.5)
       )
       .repairOperators(
         new DSConnectionSMutator,
         new DSConnectionDMutator,
         new SingleThirdMutator,
-        new DTMutator
+        new DTMutator,
+        new ModulationMutator()
       )
       .mutators(
-        new ChangeBaseFunctionMutator(0.5),
+        new ChangeBaseFunctionMutator(0.5, iterations/2),
         new SwapComponentsMutator(0.4),
         new ExpandToQuadrupleMutator(0.4),
-        new ChangeInversionMutator(0.3),
+        new ChangeInversionMutator(0.5),
+        new ChangeBassOctaveMutator(0.8),
         new AddOmit1ToDominantMutator(0.1),
         new AddOmit5ToDominantMutator(0.2),
-        new ChangeSystemMutator(0.1),
-        new ChangeDegreeMutator(0.15)
+        new ChangeSystemMutator(0.3),
+        new ChangeDegreeMutator(0.3, iterations/2),
+        new IntroduceModulationMutator(0.7)
       )
       .minimizing()
       .build()
 
     val results   = engine.stream(iterations).map(_.getBestPhenotype)
     val penalties = results.map(_.getFitness.toDouble).toList
-    println(penalties.sum / penalties.size)
+    println("Avg penalty: " + penalties.sum / penalties.size)
     saveChart(penalties.zipWithIndex.map(_.swap))
     val best = results.last
     val chords: List[Chord] =
@@ -61,13 +72,30 @@ class SopranoGeneticSolver(exercise: SopranoExercise, populationSize: Int, itera
     val chordsWithDurations = chords.zip(exercise.notes).map {
       case (chord: Chord, note: NoteWithoutChordContext) => chord.copy(duration = note.duration)
     }
-    SopranoSolution(exercise, best.getFitness.toDouble, chordsWithDurations)
+    val solution     = SopranoSolution(exercise, best.getFitness.toDouble, chordsWithDurations)
+    val solutionName = saveSolution(solution)
+    showSolution(solutionName)
+    solution
   }
 
   private def saveChart(data: List[(Int, Double)]): Unit = {
     val chart = XYLineChart(data)
     chart.plot.setRenderer(new XYLineAndShapeRenderer(false, true))
     chart.saveAsJPEG(s"solver/soprano_solver_genetic/src/main/resources/charts/$getCurrentDateString.jpeg")
+  }
+
+  private def saveSolution(solution: SopranoSolution): String = {
+    implicit val formats: DefaultFormats.type = DefaultFormats
+    val name                                  = s"$getCurrentDateString.json"
+    Files.write(
+      Paths.get(s"solver/soprano_solver_genetic/src/main/resources/solutions/$name"),
+      write(solution).getBytes(StandardCharsets.UTF_8)
+    )
+    name
+  }
+
+  private def showSolution(name: String): Unit = {
+    val p = Process(s"python score_printer.py $name", new File("solver/soprano_solver_genetic/src/main")).!!
   }
 
   private def getCurrentDateString: String = {
@@ -94,8 +122,8 @@ class SopranoGeneticSolver(exercise: SopranoExercise, populationSize: Int, itera
 
   private lazy val nsga2Selector = new NSGA2Selector[SopranoHarmonizationGene, FitnessResult](
     (o1: FitnessResult, o2: FitnessResult) => {
-      if ((o1.valueChord >= o2.valueChord && o1.valueFunctions > o2.valueFunctions) || (o1.valueChord > o2.valueChord && o1.valueFunctions >= o2.valueFunctions)) 1
-      else if ((o2.valueChord >= o1.valueChord && o2.valueFunctions > o1.valueFunctions) || (o2.valueChord > o1.valueChord && o2.valueFunctions >= o1.valueFunctions)) -1
+      if (o1.dominates(o2)) 1
+      else if (o2.dominates(o1)) -1
       else 0
     },
     (u: FitnessResult, v: FitnessResult, index: Int) => {
@@ -185,6 +213,6 @@ object SopranoGeneticSolver extends App {
     possibleFunctionsList = List()
   )
 
-  val solution = new SopranoGeneticSolver(exercise, 1000, 500).solve()
-  print(solution.rating)
+  val solution = new SopranoGeneticSolver(exercise, 500, 200).solve()
+  println("Best rating: " + solution.rating)
 }
