@@ -1,11 +1,10 @@
 package pl.agh.harmonytools.soprano.genetic
 
-import java.io.File
-import java.nio.charset.StandardCharsets
-import java.nio.file.{Files, Paths}
-
-import io.jenetics.ext.moea.{ElementComparator, ElementDistance, NSGA2Selector}
-import io.jenetics.{Phenotype, SinglePointCrossover, TournamentSelector}
+import com.github.tototoshi.csv.CSVWriter
+import io.jenetics.TournamentSelector
+import io.jenetics.ext.moea.NSGA2Selector
+import net.liftweb.json.Serialization.write
+import net.liftweb.json._
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer
 import pl.agh.harmonytools.exercise.soprano.SopranoExercise
 import pl.agh.harmonytools.integrations.jenetics.GeneticEngine
@@ -17,50 +16,86 @@ import pl.agh.harmonytools.model.note.NoteWithoutChordContext
 import pl.agh.harmonytools.solver.harmonics.evaluator.ChordRulesChecker
 import pl.agh.harmonytools.solver.{Solver, SopranoSolution}
 import pl.agh.harmonytools.soprano.genetic.mutators.classic._
-import pl.agh.harmonytools.soprano.genetic.mutators.repair.{DSConnectionDMutator, DSConnectionSMutator, DTMutator, ModulationMutator, SingleThirdMutator}
+import pl.agh.harmonytools.soprano.genetic.mutators.repair._
 import scalax.chart.module.Charting
+
+import java.io.File
+import java.nio.charset.StandardCharsets
+import java.nio.file.{Files, Paths}
 import java.time.LocalDateTime
-
-import sys.process._
-import net.liftweb.json._
-import net.liftweb.json.Serialization.write
-
 import scala.math.abs
+import scala.sys.process._
 
 class SopranoGeneticSolver(exercise: SopranoExercise, populationSize: Int, iterations: Int)
   extends Solver[NoteWithoutChordContext]
   with Charting {
-  override def solve(): SopranoSolution = {
-    val engine = GeneticEngine
+
+  def parameterCompute(): Unit = {
+    val params = for {
+      epochs            <- List(500, 1000, 2000, 5000)
+      population        <- List(200, 500, 1000, 2000)
+      crossoverP        <- List(0.1, 0.2, 0.3, 0.4, 0.5)
+      mutatorWeight     <- List(0.5, 0.75, 1, 1.25, 1.5)
+      survivorsFraction <- List(0.1, 0.3, 0.5)
+    } yield (epochs, population, crossoverP, mutatorWeight, survivorsFraction)
+
+    params.zipWithIndex.foreach {
+      case ((epochs, population, crossoverP, mutatorWeight, survivorsFraction), index) =>
+        val engine    = buildEngine(epochs, population, crossoverP, mutatorWeight, survivorsFraction)
+        val results   = engine.stream(epochs).map(_.getBestPhenotype)
+        val penalties = results.map(_.getFitness.toDouble).toList
+        val fitness   = penalties.last
+        val csv       = CSVWriter.open("solver/soprano_solver_genetic/src/main/resources/parameter/test.csv", append = true)
+        csv.writeRow(List(epochs, population, crossoverP, mutatorWeight, survivorsFraction, fitness))
+        csv.close()
+        println(s"${(index + 1.0) / params.size}%")
+    }
+  }
+
+  private def buildEngine(
+    iterations: Int,
+    populationSize: Int,
+    crossoverProbability: Double = 0.3,
+    mutatorsWeight: Double = 1.0,
+    survivorsFraction: Double = 0.3
+  ): GeneticEngine[SopranoHarmonizationGene, FitnessResult] = {
+    GeneticEngine
       .builder(SopranoHarmonizationProblem(exercise))
       .populationSize(populationSize)
-      .survivorsFraction(0.3)
+      .survivorsFraction(survivorsFraction)
       .survivorsSelector(nsga2Selector)
       .offspringSelector(new TournamentSelector(2))
       .recombinators(
-        new SinglePointCrossover(0.5)
+        new MeasureCrossover(crossoverProbability, exercise)
       )
       .repairOperators(
         new DSConnectionSMutator,
         new DSConnectionDMutator,
         new SingleThirdMutator,
         new DTMutator,
+        new SeventhToThirdDTMutator,
         new ModulationMutator()
       )
       .mutators(
-        new ChangeBaseFunctionMutator(0.5, iterations/2),
-        new SwapComponentsMutator(0.4),
-        new ExpandToQuadrupleMutator(0.4),
-        new ChangeInversionMutator(0.5),
-        new ChangeBassOctaveMutator(0.8),
-        new AddOmit1ToDominantMutator(0.1),
-        new AddOmit5ToDominantMutator(0.2),
-        new ChangeSystemMutator(0.3),
-        new ChangeDegreeMutator(0.3, iterations/2),
-        new IntroduceModulationMutator(0.7)
+        new ChangeBaseFunctionMutator(0.2 * mutatorsWeight, iterations / 2),
+        new SwapComponentsMutator(0.3 * mutatorsWeight),
+        new ExpandToQuadrupleMutator(0.2 * mutatorsWeight, iterations / 2),
+        new ChangeInversionMutator(0.3 * mutatorsWeight),
+        new ChangeBassOctaveMutator(0.5 * mutatorsWeight),
+        new AddOmit1ToDominantMutator(0.1 * mutatorsWeight),
+        new AddOmit5ToDominantMutator(0.1 * mutatorsWeight),
+        new ChangeSystemMutator(0.2 * mutatorsWeight),
+        new ChangeDegreeMutator(0.2 * mutatorsWeight, iterations / 2),
+        new IntroduceModulationMutator(0.2 * mutatorsWeight)
       )
       .minimizing()
       .build()
+  }
+
+  override def solve(): SopranoSolution = {
+    // definicja algorytmu genetycznego
+
+    val engine = buildEngine(iterations, populationSize)
 
     val results   = engine.stream(iterations).map(_.getBestPhenotype)
     val penalties = results.map(_.getFitness.toDouble).toList
@@ -213,6 +248,9 @@ object SopranoGeneticSolver extends App {
     possibleFunctionsList = List()
   )
 
-  val solution = new SopranoGeneticSolver(exercise, 500, 200).solve()
-  println("Best rating: " + solution.rating)
+  val solver = new SopranoGeneticSolver(exercise, 0, 0)
+  solver.parameterCompute()
+
+//  val solution = new SopranoGeneticSolver(exercise, 500, 1500).solve()
+//  println("Best rating: " + solution.rating)
 }

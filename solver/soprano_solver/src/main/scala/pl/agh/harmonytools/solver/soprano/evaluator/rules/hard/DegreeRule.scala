@@ -11,11 +11,11 @@ case class DegreeRule() extends HardRule[HarmonicFunctionWithSopranoInfo] {
       connection.current.harmonicFunction.baseFunction != connection.prev.harmonicFunction.baseFunction
     )
       totallyBroken
-    else if (
-      connection.current.harmonicFunction.baseFunction == connection.prev.harmonicFunction.baseFunction &&
-      connection.current.harmonicFunction.degree != connection.prev.harmonicFunction.degree
-    )
-      totallyBroken
+//    else if (
+//      connection.current.harmonicFunction.baseFunction == connection.prev.harmonicFunction.baseFunction &&
+//      connection.current.harmonicFunction.degree != connection.prev.harmonicFunction.degree
+//    )
+//      totallyBroken
     else satisfied
   }
 }

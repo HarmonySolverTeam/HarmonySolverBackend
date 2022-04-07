@@ -6,6 +6,9 @@ import pl.agh.harmonytools.soprano.genetic.SopranoHarmonizationGene
 
 
 class SingleThirdMutator()
-  extends MutatorForBigramSecond(IllegalDoubledThirdRule()) {
+  extends MutatorForBigramSecondRule(IllegalDoubledThirdRule()) {
   override protected def currentChordFilterFunction(gene: SopranoHarmonizationGene): Chord => Boolean = !_.hasIllegalDoubled3
+
+  override protected def conditionToMutate(prevGene: SopranoHarmonizationGene, currentGene: SopranoHarmonizationGene): Boolean =
+    super.conditionToMutate(prevGene, currentGene) && !prevGene.chord.content.harmonicFunction.isInSecondRelation(currentGene.chord.content.harmonicFunction)
 }

@@ -99,7 +99,8 @@ case class HarmonicFunction(
       "Down: " + isDown,
       "System: " + system,
       "Mode: " + mode,
-      "IsRelatedBackwards: " + isRelatedBackwards
+      "IsRelatedBackwards: " + isRelatedBackwards,
+      "Key: " + key
     )
       .mkString("\n")
   }

@@ -5,7 +5,7 @@ import pl.agh.harmonytools.soprano.genetic.mutators.SopranoHarmonizationMutator
 
 import java.util.Random
 
-class ExpandToQuadrupleMutator(mutationProbability: Double) extends SopranoHarmonizationMutator(mutationProbability) {
+class ExpandToQuadrupleMutator(mutationProbability: Double, generationLimit: Int) extends SopranoHarmonizationMutator(mutationProbability, generationLimit) {
   override def mutate(gene: SopranoHarmonizationGene, random: Random): SopranoHarmonizationGene = {
     val currentChord = gene.chord.content
     if (currentChord.harmonicFunction.extra.isEmpty) {

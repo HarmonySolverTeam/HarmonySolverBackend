@@ -22,7 +22,8 @@ class ModulationMutator() extends SopranoHarmonizationRepairOperator {
         val basePitch = (baseKey.tonicPitch + scale.pitches(degree)) %% 12 + 60
         if (key.tonicPitch == basePitch) false
         else true
-      case _ => true
+      case (Some(_), Some(_)) => true
+      case _ => false
     }
   }
 

@@ -75,7 +75,8 @@ case class GeneticEngineBuilder[T <: ItemWrapper[_], G <: JGene[_, G], C <: Fitn
 
   def build(): GeneticEngine[G, C] = {
     val alterers = getAlterers
-    new GeneticEngine(jeneticsEngine.alterers(alterers.head, alterers.tail: _*).build())
+    if (alterers.isEmpty) new GeneticEngine(jeneticsEngine.build())
+    else new GeneticEngine(jeneticsEngine.alterers(alterers.head, alterers.tail: _*).build())
   }
 
   private def mod(op: Engine.Builder[G, C] => Engine.Builder[G, C]): GE =
@@ -87,20 +88,20 @@ case class GeneticEngineBuilder[T <: ItemWrapper[_], G <: JGene[_, G], C <: Fitn
 
 class GeneticEngine[G <: JGene[_, G], C <: Fitness[C]](val jeneticsEngine: Engine[G, C]) {
   def stream(maxIterations: Int): Stream[EvolutionResult[G, C]] = {
-    val loader      = new AtomicInteger()
-    val fivePercent = maxIterations / 20
-    val startTime   = System.nanoTime()
+//    val loader      = new AtomicInteger()
+//    val tenPercent = maxIterations / 10
+//    val startTime   = System.nanoTime()
     jeneticsEngine
       .stream()
-      .peek { stat =>
-        if (loader.incrementAndGet() % fivePercent == 0) {
-          val currentTime  = System.nanoTime()
-          val mean         = (currentTime - startTime) / loader.get() / 1e9d
-          val timeToTheEnd = (maxIterations - loader.get()) * mean
-          println(s"${loader.get()}/${maxIterations} | ${5 * (loader
-            .get() / fivePercent)}% | $mean s/it | $timeToTheEnd s remaining | current rating ${stat.getBestFitness.toDouble}")
-        }
-      }
+//      .peek { stat =>
+//        if (loader.incrementAndGet() % tenPercent == 0) {
+//          val currentTime  = System.nanoTime()
+//          val mean         = (currentTime - startTime) / loader.get() / 1e9d
+//          val timeToTheEnd = (maxIterations - loader.get()) * mean
+//          println(s"${loader.get()}/${maxIterations} | ${10 * (loader
+//            .get() / tenPercent)}% | $mean s/it | $timeToTheEnd s remaining | current rating ${stat.getBestFitness.toDouble}")
+//        }
+//      }
       .iterator()
       .asScala
       .toStream

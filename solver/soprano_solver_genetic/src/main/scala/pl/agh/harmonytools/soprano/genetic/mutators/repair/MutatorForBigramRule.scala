@@ -11,11 +11,10 @@ import pl.agh.harmonytools.soprano.genetic.mutators.SopranoHarmonizationRepairOp
 import java.util.Random
 import scala.collection.JavaConverters.asScalaIteratorConverter
 
-sealed abstract class MutatorForBigram(rule: IRule[Chord]) extends SopranoHarmonizationRepairOperator {
+trait MutatorForBigram extends SopranoHarmonizationRepairOperator {
   protected def currentChordFilterFunction(gene: SopranoHarmonizationGene): Chord => Boolean
 
-  protected def conditionToMutate(prevGene: SopranoHarmonizationGene, currentGene: SopranoHarmonizationGene): Boolean =
-    rule.isBroken(Connection(currentGene.getAllele.content, prevGene.getAllele.content))
+  protected def conditionToMutate(prevGene: SopranoHarmonizationGene, currentGene: SopranoHarmonizationGene): Boolean
 
   override protected def mutate(gene: SopranoHarmonizationGene, random: Random): SopranoHarmonizationGene = {
     val correctChords = gene.generateSubstitutions(currentChordFilterFunction(gene))
@@ -26,7 +25,12 @@ sealed abstract class MutatorForBigram(rule: IRule[Chord]) extends SopranoHarmon
   }
 }
 
-abstract class MutatorForBigramFirst(rule: IRule[Chord]) extends MutatorForBigram(rule) {
+sealed abstract class MutatorForBigramRule(rule: IRule[Chord]) extends MutatorForBigram {
+  protected def conditionToMutate(prevGene: SopranoHarmonizationGene, currentGene: SopranoHarmonizationGene): Boolean =
+    rule.isBroken(Connection(currentGene.getAllele.content, prevGene.getAllele.content))
+}
+
+trait MutatorForBigramFirst extends MutatorForBigram {
   override protected def mutate(
     chromosome: Chromosome[SopranoHarmonizationGene],
     p: Double,
@@ -61,7 +65,9 @@ abstract class MutatorForBigramFirst(rule: IRule[Chord]) extends MutatorForBigra
   }
 }
 
-abstract class MutatorForBigramSecond(rule: IRule[Chord]) extends MutatorForBigram(rule) {
+abstract class MutatorForBigramFirstRule(rule: IRule[Chord]) extends MutatorForBigramRule(rule) with MutatorForBigramFirst
+
+trait MutatorForBigramSecond extends MutatorForBigram {
   override protected def mutate(
     chromosome: Chromosome[SopranoHarmonizationGene],
     p: Double,
@@ -95,3 +101,5 @@ abstract class MutatorForBigramSecond(rule: IRule[Chord]) extends MutatorForBigr
     MutatorResult.of(chromosome.newInstance(result.map(_.getResult)), result.stream.mapToInt(_.getMutations).sum)
   }
 }
+
+abstract class MutatorForBigramSecondRule(rule: IRule[Chord]) extends MutatorForBigramRule(rule) with MutatorForBigramSecond

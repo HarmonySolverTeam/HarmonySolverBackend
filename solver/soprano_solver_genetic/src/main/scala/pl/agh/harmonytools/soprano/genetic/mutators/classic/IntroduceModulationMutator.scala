@@ -11,7 +11,7 @@ class IntroduceModulationMutator(mutationProbability: Double)
     val chord = gene.getAllele.content
 
     val possibleChords =
-      gene.generateSubstitutions(_.harmonicFunction.key.isDefined)
+      gene.generateSubstitutions(_.harmonicFunction.isModulation)
     if (possibleChords.nonEmpty && !chord.harmonicFunction.isModulation)
       gene.newInstance(possibleChords, random)
     else

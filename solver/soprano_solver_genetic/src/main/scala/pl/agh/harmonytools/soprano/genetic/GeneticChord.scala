@@ -23,10 +23,11 @@ case class GeneticChord(content: Chord, id: Int) extends NodeContent {
       case _ => 0
     }
   }
+// metryka opisująca odległość akordów
 
   def computeMetric(other: Chord): Double = {
-    if (other.harmonicFunction.key.isDefined) return 0
-    val notesDiff     = content.notes.tail.zip(other.notes.tail).map(x => abs(x._1.pitch - x._2.pitch)).sum.toDouble
+    if (other.harmonicFunction.isModulation) return 0
+    val notesDiff     = content.notes.tail.zip(other.notes.tail).map(x => abs(x._1.pitch - x._2.pitch)).sum * 3.0
     val functionsDiff = 3 * computeFunctionsDiff(other)
     val sidePoints = if (!List(1, 4, 5).contains(other.harmonicFunction.degree.root) || other.harmonicFunction.key != content.harmonicFunction.key)
       5 else 0

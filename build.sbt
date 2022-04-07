@@ -186,7 +186,8 @@ lazy val soprano_solver_genetic = project
     libraryDependencies ++=
       testDependencies ++
         Seq("com.github.wookietreiber" %% "scala-chart" % "latest.integration") ++
-        Seq("net.liftweb" %% "lift-json" % "3.5.0")
+        Seq("net.liftweb" %% "lift-json" % "3.5.0") ++
+        Seq("com.github.tototoshi" %% "scala-csv" % "1.3.10")
   )
   .dependsOn(
     soprano_solver,
