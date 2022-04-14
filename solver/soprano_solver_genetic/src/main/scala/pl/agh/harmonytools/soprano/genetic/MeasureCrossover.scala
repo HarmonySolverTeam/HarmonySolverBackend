@@ -13,7 +13,7 @@ class MeasureCrossover(probability: Double, exercise: SopranoExercise)
     .map(_.contents.size)
     .scan(0)(_ + _)
     .tail
-    .drop(1)
+    .dropRight(1)
 
   private val size = exercise.notes.size
 

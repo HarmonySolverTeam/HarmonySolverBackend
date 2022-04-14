@@ -39,7 +39,7 @@ class SopranoGeneticSolver(exercise: SopranoExercise, populationSize: Int, itera
       survivorsFraction <- List(0.1, 0.3, 0.5)
     } yield (epochs, population, crossoverP, mutatorWeight, survivorsFraction)
 
-    params.zipWithIndex.foreach {
+    params.zipWithIndex.drop(72).foreach {
       case ((epochs, population, crossoverP, mutatorWeight, survivorsFraction), index) =>
         val engine    = buildEngine(epochs, population, crossoverP, mutatorWeight, survivorsFraction)
         val results   = engine.stream(epochs).map(_.getBestPhenotype)

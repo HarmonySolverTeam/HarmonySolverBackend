@@ -3,7 +3,9 @@ package pl.agh.harmonytools.model.scale
 import pl.agh.harmonytools.error.{RequirementChecker, UnexpectedInternalError}
 
 object ScaleDegree {
-  sealed abstract class Degree(val root: Int)
+  sealed abstract class Degree(val root: Int) {
+    def isBasic: Boolean = List(1,4,5).contains(root)
+  }
 
   case object I   extends Degree(1)
   case object II  extends Degree(2)

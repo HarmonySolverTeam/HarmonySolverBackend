@@ -4,7 +4,7 @@ import pl.agh.harmonytools.model.chord.ChordComponent
 import pl.agh.harmonytools.model.harmonicfunction.BaseFunction.{BaseFunction, TONIC}
 import pl.agh.harmonytools.model.key.Mode.{MAJOR, MINOR}
 import pl.agh.harmonytools.model.key.{Key, Mode}
-import pl.agh.harmonytools.model.scale.ScaleDegree.VI
+import pl.agh.harmonytools.model.scale.ScaleDegree.{III, V, VI}
 import pl.agh.harmonytools.model.scale.{MajorScale, MinorScale, ScaleDegree}
 import pl.agh.harmonytools.model.util.ChordComponentManager
 import pl.agh.harmonytools.utils.Extensions.ExtendedInt

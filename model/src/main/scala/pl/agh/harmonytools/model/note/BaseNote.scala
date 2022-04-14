@@ -4,6 +4,17 @@ import pl.agh.harmonytools.error.{RequirementChecker, UnexpectedInternalError}
 import pl.agh.harmonytools.utils.Extensions.ExtendedInt
 
 object BaseNote {
+  def fromString(value: String): BaseNote = value match {
+    case "A" => A
+    case "B" => B
+    case "C" => C
+    case "D" => D
+    case "E" => E
+    case "F" => F
+    case "G" => G
+    case _ => sys.error(s"Unknown base note $value")
+  }
+
   sealed abstract class BaseNote(val value: Int, val next: BaseNote) {
     def +(x: Int): BaseNote =
       fromInt((value + x) %% 7)

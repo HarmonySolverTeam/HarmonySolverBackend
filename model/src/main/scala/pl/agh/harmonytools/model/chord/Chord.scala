@@ -5,6 +5,7 @@ import pl.agh.harmonytools.error.{RequirementChecker, UnexpectedInternalError}
 import pl.agh.harmonytools.model.chord.ChordSystem.ChordSystem
 import pl.agh.harmonytools.model.harmonicfunction.BaseFunction.TONIC
 import pl.agh.harmonytools.model.harmonicfunction.HarmonicFunction
+import pl.agh.harmonytools.model.measure.MeasureContent
 import pl.agh.harmonytools.model.note.{BaseNote, Note}
 import pl.agh.harmonytools.model.util.ChordComponentManager
 
@@ -15,13 +16,17 @@ case class Chord(
   bassNote: Note,
   harmonicFunction: HarmonicFunction,
   var duration: Double = 0.0
-) extends NodeContent {
+) extends NodeContent with MeasureContent {
   RequirementChecker.isRequired(
+    isLegal,
+    UnexpectedInternalError(s"Error during creating chord: $toString")
+  )
+
+  def isLegal: Boolean = {
     sopranoNote.isUpperThanOrEqual(altoNote) && altoNote.isUpperThanOrEqual(tenorNote) && tenorNote.isUpperThanOrEqual(
       bassNote
-    ),
-    UnexpectedInternalError("Error during creating chord")
-  )
+    )
+  }
 
   /**
    * List of notes of chord ordered from top to down: (soprano, alto, tenor, bass).
@@ -101,5 +106,19 @@ object Chord {
   def empty: Chord = {
     val emptyNote = Note(0, BaseNote.C, ChordComponentManager.getRoot())
     Chord(emptyNote, emptyNote, emptyNote, emptyNote, HarmonicFunction(TONIC))
+  }
+
+  def repair(sopranoNote: Note, altoNote: Note, tenorNote: Note, bassNote: Note,
+             harmonicFunction: HarmonicFunction, duration: Double): Chord = {
+    if (altoNote.isUpperThan(sopranoNote)) {
+      if (bassNote.isUpperThan(tenorNote)) {
+        Chord(altoNote, sopranoNote, bassNote, tenorNote, harmonicFunction, duration)
+      } else {
+        Chord(altoNote, sopranoNote, tenorNote, bassNote, harmonicFunction, duration)
+      }
+    }
+    else if (tenorNote.isUpperThan(altoNote)) Chord(sopranoNote, tenorNote, altoNote, bassNote, harmonicFunction, duration)
+    else if (bassNote.isUpperThan(tenorNote)) Chord(sopranoNote, altoNote, bassNote, tenorNote, harmonicFunction, duration)
+    else Chord(sopranoNote, altoNote, tenorNote, bassNote, harmonicFunction, duration)
   }
 }

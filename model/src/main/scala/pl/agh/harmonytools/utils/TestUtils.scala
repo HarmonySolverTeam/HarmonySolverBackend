@@ -59,6 +59,7 @@ trait TestUtils {
     val fourth: ChordComponent      = getCC("4")
     val fourthD: ChordComponent     = getCC("4", isDown = true)
     val seventh: ChordComponent     = getCC("7")
+    val seventhMajor: ChordComponent     = getCC("7<")
     val seventhD: ChordComponent    = getCC("7", isDown = true)
     val eighth: ChordComponent      = getCC("8")
     val sixthDim: ChordComponent    = getCC("6>")

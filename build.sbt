@@ -156,6 +156,17 @@ lazy val validator = project
     harmonics_solver
   )
 
+lazy val harmonics_finder = project
+  .settings(
+    name := "harmonics_finder",
+    settings,
+    libraryDependencies ++= testDependencies ++ Seq("io.spray" %% "spray-json" % "1.3.6")
+  )
+  .dependsOn(
+    model,
+    harmonics_solver
+  )
+
 lazy val integrations = project
   .settings(
     name := "integrations",
