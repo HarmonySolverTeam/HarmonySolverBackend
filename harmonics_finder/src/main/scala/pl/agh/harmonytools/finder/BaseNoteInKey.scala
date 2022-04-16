@@ -1,6 +1,7 @@
 package pl.agh.harmonytools.finder
 
 import pl.agh.harmonytools.model.key.Key
+import pl.agh.harmonytools.model.note.BaseNote.BaseNote
 import pl.agh.harmonytools.model.note.Note
 import pl.agh.harmonytools.model.scale.{MajorScale, MinorScale}
 import pl.agh.harmonytools.utils.Extensions.ExtendedInt
@@ -8,14 +9,14 @@ import pl.agh.harmonytools.utils.Extensions.ExtendedInt
 case class BaseNoteInKey(root: Int, alteredUp: Boolean = false, alteredDown: Boolean = false)
 
 object BaseNoteInKey {
-  def apply(sopranoNote: Note, key: Key): BaseNoteInKey = {
+  def apply(pitch: Int, baseNote: BaseNote, key: Key): BaseNoteInKey = {
     val scale = if (key.mode.isMajor) MajorScale else MinorScale
-    val sopranoNotePitch = sopranoNote.pitch
+    val sopranoNotePitch = pitch
     val diffInOneOctave = (sopranoNotePitch - key.tonicPitch) %% 12
     val degree = scale.pitches.indexOf(diffInOneOctave)
     val bn = key.baseNote
     var baseNoteDiff = 0
-    while (bn + baseNoteDiff != sopranoNote.baseNote) {
+    while (bn + baseNoteDiff != baseNote) {
       baseNoteDiff += 1
     }
     if (degree < 0){
@@ -29,5 +30,13 @@ object BaseNoteInKey {
       else if (baseNoteDiff > degree) BaseNoteInKey(baseNoteDiff, alteredDown = true)
       else BaseNoteInKey(baseNoteDiff, alteredUp = true)
     }
+  }
+
+  def apply(otherKey: Key, choraleKey: Key): BaseNoteInKey = {
+    apply(otherKey.tonicPitch, otherKey.baseNote, choraleKey)
+  }
+
+  def apply(sopranoNote: Note, key: Key): BaseNoteInKey = {
+    apply(sopranoNote.pitch, sopranoNote.baseNote, key)
   }
 }

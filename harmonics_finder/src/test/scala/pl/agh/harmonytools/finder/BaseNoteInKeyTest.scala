@@ -78,4 +78,9 @@ class BaseNoteInKeyTest extends FunSuite with Matchers with TestUtils {
     BaseNoteInKey(b, key) shouldBe BaseNoteInKey(5, alteredDown = true)
     BaseNoteInKey(c, key) shouldBe BaseNoteInKey(6, alteredDown = true)
   }
+
+  test("Key") {
+    BaseNoteInKey(keyG, keyD) shouldBe BaseNoteInKey(3)
+    BaseNoteInKey(keyE, keyD) shouldBe BaseNoteInKey(1)
+  }
 }

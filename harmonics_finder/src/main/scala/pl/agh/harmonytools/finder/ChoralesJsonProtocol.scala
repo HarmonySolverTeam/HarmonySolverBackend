@@ -2,6 +2,7 @@ package pl.agh.harmonytools.finder
 
 import pl.agh.harmonytools.model.chord.Chord
 import pl.agh.harmonytools.model.harmonicfunction.HarmonicFunction
+import pl.agh.harmonytools.model.key.Key
 import pl.agh.harmonytools.model.measure.{Measure, MeasurePlace}
 import pl.agh.harmonytools.model.measure.MeasurePlace.MeasurePlace
 import pl.agh.harmonytools.model.note.Note
@@ -10,6 +11,7 @@ import spray.json.{DefaultJsonProtocol, JsArray, JsNumber, JsObject, JsString, J
 object ChoralesJsonProtocol extends DefaultJsonProtocol {
   implicit object ChoralesJsonFormat extends RootJsonFormat[Chorale] {
     def write(c: Chorale): JsValue = {
+      implicit val key = c.key
       JsObject(Map(
         "key" -> JsString(c.key.toString),
         "metre" -> JsString(c.meter.toString),
@@ -17,7 +19,7 @@ object ChoralesJsonProtocol extends DefaultJsonProtocol {
       ))
     }
 
-    private def measureToJson(measure: Measure[ChoraleChord]): JsValue = {
+    private def measureToJson(measure: Measure[ChoraleChord])(implicit key: Key): JsValue = {
       JsArray(measure.contents.map(choraleChordToJson).toVector)
     }
 
@@ -29,7 +31,8 @@ object ChoralesJsonProtocol extends DefaultJsonProtocol {
       ))
     }
 
-    def hfToJson(harmonicFunction: HarmonicFunction): JsValue = {
+    def hfToJson(harmonicFunction: HarmonicFunction)(implicit key: Key): JsValue = {
+      val bn = harmonicFunction.key.map(modulation => BaseNoteInKey(modulation, key))
       JsObject(Map(
         "base" -> JsString(harmonicFunction.baseFunction.name),
         "degree" -> JsNumber(harmonicFunction.degree.root),
@@ -38,11 +41,11 @@ object ChoralesJsonProtocol extends DefaultJsonProtocol {
         "omit" -> JsArray(harmonicFunction.omit.map(o => JsString(o.chordComponentString)).toVector),
         "isDown" -> JsNumber(if (harmonicFunction.isDown) 1 else 0),
         "isMajor" -> JsNumber(if (harmonicFunction.mode.isMajor) 1 else 0),
-        "key" -> JsString(harmonicFunction.key.map(_.toString).getOrElse(""))
+        "key" -> bn.map(baseNoteInKeyToJson).getOrElse(JsString(""))
       ))
     }
 
-    def chordToJson(chord: Chord): JsValue = {
+    def chordToJson(chord: Chord)(implicit key: Key): JsValue = {
       JsObject(Map(
         "soprano" -> noteToJson(chord.sopranoNote),
         "alto" -> noteToJson(chord.altoNote),
@@ -63,7 +66,7 @@ object ChoralesJsonProtocol extends DefaultJsonProtocol {
       JsString(sopranoBaseNoteInKey.root.toString + sufix)
     }
 
-    private def choraleChordToJson(c: ChoraleChord): JsValue = {
+    private def choraleChordToJson(c: ChoraleChord)(implicit key: Key): JsValue = {
       JsObject(Map(
         "chord" -> chordToJson(c.chord),
         "strong_place" -> measurePlaceToJson(c.measurePlace),
