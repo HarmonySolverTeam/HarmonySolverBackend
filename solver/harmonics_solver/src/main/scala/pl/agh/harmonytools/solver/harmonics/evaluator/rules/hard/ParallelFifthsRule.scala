@@ -1,11 +1,12 @@
 package pl.agh.harmonytools.solver.harmonics.evaluator.rules.hard
 
-import pl.agh.harmonytools.algorithm.evaluator.{AnyRule, Connection}
-import pl.agh.harmonytools.solver.harmonics.evaluator.rules.{sameFunctionRule, satisfied, voicePairs}
+import pl.agh.harmonytools.algorithm.evaluator.Connection
 import pl.agh.harmonytools.model.chord.Chord
+import pl.agh.harmonytools.solver.harmonics.evaluator.prolog.PrologChordAnyRule
+import pl.agh.harmonytools.solver.harmonics.evaluator.rules.{sameFunctionRule, satisfied, voicePairs}
 import pl.agh.harmonytools.utils.IntervalUtils.isFive
 
-case class ParallelFifthsRule(evaluationRatio: Double = 1.0) extends AnyRule[Chord](evaluationRatio) {
+case class ParallelFifthsRule(evaluationRatio: Double = 1.0) extends PrologChordAnyRule(evaluationRatio) {
   override def evaluate(connection: Connection[Chord]): Double = {
     val currentChord = connection.current
     val prevChord    = connection.prev
@@ -23,4 +24,6 @@ case class ParallelFifthsRule(evaluationRatio: Double = 1.0) extends AnyRule[Cho
   }
 
   override def caption: String = "Parallel Fifths"
+
+  override protected val prologPredicateName: String = "connection_not_contain_parallel_fifths"
 }

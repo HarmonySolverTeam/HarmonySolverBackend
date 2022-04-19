@@ -57,7 +57,10 @@ class DefaultApiImpl extends DefaultApi {
   override def parseHarmonicsExercise(
     hLNotationHarmonicsExerciseDto: HLNotationHarmonicsExerciseDto
   ): HarmonicsExerciseDto = {
-    val parsedExercise = new HarmonicsParser().parse(hLNotationHarmonicsExerciseDto.exercise)
+    val parsedExercise = new HarmonicsParser().parse(
+      hLNotationHarmonicsExerciseDto.exercise,
+      hLNotationHarmonicsExerciseDto.evaluateWithProlog.getOrElse(false)
+    )
     HarmonicsExerciseMapper.mapToDTO(parsedExercise)
   }
 

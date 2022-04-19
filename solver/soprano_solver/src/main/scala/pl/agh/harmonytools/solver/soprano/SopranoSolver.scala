@@ -14,6 +14,7 @@ import pl.agh.harmonytools.model.key.Key
 import pl.agh.harmonytools.model.measure.{Measure, MeasurePlace, Meter}
 import pl.agh.harmonytools.model.note.BaseNote.{C, D, E}
 import pl.agh.harmonytools.model.note.NoteWithoutChordContext
+import pl.agh.harmonytools.solver.harmonics.evaluator.prolog.PrologChordRulesChecker
 import pl.agh.harmonytools.solver.harmonics.evaluator.{AdaptiveRulesChecker, ChordRulesChecker}
 import pl.agh.harmonytools.solver.harmonics.evaluator.rules.ChordRules
 import pl.agh.harmonytools.solver.harmonics.generator.{ChordGenerator, ChordGeneratorInput}
@@ -55,6 +56,7 @@ case class SopranoSolver(
     graphBuilder.withOuterGeneratorInputs(SopranoSolver.prepareSopranoGeneratorInputs(exercise))
     graphBuilder.withInnerGenerator(ChordGenerator(exercise.key))
     val innerEvaluator = punishmentRatios match {
+      case _ if exercise.evaluateWithProlog => PrologChordRulesChecker(isFixedSoprano = true)
       case Some(value) => AdaptiveRulesChecker(value)
       case None        => ChordRulesChecker(isFixedSoprano = true)
     }
@@ -86,6 +88,25 @@ case class SopranoSolver(
 }
 
 object SopranoSolver extends App {
+  def prepareSopranoGeneratorInputs(exercise: SopranoExercise): List[HarmonicFunctionGeneratorInput] = {
+    var inputs: List[HarmonicFunctionGeneratorInput] = List.empty
+    for (i <- exercise.measures.indices) {
+      val measure     = exercise.measures(i).contents
+      var durationSum = 0.0
+      for (j <- measure.indices) {
+        val note = measure(j)
+        inputs = inputs :+ HarmonicFunctionGeneratorInput(
+          note,
+          MeasurePlace.getMeasurePlace(exercise.meter, durationSum),
+          i == 0 && j == 0,
+          i == exercise.measures.length - 1 && j == measure.length - 1
+        )
+        durationSum += note.duration
+      }
+    }
+    inputs
+  }
+
   val exercise = SopranoExercise(
     Key("C"),
     Meter(4, 4),

@@ -7,8 +7,8 @@ import pl.agh.harmonytools.model.harmonicfunction.BaseFunction.{DOMINANT, SUBDOM
 import pl.agh.harmonytools.model.harmonicfunction.HarmonicFunction
 import pl.agh.harmonytools.model.key.Key
 import pl.agh.harmonytools.model.key.Mode.{MAJOR, MINOR}
+import pl.agh.harmonytools.model.note.BaseNote._
 import pl.agh.harmonytools.model.note.{BaseNote, Note}
-import pl.agh.harmonytools.model.note.BaseNote.{A, B, C, D, E, F, G}
 import pl.agh.harmonytools.model.scale.MajorScale
 import pl.agh.harmonytools.model.scale.ScaleDegree._
 import pl.agh.harmonytools.utils.Extensions.ExtendedInt
@@ -16,9 +16,9 @@ import pl.agh.harmonytools.utils.{IntervalUtils, TestUtils}
 
 class ChordGeneratorTest extends FunSuite with Matchers with TestUtils {
 
+  import ChordComponents._
   import HarmonicFunctions._
   import Keys._
-  import ChordComponents._
 
   private val MAJOR_GEN = Some("major")
   private val MINOR_GEN = Some("minor")

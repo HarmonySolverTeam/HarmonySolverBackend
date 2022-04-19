@@ -1,11 +1,12 @@
 package pl.agh.harmonytools.solver.harmonics.evaluator.rules.hard
 
-import pl.agh.harmonytools.algorithm.evaluator.{AnyRule, Connection}
-import pl.agh.harmonytools.solver.harmonics.evaluator.rules.{satisfied, voicePairs}
+import pl.agh.harmonytools.algorithm.evaluator.Connection
 import pl.agh.harmonytools.model.chord.Chord
+import pl.agh.harmonytools.solver.harmonics.evaluator.prolog.PrologChordAnyRule
+import pl.agh.harmonytools.solver.harmonics.evaluator.rules.{satisfied, voicePairs}
 import pl.agh.harmonytools.utils.IntervalUtils.isChromaticAlteration
 
-case class FalseRelationRule(evaluationRatio: Double = 1.0) extends AnyRule[Chord](evaluationRatio) {
+case class FalseRelationRule(evaluationRatio: Double = 1.0) extends PrologChordAnyRule(evaluationRatio) {
 
   private def causedBySopranoOrBassSettings(
     prevChord: Chord,
@@ -33,4 +34,6 @@ case class FalseRelationRule(evaluationRatio: Double = 1.0) extends AnyRule[Chor
   }
 
   override def caption: String = "False Relation"
+
+  override protected val prologPredicateName: String = "connection_not_contain_false_relation"
 }

@@ -31,5 +31,18 @@ object ScaleDegree {
     }
   }
 
+  def fromString(x: String): Degree = {
+    x match {
+      case "I"   => I
+      case "II"  => II
+      case "III" => III
+      case "IV"  => IV
+      case "V"   => V
+      case "VI"  => VI
+      case "VII" => VII
+      case _     => throw UnexpectedInternalError("Unknown ScaleDegree: " + x)
+    }
+  }
+
   val values: List[Degree] = List(I, II, III, IV, V, VI, VII)
 }

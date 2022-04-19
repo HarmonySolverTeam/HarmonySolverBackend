@@ -14,20 +14,9 @@ trait ConnectionEvaluator[T <: NodeContent] {
 
   def getConnectionSize: Int = connectionSize
 
-  def evaluateHardRules(connection: Connection[T]): Boolean = hardRules.forall(_.isNotBroken(connection))
+  def evaluateHardRules(connection: Connection[T]): Boolean
 
-  def evaluateSoftRules(connection: Connection[T]): Double = softRules.map(_.evaluate(connection)).sum
-
-  def getNumberOfRulesBrokenBy(connection: Connection[T]): Int = {
-    var result = 0
-    for (r <- hardRules) {
-      if (r.isBroken(connection)) {
-        brokenRulesCounter.increaseCounter(r)
-        result += 1
-      }
-    }
-    result
-  }
+  def evaluateSoftRules(connection: Connection[T]): Double
 
   def getBrokenRulesCounter: BrokenRulesCounter[T] = brokenRulesCounter
 

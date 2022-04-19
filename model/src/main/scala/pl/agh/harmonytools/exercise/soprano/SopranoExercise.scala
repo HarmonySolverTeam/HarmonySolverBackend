@@ -10,7 +10,8 @@ case class SopranoExercise(
   key: Key,
   meter: Meter,
   measures: List[Measure[NoteWithoutChordContext]],
-  possibleFunctionsList: List[HarmonicFunction]
+  possibleFunctionsList: List[HarmonicFunction],
+  evaluateWithProlog: Boolean = false
 ) extends Exercise(key, meter, measures)
   {
   lazy val notes: List[NoteWithoutChordContext] = measures.map(_.contents).reduce(_ ++ _)

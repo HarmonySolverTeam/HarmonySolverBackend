@@ -50,6 +50,7 @@ class SopranoExerciseEndpointTest extends EndpointTest("harmonytools/soprano", H
       |    "exercise": {
       |        "key": "C",
       |        "meter": [4, 4],
+      |        "evaluateWithProlog": false,
       |        "measures": [
       |            {
       |                "notes": [

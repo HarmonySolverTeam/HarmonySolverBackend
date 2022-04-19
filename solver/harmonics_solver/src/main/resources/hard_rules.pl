@@ -1,0 +1,152 @@
+connection_not_contain_parallel_fifths(CurrentChord, PrevChord) :-
+    has_same_function(CurrentChord, PrevChord).
+
+connection_not_contain_parallel_fifths(CurrentChord, PrevChord) :-
+    CurrentChord = chord(BassNote1, TenorNote1, AltoNote1, SopranoNote1, _),
+    PrevChord = chord(BassNote2, TenorNote2, AltoNote2, SopranoNote2, _),
+    \+ parallel_fifths(TenorNote1, BassNote1, TenorNote2, BassNote2),
+    \+ parallel_fifths(AltoNote1, BassNote1, AltoNote2, BassNote2),
+    \+ parallel_fifths(SopranoNote1, BassNote1, SopranoNote2, BassNote2),
+    \+ parallel_fifths(AltoNote1, TenorNote1, AltoNote2, TenorNote2),
+    \+ parallel_fifths(SopranoNote1, TenorNote1, SopranoNote2, TenorNote2),
+    \+ parallel_fifths(SopranoNote1, AltoNote1, SopranoNote2, AltoNote2).
+
+connection_not_contain_parallel_octaves(CurrentChord, PrevChord) :-
+    has_same_function(CurrentChord, PrevChord).
+
+connection_not_contain_parallel_octaves(CurrentChord, PrevChord) :-
+    CurrentChord = chord(BassNote1, TenorNote1, AltoNote1, SopranoNote1, _),
+    PrevChord = chord(BassNote2, TenorNote2, AltoNote2, SopranoNote2, _),
+    \+ parallel_octaves(TenorNote1, BassNote1, TenorNote2, BassNote2),
+    \+ parallel_octaves(AltoNote1, BassNote1, AltoNote2, BassNote2),
+    \+ parallel_octaves(SopranoNote1, BassNote1, SopranoNote2, BassNote2),
+    \+ parallel_octaves(AltoNote1, TenorNote1, AltoNote2, TenorNote2),
+    \+ parallel_octaves(SopranoNote1, TenorNote1, SopranoNote2, TenorNote2),
+    \+ parallel_octaves(SopranoNote1, AltoNote1, SopranoNote2, AltoNote2).
+
+connection_not_overlapping_voices(CurrentChord, PrevChord) :-
+    CurrentChord = chord(note(BassPitch1, _, _), note(TenorPitch1, _, _), note(AltoPitch1, _, _), note(SopranoPitch1, _, _), _),
+    PrevChord = chord(note(BassPitch2, _, _), note(TenorPitch2, _, _), note(AltoPitch2, _, _), note(SopranoPitch2, _, _), _),
+    SopranoPitch1 >= AltoPitch2,
+    AltoPitch1 >= TenorPitch2,
+    TenorPitch1 >= BassPitch2,
+    BassPitch1 =< TenorPitch2,
+    TenorPitch1 =< AltoPitch2,
+    AltoPitch1 =< SopranoPitch2.
+
+connection_not_one_direction(CurrentChord, PrevChord) :-
+    \+ all_voices_go_up(CurrentChord, PrevChord),
+    \+ all_voices_go_down(CurrentChord, PrevChord).
+
+connection_not_contain_false_relation(CurrentChord, PrevChord) :-
+    CurrentChord = chord(_, TenorNote1, AltoNote1, SopranoNote1, _),
+    PrevChord = chord(_, TenorNote2, AltoNote2, SopranoNote2, _),
+    \+ chromatic_alteration(TenorNote1, AltoNote2),
+    \+ chromatic_alteration(TenorNote1, SopranoNote2),
+    \+ chromatic_alteration(AltoNote1, SopranoNote2),
+    \+ chromatic_alteration(TenorNote2, AltoNote1),
+    \+ chromatic_alteration(TenorNote2, SopranoNote1),
+    \+ chromatic_alteration(AltoNote2, SopranoNote1).
+
+connection_not_contain_hidden_octaves(CurrentChord, PrevChord) :-
+    \+ same_direction_of_outer_voices(CurrentChord, PrevChord).
+
+connection_not_contain_hidden_octaves(CurrentChord, PrevChord) :-
+    CurrentChord = chord(_, _, _, note(SopranoPitch1, _, _), _),
+    PrevChord = chord(_, _, _, note(SopranoPitch2, _, _), _),
+    abs(SopranoPitch1 - SopranoPitch2) =< 2.
+
+connection_not_contain_hidden_octaves(CurrentChord, _) :-
+    CurrentChord = chord(CurrentBassNote, _, _, CurrentSopranoNote, _),
+    \+ is_octave_or_prime(CurrentBassNote, CurrentSopranoNote).
+
+connection_not_contain_forbidden_jump(CurrentChord, PrevChord) :-
+    CurrentChord = chord(BassNote1, TenorNote1, AltoNote1, SopranoNote1, _),
+    PrevChord = chord(BassNote2, TenorNote2, AltoNote2, SopranoNote2, _),
+    dist_leq_than(BassNote1, BassNote2, 12),
+    dist_leq_than(TenorNote1, TenorNote2, 9),
+    dist_leq_than(AltoNote1, AltoNote2, 9),
+    dist_leq_than(SopranoNote1, SopranoNote2, 9),
+    \+ is_altered_interval(BassNote2, BassNote1),
+    \+ is_altered_interval(TenorNote2, TenorNote1),
+    \+ is_altered_interval(AltoNote2, AltoNote1),
+    \+ is_altered_interval(SopranoNote2, SopranoNote1).
+
+connection_not_contain_incorrect_delay(CurrentChord, PrevChord) :-
+    CurrentChord = chord(note(_, _, CurrentB), note(_, _, CurrentT), note(_, _, CurrentA), note(_, _, CurrentS), _),
+    PrevChord = chord(note(_, _, PrevB), note(_, _, PrevT), note(_, _, PrevA), note(_, _, PrevS), harmonic_function(_, _, _, _, Delay, _, _, _, _, _, _)),
+    to_array(Delay, D_List),
+    valid_delay(PrevB, CurrentB, D_List),
+    valid_delay(PrevT, CurrentT, D_List),
+    valid_delay(PrevA, CurrentA, D_List),
+    valid_delay(PrevS, CurrentS, D_List).
+
+is_DT(CurrentHF, PrevHF) :-
+   CurrentHF = harmonic_function('T', _, _, _, _, _, _, _, _, _, _),
+   PrevHF = harmonic_function('D', _, _, _, _, _, _, _, _, _, _).
+
+is_notDT_or_contains_7(CurrentHF, PrevHF) :-
+    \+ is_DT(CurrentHF, PrevHF).
+
+is_notDT_or_contains_7(_, PrevHF) :-
+    PrevHF = harmonic_function(_, _, _, _, _, Extra, _, _, _, _, _),
+    list_contains_chord_component_with_base(7, Extra).
+
+is_DT_sharp5(CurrentChord, PrevChord) :-
+    CurrentChord = chord(_, _, _, _, CurrentHF),
+    PrevChord = chord(_, _, _, _, PrevHF),
+    is_notDT_or_contains_7(CurrentHF, PrevHF),
+    is_in_dominant_relation(CurrentChord, PrevChord),
+    PrevHF = harmonic_function(_, _, _, _, _, Extra, _, _, _, _, _),
+    list_contains_chord_component_with_string_repr("5<", Extra).
+
+is_in_second_relation_DT(CurrentHF, PrevHF) :-
+    is_in_second_relation(CurrentHF, PrevHF),
+    CurrentHF = harmonic_function('T', _, _, _, _, _, _, _, _, _, _),
+    PrevHF = harmonic_function('D', _, _, _, _, _, _, _, _, _, _).
+
+is_neapolitan(HF) :-
+    HF = harmonic_function('S', 2, _, chord_component(_, 3), _, list, _, 1, 0, _, _).
+
+connection_contains_illegal_double_3(CurrentChord, PrevChord) :-
+    CurrentChord = chord(note(_, _, chord_component(_, B)), note(_, _, chord_component(_, T)), note(_, _, chord_component(_, A)), note(_, _, chord_component(_, S)), CurrentHF),
+    PrevChord = chord(_, _, _, _, PrevHF),
+    \+ is_in_second_relation_DT(CurrentHF, PrevHF),
+    \+ is_DT_sharp5(CurrentChord, PrevChord),
+    \+ is_neapolitan(CurrentHF),
+    count([B, T, A, S], 3, Count),
+    Count > 1.
+
+
+
+connection(CurrentChord, PrevChord) :-
+    connection_not_contain_parallel_fifths(CurrentChord, PrevChord),
+    connection_not_contain_parallel_octaves(CurrentChord, PrevChord),
+    connection_not_overlapping_voices(CurrentChord, PrevChord),
+    connection_not_one_direction(CurrentChord, PrevChord),
+    connection_not_contain_false_relation(CurrentChord, PrevChord),
+    connection_not_contain_hidden_octaves(CurrentChord, PrevChord),
+    connection_not_contain_forbidden_jump(CurrentChord, PrevChord),
+    connection_not_contain_incorrect_delay(CurrentChord, PrevChord),
+    \+ connection_contains_illegal_double_3(CurrentChord, PrevChord).
+
+connection_is_ds(CurrentChord, PrevChord) :-
+    CurrentChord = chord(_, _, _, _, harmonic_function('S', _, _, _, _, _, _, _, _, _, _)),
+    PrevChord = chord(_, _, _, _, harmonic_function('D', _, _, _, _, _, _, _, IsMajor, _, _)),
+    boolean(IsMajor).
+
+connection_is_not_ds(CurrentChord, PrevChord) :-
+    \+ connection_is_ds(CurrentChord, PrevChord).
+
+connection_is_same(CurrentChord, PrevChord) :-
+    CurrentChord = chord(BassNote1, TenorNote, AltoNote, SopranoNote, harmonic_function(BF, Degree, _, _, _, _, _, Down, _, Key, _)),
+    PrevChord = chord(BassNote2, TenorNote, AltoNote, SopranoNote, harmonic_function(BF, Degree, _, _, _, _, _, Down, _, Key, _)),
+    equals_in_one_octave(BassNote1, BassNote2).
+
+
+connection_is_not_same(CurrentChord, PrevChord) :-
+    \+ connection_is_same(CurrentChord, PrevChord).
+
+translated_connection(CurrentChord, PrevChord) :-
+    connection_is_not_ds(CurrentChord, PrevChord),
+    connection_is_not_same(CurrentChord, PrevChord).

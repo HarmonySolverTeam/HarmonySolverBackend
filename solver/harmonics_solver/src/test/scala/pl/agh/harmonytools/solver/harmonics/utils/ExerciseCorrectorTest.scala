@@ -3,14 +3,13 @@ package pl.agh.harmonytools.solver.harmonics.utils
 import org.scalatest.{FunSuite, Matchers}
 import pl.agh.harmonytools.model.harmonicfunction.BaseFunction.{DOMINANT, SUBDOMINANT, TONIC}
 import pl.agh.harmonytools.model.harmonicfunction.HarmonicFunction
-import pl.agh.harmonytools.model.key.Key
 import pl.agh.harmonytools.model.scale.ScaleDegree.{III, VI}
 import pl.agh.harmonytools.utils.TestUtils
 
 class ExerciseCorrectorTest extends FunSuite with Matchers with TestUtils {
   import ChordComponents._
-  import Keys._
   import HarmonicFunctions._
+  import Keys._
 
   test("Make chords incomplete to avoid concurrent 5s") {
     val harmonicFunctions = List(
