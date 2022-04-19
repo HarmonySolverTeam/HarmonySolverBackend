@@ -8,6 +8,15 @@ object MeasurePlace extends Enumeration {
   type MeasurePlace = Value
   val UPBEAT, DOWNBEAT, BEGINNING = Value
 
+  def getMeasurePlaceIrregular(meter: Meter, measureCount: Double, measureDuration: Double): MeasurePlace = {
+    if (measureDuration < meter.asDouble / 2) {
+      val offset = meter.asDouble - measureDuration
+      getMeasurePlace(meter, measureCount + offset)
+    } else {
+      getMeasurePlace(meter, measureCount)
+    }
+  }
+
   def getMeasurePlace(
     meter: Meter,
     measureCount: Double,

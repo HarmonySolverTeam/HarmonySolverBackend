@@ -4,13 +4,17 @@ import pl.agh.harmonytools.model.chord.{Chord, ChordComponent}
 import pl.agh.harmonytools.model.harmonicfunction.BaseFunction.{BaseFunction, TONIC}
 import pl.agh.harmonytools.model.harmonicfunction.{BaseFunction, HarmonicFunction}
 import pl.agh.harmonytools.model.key.Key
-import pl.agh.harmonytools.model.key.Mode.{MAJOR, MINOR}
-import pl.agh.harmonytools.model.measure.{Measure, Meter}
+import pl.agh.harmonytools.model.key.Mode.{MAJOR, MINOR, Mode}
+import pl.agh.harmonytools.model.measure.{Measure, MeasurePlace, Meter}
 import pl.agh.harmonytools.model.note.{BaseNote, Note}
 import pl.agh.harmonytools.utils.ResourcesHelper
 import spray.json._
-
 import java.io.File
+import java.nio.charset.StandardCharsets
+import java.nio.file.{Files, Paths}
+
+import scala.collection.mutable.ListBuffer
+import ChoralesJsonProtocol._
 
 object HarmonicsFinder extends App with ResourcesHelper {
 
@@ -22,14 +26,18 @@ object HarmonicsFinder extends App with ResourcesHelper {
       List[File]()
   }
 
-  assert(args.nonEmpty)
+  assert(args.length == 2)
 
   val pathToChorales    = args(0)
+  val pathToNewChorales = args(1)
   val minorChoralesPath = s"$pathToChorales/minor"
   val majorChoralesPath = s"$pathToChorales/major"
+  val minorNewChoralesPath = s"$pathToNewChorales/minor"
+  val majorNewChoralesPath = s"$pathToNewChorales/major"
 
   for (choralFile <- getListOfFiles(majorChoralesPath).map(p => (p, MAJOR)) ++ getListOfFiles(minorChoralesPath).map(p => (p, MINOR))) {
     println(choralFile)
+    val name = choralFile._1.getName
     val json   = getFileContent(choralFile._1)
     val fields = JsonParser(ParserInput(json)).asJsObject.fields
     val key = Key(
@@ -89,14 +97,30 @@ object HarmonicsFinder extends App with ResourcesHelper {
     }
     val functions                          = if (choralFile._2.isMajor) new MajorFunctions(key) else new MinorFunctions(key)
     var previousBaseFunction: BaseFunction = TONIC
+    var previousKey: Option[Key] = None
+    var previousMode: Mode = key.mode
+    val choraleMeasures = ListBuffer[Measure[ChoraleChord]]()
     for (measure <- chords) {
+      var currentOffset = 0.0
+      val measureDuration = measure.contents.map(_.duration).sum
+      val choraleChords = ListBuffer[ChoraleChord]()
       for (chord <- measure.contents) {
-        val ch = functions.fitToKnown(chord, previousBaseFunction)
+        val ch = functions.fitToKnown(chord, previousBaseFunction, previousKey, previousMode).copy(duration = chord.duration)
         if (ch.harmonicFunction.baseFunction != previousBaseFunction)
           previousBaseFunction = ch.harmonicFunction.baseFunction
-        if (functions.compare(chord, ch, previousBaseFunction) > 100) println(s"Warn $chord")
+        if (ch.harmonicFunction.key != previousKey) previousKey = ch.harmonicFunction.key
+        if (ch.harmonicFunction.mode != previousMode) previousMode = ch.harmonicFunction.mode
+//        if (functions.compare(chord, ch, previousBaseFunction) > 100) println(s"Warn $chord")
+        val measurePlace = MeasurePlace.getMeasurePlaceIrregular(meter, currentOffset, measureDuration)
+        val baseNote = BaseNoteInKey(ch.sopranoNote, key)
+        choraleChords.append(new ChoraleChord(ch, measurePlace, baseNote))
+        currentOffset += ch.duration
       }
+      choraleMeasures.append(Measure(meter, choraleChords.toList))
     }
+    val chorale = new Chorale(choraleMeasures.toList, key, meter)
+    val choraleJson = chorale.toJson.toString()
+    val path = if (chorale.key.mode.isMajor) majorNewChoralesPath else minorNewChoralesPath
+    Files.write(Paths.get(s"$path/$name"), choraleJson.getBytes(StandardCharsets.UTF_8))
   }
-  //TODO policzyć measure place od razu i zapisać w jsonach wyniki jako gotowy dataset
 }
