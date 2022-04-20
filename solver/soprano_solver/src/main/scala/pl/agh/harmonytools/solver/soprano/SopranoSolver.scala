@@ -123,23 +123,4 @@ object SopranoSolver extends App {
 
   val solver = SopranoSolver(exercise, None)
   println(solver.solve())
-
-  def prepareSopranoGeneratorInputs(exercise: SopranoExercise): List[HarmonicFunctionGeneratorInput] = {
-    var inputs: List[HarmonicFunctionGeneratorInput] = List.empty
-    for (i <- exercise.measures.indices) {
-      val measure     = exercise.measures(i).contents
-      var durationSum = 0.0
-      for (j <- measure.indices) {
-        val note = measure(j)
-        inputs = inputs :+ HarmonicFunctionGeneratorInput(
-          note,
-          MeasurePlace.getMeasurePlace(exercise.meter, durationSum),
-          i == 0 && j == 0,
-          i == exercise.measures.length - 1 && j == measure.length - 1
-        )
-        durationSum += note.duration
-      }
-    }
-    inputs
-  }
 }

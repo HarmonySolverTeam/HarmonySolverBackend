@@ -4,11 +4,12 @@ import pl.agh.harmonytools.error.UnexpectedInternalError
 import pl.agh.harmonytools.model.chord.ChordComponent
 import pl.agh.harmonytools.model.harmonicfunction.HarmonicFunction
 import pl.agh.harmonytools.model.key.{Key, Mode}
-import pl.agh.harmonytools.model.key.Mode.{Mode, MAJOR, MINOR}
+import pl.agh.harmonytools.model.key.Mode.{MAJOR, MINOR, Mode}
 import pl.agh.harmonytools.model.note.BaseNote.BaseNote
 import pl.agh.harmonytools.model.note.{BaseNote, Note, NoteWithoutChordContext}
 import pl.agh.harmonytools.model.scale.{MajorScale, MinorScale}
 import pl.agh.harmonytools.model.scale.ScaleDegree.Degree
+import pl.agh.harmonytools.model.util.ChordComponentManager
 import pl.agh.harmonytools.utils.Extensions.ExtendedInt
 
 import scala.math.abs
@@ -85,6 +86,35 @@ object IntervalUtils {
     while (((firstBaseNote + i) %% 7) != secondBaseNote)
       i += 1
     i
+  }
+
+  def getInterval(key: Key, pitch2: Int, baseNote2: BaseNote): ChordComponent = {
+    val baseNote1 = key.baseNote
+    val pitch1 = key.tonicPitch
+    val baseDistance = getBaseDistance(baseNote1, baseNote2)
+    val pitchDiff = (pitch2 - pitch1) %% 12
+    val interval = Map(
+      (0, 0) -> "1",
+      (0, 1) -> "1<",
+      (1, 1) -> "2>",
+      (1, 2) -> "2",
+      (1, 3) -> "2<",
+      (2, 3) -> "3>",
+      (2, 4) -> "3",
+      (2, 5) -> "3<",
+      (3, 4) -> "4>",
+      (3, 5) -> "4",
+      (3, 6) -> "4<",
+      (4, 6) -> "5>",
+      (4, 7) -> "5",
+      (4, 8) -> "5<",
+      (5, 8) -> "6>",
+      (5, 9) -> "6",
+      (5, 10) -> "6<",
+      (6, 10) -> "7",
+      (6, 11) -> "7<"
+    ).get(baseDistance, pitchDiff).getOrElse(sys.error("Unknown interval"))
+    ChordComponentManager.chordComponentFromString(interval)
   }
 
   def isAlteredInterval(note1: Note, note2: Note): Boolean = {

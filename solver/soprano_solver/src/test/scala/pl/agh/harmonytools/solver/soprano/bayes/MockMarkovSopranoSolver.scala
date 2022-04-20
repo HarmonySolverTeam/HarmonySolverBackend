@@ -5,6 +5,7 @@ import pl.agh.harmonytools.model.harmonicfunction.HarmonicFunction
 import pl.agh.harmonytools.model.key.Mode
 import pl.agh.harmonytools.model.scale.ScaleDegree._
 import pl.agh.harmonytools.model.scale.{MajorScale, MinorScale}
+import pl.agh.harmonytools.solver.soprano.evaluator.HarmonicFunctionWithSopranoInfo
 import pl.agh.harmonytools.solver.soprano.generator.HarmonicFunctionGeneratorInput
 import pl.agh.harmonytools.utils.TestUtils
 
@@ -15,8 +16,8 @@ class MockMarkovSopranoSolver(exercise: SopranoExercise) extends MarkovSopranoSo
     tonic
   }
 
-  override def chooseNextHarmonicFunction(previousHf: HarmonicFunction, currentInput: HarmonicFunctionGeneratorInput): HarmonicFunction = {
-    if (previousHf == dominant) tonic
+  override def chooseNextHarmonicFunction(previousHf: HarmonicFunctionWithSopranoInfo, currentInput: HarmonicFunctionGeneratorInput, nextInput: Option[HarmonicFunctionGeneratorInput]): HarmonicFunction = {
+    if (previousHf.harmonicFunction == dominant) tonic
     else {
       val degree =
         if (exercise.key.mode == Mode.MAJOR) {

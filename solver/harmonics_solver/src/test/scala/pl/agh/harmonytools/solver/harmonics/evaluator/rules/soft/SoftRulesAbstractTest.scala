@@ -3,7 +3,7 @@ package pl.agh.harmonytools.solver.harmonics.evaluator.rules.soft
 import org.scalatest.{FunSuite, Matchers}
 import pl.agh.harmonytools.algorithm.evaluator.Connection
 import pl.agh.harmonytools.model.chord.Chord
-import pl.agh.harmonytools.model.harmonicfunction.FunctionNames.{DOMINANT, TONIC}
+import pl.agh.harmonytools.model.harmonicfunction.BaseFunction.{DOMINANT, TONIC}
 import pl.agh.harmonytools.model.harmonicfunction.{Delay, HarmonicFunction}
 import pl.agh.harmonytools.model.note.BaseNote._
 import pl.agh.harmonytools.model.note.Note

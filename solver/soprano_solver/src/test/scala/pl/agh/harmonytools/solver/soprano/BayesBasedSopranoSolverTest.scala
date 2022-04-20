@@ -5,7 +5,6 @@ import pl.agh.harmonytools.algorithm.graph.shortestpath.dijkstra.DijkstraAlgorit
 import pl.agh.harmonytools.algorithm.graph.shortestpath.topologicalsort.TopologicalSortAlgorithm
 import pl.agh.harmonytools.exercise.soprano.SopranoExercise
 import pl.agh.harmonytools.harmonics.parser.DeflectionsHandler
-import pl.agh.harmonytools.model.harmonicfunction.FunctionNames.{DOMINANT, SUBDOMINANT, TONIC}
 import pl.agh.harmonytools.model.harmonicfunction.HarmonicFunction
 import pl.agh.harmonytools.model.key.Key
 import pl.agh.harmonytools.model.measure.{Measure, MeasurePlace, Meter}
@@ -13,6 +12,7 @@ import pl.agh.harmonytools.model.note.BaseNote.{A, B, C, D, E, F, G}
 import pl.agh.harmonytools.model.note.{BaseNote, NoteWithoutChordContext}
 import pl.agh.harmonytools.model.scale.ScaleDegree.{II, III, VI, VII}
 import pl.agh.harmonytools.solver.soprano.bayes.{BayesNetSopranoSolver, ChoosingTactic}
+import pl.agh.harmonytools.solver.soprano.evaluator.HarmonicFunctionWithSopranoInfo
 import pl.agh.harmonytools.solver.soprano.generator.HarmonicFunctionGeneratorInput
 import pl.agh.harmonytools.utils.TestUtils
 import pl.agh.harmonytools.utils.Extensions._
@@ -39,8 +39,9 @@ class BayesBasedSopranoSolverTest extends FunSuite with Matchers with TestUtils 
   test("BayesNetSopranoSolver after dominant should be tonic") {
     val b = new BayesNetSopranoSolver(SopranoExercise(keyC, Meter(3, 4), List(), List()), ChoosingTactic.ARGMAX)
     b.chooseNextHarmonicFunction(
-      dominant,
-      HarmonicFunctionGeneratorInput(NoteWithoutChordContext(72, BaseNote.C), MeasurePlace.BEGINNING, true, false)
+      HarmonicFunctionWithSopranoInfo(dominant, MeasurePlace.BEGINNING, NoteWithoutChordContext(71, BaseNote.B)),
+      HarmonicFunctionGeneratorInput(NoteWithoutChordContext(72, BaseNote.C), MeasurePlace.BEGINNING, true, false),
+      None
     ) shouldBe tonic
   }
 }

@@ -144,6 +144,7 @@ lazy val soprano_solver = project
   )
   .dependsOn(
     harmonics_solver,
+    harmonics_finder,
     jenetics
   )
 

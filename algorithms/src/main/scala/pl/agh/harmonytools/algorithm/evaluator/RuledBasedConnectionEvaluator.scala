@@ -7,7 +7,7 @@ trait RuledBasedConnectionEvaluator[T <: NodeContent] extends ConnectionEvaluato
   protected val hardRules: List[HardRule[T]]
   private lazy val brokenRulesCounter: BrokenRulesCounter[T] = BrokenRulesCounter(hardRules)
 
-  def initializeBrokenRulesCounter(): Unit = brokenRulesCounter.initialize()
+  override def initializeBrokenRulesCounter(): Unit = brokenRulesCounter.initialize()
 
   def evaluateHardRules(connection: Connection[T]): Boolean = hardRules.forall(_.isNotBroken(connection))
 
@@ -24,6 +24,6 @@ trait RuledBasedConnectionEvaluator[T <: NodeContent] extends ConnectionEvaluato
     result
   }
 
-  def getBrokenRulesCounter: BrokenRulesCounter[T] = brokenRulesCounter
+  override def getBrokenRulesCounter: BrokenRulesCounter[T] = brokenRulesCounter
 
 }
