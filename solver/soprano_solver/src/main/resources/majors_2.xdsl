@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- This network was created in GeNIe Academic, which can be used for academic teaching and research purposes only -->
+<smile version="1.0" id="majors_2" numsamples="10000" discsamples="10000">
+	<nodes>
+		<cpt id="currentBase">
+			<state id="D" />
+			<state id="S" />
+			<state id="T" />
+			<probabilities>0.419185282522996 0.1659658344283837 0.4148488830486202</probabilities>
+		</cpt>
+		<cpt id="prevBase">
+			<state id="D" />
+			<state id="S" />
+			<state id="T" />
+			<parents>currentBase</parents>
+			<probabilities>0.4047021943573668 0.1874608150470219 0.4078369905956113 0.1480601741884402 0.1464766429136976 0.7054631828978623 0.5445042762115933 0.1520430788723472 0.3034526449160596</probabilities>
+		</cpt>
+		<cpt id="prevIsDown">
+			<state id="State0" />
+			<state id="State1" />
+			<parents>currentBase</parents>
+			<probabilities>0.9978056426332289 0.00219435736677116 0.9984164687252572 0.001583531274742676 0.9996832435856826 0.0003167564143173899</probabilities>
+		</cpt>
+		<cpt id="prevDegree">
+			<state id="State1" />
+			<state id="State2" />
+			<state id="State3" />
+			<state id="State4" />
+			<state id="State5" />
+			<state id="State6" />
+			<state id="State7" />
+			<parents>currentBase</parents>
+			<probabilities>0.2479623824451411 0.08432601880877744 0.06426332288401254 0.1031347962382445 0.2890282131661442 0.1589341692789969 0.05235109717868339 0.4803345388788427 0.06261301989150091 0.003277576853526221 0.0839737793851718 0.1464737793851718 0.2232142857142858 0.0001130198915009042 0.2005068102629078 0.06651884700665188 0.1184668989547038 0.08552423186569529 0.3630028508077289 0.1026290782388343 0.06335128286347799</probabilities>
+		</cpt>
+		<cpt id="prevIsMajor">
+			<state id="State0" />
+			<state id="State1" />
+			<parents>currentBase</parents>
+			<probabilities>0.02068965517241379 0.9793103448275863 0.0395882818685669 0.960411718131433 0.0126702565726956 0.9873297434273044</probabilities>
+		</cpt>
+		<cpt id="prevInversion">
+			<state id="S1" />
+			<state id="S3" />
+			<state id="S3b" />
+			<state id="S5" />
+			<state id="S5b" />
+			<state id="S7" />
+			<parents>currentBase</parents>
+			<probabilities>0.5899686520376176 0.1996865203761756 0.0981191222570533 0.09592476489028214 0.01222570532915361 0.004075235109717868 0.6346255274261602 0.2082014767932489 0.06342299578059071 0.08953059071729957 0.0001318565400843881 0.004087552742616033 0.679125752296484 0.1726322458029775 0.09375989863794743 0.03896103896103896 0.01298701298701299 0.002534051314539119</probabilities>
+		</cpt>
+		<cpt id="prevOmit">
+			<state id="S1" />
+			<state id="S5" />
+			<state id="S5b" />
+			<state id="empty" />
+			<parents>currentBase</parents>
+			<probabilities>0.04984326018808777 0.05611285266457681 0.003134796238244514 0.890909090909091 0.04133702531645569 0.03975474683544303 0.0001977848101265823 0.9187104430379747 0.02565726955970858 0.05701615457713019 0.006651884700665188 0.910674691162496</probabilities>
+		</cpt>
+		<cpt id="prevExtra">
+			<state id="S6" />
+			<state id="S7" />
+			<state id="S7_9" />
+			<state id="S7_9b" />
+			<state id="empty" />
+			<parents>currentBase</parents>
+			<probabilities>0.0232528987778126 0.1996866186148543 6.267627702914446e-05 0.001002820432466311 0.7759949858978376 0.004905063291139241 0.1916139240506329 0.0001582278481012658 0.0001582278481012658 0.8031645569620254 0.02977510294583465 0.1631295533734558 0.002534051314539119 0.00190053848590434 0.802660753880266</probabilities>
+		</cpt>
+		<cpt id="prevStrongPlace">
+			<state id="State0" />
+			<state id="State1" />
+			<parents>currentBase</parents>
+			<probabilities>0.4235109717868339 0.5764890282131662 0.5653206650831354 0.4346793349168646 0.4941400063351283 0.5058599936648717</probabilities>
+		</cpt>
+		<cpt id="prevNote">
+			<state id="S0" />
+			<state id="S0s" />
+			<state id="S1" />
+			<state id="S1b" />
+			<state id="S2" />
+			<state id="S3" />
+			<state id="S3s" />
+			<state id="S4" />
+			<state id="S4b" />
+			<state id="S4s" />
+			<state id="S5" />
+			<state id="S5b" />
+			<state id="S5s" />
+			<state id="S6" />
+			<state id="S6b" />
+			<parents>currentBase</parents>
+			<probabilities>0.1955708764232738 0.0003342734774887705 0.1507573383474355 0.0003342734774887705 0.2081061318291027 0.09936279118353704 0.01161600334273478 0.1260002089209235 0.0003342734774887705 2.089209234304816e-05 0.1350882690901494 0.0003342734774887705 0.000647654862634493 0.06363731327692469 0.007855426720986108 0.1899261603375528 0.004799578059071732 0.03169831223628693 0.0008438818565400847 0.3790084388185656 0.06255274261603377 0.0008438818565400847 0.2366033755274262 5.27426160337553e-05 5.27426160337553e-05 0.07916666666666669 5.27426160337553e-05 5.27426160337553e-05 0.002426160337552744 0.0119198312236287 0.1371332066708888 2.111040743086342e-05 0.2615790584758286 2.111040743086342e-05 0.1469495461262403 0.1080008444162973 0.0003377665188938147 0.1931813383998312 2.111040743086342e-05 0.0009710787418197174 0.04340299767785519 0.0006544226303567661 2.111040743086342e-05 0.10293434663289 0.004770952079375133</probabilities>
+		</cpt>
+		<cpt id="prevKey">
+			<state id="S1" />
+			<state id="S2" />
+			<state id="S3" />
+			<state id="S4" />
+			<state id="S5" />
+			<state id="S6" />
+			<state id="empty" />
+			<parents>currentBase</parents>
+			<probabilities>0.005329153605015674 0.004702194357366771 0.007210031347962383 0.0536050156739812 0.001880877742946708 0.0006269592476489029 0.9266457680250785 0.05700712589073634 0.000791765637371338 0.0459224069675376 0.003167062549485352 0.003167062549485352 0.000791765637371338 0.8891528107680127 0.001311861033203655 0.002261829367592509 0.004161766036370216 0.01302813715733285 0.012078168822944 4.523658735185017e-05 0.967113000995205</probabilities>
+		</cpt>
+		<cpt id="currentIsDown">
+			<state id="State0" />
+			<state id="State1" />
+			<parents>currentBase</parents>
+			<probabilities>0.9990595611285267 0.0009404388714733542 0.9996044303797468 0.0003955696202531646 0.9977827050997783 0.002217294900221729</probabilities>
+		</cpt>
+		<cpt id="currentDegree">
+			<state id="State1" />
+			<state id="State2" />
+			<state id="State3" />
+			<state id="State4" />
+			<state id="State5" />
+			<state id="State6" />
+			<state id="State7" />
+			<parents>currentBase</parents>
+			<probabilities>4.476876930653175e-05 4.476876930653175e-05 0.1802390652280968 4.476876930653175e-05 0.7045261225768903 4.476876930653175e-05 0.1150557371177866 0.0001130198915009042 0.4415687160940326 0.0001130198915009042 0.5578661844484629 0.0001130198915009042 0.0001130198915009042 0.0001130198915009042 0.64792364064055 4.523658735185017e-05 0.001945173256129557 4.523658735185017e-05 4.523658735185017e-05 0.3499502397539129 4.523658735185017e-05</probabilities>
+		</cpt>
+		<cpt id="currentIsMajor">
+			<state id="State0" />
+			<state id="State1" />
+			<parents>currentBase</parents>
+			<probabilities>0.04576802507836991 0.9542319749216301 0.007125890736342042 0.9928741092636579 0.0001583280557314756 0.9998416719442685</probabilities>
+		</cpt>
+		<cpt id="currentInversion">
+			<state id="S1" />
+			<state id="S3" />
+			<state id="S3b" />
+			<state id="S5" />
+			<state id="S5b" />
+			<state id="S7" />
+			<parents>currentBase</parents>
+			<probabilities>0.5460815047021944 0.2156739811912226 0.1203761755485893 0.08526645768025079 0.02507836990595612 0.007523510971786834 0.6860495780590716 0.1330432489451477 0.1101002109704641 0.07054324894514767 0.0001318565400843881 0.0001318565400843881 0.7001794384631626 0.1887798184504962 0.05230103440996413 0.05800084441629725 5.277601857715855e-05 0.0006860882415030612</probabilities>
+		</cpt>
+		<cpt id="currentOmit">
+			<state id="S1" />
+			<state id="S5" />
+			<state id="S5b" />
+			<state id="empty" />
+			<parents>currentBase</parents>
+			<probabilities>0.08840125391849531 0.06050156739811913 0.009717868338557995 0.8413793103448276 0.0009889240506329115 0.07219145569620253 0.0001977848101265823 0.926621835443038 0.002929069031032299 0.03997783407219759 7.916402786573781e-05 0.9570139328689043</probabilities>
+		</cpt>
+		<cpt id="currentExtra">
+			<state id="S6" />
+			<state id="S7" />
+			<state id="S7_9" />
+			<state id="S7_9b" />
+			<state id="empty" />
+			<parents>currentBase</parents>
+			<probabilities>6.267627702914446e-05 0.350109683484801 0.002569727358194923 0.002883108743340645 0.6443748041366342 0.1378164556962025 0.05316455696202532 0.0001582278481012658 0.0001582278481012658 0.8087025316455696 6.333122229259025e-05 0.06656111462951235 6.333122229259025e-05 6.333122229259025e-05 0.9332488917036098</probabilities>
+		</cpt>
+		<cpt id="currentStrongPlace">
+			<state id="State0" />
+			<state id="State1" />
+			<parents>currentBase</parents>
+			<probabilities>0.5416927899686521 0.458307210031348 0.4133016627078385 0.5866983372921615 0.4019638897687678 0.5980361102312322</probabilities>
+		</cpt>
+		<cpt id="currentNote">
+			<state id="S0" />
+			<state id="S0s" />
+			<state id="S1" />
+			<state id="S1b" />
+			<state id="S2" />
+			<state id="S3" />
+			<state id="S3s" />
+			<state id="S4" />
+			<state id="S4b" />
+			<state id="S4s" />
+			<state id="S5" />
+			<state id="S5b" />
+			<state id="S5s" />
+			<state id="S6" />
+			<state id="S6b" />
+			<parents>currentBase</parents>
+			<probabilities>0.02258435182283506 0.002214561788363105 0.3162227097043769 2.089209234304816e-05 0.09246840071033115 0.06959155959469342 0.01224276611302622 0.2447717538911522 2.089209234304816e-05 0.0009610362477802154 0.05360910895226158 0.0009610362477802154 0.000647654862634493 0.1664264076047217 0.01725686827535778 0.09103375527426159 5.274261603375528e-05 0.2666666666666667 5.274261603375528e-05 5.274261603375528e-05 0.4074894514767933 5.274261603375528e-05 5.274261603375528e-05 5.274261603375528e-05 5.274261603375528e-05 0.2342299578059072 5.274261603375528e-05 5.274261603375528e-05 5.274261603375528e-05 5.274261603375528e-05 0.3736753219337134 2.111040743086342e-05 2.111040743086342e-05 0.0006544226303567662 0.4047076208570827 2.111040743086342e-05 2.111040743086342e-05 0.1570825416930547 0.0003377665188938148 2.111040743086342e-05 0.06335233270002114 2.111040743086342e-05 2.111040743086342e-05 2.111040743086342e-05 2.111040743086342e-05</probabilities>
+		</cpt>
+		<cpt id="currentKey">
+			<state id="S1" />
+			<state id="S2" />
+			<state id="S3" />
+			<state id="S4" />
+			<state id="S5" />
+			<state id="S6" />
+			<state id="empty" />
+			<parents>currentBase</parents>
+			<probabilities>0.02915360501567398 0.007210031347962383 0.02664576802507837 0.06771159874608151 0.01536050156739812 0.0009404388714733542 0.8529780564263324 0.0001130198915009042 0.0001130198915009042 0.007233273056057866 0.0001130198915009042 0.0001130198915009042 0.0001130198915009042 0.9922016274864376 4.523658735185017e-05 4.523658735185017e-05 4.523658735185017e-05 4.523658735185017e-05 4.523658735185017e-05 4.523658735185017e-05 0.999728580475889</probabilities>
+		</cpt>
+	</nodes>
+	<extensions>
+		<genie version="1.0" app="GeNIe 3.0.6518.0 ACADEMIC" name="majors_2">
+			<node id="prevBase">
+				<name>prevBase</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>542 193 614 241</position>
+			</node>
+			<node id="prevIsDown">
+				<name>prevIsDown</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>528 248 600 296</position>
+			</node>
+			<node id="prevDegree">
+				<name>prevDegree</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>488 297 560 345</position>
+			</node>
+			<node id="prevIsMajor">
+				<name>prevIsMajor</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>426 335 498 383</position>
+			</node>
+			<node id="prevInversion">
+				<name>prevInversion</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>349 357 421 405</position>
+			</node>
+			<node id="prevOmit">
+				<name>prevOmit</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>266 362 338 410</position>
+			</node>
+			<node id="prevExtra">
+				<name>prevExtra</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>185 348 257 396</position>
+			</node>
+			<node id="prevStrongPlace">
+				<name>prevStrongPlace</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>115 318 187 366</position>
+			</node>
+			<node id="prevNote">
+				<name>prevNote</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>63 273 135 321</position>
+			</node>
+			<node id="prevKey">
+				<name>prevKey</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>36 220 108 268</position>
+			</node>
+			<node id="currentBase">
+				<name>currentBase</name>
+				<interior color="ffff80" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>287 193 359 241</position>
+			</node>
+			<node id="currentIsDown">
+				<name>currentIsDown</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>36 166 108 214</position>
+			</node>
+			<node id="currentDegree">
+				<name>currentDegree</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>63 113 135 161</position>
+			</node>
+			<node id="currentIsMajor">
+				<name>currentIsMajor</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>115 68 187 116</position>
+			</node>
+			<node id="currentInversion">
+				<name>currentInversion</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>185 38 257 86</position>
+			</node>
+			<node id="currentOmit">
+				<name>currentOmit</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>266 24 338 72</position>
+			</node>
+			<node id="currentExtra">
+				<name>currentExtra</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>349 29 421 77</position>
+			</node>
+			<node id="currentStrongPlace">
+				<name>currentStrongPlace</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>426 51 498 99</position>
+			</node>
+			<node id="currentNote">
+				<name>currentNote</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>488 89 560 137</position>
+			</node>
+			<node id="currentKey">
+				<name>currentKey</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>528 138 600 186</position>
+			</node>
+			<textbox>
+				<caption>Input file: majors_2\nData rows: 7610\nElapsed time: 0.062s\n\nLearning algorithm: Naive Bayes\nAlgorithm parameters:\nClass variable: currentBase\n\nEM Log Likelihood: -105426</caption>
+				<font color="000000" name="Arial" size="8" />
+				<position>10 430 165 556</position>
+			</textbox>
+		</genie>
+	</extensions>
+</smile>
