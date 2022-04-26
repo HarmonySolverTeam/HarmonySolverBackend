@@ -57,7 +57,7 @@ abstract class MarkovSopranoSolver(exercise: SopranoExercise) extends Solver[Not
         if (newHf.countChordComponents > 3 && newHf.inversion == component) {
           newHf.copy(inversion = hf.getThird)
         } else newHf
-    }
+    }.map(hf => hf.copy(extra = hf.extra.filter(_.baseComponent > 5)))
     val measures: ListBuffer[Measure[HarmonicFunction]] = ListBuffer()
     var i = 0
     val meterDouble = exercise.meter.asDouble

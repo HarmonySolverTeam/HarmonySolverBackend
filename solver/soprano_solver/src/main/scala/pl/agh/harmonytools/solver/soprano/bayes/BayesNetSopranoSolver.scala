@@ -8,14 +8,14 @@ import pl.agh.harmonytools.solver.soprano.bayes.ChoosingTactic.{ARGMAX, STOCHAST
 import pl.agh.harmonytools.solver.soprano.generator.HarmonicFunctionGeneratorInput
 import smile.{License, Network}
 import smile.Network
-import java.lang.Math.abs
 
+import java.lang.Math.abs
 import pl.agh.harmonytools.utils.Extensions._
 import pl.agh.harmonytools.error.UnexpectedInternalError
 import pl.agh.harmonytools.finder.BaseNoteInKey
 import pl.agh.harmonytools.model.chord.ChordComponent
 import pl.agh.harmonytools.model.harmonicfunction.BaseFunction.TONIC
-import pl.agh.harmonytools.model.key.Mode.{MAJOR, Mode}
+import pl.agh.harmonytools.model.key.Mode.{MAJOR, MINOR, Mode}
 import pl.agh.harmonytools.model.measure.{Measure, MeasurePlace, Meter}
 import pl.agh.harmonytools.model.note.BaseNote.{A, B, C, D, E, F, G}
 import pl.agh.harmonytools.model.note.NoteWithoutChordContext
@@ -40,6 +40,12 @@ class BayesNetSopranoSolver(exercise: SopranoExercise, choosingTactic: ChoosingT
 
   private val minors2 = new Network()
   minors2.readFile(getClass.getResource("/minors_2.xdsl").getPath.tail)
+
+  private val majors = new Network()
+  majors.readFile(getClass.getResource("/majors.xdsl").getPath.tail)
+
+  private val minors = new Network()
+  minors.readFile(getClass.getResource("/minors.xdsl").getPath.tail)
 
   private def setEvidenceMeasurePlace(input: HarmonicFunctionGeneratorInput): Unit = {
     input.measurePlace match {
@@ -153,7 +159,7 @@ class BayesNetSopranoSolver(exercise: SopranoExercise, choosingTactic: ChoosingT
   }
 
   override def chooseFirstHarmonicFunction(input: HarmonicFunctionGeneratorInput): HarmonicFunction = {
-    HarmonicFunction(baseFunction = TONIC)
+    HarmonicFunction(baseFunction = TONIC, mode = exercise.mode)
   }
 
   private def setEvidence(nodeId: String, outcomeId: String)(implicit network: Network): Unit = {
@@ -169,65 +175,72 @@ class BayesNetSopranoSolver(exercise: SopranoExercise, choosingTactic: ChoosingT
   }
 
   private def chooseNextHarmonicFunction(previousHf: HarmonicFunctionWithSopranoInfo, currentInput: HarmonicFunctionGeneratorInput): HarmonicFunction = {
-    implicit val network = if (exercise.key.mode.isMajor) majors2 else minors2
-    network.clearAllEvidence()
-    setEvidence("prevBase", previousHf.harmonicFunction.baseFunction.name)
-    setEvidence("prevDegree", "State" + previousHf.harmonicFunction.degree.root)
-    setEvidence("prevIsMajor", "State" + {if (previousHf.harmonicFunction.hasMajorMode) 1 else 0})
-    setEvidence("prevStrongPlace", "State" + {if (previousHf.measurePlace == MeasurePlace.UPBEAT) 0 else 1})
-    setEvidence("prevExtra", previousHf.harmonicFunction.extra.map(e => "S" + e.chordComponentString.replace("<", "s").replace(">", "b")).reduceOption((x, y) => x + "_" + y).getOrElse("empty"))
-    setEvidence("prevOmit", previousHf.harmonicFunction.omit.map(o => "S" + o.chordComponentString.replace("<", "s").replace(">", "b")).reduceOption((x, y) => x + "_" + y).getOrElse("empty"))
-    setEvidence("prevInversion", "S" + previousHf.harmonicFunction.inversion.chordComponentString.replace("<", "s").replace(">", "b"))
-    setEvidence("prevIsDown", "State" + {if (previousHf.harmonicFunction.isDown) 1 else 0})
-    setEvidence("prevKey", previousHf.harmonicFunction.key.map(k => "S" + BaseNoteInKey(k, exercise.key)).getOrElse("empty"))
-    setEvidence("prevNote", "S" + BaseNoteInKey(previousHf.sopranoNote, exercise.key).toString)
-    setEvidence("currentNote", "S" + BaseNoteInKey(currentInput.sopranoNote, exercise.key).toString)
-    setEvidence("currentStrongPlace", "State" + {if (currentInput.measurePlace == MeasurePlace.UPBEAT) 0 else 1})
-    network.updateBeliefs()
-    val hf = HarmonicFunction(
-      degree = Some(getDegree),
-      baseFunction = getBaseHf,
-      mode = getIsMajor,
-      extra = getExtra,
-      omit = getOmit,
-      inversion = Some(getInversion),
-      key = getKey,
-      isDown = getIsDown
+    HarmonicFunction(
+      baseFunction = TONIC,
+      mode = exercise.mode
     )
-    // TODO Zmiana w sieci
-    hf.copy(inversion = {if (hf.inversion.baseComponent == 3) hf.getThird else if (hf.inversion.baseComponent == 5) hf.getFifth else hf.inversion})
+  }
+
+  private def harmonicFunctionGenieString(hf: HarmonicFunction): String = {
+    val base = hf.baseFunction.name
+    val down = {if (hf.isDown) 1 else 0}
+    val degree = hf.degree.root
+    val major = {if (hf.hasMajorMode) 1 else 0}
+    val inversion = hf.inversion.chordComponentString.replace("<", "s").replace(">", "b")
+    val omit = hf.omit.map(o => o.chordComponentString.replace("<", "s").replace(">", "b")).reduceOption((x, y) => x + "_" + y).getOrElse("empty")
+    val key = hf.key.map(k => BaseNoteInKey(k, exercise.key)).getOrElse("")
+    val extra = hf.extra.map(e => e.chordComponentString.replace("<", "s").replace(">", "b")).reduceOption((x, y) => x + "_" + y).getOrElse("empty")
+    s"${base}_${down}_${degree}_${major}_${inversion}_${omit}_${key}_${extra}"
+  }
+
+  private def getHarmonicFunction(hfStr: String)(implicit network: Network): HarmonicFunction = {
+    val values = hfStr.split("_")
+    val base = BaseFunction.fromName(values(0))
+    val down = values(1).toInt > 0
+    val degree = ScaleDegree.fromValue(values(2).toInt)
+    val mode = if (values(3) == "1") MAJOR else MINOR
+    val inversion = ChordComponentManager.chordComponentFromString(values(4).replace("s", "<").replace("b", ">"), down)
+    val omit = if (values(5) == "empty") Set[ChordComponent]() else Set(ChordComponentManager.chordComponentFromString(values(5).replace("s", "<").replace("b", ">"), down))
+    val key = if (values(6) == "") None else {
+      val root = values(6).toInt
+      val scale = if (exercise.key.mode.isMajor) MajorScale else MinorScale
+      val tonicPitch = (exercise.key.tonicPitch + scale.pitches(root)) %% 12 + 60
+      val base = exercise.key.baseNote + root
+      Some(Key(MAJOR, tonicPitch, base))
+    }
+    val extra = if (values(7) == "empty") Set[ChordComponent]() else values.drop(7).map(e => ChordComponentManager.chordComponentFromString(e.replace("s", "<").replace("b", ">"), down)).toSet
+
+    HarmonicFunction(
+      baseFunction = base,
+      isDown = down,
+      degree = Some(degree),
+      mode = mode,
+      inversion = Some(inversion),
+      omit = omit,
+      key = key,
+      extra = extra
+    )
+  }
+
+  private def getAllHFs(implicit network: Network): List[(HarmonicFunction, Double)] = {
+    val nodeId = "currentHF"
+    val beliefs = network.getNodeValue(nodeId).zipWithIndex.map { case (value, index) => (getHarmonicFunction(network.getOutcomeId(nodeId, index)), value)}.filterNot(_._1.isDown)
+    beliefs.toList
   }
 
   private def chooseNextHarmonicFunction(previousHf: HarmonicFunctionWithSopranoInfo, currentInput: HarmonicFunctionGeneratorInput, nextInput: HarmonicFunctionGeneratorInput): HarmonicFunction = {
-    implicit val network = if (exercise.key.mode.isMajor) majors3 else minors3
+    implicit val network: Network = if (exercise.key.mode.isMajor) majors else minors
     network.clearAllEvidence()
-    setEvidence("prevBase", previousHf.harmonicFunction.baseFunction.name)
-    setEvidence("prevDegree", "State" + previousHf.harmonicFunction.degree.root)
-    setEvidence("prevIsMajor", "State" + {if (previousHf.harmonicFunction.hasMajorMode) 1 else 0})
+    setEvidence("prevHF", harmonicFunctionGenieString(previousHf.harmonicFunction))
     setEvidence("prevStrongPlace", "State" + {if (previousHf.measurePlace == MeasurePlace.UPBEAT) 0 else 1})
-    setEvidence("prevExtra", previousHf.harmonicFunction.extra.map(e => "S" + e.chordComponentString.replace("<", "s").replace(">", "b")).reduceOption((x, y) => x + "_" + y).getOrElse("empty"))
-    setEvidence("prevOmit", previousHf.harmonicFunction.omit.map(o => "S" + o.chordComponentString.replace("<", "s").replace(">", "b")).reduceOption((x, y) => x + "_" + y).getOrElse("empty"))
-    setEvidence("prevInversion", "S" + previousHf.harmonicFunction.inversion.chordComponentString.replace("<", "s").replace(">", "b"))
-    setEvidence("prevIsDown", "State" + {if (previousHf.harmonicFunction.isDown) 1 else 0})
-    setEvidence("prevKey", previousHf.harmonicFunction.key.map(k => "S" + BaseNoteInKey(k, exercise.key)).getOrElse("empty"))
     setEvidence("prevNote", "S" + BaseNoteInKey(previousHf.sopranoNote, exercise.key))
     setEvidence("currentNote", "S" + BaseNoteInKey(currentInput.sopranoNote, exercise.key))
     setEvidence("currentStrongPlace", "State" + {if (currentInput.measurePlace == MeasurePlace.UPBEAT) 0 else 1})
-    setEvidence("nextNote", "S" + BaseNoteInKey(currentInput.sopranoNote, exercise.key))
-    setEvidence("nextStrongPlace", "State" + {if (currentInput.measurePlace == MeasurePlace.UPBEAT) 0 else 1})
+    setEvidence("nextNote", "S" + BaseNoteInKey(nextInput.sopranoNote, exercise.key))
+    setEvidence("nextStrongPlace", "State" + {if (nextInput.measurePlace == MeasurePlace.UPBEAT) 0 else 1})
     network.updateBeliefs()
-    val hf = HarmonicFunction(
-      degree = Some(getDegree),
-      baseFunction = getBaseHf,
-      mode = getIsMajor,
-      extra = getExtra,
-      omit = getOmit,
-      inversion = Some(getInversion),
-      key = getKey,
-      isDown = getIsDown
-    )
-    // TODO Zmiana w sieci
-    hf.copy(inversion = {if (hf.inversion.baseComponent == 3) hf.getThird else if (hf.inversion.baseComponent == 5) hf.getFifth else hf.inversion})
+    val harmonicFunctions = if (previousHf.harmonicFunction.baseFunction.isDominant && previousHf.harmonicFunction.mode == MAJOR) getAllHFs.filter(_._1.baseFunction.isTonic) else getAllHFs
+    harmonicFunctions.maxBy(_._2)._1
   }
 }
 
