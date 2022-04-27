@@ -7,7 +7,7 @@ import pl.agh.harmonytools.solver.bass.BassSolver
 import pl.agh.harmonytools.solver.harmonics.HarmonicsSolver
 import pl.agh.harmonytools.solver.harmonics.validator.SolvedExerciseValidator
 import pl.agh.harmonytools.solver.soprano.SopranoSolver
-import pl.agh.harmonytools.soprano.genetic.SopranoGeneticSolver
+import pl.agh.harmonytools.solver.soprano.genetic.SopranoGeneticSolver
 import play.filters.csrf.CSRF
 
 import java.lang.Thread
@@ -49,7 +49,7 @@ class DefaultApiImpl extends DefaultApi {
     println(s"received soprano exercise")
     val exercise         = SopranoExerciseMapper.mapToModel(sopranoExerciseRequestDto.exercise)
     val punishmentRatios = sopranoExerciseRequestDto.punishmentRatios.map(PunishmentRatiosMapper.mapToModel)
-    val solution         = new SopranoGeneticSolver(exercise, 5, 300).solve()
+    val solution         = new SopranoSolver(exercise).solve()
     println(s"Solved! Rating: ${solution.rating}")
     SopranoExerciseSolutionMapper.mapToDTO(solution)
   }

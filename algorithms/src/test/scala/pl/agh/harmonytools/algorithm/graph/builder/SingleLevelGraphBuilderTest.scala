@@ -20,8 +20,8 @@ class SingleLevelGraphBuilderTest extends FunSuite with Matchers {
 
     override def evaluateSoftRules(connection: Connection[Content]): Double = 0
 
-    override protected val softRules: List[SoftRule[Content]] = ???
-    override protected val hardRules: List[HardRule[Content]] = ???
+    override protected val softRules: List[SoftRule[Content]] = List.empty
+    override protected val hardRules: List[HardRule[Content]] = List.empty
   }
 
   case class Content(value: Int) extends NodeContent {

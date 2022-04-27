@@ -37,4 +37,6 @@ case class ChordRulesChecker(isFixedBass: Boolean = false, isFixedSoprano: Boole
         } ++ getBrokenRules(tail)
     }
   }
+
+  def getFitness(chords: List[Chord]): Double = evaluate(chords)
 }

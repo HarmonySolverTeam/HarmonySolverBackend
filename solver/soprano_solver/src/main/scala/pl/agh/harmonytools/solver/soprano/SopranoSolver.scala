@@ -107,6 +107,22 @@ object SopranoSolver extends App {
     inputs
   }
 
+  def getFitnessPair(chords: List[Chord], exercise: SopranoExercise, functionsEvaluator: SopranoRulesChecker, chordEvaluator: ChordRulesChecker): (Double, Double) =
+    (functionsEvaluator.getFitness(chords, exercise), chordEvaluator.getFitness(chords))
+
+  def getFitness(chords: List[Chord], exercise: SopranoExercise, functionsEvaluator: SopranoRulesChecker, chordEvaluator: ChordRulesChecker): Double =
+    getFitnessPair(chords, exercise, functionsEvaluator, chordEvaluator) match {
+      case (x, y) => x + y
+    }
+
+  def getFitnessPair(chords: List[Chord], exercise: SopranoExercise): (Double, Double) =
+    (SopranoRulesChecker(exercise.key).getFitness(chords, exercise), ChordRulesChecker(isFixedSoprano = true).getFitness(chords))
+
+  def getFitness(chords: List[Chord], exercise: SopranoExercise): Double =
+    getFitnessPair(chords, exercise) match {
+      case (x, y) => x + y
+    }
+
   val exercise = SopranoExercise(
     Key("C"),
     Meter(4, 4),

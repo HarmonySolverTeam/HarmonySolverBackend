@@ -50,6 +50,6 @@ case class PrologChordRulesChecker(isFixedBass: Boolean = false, isFixedSoprano:
     query.allSolutions().toList.head.get("PunishmentValue").intValue()
   }
 
-  override protected val softRules: List[SoftRule[Chord]] = ???
-  override protected val hardRules: List[HardRule[Chord]] = ???
+  override protected val softRules: List[SoftRule[Chord]] = List.empty
+  override protected val hardRules: List[HardRule[Chord]] = List.empty
 }

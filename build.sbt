@@ -67,7 +67,7 @@ lazy val model = project
   .settings(
     name := "model",
     settings,
-    libraryDependencies ++= testDependencies
+    libraryDependencies ++= testDependencies ++ Seq("net.liftweb" %% "lift-json" % "3.5.0")
   )
   .dependsOn(
     algorithms
@@ -199,10 +199,20 @@ lazy val soprano_solver_genetic = project
     libraryDependencies ++=
       testDependencies ++
         Seq("com.github.wookietreiber" %% "scala-chart" % "latest.integration") ++
-        Seq("net.liftweb" %% "lift-json" % "3.5.0") ++
         Seq("com.github.tototoshi" %% "scala-csv" % "1.3.10")
   )
   .dependsOn(
     soprano_solver,
     jenetics
+  )
+
+lazy val soprano_solver_bayes = project
+  .in(file("solver/soprano_solver_bayes"))
+  .settings(
+    name := "soprano_solver_bayes",
+    settings,
+    libraryDependencies ++= testDependencies
+  )
+  .dependsOn(
+    soprano_solver
   )

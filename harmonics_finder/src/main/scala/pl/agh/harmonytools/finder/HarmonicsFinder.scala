@@ -90,6 +90,7 @@ object HarmonicsFinder extends App with ResourcesHelper {
                     duration
                   )
                 }.toList
+              case _ => sys.error("Unknown type")
             }
           )
         }

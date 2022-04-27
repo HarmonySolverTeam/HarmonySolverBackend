@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- This network was created in GeNIe Academic, which can be used for academic teaching and research purposes only -->
+<smile version="1.0" id="Network1" numsamples="10000" discsamples="10000">
+	<nodes>
+		<cpt id="Degree">
+			<state id="I" />
+			<state id="II" />
+			<state id="III" />
+			<state id="IV" />
+			<state id="V" />
+			<state id="VI" />
+			<state id="VII" />
+			<probabilities>0.15 0.14 0.14 0.14 0.15 0.14 0.14</probabilities>
+		</cpt>
+		<cpt id="Hypothesis">
+			<state id="T" />
+			<state id="S" />
+			<state id="D" />
+			<parents>Degree</parents>
+			<probabilities>1 0 0 0 1 0 0.5 0 0.5 0 1 0 0 0 1 0.5 0.5 0 0 0 1</probabilities>
+		</cpt>
+		<cpt id="PrevFunctionName">
+			<state id="prevT" />
+			<state id="prevS" />
+			<state id="prevD" />
+			<parents>Hypothesis</parents>
+			<probabilities>0.2 0.2 0.6 0.7 0.3 0 0.2 0.6 0.2</probabilities>
+		</cpt>
+		<cpt id="MeasurePlace">
+			<state id="Strong" />
+			<state id="Weak" />
+			<parents>Hypothesis PrevFunctionName</parents>
+			<probabilities>0.1 0.9 0.9 0.1 0.9 0.1 0.9 0.1 0.1 0.9 0.1 0.9 0.9 0.1 0.9 0.1 0.1 0.9</probabilities>
+		</cpt>
+		<cpt id="Note">
+			<state id="N1" />
+			<state id="N2" />
+			<state id="N3" />
+			<state id="N4" />
+			<state id="N5" />
+			<state id="N6" />
+			<state id="N7" />
+			<parents>Degree</parents>
+			<probabilities>0.34 0 0.33 0 0.33 0 0 0 0.34 0 0.33 0 0.33 0 0 0 0.34 0 0.33 0 0.33 0.33 0 0 0.34 0 0.33 0 0 0.33 0 0 0.34 0 0.33 0.33 0 0.33 0 0 0.34 0 0 0.33 0 0.33 0 0 0.34</probabilities>
+		</cpt>
+		<cpt id="StartOrEnd">
+			<state id="Start" />
+			<state id="Middle" />
+			<state id="End" />
+			<parents>Hypothesis</parents>
+			<probabilities>0.33 0.34 0.33 0 1 0 0 1 0</probabilities>
+		</cpt>
+		<cpt id="PrevDegree">
+			<state id="I" />
+			<state id="II" />
+			<state id="III" />
+			<state id="IV" />
+			<state id="V" />
+			<state id="VI" />
+			<state id="VII" />
+			<parents>Degree</parents>
+			<probabilities>1 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 1</probabilities>
+		</cpt>
+	</nodes>
+	<extensions>
+		<genie version="1.0" app="GeNIe 3.0.6518.0 ACADEMIC" name="Network1">
+			<node id="Hypothesis">
+				<name>Hypothesis (CurrentFunctionName)</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>519 284 748 426</position>
+				<barchart active="true" width="128" height="72" />
+			</node>
+			<node id="PrevFunctionName">
+				<name>PrevFunctionName</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>243 159 393 276</position>
+				<barchart active="true" width="128" height="72" />
+			</node>
+			<node id="MeasurePlace">
+				<name>MeasurePlace</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>533 96 613 146</position>
+				<barchart active="true" width="128" height="64" />
+			</node>
+			<node id="Note">
+				<name>Note</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>436 636 478 662</position>
+				<barchart active="true" width="128" height="144" />
+			</node>
+			<node id="StartOrEnd">
+				<name>StartOrEnd</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>759 133 903 223</position>
+				<barchart active="true" width="128" height="64" />
+			</node>
+			<node id="Degree">
+				<name>Degree</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>691 604 739 634</position>
+				<barchart active="true" width="128" height="144" />
+			</node>
+			<node id="PrevDegree">
+				<name>Copy of Degree</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>242 366 290 396</position>
+				<barchart active="true" width="128" height="144" />
+			</node>
+		</genie>
+	</extensions>
+</smile>

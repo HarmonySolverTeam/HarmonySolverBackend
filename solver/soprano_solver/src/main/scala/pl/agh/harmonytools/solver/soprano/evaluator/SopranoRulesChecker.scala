@@ -1,10 +1,13 @@
 package pl.agh.harmonytools.solver.soprano.evaluator
 
 import pl.agh.harmonytools.algorithm.evaluator.{ConnectionEvaluator, HardRule, RuledBasedConnectionEvaluator, SoftRule}
+import pl.agh.harmonytools.exercise.soprano.SopranoExercise
+import pl.agh.harmonytools.model.chord.Chord
 import pl.agh.harmonytools.model.key.Key
 import pl.agh.harmonytools.solver.harmonics.evaluator.rules.ChordRules
 import pl.agh.harmonytools.solver.harmonics.evaluator.{AdaptiveRulesChecker, ChordRulesChecker}
 import pl.agh.harmonytools.solver.harmonics.generator.ChordGenerator
+import pl.agh.harmonytools.solver.soprano.SopranoSolver
 import pl.agh.harmonytools.solver.soprano.evaluator.rules.hard.{DegreeRule, DownAndNotDownRule, ExistsSolutionRule, ForbiddenDSConnectionRule, Inversion5Rule, KeepBasicChordsInSecondRelationRule, SecondaryDominantConnectionRule}
 import pl.agh.harmonytools.solver.soprano.evaluator.rules.soft.{ChangeFunctionAtMeasureBeginningRule, ChangeFunctionConnectionRule, ChangeFunctionOnDownBeatRule, FourthChordsRule, HarmonicFunctionRelationRule, JumpRule, PreferNeapolitanRule, PreferTriadRule, SopranoShouldBeDoubledRule}
 
@@ -39,4 +42,16 @@ case class SopranoRulesChecker(
     DegreeRule(),
     KeepBasicChordsInSecondRelationRule()
   )
+
+  def getFitness(chords: List[Chord], exercise: SopranoExercise): Double = {
+    val inputs =
+      (chords zip SopranoSolver.prepareSopranoGeneratorInputs(exercise).map(_.measurePlace)).map { zipped =>
+        HarmonicFunctionWithSopranoInfo(
+          zipped._1.harmonicFunction,
+          zipped._2,
+          zipped._1.sopranoNote.withoutChordContext
+        )
+      }
+    evaluate(inputs)
+  }
 }
