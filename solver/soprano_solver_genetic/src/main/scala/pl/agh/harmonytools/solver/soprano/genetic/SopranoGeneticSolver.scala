@@ -25,21 +25,29 @@ class SopranoGeneticSolver(exercise: SopranoExercise, populationSize: Int, itera
   with Charting {
 
   def parameterCompute(): Unit = {
+//    val params = for {
+//      epochs            <- List(500, 1000, 2000, 5000)
+//      population        <- List(200, 500, 1000, 2000)
+//      crossoverP        <- List(0.1, 0.2, 0.3, 0.4, 0.5)
+//      mutatorWeight     <- List(0.5, 0.75, 1, 1.25, 1.5)
+//      survivorsFraction <- List(0.1, 0.3, 0.5)
+//    } yield (epochs, population, crossoverP, mutatorWeight, survivorsFraction)
+
     val params = for {
       epochs            <- List(500, 1000, 2000, 5000)
-      population        <- List(200, 500, 1000, 2000)
-      crossoverP        <- List(0.1, 0.2, 0.3, 0.4, 0.5)
-      mutatorWeight     <- List(0.5, 0.75, 1, 1.25, 1.5)
-      survivorsFraction <- List(0.1, 0.3, 0.5)
+      population        <- List(500, 1000, 2000, 3000)
+      crossoverP        <- List(0.2)
+      mutatorWeight     <- List(0.5)
+      survivorsFraction <- List(0.3)
     } yield (epochs, population, crossoverP, mutatorWeight, survivorsFraction)
 
-    params.zipWithIndex.drop(255).foreach {
+    params.zipWithIndex/*.drop(255)*/.foreach {
       case ((epochs, population, crossoverP, mutatorWeight, survivorsFraction), index) =>
         val engine    = buildEngine(epochs, population, crossoverP, mutatorWeight, survivorsFraction)
         val results   = engine.stream(epochs).map(_.getBestPhenotype)
         val penalties = results.map(_.getFitness.toDouble).toList
         val fitness   = penalties.last
-        val csv       = CSVWriter.open("solver/soprano_solver_genetic/src/main/resources/parameter/test.csv", append = true)
+        val csv       = CSVWriter.open("solver/soprano_solver_genetic/src/main/resources/parameter/test1.csv", append = true)
         csv.writeRow(List(epochs, population, crossoverP, mutatorWeight, survivorsFraction, fitness))
         csv.close()
         println(s"${(index + 1.0) / params.size}%")
