@@ -224,6 +224,5 @@ lazy val soprano_solver_test = project
   )
   .dependsOn(
     soprano_solver,
-    soprano_solver_genetic,
-    soprano_solver_bayes
+    soprano_solver_genetic
   )
