@@ -3,6 +3,7 @@ package pl.agh.harmonytools.solver.soprano.genetic
 import pl.agh.harmonytools.algorithm.generator.LayerGenerator
 import pl.agh.harmonytools.model.chord.Chord
 import pl.agh.harmonytools.model.harmonicfunction.HarmonicFunction
+import pl.agh.harmonytools.model.key.Mode.MINOR
 import pl.agh.harmonytools.model.key.{Key, Mode}
 import pl.agh.harmonytools.model.note.BaseNote
 import pl.agh.harmonytools.model.scale.{MajorScale, MinorScale}
@@ -57,12 +58,8 @@ object SopranoChordGenerator extends TestUtils {
     assert(key.mode.isMajor)
 
     val baseFunctions: List[HarmonicFunction] = List(
-      tonic, subdominant, dominant
+      tonic, subdominant, dominant, subdominant.copy(mode = Mode.MINOR)
     )
-
-    val inversionFunctions: List[HarmonicFunction] = baseFunctions.map {
-      f => f.getBasicChordComponents.map(cc => f.copy(inversion = cc))
-    }.reduce(_ ++ _)
 
     val functionsWithExtra: List[HarmonicFunction] = List(
       dominant7,
@@ -85,10 +82,17 @@ object SopranoChordGenerator extends TestUtils {
       dominantVII
     )
 
+    val inversionFunctions: List[HarmonicFunction] = (baseFunctions ++ sideFunctions).map {
+      f => f.getBasicChordComponents.map(cc => f.copy(inversion = cc))
+    }.reduce(_ ++ _)
+
+
     val baseNotes = BaseNote.values.takeRight(BaseNote.values.size - BaseNote.values.indexOf(key.baseNote)) ++ BaseNote.values.take(BaseNote.values.indexOf(key.baseNote))
     val keys = MajorScale.pitches.zip(baseNotes).map(x => Key(x._2, 60 + (x._1 + key.tonicPitch) %% 12)).drop(1)
 
-    val modulations: List[HarmonicFunction] = keys.map(key => dominant.copy(key = Some(key), extra = Set(seventh), omit = Set(fifth)))
+    val modulations: List[HarmonicFunction] = keys.map(key => dominant.copy(key = Some(key), extra = Set(seventh), omit = Set(fifth))) ++
+      keys.map(key => dominant.copy(key = Some(key), extra = Set(seventh), omit = Set(prime), inversion = fifth)) ++
+      keys.map(key => dominant.copy(key = Some(key), extra = Set(seventh), omit = Set(prime), inversion = third))
 
     // funkcje harmoniczne jakich uzywamy do harmonizacji
 
@@ -100,7 +104,7 @@ object SopranoChordGenerator extends TestUtils {
     assert(key.mode.isMinor)
 
     val baseFunctions: List[HarmonicFunction] = List(
-      tonic.copy(mode = Mode.MINOR), subdominant.copy(mode = Mode.MINOR), dominant
+      tonic.copy(mode = Mode.MINOR), subdominant.copy(mode = Mode.MINOR), subdominant.copy(mode = Mode.MAJOR), dominant
     )
 
     val inversionFunctions: List[HarmonicFunction] = baseFunctions.map {
@@ -128,6 +132,10 @@ object SopranoChordGenerator extends TestUtils {
       dominantVII
     ).map(_.copy(mode = Mode.MINOR))
 
+    val apparentDominants = List(
+      tonic.copy(mode = Mode.MINOR, extra = Set(seventhMajor))
+    )
+
     val baseNotes = BaseNote.values.takeRight(BaseNote.values.size - BaseNote.values.indexOf(key.baseNote)) ++ BaseNote.values.take(BaseNote.values.indexOf(key.baseNote))
     val keys = MinorScale.pitches.zip(baseNotes).map(x => Key(x._2, 60 + (x._1 + key.tonicPitch) %% 12)).drop(1)
 
@@ -135,7 +143,7 @@ object SopranoChordGenerator extends TestUtils {
 
     // funkcje harmoniczne jakich uzywamy do harmonizacji
 
-    val possibleFunctions = baseFunctions ++ inversionFunctions ++ functionsWithExtra ++ omitFunctions ++ sideFunctions ++ modulations
+    val possibleFunctions = baseFunctions ++ inversionFunctions ++ functionsWithExtra ++ omitFunctions ++ sideFunctions ++ modulations ++ apparentDominants
     SopranoChordGenerator(possibleFunctions, key)
   }
 }

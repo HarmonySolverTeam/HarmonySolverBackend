@@ -63,7 +63,7 @@ abstract class MarkovSopranoSolver(exercise: SopranoExercise) extends Solver[Not
         sopranoLine = Some(inputs.map(_.sopranoNote))
       ),
       precheckDisabled = true,
-      punishmentRatios = Some(ChordRules.getValues.map(v => v -> 0.9).toMap)
+      bayesian = true
     )
     val harmonicsSolution = harmonicsSolver.solve()
 
@@ -71,6 +71,6 @@ abstract class MarkovSopranoSolver(exercise: SopranoExercise) extends Solver[Not
       case (chord, note) => chord.copy(duration = note.duration)
     }
 
-    SopranoSolution(exercise, harmonicsSolution.rating, solutionChords)
+    SopranoSolution(exercise, SopranoSolver.getFitness(harmonicsSolution.chords, exercise), solutionChords)
   }
 }

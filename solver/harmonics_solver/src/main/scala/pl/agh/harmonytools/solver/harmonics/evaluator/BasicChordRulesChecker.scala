@@ -15,7 +15,7 @@ abstract class BasicChordRulesChecker(isFixedSoprano: Boolean) extends RuledBase
       DominantSecondRelationConnectionRule(),
       DoublePrimeOrFifthRule(),
       ForbiddenSumJumpRule(),
-      SopranoBestLine(),
+      SopranoBestLine(isFixedSoprano = isFixedSoprano),
       SubdominantDominantConnectionRule()
     )
   }

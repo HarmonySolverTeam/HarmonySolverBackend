@@ -25,14 +25,20 @@ object FitnessResult {
   def apply(x: (Double, Double)): FitnessResult = new FitnessResult(x._1, x._2)
 }
 
-case class SopranoHarmonizationProblem(exercise: SopranoExercise)
-  extends GeneticProblem[SopranoGeneticSolution, SopranoHarmonizationGene, FitnessResult] {
+abstract class SopranoHarmonizationProblemAbstract(exercise: SopranoExercise) extends GeneticProblem[SopranoGeneticSolution, SopranoHarmonizationGene, FitnessResult] {
   private val chordEvaluator            = ChordRulesChecker(isFixedSoprano = true)
   private val harmonicFunctionEvaluator = SopranoRulesChecker(exercise.key)
-  private val generator                 = SopranoChordGenerator(exercise.key)
 
   override def computeFitness(input: SopranoGeneticSolution): FitnessResult =
     FitnessResult(SopranoSolver.getFitnessPair(input.getStandardChords, exercise, harmonicFunctionEvaluator, chordEvaluator))
+
+  override def decodeGenotype(genotype: JGenotype[SopranoHarmonizationGene]): SopranoGeneticSolution =
+    genotype.getChromosome.asInstanceOf[SopranoHarmonizationChromosome].solution
+}
+
+class SopranoHarmonizationProblem(exercise: SopranoExercise)
+  extends SopranoHarmonizationProblemAbstract(exercise) {
+  private val generator                 = SopranoChordGenerator(exercise.key)
 
   override def createChromosomes(): Seq[SopranoHarmonizationChromosome] = {
     val chords = SopranoSolver.prepareSopranoGeneratorInputs(exercise).map(generator.generate).map { chords =>
@@ -49,9 +55,6 @@ case class SopranoHarmonizationProblem(exercise: SopranoExercise)
       )
     )
   }
-
-  override def decodeGenotype(genotype: JGenotype[SopranoHarmonizationGene]): SopranoGeneticSolution =
-    genotype.getChromosome.asInstanceOf[SopranoHarmonizationChromosome].solution
 }
 
 object SopranoHarmonizationProblem {

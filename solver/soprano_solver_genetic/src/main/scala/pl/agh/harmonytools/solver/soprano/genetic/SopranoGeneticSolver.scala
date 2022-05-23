@@ -12,6 +12,7 @@ import pl.agh.harmonytools.model.measure.{Measure, Meter}
 import pl.agh.harmonytools.model.note.BaseNote._
 import pl.agh.harmonytools.model.note.NoteWithoutChordContext
 import pl.agh.harmonytools.solver.harmonics.evaluator.ChordRulesChecker
+import pl.agh.harmonytools.solver.soprano.genetic.SopranoGeneticSolver.targosz_p60_ex7
 import pl.agh.harmonytools.solver.soprano.genetic.mutators.classic._
 import pl.agh.harmonytools.solver.soprano.genetic.mutators.repair._
 import pl.agh.harmonytools.solver.{Solver, SopranoSolution}
@@ -20,7 +21,7 @@ import scalax.chart.module.Charting
 import java.time.LocalDateTime
 import scala.math.abs
 
-class SopranoGeneticSolver(exercise: SopranoExercise, populationSize: Int, iterations: Int)
+class SopranoGeneticSolver(exercise: SopranoExercise, populationSize: Int, iterations: Int, crossoverProbability: Double, mutatorWeight: Double, survivorsFraction: Double, problem: SopranoHarmonizationProblemAbstract)
   extends Solver[NoteWithoutChordContext]
   with Charting {
 
@@ -43,7 +44,7 @@ class SopranoGeneticSolver(exercise: SopranoExercise, populationSize: Int, itera
 
     params.zipWithIndex.foreach {
       case ((epochs, population, crossoverP, mutatorWeight, survivorsFraction), index) =>
-        val engine    = buildEngine(epochs, population, crossoverP, mutatorWeight, survivorsFraction)
+        val engine    = buildEngine(epochs, population, crossoverP, mutatorWeight, survivorsFraction, problem)
         val results   = engine.stream(epochs).map(_.getBestPhenotype)
         val penalties = results.map(_.getFitness.toDouble).toList
         val fitness   = penalties.last
@@ -59,10 +60,11 @@ class SopranoGeneticSolver(exercise: SopranoExercise, populationSize: Int, itera
     populationSize: Int,
     crossoverProbability: Double = 0.3,
     mutatorsWeight: Double = 1.0,
-    survivorsFraction: Double = 0.3
+    survivorsFraction: Double = 0.3,
+    problem: SopranoHarmonizationProblemAbstract
   ): GeneticEngine[SopranoHarmonizationGene, FitnessResult] = {
     GeneticEngine
-      .builder(SopranoHarmonizationProblem(exercise))
+      .builder(problem)
       .populationSize(populationSize)
       .survivorsFraction(survivorsFraction)
       .survivorsSelector(nsga2Selector)
@@ -97,11 +99,11 @@ class SopranoGeneticSolver(exercise: SopranoExercise, populationSize: Int, itera
   override def solve(): SopranoSolution = {
     // definicja algorytmu genetycznego
 
-    val engine = buildEngine(iterations, populationSize)
+    val engine = buildEngine(iterations, populationSize, crossoverProbability, mutatorWeight, survivorsFraction, problem)
 
     val results   = engine.stream(iterations).map(_.getBestPhenotype)
     val penalties = results.map(_.getFitness.toDouble).toList
-    println("Avg penalty: " + penalties.sum / penalties.size)
+//    println("Avg penalty: " + penalties.sum / penalties.size)
     saveChart(penalties.zipWithIndex.map(_.swap))
     val best = results.last
     val chords: List[Chord] =
@@ -162,8 +164,85 @@ class SopranoGeneticSolver(exercise: SopranoExercise, populationSize: Int, itera
 }
 
 object SopranoGeneticSolver extends App {
+
+  val targosz_p60_ex7 = new SopranoExercise(
+    Key("b"),
+    Meter(2, 4),
+    List(
+      Measure(
+        Meter(2, 4),
+        List(
+          NoteWithoutChordContext(74, D, 0.125),
+          NoteWithoutChordContext(71, B, 0.125),
+          NoteWithoutChordContext(74, D, 0.125),
+          NoteWithoutChordContext(76, E, 0.125),
+        )
+      ),
+      Measure(
+        Meter(2, 4),
+        List(
+          NoteWithoutChordContext(73, C, 0.25),
+          NoteWithoutChordContext(70, A, 0.25),
+        )
+      ),
+      Measure(
+        Meter(2, 4),
+        List(
+          NoteWithoutChordContext(71, B, 0.25),
+          NoteWithoutChordContext(66, F, 0.25),
+        )
+      ),
+      Measure(
+        Meter(2, 4),
+        List(
+          NoteWithoutChordContext(67, G, 0.125),
+          NoteWithoutChordContext(64, E, 0.125),
+          NoteWithoutChordContext(67, G, 0.125),
+          NoteWithoutChordContext(71, B, 0.125),
+        )
+      ),
+      Measure(
+        Meter(2, 4),
+        List(
+          NoteWithoutChordContext(70, A, 0.25),
+          NoteWithoutChordContext(73, C, 0.25),
+        )
+      ),
+      Measure(
+        Meter(2, 4),
+        List(
+          NoteWithoutChordContext(74, D, 0.25),
+          NoteWithoutChordContext(78, F, 0.25),
+        )
+      ),
+      Measure(
+        Meter(2, 4),
+        List(
+          NoteWithoutChordContext(79, G, 0.125),
+          NoteWithoutChordContext(76, E, 0.125),
+          NoteWithoutChordContext(74, D, 0.125),
+          NoteWithoutChordContext(76, E, 0.125),
+        )
+      ),
+      Measure(
+        Meter(2, 4),
+        List(
+          NoteWithoutChordContext(73, C, 0.25),
+          NoteWithoutChordContext(70, A, 0.25),
+        )
+      ),
+      Measure(
+        Meter(2, 4),
+        List(
+          NoteWithoutChordContext(71, B, 0.5)
+        )
+      )
+    ),
+    List()
+  )
+
   val exercise = SopranoExercise(
-    Key("D"),
+    Key("b"),
     Meter(4, 4),
     List(
       Measure(
@@ -234,12 +313,12 @@ object SopranoGeneticSolver extends App {
     possibleFunctionsList = List()
   )
 
-  val solver = new SopranoGeneticSolver(exercise, 0, 0)
-  solver.parameterCompute()
+//  val solver = new SopranoGeneticSolver(exercise, 0, 0)
+//  solver.parameterCompute()
 
-//  val solution = new SopranoGeneticSolver(exercise, 50, 150).solve()
-//  val path = "solver/soprano_solver_genetic/src/main/resources/solutions"
-//  val name = solution.save(path)
-//  SopranoSolution.showSolution(name, path)
-//  println("Best rating: " + solution.rating)
+  val solution = new SopranoGeneticSolver(targosz_p60_ex7, 500, 1000, 0.2, 0.5, 0.3, new SopranoHarmonizationProblem(targosz_p60_ex7)).solve()
+  val path = "solver/soprano_solver_genetic/src/main/resources/solutions"
+  val name = solution.save(path)
+  SopranoSolution.showSolution(name, path)
+  println("Best rating: " + solution.rating)
 }

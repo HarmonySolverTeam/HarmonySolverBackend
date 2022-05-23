@@ -5,6 +5,7 @@ import pl.agh.harmonytools.model.harmonicfunction.HarmonicFunction
 import pl.agh.harmonytools.model.key.Key
 import pl.agh.harmonytools.model.measure.{Measure, Meter}
 import pl.agh.harmonytools.model.note.NoteWithoutChordContext
+import pl.agh.harmonytools.utils.Extensions.ExtendedInt
 
 case class SopranoExercise(
   key: Key,
@@ -15,4 +16,11 @@ case class SopranoExercise(
 ) extends Exercise(key, meter, measures)
   {
   lazy val notes: List[NoteWithoutChordContext] = measures.map(_.contents).reduce(_ ++ _)
+
+  def containsAlterations: Boolean = {
+    notes.exists {
+      note =>
+        !key.scale.pitches.contains((note.pitch - key.tonicPitch) %% 12)
+    }
+  }
 }

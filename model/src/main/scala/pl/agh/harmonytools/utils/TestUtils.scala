@@ -94,6 +94,7 @@ trait TestUtils {
     val keycsharp: Key = Key("c#")
     val keygsharp: Key = Key("g#")
     val keyd: Key      = Key("d")
+    val keye: Key      = Key("e")
   }
 
   val anyNote: Note                                       = Note(0, C, ChordComponents.prime)

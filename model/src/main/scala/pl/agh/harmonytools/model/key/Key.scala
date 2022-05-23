@@ -27,6 +27,8 @@ case class Key(
     else
       keyLower
   }
+
+  def samePitch(other: Key): Boolean = tonicPitch == other.tonicPitch && baseNote == other.baseNote
 }
 
 object Key {

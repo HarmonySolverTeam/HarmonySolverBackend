@@ -6,6 +6,7 @@ import pl.agh.harmonytools.model.harmonicfunction.{BaseFunction, HarmonicFunctio
 import pl.agh.harmonytools.model.key.Key
 import pl.agh.harmonytools.model.key.Mode.Mode
 import pl.agh.harmonytools.model.note.Note
+import pl.agh.harmonytools.model.scale.ScaleDegree
 import pl.agh.harmonytools.solver.harmonics.generator.{ChordGenerator, ChordGeneratorInput}
 import pl.agh.harmonytools.utils.Extensions.ExtendedInt
 
@@ -31,6 +32,10 @@ abstract class Functions(val key: Key) {
     val notesDiff           = Math.abs(nonLegalChord.notes.map(_.pitch).sum - pattern.notes.map(_.pitch).sum)
     val positionsDiff       = nonLegalChord.notes.map(_.pitch).zip(pattern.notes.map(_.pitch)).count(x => x._1 != x._2)
     val positionsDiffPoints = if (positionsDiff <= 1) 0 else positionsDiff * 100
+    val modulationDiff = previousKey match {
+      case Some(value) if ScaleDegree.fromValue(BaseNoteInKey(value, key).root+1) != pattern.harmonicFunction.degree => 2000
+      case _ => 0
+    }
     val inversionPoints = {
       if (pattern.harmonicFunction.getBasicChordComponents.contains(pattern.harmonicFunction.inversion)) 0
       else 50
@@ -41,7 +46,7 @@ abstract class Functions(val key: Key) {
         1000
       case _ => 0
     }
-    notesDiff + positionsDiffPoints + prevBF + inversionPoints
+    notesDiff + positionsDiffPoints + prevBF + inversionPoints + modulationDiff
   }
 
   def fitToKnown(

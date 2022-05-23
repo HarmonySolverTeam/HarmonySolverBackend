@@ -215,3 +215,15 @@ lazy val soprano_solver_bayes = project
   .dependsOn(
     soprano_solver
   )
+
+lazy val soprano_solver_test = project
+  .in(file("solver/soprano_solver_test"))
+  .settings(
+    name := "soprano_solver_test",
+    settings
+  )
+  .dependsOn(
+    soprano_solver,
+    soprano_solver_genetic,
+    soprano_solver_bayes
+  )

@@ -35,7 +35,13 @@ trait ConnectionEvaluator[T <: NodeContent] {
       case prev :: current :: tail =>
         val connection = Connection(current, prev)
         val penalty = if (evaluateHardRules(connection)) 0 else maxPenalty
-        penalty + evaluateSoftRules(connection) + evaluate2(current :: tail)
+        val soft = evaluateSoftRules(connection)
+//        println("evaluate2: " + soft)
+        if (penalty == maxPenalty) {
+//          println(hardRules.filter(_.isBroken(connection)))
+//          println("MAXPENALTY2")
+        }
+        penalty + soft + evaluate2(current :: tail)
     }
   }
 
@@ -47,7 +53,13 @@ trait ConnectionEvaluator[T <: NodeContent] {
       case prevPrev :: prev :: current :: tail =>
         val connection = Connection(current, prev, prevPrev)
         val penalty = if (evaluateHardRules(connection)) 0 else maxPenalty
-        penalty + evaluateSoftRules(connection) + evaluate3(prev :: current :: tail)
+        val soft = evaluateSoftRules(connection)
+//        println("evaluate3: " + soft)
+        if (penalty == maxPenalty) {
+//          println(hardRules.filter(_.isBroken(connection)))
+//          println("MAXPENALTY3")
+        }
+        penalty + soft + evaluate3(prev :: current :: tail)
     }
   }
 }

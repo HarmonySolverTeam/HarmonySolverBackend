@@ -83,7 +83,7 @@ case class SopranoSolver(
       case (chord, note) => chord.copy(duration = note.duration)
     }
 
-    SopranoSolution(exercise, solutionNodes.last.getDistanceFromBeginning, solutionChords)
+    SopranoSolution(exercise, SopranoSolver.getFitness(solutionChords, exercise), solutionChords)
   }
 }
 

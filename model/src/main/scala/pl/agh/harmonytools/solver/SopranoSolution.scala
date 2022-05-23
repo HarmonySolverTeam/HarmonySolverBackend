@@ -20,7 +20,7 @@ case class SopranoSolution(
 ) extends ExerciseSolution[NoteWithoutChordContext](exercise, rating, chords, success) {
   def save(path: String): String = {
     implicit val formats: DefaultFormats.type = DefaultFormats
-    val name                                  = s"${LocalDateTime.now.dateString}.json"
+    val name                                  = s"${LocalDateTime.now.dateString}_${rating.toInt}.json"
     Files.write(
       Paths.get(s"$path/$name"),
       Serialization.write(this).getBytes(StandardCharsets.UTF_8)
@@ -32,5 +32,9 @@ case class SopranoSolution(
 object SopranoSolution {
   def showSolution(name: String, path: String): Unit = {
     Process(s"python score_printer.py $name $path", new File(".")).!!
+  }
+
+  def saveAndShowSolution(solution: SopranoSolution, path: String): Unit = {
+    showSolution(solution.save(path), path)
   }
 }
