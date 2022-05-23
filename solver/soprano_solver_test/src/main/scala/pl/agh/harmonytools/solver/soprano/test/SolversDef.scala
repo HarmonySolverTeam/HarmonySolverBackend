@@ -19,7 +19,7 @@ object SolversDef {
   def solveByGeneticAlgorithm(name: String, exercise: SopranoExercise): List[Double] = {
     val ratings = ListBuffer[Double]()
     for (_ <- 1 to 5) {
-      val solution = new SopranoGeneticSolver(exercise, 30, 20, 0.2, 0.5, 0.3, new SopranoHarmonizationProblem(exercise)).solve()
+      val solution = new SopranoGeneticSolver(exercise, 2000, 2000, 0.2, 0.5, 0.3, new SopranoHarmonizationProblem(exercise)).solve()
       val path = s"solver/soprano_solver_test/src/main/resources/genetic_solutions/$name"
       solution.save(path)
       ratings.append(solution.rating)
