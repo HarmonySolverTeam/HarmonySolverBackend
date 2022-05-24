@@ -90,9 +90,9 @@ object SopranoChordGenerator extends TestUtils {
     val baseNotes = BaseNote.values.takeRight(BaseNote.values.size - BaseNote.values.indexOf(key.baseNote)) ++ BaseNote.values.take(BaseNote.values.indexOf(key.baseNote))
     val keys = MajorScale.pitches.zip(baseNotes).map(x => Key(x._2, 60 + (x._1 + key.tonicPitch) %% 12)).drop(1)
 
-    val modulations: List[HarmonicFunction] = keys.map(key => dominant.copy(key = Some(key), extra = Set(seventh), omit = Set(fifth))) ++
-      keys.map(key => dominant.copy(key = Some(key), extra = Set(seventh), omit = Set(prime), inversion = fifth)) ++
-      keys.map(key => dominant.copy(key = Some(key), extra = Set(seventh), omit = Set(prime), inversion = third))
+    val modulations: List[HarmonicFunction] = keys.map(key => dominant.copy(key = Some(key), extra = Set(seventh), omit = Set(fifth)))// ++
+//      keys.map(key => dominant.copy(key = Some(key), extra = Set(seventh), omit = Set(prime), inversion = fifth)) ++
+//      keys.map(key => dominant.copy(key = Some(key), extra = Set(seventh), omit = Set(prime), inversion = third))
 
     // funkcje harmoniczne jakich uzywamy do harmonizacji
 
