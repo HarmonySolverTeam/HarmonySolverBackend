@@ -16,7 +16,8 @@ case class SopranoSolution(
   exercise: Exercise[NoteWithoutChordContext],
   rating: Double,
   chords: List[Chord],
-  success: Boolean = true
+  success: Boolean = true,
+  minEpoch: Option[Int] = None
 ) extends ExerciseSolution[NoteWithoutChordContext](exercise, rating, chords, success) {
   def save(path: String): String = {
     implicit val formats: DefaultFormats.type = DefaultFormats

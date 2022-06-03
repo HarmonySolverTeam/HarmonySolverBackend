@@ -111,8 +111,9 @@ class SopranoGeneticSolver(exercise: SopranoExercise, populationSize: Int, itera
     val chordsWithDurations = chords.zip(exercise.notes).map {
       case (chord: Chord, note: NoteWithoutChordContext) => chord.copy(duration = note.duration)
     }
-    println(s"Min found in ${penalties.zipWithIndex.minBy(_._1)._2} epoch.")
-    val solution     = SopranoSolution(exercise, best.getFitness.toDouble, chordsWithDurations)
+    val min = penalties.zipWithIndex.minBy(_._1)._2
+//    println(s"Min found in ${penalties.zipWithIndex.minBy(_._1)._2} epoch.")
+    val solution     = SopranoSolution(exercise, best.getFitness.toDouble, chordsWithDurations, minEpoch = Some(min))
     solution
   }
 

@@ -94,13 +94,13 @@ class GeneticEngine[G <: JGene[_, G], C <: Fitness[C]](val jeneticsEngine: Engin
     jeneticsEngine
       .stream()
       .peek { stat =>
-        if (loader.incrementAndGet() % tenPercent == 0) {
-          val currentTime  = System.nanoTime()
-          val mean         = (currentTime - startTime) / loader.get() / 1e9d
-          val timeToTheEnd = (maxIterations - loader.get()) * mean
-          println(s"${loader.get()}/${maxIterations} | ${10 * (loader
-            .get() / tenPercent)}% | $mean s/it | $timeToTheEnd s remaining | current rating ${stat.getBestFitness.toDouble}")
-        }
+//        if (loader.incrementAndGet() % tenPercent == 0) {
+//          val currentTime  = System.nanoTime()
+//          val mean         = (currentTime - startTime) / loader.get() / 1e9d
+//          val timeToTheEnd = (maxIterations - loader.get()) * mean
+//          println(s"${loader.get()}/${maxIterations} | ${10 * (loader
+//            .get() / tenPercent)}% | $mean s/it | $timeToTheEnd s remaining | current rating ${stat.getBestFitness.toDouble}")
+//        }
       }
       .iterator()
       .asScala
