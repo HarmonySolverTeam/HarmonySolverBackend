@@ -774,7 +774,8 @@ object BassTranslator {
       key,
       figuredBassExercise.meter,
       measures,
-      Some(bassLineAfterSplit.map(_.getResult))
+      Some(bassLineAfterSplit.map(_.getResult)),
+      evaluateWithProlog = figuredBassExercise.evaluateWithProlog
     )
   }
 }

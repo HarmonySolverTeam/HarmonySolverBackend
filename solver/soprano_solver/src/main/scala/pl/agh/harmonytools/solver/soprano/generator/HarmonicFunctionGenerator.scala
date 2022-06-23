@@ -35,6 +35,8 @@ case class HarmonicFunctionGenerator(
           )
       } else
         map.getValues(input.sopranoNote.pitch, input.sopranoNote.baseNote)
-    resultList.map(HarmonicFunctionWithSopranoInfo(_, input.measurePlace, input.sopranoNote)).toList
+    resultList.map(HarmonicFunctionWithSopranoInfo(_, input.measurePlace, input.sopranoNote)).filterNot{
+      p => p.harmonicFunction.position.contains(p.harmonicFunction.getThird) && p.harmonicFunction.inversion == p.harmonicFunction.getThird
+    }.toList
   }
 }

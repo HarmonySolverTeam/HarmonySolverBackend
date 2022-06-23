@@ -10,7 +10,8 @@ object SopranoExerciseMapper extends Mapper[SopranoExercise, SopranoExerciseDto]
       key = KeyMapper.mapToModel(dto.key),
       meter = meter,
       measures = dto.measures.map(SopranoMeasureMapper(meter).mapToModel),
-      possibleFunctionsList = dto.possibleFunctionsList.map(HarmonicFunctionMapper.mapToModel)
+      possibleFunctionsList = dto.possibleFunctionsList.map(HarmonicFunctionMapper.mapToModel),
+      evaluateWithProlog = dto.evaluateWithProlog.getOrElse(false)
     )
   }
 
@@ -19,7 +20,8 @@ object SopranoExerciseMapper extends Mapper[SopranoExercise, SopranoExerciseDto]
       key = KeyMapper.mapToDTO(model.key),
       meter = MeterMapper.mapToDTO(model.meter),
       measures = model.measures.map(SopranoMeasureMapper(model.meter).mapToDTO),
-      possibleFunctionsList = model.possibleFunctionsList.map(HarmonicFunctionMapper.mapToDTO)
+      possibleFunctionsList = model.possibleFunctionsList.map(HarmonicFunctionMapper.mapToDTO),
+      evaluateWithProlog = Some(model.evaluateWithProlog)
     )
   }
 }

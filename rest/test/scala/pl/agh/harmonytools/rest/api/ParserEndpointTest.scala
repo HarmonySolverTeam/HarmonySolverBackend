@@ -25,7 +25,8 @@ class ParserEndpointTest extends EndpointTest("harmonytools/parser", HttpMethod.
       |       {"functionName":"T","degree":"III","position":"3","inversion":"3","delays":[{"first":"4","second":"3"},{"first":"6","second":"5"}],"extra":["7"],"omit":["1"],"isDown":true,"system":"close","mode":"minor","isRelatedBackwards":true}
       |     ]
       |    }
-      |]
+      |],
+      |"evaluateWithProlog": false
       |}
       |""".stripMargin)
 

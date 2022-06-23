@@ -43,7 +43,8 @@ class BassExerciseEndpointTest extends EndpointTest("harmonytools/bass", HttpMet
       |                    }
       |                ]
       |            }
-      |        ]
+      |        ],
+      |        "evaluateWithProlog": false
       |    },
       |    "rating": 0,
       |    "chords": [

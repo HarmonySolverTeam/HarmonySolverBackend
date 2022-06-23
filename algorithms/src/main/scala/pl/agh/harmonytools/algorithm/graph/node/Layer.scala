@@ -39,7 +39,7 @@ class Layer[T <: NodeContent, S <: NodeContent](private var nodeList: List[Node[
   def leaveOnlyNodesTo(other: Layer[T, S]): Unit = {
     nodeList.foreach { currentNode =>
       currentNode.getNextNeighbours.foreach { currentNeighbour =>
-        if (other.getNodeList.contains(currentNeighbour))
+        if (other.getNodeList.contains(currentNeighbour.node))
           currentNode.removeNextNeighbour(currentNeighbour.node)
       }
     }

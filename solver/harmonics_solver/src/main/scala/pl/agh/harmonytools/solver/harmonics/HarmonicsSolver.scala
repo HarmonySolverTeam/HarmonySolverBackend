@@ -2,18 +2,15 @@ package pl.agh.harmonytools.solver.harmonics
 
 import pl.agh.harmonytools.algorithm.graph.SingleLevelGraph
 import pl.agh.harmonytools.algorithm.graph.builders.SingleLevelGraphBuilder
-import pl.agh.harmonytools.algorithm.graph.shortestpath.dijkstra.DijkstraAlgorithm
 import pl.agh.harmonytools.algorithm.graph.node.EmptyContent
 import pl.agh.harmonytools.algorithm.graph.shortestpath.ShortestPathAlgorithmCompanion
 import pl.agh.harmonytools.algorithm.graph.shortestpath.topologicalsort.TopologicalSortAlgorithm
 import pl.agh.harmonytools.exercise.harmonics.HarmonicsExercise
 import pl.agh.harmonytools.exercise.harmonics.helpers.DelayHandler
-import pl.agh.harmonytools.harmonics.parser.DeflectionsHandler
-import pl.agh.harmonytools.solver.harmonics.generator.ChordGenerator
-import pl.agh.harmonytools.solver.harmonics.utils.ExerciseCorrector
 import pl.agh.harmonytools.model.chord.Chord
 import pl.agh.harmonytools.model.harmonicfunction.HarmonicFunction
 import pl.agh.harmonytools.model.note.{Note, NoteWithoutChordContext}
+import pl.agh.harmonytools.solver.harmonics.evaluator.prolog.PrologChordRulesChecker
 import pl.agh.harmonytools.solver.harmonics.evaluator.rules.ChordRules
 import pl.agh.harmonytools.solver.harmonics.evaluator.{AdaptiveRulesChecker, ChordRulesChecker}
 import pl.agh.harmonytools.solver.harmonics.generator.{ChordGenerator, ChordGeneratorInput}
@@ -25,6 +22,7 @@ case class HarmonicsSolver(
   correctDisabled: Boolean = false,
   precheckDisabled: Boolean = false,
   punishmentRatios: Option[Map[ChordRules.Rule, Double]] = None,
+  bayesian: Boolean = false,
   override val shortestPathCompanion: ShortestPathAlgorithmCompanion = TopologicalSortAlgorithm
 ) extends GraphSolver[HarmonicFunction] {
 
@@ -96,8 +94,9 @@ case class HarmonicsSolver(
     graphBuilder.withGenerator(chordGenerator)
     graphBuilder.withEvaluator(
       punishmentRatios match {
+        case _ if exercise.evaluateWithProlog => PrologChordRulesChecker(isFixedBass = bassLine.isDefined, isFixedSoprano = sopranoLine.isDefined)
         case Some(value) => AdaptiveRulesChecker(value)
-        case None        => ChordRulesChecker(isFixedBass = bassLine.isDefined, isFixedSoprano = sopranoLine.isDefined)
+        case _ => ChordRulesChecker(isFixedBass = bassLine.isDefined, isFixedSoprano = sopranoLine.isDefined, bayesian = bayesian)
       }
     )
     graphBuilder.withGeneratorInput(getGeneratorInput)

@@ -59,7 +59,8 @@ class SopranoExerciseMapperTest
           None,
           Some(false)
         )
-      )
+      ),
+      evaluateWithProlog = Some(false)
     )
   )
 }

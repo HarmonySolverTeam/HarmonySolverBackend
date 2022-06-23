@@ -58,14 +58,15 @@ lazy val rest = project
     harmonics_parser,
     bass_solver,
     soprano_solver,
-    validator
+    validator,
+    soprano_solver_genetic
   )
 
 lazy val model = project
   .settings(
     name := "model",
     settings,
-    libraryDependencies ++= testDependencies
+    libraryDependencies ++= testDependencies ++ Seq("net.liftweb" %% "lift-json" % "3.5.0")
   )
   .dependsOn(
     algorithms
@@ -114,7 +115,7 @@ lazy val harmonics_solver = project
   .settings(
     name := "harmonics_solver",
     settings,
-    libraryDependencies ++= testDependencies
+    libraryDependencies ++= testDependencies ++ Seq("jpl" % "jpl" % "7.4.0")
   )
   .dependsOn(
     harmonics_parser,
@@ -142,6 +143,7 @@ lazy val soprano_solver = project
   )
   .dependsOn(
     harmonics_solver,
+    harmonics_finder,
     jenetics
   )
 
@@ -152,6 +154,17 @@ lazy val validator = project
     libraryDependencies ++= testDependencies
   )
   .dependsOn(
+    harmonics_solver
+  )
+
+lazy val harmonics_finder = project
+  .settings(
+    name := "harmonics_finder",
+    settings,
+    libraryDependencies ++= testDependencies ++ Seq("io.spray" %% "spray-json" % "1.3.6")
+  )
+  .dependsOn(
+    model,
     harmonics_solver
   )
 
@@ -182,9 +195,35 @@ lazy val soprano_solver_genetic = project
   .settings(
     name := "soprano_solver_genetic",
     settings,
-    libraryDependencies ++= testDependencies
+    libraryDependencies ++=
+      testDependencies ++
+        Seq("com.github.wookietreiber" %% "scala-chart" % "latest.integration") ++
+        Seq("com.github.tototoshi" %% "scala-csv" % "1.3.10")
   )
   .dependsOn(
     soprano_solver,
     jenetics
+  )
+
+lazy val soprano_solver_bayes = project
+  .in(file("solver/soprano_solver_bayes"))
+  .settings(
+    name := "soprano_solver_bayes",
+    settings,
+    libraryDependencies ++= testDependencies ++ Seq("com.bayesfusion" % "jsmile" % "1.6.0" from file("C:/Users/mikol/Desktop/HarmonySolverBackend/libs/jsmile-1.6.0.jar").asURL.toString)
+  )
+  .dependsOn(
+    soprano_solver
+  )
+
+lazy val soprano_solver_test = project
+  .in(file("solver/soprano_solver_test"))
+  .settings(
+    name := "soprano_solver_test",
+    settings
+  )
+  .dependsOn(
+    soprano_solver,
+    soprano_solver_genetic,
+    soprano_solver_bayes
   )

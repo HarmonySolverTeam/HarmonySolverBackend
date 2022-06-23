@@ -14,13 +14,14 @@ class SingleLevelGraphBuilderTest extends FunSuite with Matchers {
 
   object MockEvaluator extends ConnectionEvaluator[Content] {
     override protected val connectionSize: Int                = 2
-    override protected val softRules: List[SoftRule[Content]] = List.empty
-    override protected val hardRules: List[HardRule[Content]] = List.empty
 
     override def evaluateHardRules(connection: Connection[Content]): Boolean =
       connection.prev.value != 0 && connection.current.value != 2
 
     override def evaluateSoftRules(connection: Connection[Content]): Double = 0
+
+    override protected val softRules: List[SoftRule[Content]] = List.empty
+    override protected val hardRules: List[HardRule[Content]] = List.empty
   }
 
   case class Content(value: Int) extends NodeContent {

@@ -11,5 +11,6 @@ case class HarmonicsExercise(
   meter: Meter,
   measures: List[Measure[HarmonicFunction]],
   bassLine: Option[List[Note]] = None,
-  sopranoLine: Option[List[NoteWithoutChordContext]] = None
+  sopranoLine: Option[List[NoteWithoutChordContext]] = None,
+  evaluateWithProlog: Boolean = false
 ) extends Exercise(key, meter, measures)

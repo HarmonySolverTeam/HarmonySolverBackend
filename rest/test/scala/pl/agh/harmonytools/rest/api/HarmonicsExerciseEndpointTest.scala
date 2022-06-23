@@ -58,7 +58,8 @@ class HarmonicsExerciseEndpointTest extends EndpointTest("harmonytools/harmonics
       |                    }
       |                ]
       |            }
-      |        ]
+      |        ],
+      |        "evaluateWithProlog": false
       |    },
       |    "rating": 0,
       |    "chords": [

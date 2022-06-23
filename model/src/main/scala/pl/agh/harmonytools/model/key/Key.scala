@@ -3,6 +3,7 @@ package pl.agh.harmonytools.model.key
 import pl.agh.harmonytools.error.{HarmonySolverError, UnexpectedInternalError}
 import pl.agh.harmonytools.model.key.Mode.{MAJOR, Mode}
 import pl.agh.harmonytools.model.note.BaseNote
+import pl.agh.harmonytools.model.scale.{MajorScale, MinorScale, Scale, ScaleCompanion}
 
 import scala.collection.immutable.HashMap
 
@@ -11,6 +12,11 @@ case class Key(
   tonicPitch: Integer,
   baseNote: BaseNote.BaseNote
 ) {
+  def scale: ScaleCompanion = {
+    if (mode.isMajor) MajorScale
+    else MinorScale
+  }
+
   override def toString: String = {
     val keyLower = Key
       .pitchKeyStr(tonicPitch)
@@ -21,6 +27,8 @@ case class Key(
     else
       keyLower
   }
+
+  def samePitch(other: Key): Boolean = tonicPitch == other.tonicPitch && baseNote == other.baseNote
 }
 
 object Key {

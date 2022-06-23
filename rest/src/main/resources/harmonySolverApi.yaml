@@ -135,6 +135,9 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/HarmonicsMeasureDto'
+        evaluateWithProlog:
+          type: boolean
+          description: Indication whether system should use Prolog to evaluate rules
 
     HarmonicsMeasureDto:
       required:
@@ -280,6 +283,9 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/BassElementDto'
+        evaluateWithProlog:
+          type: boolean
+          description: Indication whether system should use Prolog to evaluate rules
 
     BassMeasureDto:
       properties:
@@ -348,6 +354,9 @@ components:
           description: List of possible harmonic functions which could be used in solution.
           items:
             $ref: '#/components/schemas/HarmonicFunctionDto'
+        evaluateWithProlog:
+          type: boolean
+          description: Indication whether system should use Prolog to evaluate rules
 
     PunishmentRatiosDto:
       type: object
@@ -417,6 +426,9 @@ components:
         exercise:
           type: string
           description: HarmonicsExercise written in specific notation that should be parsed.
+        evaluateWithProlog:
+          type: boolean
+          description: Indication whether system should use Prolog to evaluate rules
 
     #VALIDATOR
     ChordListDto:

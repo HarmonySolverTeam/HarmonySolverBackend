@@ -2,7 +2,7 @@ package pl.agh.harmonytools.utils
 
 object Consts {
   object VoicesBoundary {
-    val sopranoMax = 81
+    val sopranoMax = 82
     val sopranoMin = 60
     val altoMax    = 74
     val altoMin    = 53

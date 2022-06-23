@@ -9,6 +9,7 @@ case class KeepBasicChordsInSecondRelationRule() extends HardRule[HarmonicFuncti
     if (
       connection.prev.harmonicFunction.isInSecondRelation(connection.current.harmonicFunction)
       && connection.current.harmonicFunction.inversion != connection.current.harmonicFunction.getPrime
+        && connection.current.harmonicFunction.inversion.baseComponent != connection.prev.harmonicFunction.inversion.baseComponent
     )
       totallyBroken
     else satisfied

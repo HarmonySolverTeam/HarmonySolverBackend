@@ -1,8 +1,9 @@
 package pl.agh.harmonytools.solver.harmonics.evaluator.rules.hard
 
-import pl.agh.harmonytools.algorithm.evaluator.{AnyRule, Connection}
-import pl.agh.harmonytools.solver.harmonics.evaluator.rules.{satisfied, voicesIndexes}
+import pl.agh.harmonytools.algorithm.evaluator.Connection
 import pl.agh.harmonytools.model.chord.Chord
+import pl.agh.harmonytools.solver.harmonics.evaluator.prolog.PrologChordAnyRule
+import pl.agh.harmonytools.solver.harmonics.evaluator.rules.{satisfied, voicesIndexes}
 import pl.agh.harmonytools.utils.IntervalUtils.{isAlteredInterval, pitchOffsetBetween}
 
 case class ForbiddenJumpRule(
@@ -10,7 +11,7 @@ case class ForbiddenJumpRule(
   isFixedBass: Boolean = false,
   isFixedSoprano: Boolean = false,
   evaluationRatio: Double = 1.0
-) extends AnyRule[Chord](evaluationRatio) {
+) extends PrologChordAnyRule(evaluationRatio) {
   override def evaluate(connection: Connection[Chord]): Double = {
     val currentChord = connection.current
     val prevChord    = connection.prev
@@ -33,4 +34,6 @@ case class ForbiddenJumpRule(
     (voiceNumber == 0 && isFixedSoprano) || (voiceNumber == 3 && isFixedBass)
 
   override def caption: String = "Forbidden Jump"
+
+  override protected val prologPredicateName: String = "connection_not_contain_forbidden_jump"
 }

@@ -7,5 +7,6 @@ import pl.agh.harmonytools.model.measure.{Measure, Meter}
 case class FiguredBassExercise(
   key: Key,
   meter: Meter,
-  measure: Measure[FiguredBassElement] //todo List[Measure..] - przede wszystkim we frontendzie
+  measure: Measure[FiguredBassElement], //todo List[Measure..] - przede wszystkim we frontendzie
+  evaluateWithProlog: Boolean = false
 ) extends Exercise(key, meter, List(measure))

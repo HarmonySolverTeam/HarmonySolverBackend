@@ -1,6 +1,6 @@
 package pl.agh.harmonytools.solver.harmonics
 
-import org.scalatest.{Assertion, FunSuite, Matchers}
+import org.scalatest.{FunSuite, Matchers}
 import pl.agh.harmonytools.exercise.harmonics.HarmonicsExercise
 import pl.agh.harmonytools.exercise.harmonics.helpers.DelayHandler
 import pl.agh.harmonytools.model.harmonicfunction.Delay

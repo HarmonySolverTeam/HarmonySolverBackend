@@ -1,10 +1,11 @@
 package pl.agh.harmonytools.solver.harmonics.evaluator.rules.hard
 
-import pl.agh.harmonytools.algorithm.evaluator.{Connection, HardRule}
-import pl.agh.harmonytools.solver.harmonics.evaluator.rules.{satisfied, totallyBroken, voicesIndexes}
+import pl.agh.harmonytools.algorithm.evaluator.Connection
 import pl.agh.harmonytools.model.chord.Chord
+import pl.agh.harmonytools.solver.harmonics.evaluator.prolog.PrologChordHardRule
+import pl.agh.harmonytools.solver.harmonics.evaluator.rules.{satisfied, totallyBroken, voicesIndexes}
 
-case class DelayCorrectnessRule() extends HardRule[Chord] {
+case class DelayCorrectnessRule() extends PrologChordHardRule {
   override def evaluate(connection: Connection[Chord]): Double = {
     val currentChord = connection.current
     val prevChord    = connection.prev
@@ -31,4 +32,6 @@ case class DelayCorrectnessRule() extends HardRule[Chord] {
   }
 
   override def caption: String = "Delay Correctness"
+
+  override protected val prologPredicateName: String = "connection_not_contain_incorrect_delay"
 }

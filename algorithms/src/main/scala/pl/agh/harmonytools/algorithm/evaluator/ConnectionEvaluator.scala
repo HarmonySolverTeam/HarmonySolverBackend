@@ -8,26 +8,15 @@ trait ConnectionEvaluator[T <: NodeContent] {
   protected val hardRules: List[HardRule[T]]
   private lazy val brokenRulesCounter: BrokenRulesCounter[T] = BrokenRulesCounter(hardRules)
 
-  private val maxPenalty = Integer.MAX_VALUE
+  private val maxPenalty = 1000
 
   def initializeBrokenRulesCounter(): Unit = brokenRulesCounter.initialize()
 
   def getConnectionSize: Int = connectionSize
 
-  def evaluateHardRules(connection: Connection[T]): Boolean = hardRules.forall(_.isNotBroken(connection))
+  def evaluateHardRules(connection: Connection[T]): Boolean
 
-  def evaluateSoftRules(connection: Connection[T]): Double = softRules.map(_.evaluate(connection)).sum
-
-  def getNumberOfRulesBrokenBy(connection: Connection[T]): Int = {
-    var result = 0
-    for (r <- hardRules) {
-      if (r.isBroken(connection)) {
-        brokenRulesCounter.increaseCounter(r)
-        result += 1
-      }
-    }
-    result
-  }
+  def evaluateSoftRules(connection: Connection[T]): Double
 
   def getBrokenRulesCounter: BrokenRulesCounter[T] = brokenRulesCounter
 
@@ -45,7 +34,14 @@ trait ConnectionEvaluator[T <: NodeContent] {
       case current :: Nil => 0.0
       case prev :: current :: tail =>
         val connection = Connection(current, prev)
-        if (evaluateHardRules(connection)) maxPenalty else evaluateSoftRules(connection) + evaluate2(tail)
+        val penalty = if (evaluateHardRules(connection)) 0 else maxPenalty
+        val soft = evaluateSoftRules(connection)
+//        println("evaluate2: " + soft)
+        if (penalty == maxPenalty) {
+//          println(hardRules.filter(_.isBroken(connection)))
+//          println("MAXPENALTY2")
+        }
+        penalty + soft + evaluate2(current :: tail)
     }
   }
 
@@ -56,7 +52,14 @@ trait ConnectionEvaluator[T <: NodeContent] {
       case prev :: current :: Nil => 0.0
       case prevPrev :: prev :: current :: tail =>
         val connection = Connection(current, prev, prevPrev)
-        if (evaluateHardRules(connection)) maxPenalty else evaluateSoftRules(connection) + evaluate3(tail)
+        val penalty = if (evaluateHardRules(connection)) 0 else maxPenalty
+        val soft = evaluateSoftRules(connection)
+//        println("evaluate3: " + soft)
+        if (penalty == maxPenalty) {
+//          println(hardRules.filter(_.isBroken(connection)))
+//          println("MAXPENALTY3")
+        }
+        penalty + soft + evaluate3(prev :: current :: tail)
     }
   }
 }

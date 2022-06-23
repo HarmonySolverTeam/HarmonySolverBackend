@@ -1,32 +1,16 @@
 package pl.agh.harmonytools.rest.api
 
 import pl.agh.harmonytools.harmonics.parser.HarmonicsParser
-import pl.agh.harmonytools.rest.dto.{
-  BassExerciseDto,
-  BassExerciseRequestDto,
-  ChordDto,
-  HLNotationHarmonicsExerciseDto,
-  HarmonicsExerciseDto,
-  HarmonicsExerciseRequestDto,
-  HarmonicsExerciseSolutionDto,
-  SopranoExerciseDto,
-  SopranoExerciseRequestDto,
-  SopranoExerciseSolutionDto
-}
-import pl.agh.harmonytools.rest.mapper.{
-  BassExerciseMapper,
-  ChordMapper,
-  HarmonicsExerciseMapper,
-  HarmonicsExerciseSolutionMapper,
-  PunishmentRatiosMapper,
-  SopranoExerciseMapper,
-  SopranoExerciseSolutionMapper
-}
+import pl.agh.harmonytools.rest.dto.{BassExerciseDto, BassExerciseRequestDto, ChordDto, HLNotationHarmonicsExerciseDto, HarmonicsExerciseDto, HarmonicsExerciseRequestDto, HarmonicsExerciseSolutionDto, SopranoExerciseDto, SopranoExerciseRequestDto, SopranoExerciseSolutionDto}
+import pl.agh.harmonytools.rest.mapper.{BassExerciseMapper, ChordMapper, HarmonicsExerciseMapper, HarmonicsExerciseSolutionMapper, PunishmentRatiosMapper, SopranoExerciseMapper, SopranoExerciseSolutionMapper}
 import pl.agh.harmonytools.solver.bass.BassSolver
 import pl.agh.harmonytools.solver.harmonics.HarmonicsSolver
 import pl.agh.harmonytools.solver.harmonics.validator.SolvedExerciseValidator
 import pl.agh.harmonytools.solver.soprano.SopranoSolver
+import pl.agh.harmonytools.solver.soprano.genetic.SopranoGeneticSolver
 import play.filters.csrf.CSRF
+
+import java.lang.Thread
 
 /**
  * Provides a default implementation for [[DefaultApi]].
@@ -61,16 +45,22 @@ class DefaultApiImpl extends DefaultApi {
   override def solveSopranoExercise(
     sopranoExerciseRequestDto: SopranoExerciseRequestDto
   ): SopranoExerciseSolutionDto = {
+    val id = Thread.currentThread().getId
+//    println(s"received soprano exercise")
     val exercise         = SopranoExerciseMapper.mapToModel(sopranoExerciseRequestDto.exercise)
     val punishmentRatios = sopranoExerciseRequestDto.punishmentRatios.map(PunishmentRatiosMapper.mapToModel)
-    val solution         = SopranoSolver(exercise, punishmentRatios = punishmentRatios).solve()
+    val solution         = new SopranoSolver(exercise).solve()
+//    println(s"Solved! Rating: ${solution.rating}")
     SopranoExerciseSolutionMapper.mapToDTO(solution)
   }
 
   override def parseHarmonicsExercise(
     hLNotationHarmonicsExerciseDto: HLNotationHarmonicsExerciseDto
   ): HarmonicsExerciseDto = {
-    val parsedExercise = new HarmonicsParser().parse(hLNotationHarmonicsExerciseDto.exercise)
+    val parsedExercise = new HarmonicsParser().parse(
+      hLNotationHarmonicsExerciseDto.exercise,
+      hLNotationHarmonicsExerciseDto.evaluateWithProlog.getOrElse(false)
+    )
     HarmonicsExerciseMapper.mapToDTO(parsedExercise)
   }
 

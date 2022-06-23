@@ -11,17 +11,17 @@ object Demo extends App {
   def run(): Unit = {
     val evolver = GeneticEngine.builder(KnapsackProblemClassic)
       .populationSize(100)
-      .alterers(
-        new SinglePointCrossover(0.4),
-        new UniformCrossover(0.3, 0.2)
+      .recombinators(
+        new SinglePointCrossover[BitGene, MyFitness](0.4),
+        new UniformCrossover[BitGene, MyFitness](0.3, 0.2)
       )
       .selector(
-        new TournamentSelector[BitGene, Integer]()
+        new TournamentSelector[BitGene, MyFitness]()
       )
       .maximizing()
       .build()
 
-    val best = evolver.stream().drop(1000).head.getBestPhenotype
+    val best = evolver.stream(1000).last.getBestPhenotype
 
     println(best)
     println(best.getGeneration)
@@ -30,6 +30,12 @@ object Demo extends App {
 
   run()
 
+}
+
+case class MyFitness(value: Integer) extends Fitness[MyFitness] {
+  override def toDouble: Double = value.doubleValue()
+
+  override def compareTo(o: MyFitness): Int = value.compareTo(o.value)
 }
 
 case class Item(profit: Int, weight: Int)
@@ -73,8 +79,8 @@ object KnapsackChromosome {
   }
 }
 
-object KnapsackProblemClassic extends GeneticProblem[Knapsack, BitGene, Integer] {
-  override def computeFitness(input: Knapsack): Integer = if (input.weight() > MAX_W) -1 else input.profit()
+object KnapsackProblemClassic extends GeneticProblem[Knapsack, BitGene, MyFitness] {
+  override def computeFitness(input: Knapsack): MyFitness = if (input.weight() > MAX_W) MyFitness(-1) else MyFitness(input.profit())
 
   override def createChromosomes(): Seq[JChromosome[BitGene]] = Seq(BitChromosome.of(KnapsackProblem.items.size))
 
@@ -85,7 +91,7 @@ object KnapsackProblemClassic extends GeneticProblem[Knapsack, BitGene, Integer]
 }
 
 
-object KnapsackProblem extends GeneticProblem[Knapsack, ItemGene, Integer] {
+object KnapsackProblem extends GeneticProblem[Knapsack, ItemGene, MyFitness] {
 
   val items = Seq(
     Item(92, 23),
@@ -104,7 +110,7 @@ object KnapsackProblem extends GeneticProblem[Knapsack, ItemGene, Integer] {
 
   val MAX_W = 165
 
-  override def computeFitness(input: Knapsack): Integer = if (input.weight() > MAX_W) -1 else input.profit()
+  override def computeFitness(input: Knapsack): MyFitness = if (input.weight() > MAX_W) MyFitness(-1) else MyFitness(input.profit())
 
   override def createChromosomes(): Seq[Chromosome[Item, Knapsack, ItemGene]] = Seq(KnapsackChromosome.newInstance())
 

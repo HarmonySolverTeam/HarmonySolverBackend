@@ -1,12 +1,13 @@
 package pl.agh.harmonytools.solver.harmonics.evaluator.rules.soft
 
 import pl.agh.harmonytools.algorithm.evaluator.{Connection, SoftRule}
-import pl.agh.harmonytools.solver.harmonics.evaluator.rules.satisfied
 import pl.agh.harmonytools.model.chord.Chord
+import pl.agh.harmonytools.solver.harmonics.evaluator.prolog.PrologChordSoftRule
+import pl.agh.harmonytools.solver.harmonics.evaluator.rules.satisfied
 
 import scala.math.abs
 
-case class ClosestMoveInBassRule(isFixedSoprano: Boolean = false) extends SoftRule[Chord] {
+case class ClosestMoveInBassRule(isFixedSoprano: Boolean = false) extends PrologChordSoftRule {
   override def evaluate(connection: Connection[Chord]): Double = {
     if (!isFixedSoprano) satisfied
     else {
@@ -34,4 +35,6 @@ case class ClosestMoveInBassRule(isFixedSoprano: Boolean = false) extends SoftRu
   }
 
   override def caption: String = "Closest Move In Bass"
+
+  override protected val prologPredicateName: String = "connection_closest_move_in_bass"
 }
