@@ -46,11 +46,11 @@ class DefaultApiImpl extends DefaultApi {
     sopranoExerciseRequestDto: SopranoExerciseRequestDto
   ): SopranoExerciseSolutionDto = {
     val id = Thread.currentThread().getId
-    println(s"received soprano exercise")
+//    println(s"received soprano exercise")
     val exercise         = SopranoExerciseMapper.mapToModel(sopranoExerciseRequestDto.exercise)
     val punishmentRatios = sopranoExerciseRequestDto.punishmentRatios.map(PunishmentRatiosMapper.mapToModel)
     val solution         = new SopranoSolver(exercise).solve()
-    println(s"Solved! Rating: ${solution.rating}")
+//    println(s"Solved! Rating: ${solution.rating}")
     SopranoExerciseSolutionMapper.mapToDTO(solution)
   }
 
