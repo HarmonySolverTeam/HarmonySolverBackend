@@ -11,6 +11,7 @@ object Extensions {
         case 0 => (i / 2).isPowerOf2
       }
     }
+    def isBetween(left: Int, right: Int): Boolean = i > left && i < right
   }
 
   implicit class ExtendedBoolean(val p: Boolean) extends AnyVal {

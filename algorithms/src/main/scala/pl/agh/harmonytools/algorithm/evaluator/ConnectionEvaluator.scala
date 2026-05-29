@@ -53,7 +53,12 @@ trait ConnectionEvaluator[T <: NodeContent] {
     nodes match {
       case Nil => 0.0
       case current :: Nil => 0.0
-      case prev :: current :: Nil => 0.0
+      case prev :: current :: Nil =>
+        val connection = Connection(current, prev)
+        if (evaluateHardRules(connection)) maxPenalty else evaluateSoftRules(connection)
+      case prevPrev :: prev :: current :: Nil =>
+        val connection = Connection(current, prev, prevPrev)
+        if (evaluateHardRules(connection)) maxPenalty else evaluateSoftRules(connection)
       case prevPrev :: prev :: current :: tail =>
         val connection = Connection(current, prev, prevPrev)
         if (evaluateHardRules(connection)) maxPenalty else evaluateSoftRules(connection) + evaluate3(tail)

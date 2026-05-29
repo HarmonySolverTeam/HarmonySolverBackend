@@ -16,9 +16,9 @@ lazy val testDependencies = Seq(
 lazy val playDependencies = Seq(
   guice,
   ws,
-  "org.webjars"             % "swagger-ui"           % "3.1.5",
+  "org.webjars"             % "swagger-ui"           % "5.32.5",
   "javax.annotation"        % "javax.annotation-api" % "1.3.2" % "compile",
-  "org.scalatestplus.play" %% "scalatestplus-play"   % "3.1.2" % Test
+  "org.scalatestplus.play" %% "scalatestplus-play"   % "5.1.0" % Test
 )
 
 /** projects */
@@ -58,7 +58,8 @@ lazy val rest = project
     harmonics_parser,
     bass_solver,
     soprano_solver,
-    validator
+    validator,
+    walking_bass_solver
   )
 
 lazy val model = project
@@ -103,7 +104,9 @@ lazy val solver = project
   .aggregate(
     harmonics_solver,
     bass_solver,
-    soprano_solver
+    soprano_solver,
+    soprano_solver_genetic,
+    walking_bass_solver
   )
   .dependsOn(
     model
@@ -187,4 +190,16 @@ lazy val soprano_solver_genetic = project
   .dependsOn(
     soprano_solver,
     jenetics
+  )
+
+lazy val walking_bass_solver = project
+  .in(file("solver/walking_bass_solver"))
+  .settings(
+    name := "walking_bass_solver",
+    settings,
+    libraryDependencies ++= testDependencies
+  )
+  .dependsOn(
+    algorithms,
+    model
   )

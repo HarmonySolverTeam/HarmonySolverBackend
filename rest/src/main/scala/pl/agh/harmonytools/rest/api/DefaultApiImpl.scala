@@ -1,32 +1,17 @@
 package pl.agh.harmonytools.rest.api
 
 import pl.agh.harmonytools.harmonics.parser.HarmonicsParser
-import pl.agh.harmonytools.rest.dto.{
-  BassExerciseDto,
-  BassExerciseRequestDto,
-  ChordDto,
-  HLNotationHarmonicsExerciseDto,
-  HarmonicsExerciseDto,
-  HarmonicsExerciseRequestDto,
-  HarmonicsExerciseSolutionDto,
-  SopranoExerciseDto,
-  SopranoExerciseRequestDto,
-  SopranoExerciseSolutionDto
-}
-import pl.agh.harmonytools.rest.mapper.{
-  BassExerciseMapper,
-  ChordMapper,
-  HarmonicsExerciseMapper,
-  HarmonicsExerciseSolutionMapper,
-  PunishmentRatiosMapper,
-  SopranoExerciseMapper,
-  SopranoExerciseSolutionMapper
-}
+import pl.agh.harmonytools.model.measure.Measure
+import pl.agh.harmonytools.model.note.JazzNote
+import pl.agh.harmonytools.model.util.ChordComponentManager
+import pl.agh.harmonytools.rest.dto._
+import pl.agh.harmonytools.rest.mapper._
 import pl.agh.harmonytools.solver.bass.BassSolver
 import pl.agh.harmonytools.solver.harmonics.HarmonicsSolver
 import pl.agh.harmonytools.solver.harmonics.validator.SolvedExerciseValidator
 import pl.agh.harmonytools.solver.soprano.SopranoSolver
-import play.filters.csrf.CSRF
+import pl.agh.harmonytools.solver.walking.generator.BassGeneratorInput
+import pl.agh.harmonytools.solver.walking.{WalkingBassExercise, WalkingBassSolver}
 
 /**
  * Provides a default implementation for [[DefaultApi]].
@@ -77,5 +62,33 @@ class DefaultApiImpl extends DefaultApi {
   override def validateSolvedExercise(chordDto: List[ChordDto]): String = {
     val chordList = chordDto.map(ChordMapper.mapToModel)
     SolvedExerciseValidator.getBrokenRulesReport(chordList)
+  }
+
+  override def solveWalkingBassExercise(walkingBassExerciseRequestDto: WalkingBassExerciseRequestDto): WalkingBassExerciseSolutionDto = {
+    val meter = MeterMapper.mapToModel(walkingBassExerciseRequestDto.meter)
+    val exercise = WalkingBassExercise(
+      meter,
+      walkingBassExerciseRequestDto.measures.zipWithIndex.map { case (m, mId) =>
+        Measure(
+          meter,
+          m.notes.zipWithIndex.map { case (i, idx) =>
+            BassGeneratorInput(
+              i.basicChordNotes.map(n => JazzNote(n.pitch, ChordComponentManager.chordComponentFromInt(n.chordComponent))),
+              i.colorChordNotes.map(n => JazzNote(n.pitch, ChordComponentManager.chordComponentFromInt(n.chordComponent))),
+              i.scaleNotes.map(n => JazzNote(n.pitch, ChordComponentManager.chordComponentFromInt(n.chordComponent))),
+              i.isStrongBeat,
+              i.isOnBeat,
+              i.duration,
+              i.chordSymbol,
+              i.isFirst,
+              idx == 0,
+              mId % 5
+            )
+          }
+        )
+      }
+    )
+    val solution = WalkingBassSolver().solve(exercise)
+    WalkingBassExerciseSolutionDto(walkingBassExerciseRequestDto, solution.map(_.note.pitch))
   }
 }

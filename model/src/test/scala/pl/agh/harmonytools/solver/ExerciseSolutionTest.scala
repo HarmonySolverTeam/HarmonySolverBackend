@@ -75,4 +75,4 @@ class ExerciseSolutionTest extends FunSuite with Matchers with TestUtils {
 
 }
 
-case class ExerciseImpl(key: Key, meter: Meter, measures: List[Measure[HarmonicFunction]]) extends Exercise(key, meter, measures)
+case class ExerciseImpl(key: Key, meter: Meter, measures: List[Measure[HarmonicFunction]]) extends Exercise(meter, measures)

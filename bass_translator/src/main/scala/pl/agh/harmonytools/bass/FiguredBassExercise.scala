@@ -8,4 +8,4 @@ case class FiguredBassExercise(
   key: Key,
   meter: Meter,
   measure: Measure[FiguredBassElement] //todo List[Measure..] - przede wszystkim we frontendzie
-) extends Exercise(key, meter, List(measure))
+) extends Exercise(meter, List(measure))

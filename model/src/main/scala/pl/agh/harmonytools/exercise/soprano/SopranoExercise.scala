@@ -2,7 +2,7 @@ package pl.agh.harmonytools.exercise.soprano
 
 import pl.agh.harmonytools.model.exercise.Exercise
 import pl.agh.harmonytools.model.harmonicfunction.HarmonicFunction
-import pl.agh.harmonytools.model.key.Key
+import pl.agh.harmonytools.model.key.{Key, Mode}
 import pl.agh.harmonytools.model.measure.{Measure, Meter}
 import pl.agh.harmonytools.model.note.NoteWithoutChordContext
 
@@ -11,7 +11,8 @@ case class SopranoExercise(
   meter: Meter,
   measures: List[Measure[NoteWithoutChordContext]],
   possibleFunctionsList: List[HarmonicFunction]
-) extends Exercise(key, meter, measures)
-  {
+) extends Exercise(meter, measures) {
+  lazy val mode: Mode.Mode = key.mode
+
   lazy val notes: List[NoteWithoutChordContext] = measures.map(_.contents).reduce(_ ++ _)
 }

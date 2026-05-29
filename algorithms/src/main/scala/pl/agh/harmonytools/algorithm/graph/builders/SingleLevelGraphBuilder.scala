@@ -99,7 +99,7 @@ class SingleLevelGraphBuilder[T <: NodeContent, GenInput <: GeneratorInput, S <:
       for (currentNode <- layer.getNodeList) {
         if (currentNode.getPrevNeighbours.length > 1) {
           var duplicates: List[Node[T, S]] = List.empty
-          for (prevNeighbour <- currentNode.getPrevNeighbours.dropRight(1))
+          for (_ <- currentNode.getPrevNeighbours.dropRight(1))
             duplicates = duplicates :+ currentNode.duplicate()
 
           val prevNeighbours = currentNode.getPrevNeighbours

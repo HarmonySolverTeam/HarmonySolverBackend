@@ -12,4 +12,4 @@ case class HarmonicsExercise(
   measures: List[Measure[HarmonicFunction]],
   bassLine: Option[List[Note]] = None,
   sopranoLine: Option[List[NoteWithoutChordContext]] = None
-) extends Exercise(key, meter, measures)
+) extends Exercise(meter, measures)

@@ -10,6 +10,8 @@ object ChordComponentManager {
 
   def getRoot(isDown: Boolean = false): ChordComponent = chordComponentFromString("1", isDown)
 
+  def chordComponentFromInt(i: Int) : ChordComponent = chordComponentFromString(i.toString)
+
   def chordComponentFromString(chordComponentString: String, isDown: Boolean = false): ChordComponent = {
     availableChordComponents.find(_._1 == (chordComponentString, isDown)) match {
       case Some((key, value)) => value

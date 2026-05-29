@@ -1,0 +1,16 @@
+package pl.agh.harmonytools.solver.walking.evaluator.rules.soft
+
+import pl.agh.harmonytools.algorithm.evaluator.{Connection, SoftRule}
+import pl.agh.harmonytools.solver.walking.generator.WalkingBassNote
+
+object ClosestVoiceLeadingRule extends SoftRule[WalkingBassNote] {
+  // close resolution of the leading notes
+  override def evaluate(connection: Connection[WalkingBassNote]): Double = {
+    if (
+      connection.current.input.isStrongBeat && !Seq(1, 3, 5)
+        .contains(connection.prev.note.chordComponent.baseComponent)
+    )
+      Math.abs(connection.current.note.pitch - connection.prev.note.pitch) * 100
+    else 0
+  }
+}
