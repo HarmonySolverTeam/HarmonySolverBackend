@@ -1,4 +1,0 @@
-C
-4/4
-T{} S{} (S{isRelatedBackwards})
-(S{isRelatedBackwards}) D{} T{}

@@ -5,9 +5,6 @@ The repository contains the official implementation of rule-based algorithm for 
 
 It is an extension of the *Harmony Solver* system developed for paper *An application of evolutionary algorithms and machine learning in four-part harmonization* (https://dx.doi.org/10.1007/978-3-031-35995-8_16).
 
-This work was conducted at the [Faculty of Computer Science, AGH University of Krakow](https://www.informatyka.agh.edu.pl/en/)
-by [Mikołaj Sikora](https://orcid.org/0009-0004-7483-0370) and [Maciej Smołka](https://orcid.org/0000-0002-3386-0555), in cooperation with Marcin Banaszek from The Krzysztof Penderecki Academy of Music in Krakow.
-
 ## Abstract
 
 The walking bass serves as a foundational and standardized accompaniment in jazz music,
@@ -34,7 +31,7 @@ lines and the role of artificial intelligence in jazz improvisation and accompan
 
 ## How to run it?
 
-To provide a bridge between this repository and the main project, [walking-bass-generator](https://github.com/miksik98/walking-bass-generator), 
+To provide a bridge between this repository and the main project, i.e. *walking-bass-generator*,
 we expose a REST API with a dedicated endpoint for the walking bass generation task.
 
 To start the server, run the following commands:
@@ -47,4 +44,4 @@ Once started, the server will be available at http://localhost:9000 and can be a
 
 ## Acknowledgements
 
-This research was supported in part by the funds of Ministry of Science and Higher Education assigned to AGH University of Krakow.
+Hidden for review purposes and will be disclosed in the final version of the manuscript.

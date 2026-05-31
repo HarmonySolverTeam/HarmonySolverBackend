@@ -30,9 +30,7 @@ lazy val rootProject = project
   )
   .aggregate(
     model,
-    harmonics_parser,
     algorithms,
-    bass_translator,
     solver,
     rest
   )
@@ -54,13 +52,7 @@ lazy val rest = project
     libraryDependencies ++= testDependencies,
     libraryDependencies ++= playDependencies
   )
-  .dependsOn(
-    harmonics_parser,
-    bass_solver,
-    soprano_solver,
-    validator,
-    walking_bass_solver
-  )
+  .dependsOn(walking_bass_solver)
 
 lazy val model = project
   .settings(
@@ -72,14 +64,6 @@ lazy val model = project
     algorithms
   )
 
-lazy val harmonics_parser = project
-  .settings(
-    name := "harmonics_parser",
-    settings,
-    libraryDependencies ++= testDependencies ++ Seq("org.scala-lang.modules" %% "scala-parser-combinators" % "1.1.2")
-  )
-  .dependsOn(model)
-
 lazy val algorithms = project
   .settings(
     name := "algorithms",
@@ -87,110 +71,14 @@ lazy val algorithms = project
     libraryDependencies ++= testDependencies
   )
 
-lazy val bass_translator = project
-  .settings(
-    name := "bass_translator",
-    settings,
-    libraryDependencies ++= testDependencies
-  )
-  .dependsOn(model, harmonics_parser)
-
 lazy val solver = project
   .settings(
     name := "solver",
     settings,
     libraryDependencies ++= testDependencies
   )
-  .aggregate(
-    harmonics_solver,
-    bass_solver,
-    soprano_solver,
-    soprano_solver_genetic,
-    walking_bass_solver
-  )
-  .dependsOn(
-    model
-  )
-
-lazy val harmonics_solver = project
-  .in(file("solver/harmonics_solver"))
-  .settings(
-    name := "harmonics_solver",
-    settings,
-    libraryDependencies ++= testDependencies
-  )
-  .dependsOn(
-    harmonics_parser,
-    algorithms
-  )
-
-lazy val bass_solver = project
-  .in(file("solver/bass_solver"))
-  .settings(
-    name := "bass_solver",
-    settings,
-    libraryDependencies ++= testDependencies ++ Seq("io.spray" %% "spray-json" % "1.3.6")
-  )
-  .dependsOn(
-    harmonics_solver,
-    bass_translator
-  )
-
-lazy val soprano_solver = project
-  .in(file("solver/soprano_solver"))
-  .settings(
-    name := "soprano_solver",
-    settings,
-    libraryDependencies ++= testDependencies
-  )
-  .dependsOn(
-    harmonics_solver,
-    jenetics
-  )
-
-lazy val validator = project
-  .settings(
-    name := "validator",
-    settings,
-    libraryDependencies ++= testDependencies
-  )
-  .dependsOn(
-    harmonics_solver
-  )
-
-lazy val integrations = project
-  .settings(
-    name := "integrations",
-    settings,
-    libraryDependencies ++= testDependencies
-  )
-  .aggregate(
-    jenetics
-  )
-
-lazy val jenetics = project
-  .in(file("integrations/jenetics"))
-  .settings(
-    name := "jenetics",
-    settings,
-    libraryDependencies ++= testDependencies ++ Seq(
-      "jenetics",
-      "jenetics.prog",
-      "jenetics.ext"
-    ).map("io.jenetics" % _ % "4.3.0")
-  )
-
-lazy val soprano_solver_genetic = project
-  .in(file("solver/soprano_solver_genetic"))
-  .settings(
-    name := "soprano_solver_genetic",
-    settings,
-    libraryDependencies ++= testDependencies
-  )
-  .dependsOn(
-    soprano_solver,
-    jenetics
-  )
+  .aggregate(walking_bass_solver)
+  .dependsOn(model)
 
 lazy val walking_bass_solver = project
   .in(file("solver/walking_bass_solver"))
